@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রতিদিনের অভ্যাস | Tanjif Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --primary-light: #ccfbf1;
+            --secondary: #0f172a;
+            --surface: rgba(255, 255, 255, 0.92);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kalpurush', 'Hind Siliguri', sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), 
+                        url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            padding-top: 65px;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .logo span { color: var(--primary); }
+
+        .btn-sheet-view {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 10px rgba(13, 148, 136, 0.3);
+            transition: 0.2s;
+        }
+
+        .btn-sheet-view:hover { transform: translateY(-2px); }
+
+        .app-container {
+            max-width: 1380px;
+            height: calc(100vh - 75px);
+            margin: 0 auto;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .top-dashboard {
+            display: grid;
+            grid-template-columns: 280px 1fr 220px;
+            gap: 10px;
+            background: var(--surface);
+            padding: 10px 15px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(10px);
+            align-items: center;
+        }
+
+        .score-card {
+            text-align: center;
+            background: rgba(13, 148, 136, 0.1);
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(13, 148, 136, 0.2);
+        }
+
+        .score-card h4 { font-size: 0.85rem; color: var(--text-muted); }
+        .score-card .value { font-size: 1.6rem; font-weight: 700; color: var(--primary-dark); }
+
+        .chart-box {
+            height: 75px;
+            width: 100%;
+            position: relative;
+        }
+
+        .status-box {
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #fef3c7;
+            color: #d97706;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        .status-badge.synced {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .category-column {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .category-header {
+            background: var(--secondary);
+            color: #fff;
+            padding: 6px 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .cat-score {
+            font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 8px;
+            color: var(--primary-light);
+        }
+
+        .habit-list {
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            justify-content: space-around;
+            flex-grow: 1;
+        }
+
+        .habit-item {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 6px 8px;
+        }
+
+        .habit-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .habit-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .habit-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .info-btn {
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .short-msg {
+            display: none;
+            font-size: 0.72rem;
+            color: #334155;
+            background: var(--primary-light);
+            padding: 4px;
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+
+        .note-input {
+            width: 100%;
+            margin-top: 4px;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        /* CUSTOM SUMMARY MODAL DESIGN */
+        .modal-overlay {
+            position: fixed;
+            top: 65px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 65px);
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 15px;
+        }
+
+        .modal-card {
+            background: #f8fafc;
+            width: 100%;
+            max-width: 1100px;
+            max-height: 90vh;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: var(--secondary);
+            color: #fff;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .modal-close {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .summary-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .sum-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+        }
+
+        .sum-card h5 { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px; }
+        .sum-card .sum-val { font-size: 1.5rem; font-weight: 700; color: var(--primary-dark); }
+
+        .progress-bar-container {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 10px;
+            width: 100%;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: var(--primary);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+        }
+
+        .data-table th {
+            background: #f1f5f9;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        @media(max-width: 1024px) {
+            body { overflow: auto; height: auto; }
+            .app-container { height: auto; }
+            .top-dashboard { grid-template-columns: 1fr; }
+            .categories-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <i class="fa-solid fa-list-check" style="color: var(--primary);"></i>
+            <span>Tanjif Academy</span> | প্রতিদিনের অভ্যাস
+        </a>
+        <button class="btn-sheet-view" onclick="openSheetModal()">
+            <i class="fa-solid fa-chart-line"></i> সংরক্ষিত ডাটা সামারি দেখুন
+        </button>
+    </nav>
+
+    <div class="app-container">
+        <div class="top-dashboard">
+            <div class="score-card">
+                <h4>আজকের মোট অর্জন (স্কোর)</h4>
+                <div class="value" id="todayScore">০ / ১০০</div>
+            </div>
+
+            <div class="chart-box">
+                <canvas id="progressChart"></canvas>
+            </div>
+
+            <div class="status-box">
+                <div>ডাটা সিঙ্ক স্ট্যাটাস:</div>
+                <div class="status-badge" id="syncStatus"><i class="fa-solid fa-clock"></i> অটো-সেভ চালু আছে</div>
+                <div style="margin-top: 4px; font-size: 0.72rem;">টিক দেওয়ার সাথে সাথেই শিটে সেভ হবে</div>
+            </div>
+        </div>
+
+        <div class="categories-grid" id="habitGrid"></div>
+    </div>
+
+    <!-- CUSTOM ANALYTICS SUMMARY MODAL -->
+    <div class="modal-overlay" id="sheetModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-chart-pie"></i> ওভারঅল প্রোগ্রেস ও স্কোর সামারি</h3>
+                <button class="modal-close" onclick="closeSheetModal()">বন্ধ করুন</button>
+            </div>
+            <div class="modal-body" id="modalSummaryBody">
+                <div style="text-align: center; padding: 40px; color: var(--text-muted);" id="loadingState">
+                    <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+                    <p style="margin-top: 10px;">গুগল শিট থেকে ডাটা ফেচ করা হচ্ছে...</p>
+                </div>
+
+                <div id="summaryContent" style="display: none;">
+                    <b style="font-size: 1.05rem;">ক্যাটাগরি ভিত্তিক গড় অর্জন:</b>
+                    <div class="summary-cards-grid" id="categorySummaryCards" style="margin-top: 10px;"></div>
+
+                    <b style="font-size: 1.05rem; margin-top: 15px; display: block;">সর্বশেষ দিনগুলোর ডাটা হিস্টোরি:</b>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>তারিখ</th>
+                                <th>মোট অর্জিত স্কোর</th>
+                                <th>সম্পন্ন অভ্যাসের সংখ্যা</th>
+                                <th>অগ্রগতি (প্রোগ্রেস)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwWS1rz0cr6NDbF_LHhZ299I7EhobngRu2_zkhColrOoYc5vlFW1UOqpcdT3f6y5IVH/exec";
+
+        const habitCategories = [
+            {
+                title: "সালাত চর্চা",
+                items: [
+                    { id: "s1", name: "ফজর", desc: "দিনের সূচনা ঈমানের সাথে করা।" },
+                    { id: "s2", name: "জোহর", desc: "ব্যস্ততার মাঝে আত্মাকে বিরতি দেওয়া।" },
+                    { id: "s3", name: "আসর", desc: "যথাসময়ে আসর আদায় করা।" },
+                    { id: "s4", name: "মাগরিব", desc: "সূর্যাস্তের সাথে সাথে আনুগত্য প্রকাশ।" },
+                    { id: "s5", name: "এশা", desc: "শান্তিময় ঘুমের পূর্বে আল্লাহর দরবারে উপস্থিতি।" }
+                ]
+            },
+            {
+                title: "কুরআন চর্চা",
+                items: [
+                    { id: "q1", name: "রিভিশন", desc: "পূর্বের পঠিত অংশ চর্চা।" },
+                    { id: "q2", name: "মুখস্ত", desc: "নতুন আয়াত বা সূরা হেফজ।" },
+                    { id: "q3", name: "শব্দে শব্দে", desc: "অর্থ ও অনুধাবন সহ পাঠ।" },
+                    { id: "q4", name: "উচ্চস্বরে", desc: "স্পষ্ট ও সুন্দর কণ্ঠে তিলাওয়াত।" },
+                    { id: "q5", name: "লিখে লিখে", desc: "আয়াত খাতায় লিখে চর্চা।" }
+                ]
+            },
+            {
+                title: "ভাষা চর্চা",
+                items: [
+                    { id: "l1", name: "সাধারন পাঠ", desc: "ইংরেজি/আরবি আর্টিক্যাল ৫ মিনিট পড়া।" },
+                    { id: "l2", name: "ভোকাবুলারি", desc: "প্রতিদিন ৫টি নতুন শব্দ শেখা।" },
+                    { id: "l3", name: "শোনা (Listen)", desc: "অডিও বা পডকাস্ট শোনা।" },
+                    { id: "l4", name: "বলা (Speaking)", desc: "নিজে নিজে বা কারো সাথে বলা।" },
+                    { id: "l5", name: "লেখা (Writing)", desc: "ছোট ৩-৪ লাইনের অনুচ্ছেদ লেখা।" }
+                ]
+            },
+            {
+                title: "শরীর চর্চা",
+                items: [
+                    { id: "b1", name: "হাঁটা", desc: "সকালে বা বিকালে ২০ মিনিট হাঁটা।" },
+                    { id: "b2", name: "ব্যায়াম", desc: "ফ্রি-হ্যান্ড ব্যায়াম বা পুশ-আপ।" },
+                    { id: "b3", name: "সুষম খাবার", desc: "প্রসেসড ফুড এড়িয়ে চলা।" },
+                    { id: "b4", name: "সময় খেয়াল", desc: "সময়মতো আহার ও বিশ্রাম।" },
+                    { id: "b5", name: "মানসিক স্বাস্থ্য", desc: "মেডিটেশন ও প্রশান্তি।" }
+                ]
+            },
+            {
+                title: "জ্ঞান চর্চা",
+                items: [
+                    { id: "k1", name: "বই পড়া", desc: "ভালো বইয়ের ১০ পাতা পড়া।" },
+                    { id: "k2", name: "সংবাদ পড়া", desc: "গুরুত্বপূর্ণ আপডেট জানা।" },
+                    { id: "k3", name: "সম্পর্ক খেয়াল", desc: "পারিবারিক স্বজনদের খোঁজ নেওয়া।" },
+                    { id: "k4", name: "অর্থনীতি", desc: "আর্থিক সচেতনতা ও হিসাব।" },
+                    { id: "k5", name: "ভালো কাজ", desc: "অন্তত ১টি নিঃস্বার্থ ভালো কাজ।" }
+                ]
+            }
+        ];
+
+        let progressChart = null;
+
+        function toBanglaNum(num) {
+            const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+            return num.toString().replace(/\d/g, d => banglaDigits[d]);
+        }
+
+        function renderHabits() {
+            const grid = document.getElementById('habitGrid');
+            grid.innerHTML = '';
+
+            habitCategories.forEach((cat, index) => {
+                let col = document.createElement('div');
+                col.className = 'category-column';
+                
+                let html = `
+                    <div class="category-header">
+                        <span>${cat.title}</span>
+                        <span class="cat-score" id="cat-score-${index}">০ / ২০</span>
+                    </div>
+                    <div class="habit-list">
+                `;
+                
+                cat.items.forEach(item => {
+                    html += `
+                        <div class="habit-item">
+                            <div class="habit-main">
+                                <label class="habit-label">
+                                    <input type="checkbox" id="${item.id}" onchange="handleCheckboxChange('${item.id}')">
+                                    <span>${item.name}</span>
+                                </label>
+                                <i class="fa-solid fa-circle-info info-btn" onclick="toggleInfo('${item.id}-info')"></i>
+                            </div>
+                            <div class="short-msg" id="${item.id}-info">${item.desc}</div>
+                            <input type="text" class="note-input" id="${item.id}-note" placeholder="নোট..." onchange="autoSaveToGoogleSheet()">
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                col.innerHTML = html;
+                grid.appendChild(col);
+            });
+
+            loadLocalData();
+        }
+
+        function toggleInfo(id) {
+            const el = document.getElementById(id);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function updateScores() {
+            let totalChecked = 0;
+
+            habitCategories.forEach((cat, catIdx) => {
+                let catChecked = 0;
+                cat.items.forEach(item => {
+                    const cb = document.getElementById(item.id);
+                    if (cb && cb.checked) {
+                        catChecked++;
+                        totalChecked++;
+                    }
+                });
+                
+                const catScore = catChecked * 4;
+                document.getElementById(`cat-score-${catIdx}`).innerText = `${toBanglaNum(catScore)} / ২০`;
+            });
+
+            const totalScore = totalChecked * 4;
+            document.getElementById('todayScore').innerText = `${toBanglaNum(totalScore)} / ১০০`;
+            return totalScore;
+        }
+
+        function handleCheckboxChange(itemId) {
+            updateScores();
+            autoSaveToGoogleSheet();
+        }
+
+        async function autoSaveToGoogleSheet() {
+            const statusBadge = document.getElementById('syncStatus');
+            statusBadge.className = "status-badge";
+            statusBadge.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> সেভ হচ্ছে...`;
+
+            const todayKey = new Date().toISOString().split('T')[0];
+            const dataToSave = { date: todayKey, items: {}, notes: {}, score: updateScores() };
+
+            habitCategories.forEach(cat => {
+                cat.items.forEach(item => {
+                    const cb = document.getElementById(item.id);
+                    const note = document.getElementById(`${item.id}-note`);
+                    dataToSave.items[item.id] = cb ? cb.checked : false;
+                    dataToSave.notes[item.id] = note ? note.value : "";
+                });
+            });
+
+            localStorage.setItem(`habitData_${todayKey}`, JSON.stringify(dataToSave));
+
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(dataToSave)
+                });
+
+                statusBadge.className = "status-badge synced";
+                statusBadge.innerHTML = `<i class="fa-solid fa-check-circle"></i> সেভ হয়েছে!`;
+            } catch (error) {
+                statusBadge.className = "status-badge synced";
+                statusBadge.innerHTML = `<i class="fa-solid fa-check-circle"></i> সেভ হয়েছে!`;
+            }
+        }
+
+        function loadLocalData() {
+            const todayKey = new Date().toISOString().split('T')[0];
+            const saved = localStorage.getItem(`habitData_${todayKey}`);
+
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                habitCategories.forEach(cat => {
+                    cat.items.forEach(item => {
+                        if (parsed.items && parsed.items[item.id] !== undefined) {
+                            document.getElementById(item.id).checked = parsed.items[item.id];
+                        }
+                        if (parsed.notes && parsed.notes[item.id] !== undefined) {
+                            document.getElementById(`${item.id}-note`).value = parsed.notes[item.id];
+                        }
+                    });
+                });
+            }
+            updateScores();
+            initChart();
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            
+            progressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['শনি', 'রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহঃ', 'আজ'],
+                    datasets: [{
+                        label: 'দৈনিক স্কোর',
+                        data: [60, 75, 80, 70, 85, 90, updateScores()],
+                        borderColor: '#0d9488',
+                        backgroundColor: 'rgba(13, 148, 136, 0.15)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#0f766e'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { min: 0, max: 100, ticks: { stepSize: 25, font: { family: 'Kalpurush' } } },
+                        x: { ticks: { font: { family: 'Kalpurush' } } }
+                    }
+                }
+            });
+        }
+
+        // FETCH DATA & RENDER ANALYTICS SUMMARY
+        async function openSheetModal() {
+            document.getElementById('sheetModal').style.display = 'flex';
+            document.getElementById('loadingState').style.display = 'block';
+            document.getElementById('summaryContent').style.display = 'none';
+
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const resData = await response.json();
+
+                if (resData.status === 'success' && resData.data) {
+                    renderSummaryUI(resData.data);
+                } else {
+                    document.getElementById('loadingState').innerHTML = `<p style="color:red;">ডাটা পাওয়া যায়নি বা লোড করতে সমস্যা হয়েছে।</p>`;
+                }
+            } catch (err) {
+                document.getElementById('loadingState').innerHTML = `<p style="color:red;">ডাটা ফেচ করতে সমস্যা হয়েছে। অনুগ্রহ করে ইন্টারনেট সংযোগ চেক করুন।</p>`;
+            }
+        }
+
+        function renderSummaryUI(sheetRows) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('summaryContent').style.display = 'block';
+
+            // Calculate overall progress stats
+            let catTotals = Array(5).fill(0);
+            let totalEntries = sheetRows.length;
+
+            sheetRows.forEach(row => {
+                if (row.items) {
+                    habitCategories.forEach((cat, idx) => {
+                        let catCheckedCount = 0;
+                        cat.items.forEach(item => {
+                            if (row.items[item.id]) catCheckedCount++;
+                        });
+                        catTotals[idx] += (catCheckedCount * 4);
+                    });
+                }
+            });
+
+            // Render Category Summary Cards
+            const catCardsContainer = document.getElementById('categorySummaryCards');
+            catCardsContainer.innerHTML = '';
+
+            habitCategories.forEach((cat, idx) => {
+                let avg = totalEntries > 0 ? Math.round(catTotals[idx] / totalEntries) : 0;
+                let card = document.createElement('div');
+                card.className = 'sum-card';
+                card.innerHTML = `
+                    <h5>${cat.title} (গড়)</h5>
+                    <div class="sum-val">${toBanglaNum(avg)} / ২০</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" style="width: ${(avg / 20) * 100}%"></div>
+                    </div>
+                `;
+                catCardsContainer.appendChild(card);
+            });
+
+            // Render History Table
+            const historyBody = document.getElementById('historyTableBody');
+            historyBody.innerHTML = '';
+
+            sheetRows.reverse().forEach(row => {
+                let checkedCount = 0;
+                if (row.items) {
+                    Object.values(row.items).forEach(val => { if (val) checkedCount++; });
+                }
+
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><b>${row.date}</b></td>
+                    <td><b style="color: var(--primary-dark);">${toBanglaNum(row.score || 0)}</b> / ১০০</td>
+                    <td>${toBanglaNum(checkedCount)} টি অভ্যাস</td>
+                    <td>
+                        <div class="progress-bar-container" style="height: 8px;">
+                            <div class="progress-bar-fill" style="width: ${row.score || 0}%"></div>
+                        </div>
+                    </td>
+                `;
+                historyBody.appendChild(tr);
+            });
+        }
+
+        function closeSheetModal() {
+            document.getElementById('sheetModal').style.display = 'none';
+        }
+
+        window.addEventListener('DOMContentLoaded', renderHabits);
+    </script>
+</body>
+</html>
