@@ -1,0 +1,2549 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanjif Academy | তানজিফ একাডেমি</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230D9488'/><path d='M25 65C35 60 45 60 50 65V35C45 30 35 30 25 35V65Z' fill='%23FFFFFF'/><path d='M75 65C65 60 55 60 50 65V35C55 30 65 30 75 35V65Z' fill='%23E0F2FE'/><path d='M50 20L72 31L50 42L28 31L50 20Z' fill='%23F59E0B'/></svg>">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --primary-light: #ccfbf1;
+            --secondary: #0f172a;
+            --accent: #f59e0b;
+            --bg-body: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.03);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 40px rgba(13, 148, 136, 0.15);
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+            scroll-behavior: smooth;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* শুধুমাত্র ইনপুট এবং ফর্মে সিলেক্ট ও কপি-পেস্ট অনুমোদন */
+        input, textarea, .form-control, #authModal, #authModal *, #adminVerifyModal, #adminVerifyModal * {
+            -webkit-user-select: auto !important;
+            -moz-user-select: auto !important;
+            -ms-user-select: auto !important;
+            user-select: auto !important;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-top: 80px;
+        }
+
+        /* যখন এম্বেডেড পেজ খোলা থাকে, তখন শরীরের ওভারফ্লো আটকানো */
+        body.embedded-open {
+            overflow: hidden !important;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 80px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0.5rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-svg {
+            filter: drop-shadow(0 0 8px rgba(13, 148, 136, 0.6));
+            animation: pulseGlow 3s infinite alternate;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulseGlow {
+            0% { filter: drop-shadow(0 0 4px rgba(13, 148, 136, 0.4)); }
+            100% { filter: drop-shadow(0 0 12px rgba(13, 148, 136, 0.8)); }
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+        }
+
+        .logo-text span { color: var(--primary); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.8rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #cbd5e1;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: #38bdf8; }
+
+        /* কিডস কর্নার টপ বার স্টাইল */
+        .kids-corner-nav-btn {
+            background: linear-gradient(135deg, #ff7675 0%, #fd79a8 100%);
+            color: #ffffff !important;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 700 !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(253, 121, 168, 0.4);
+            transition: all 0.3s ease !important;
+            cursor: pointer;
+        }
+        .kids-corner-nav-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 18px rgba(253, 121, 168, 0.6);
+            color: #fff !important;
+        }
+
+        .nav-user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.08);
+            padding: 4px 12px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            flex-wrap: wrap;
+        }
+
+        .user-badge {
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: #5eead4;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-auth {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #fff !important;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(13, 148, 136, 0.6);
+        }
+
+        .btn-logout {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .btn-logout:hover { background: #dc2626; }
+
+        .btn-close-view {
+            background: #6366f1;
+            color: #fff;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: none;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .btn-close-view:hover { background: #4f46e5; }
+
+        .page-view {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .page-view.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            position: relative;
+            min-height: calc(100vh - 80px);
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.88)), 
+                        url('https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 4rem 1.5rem;
+            overflow: hidden;
+        }
+
+        .hero-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 3.5rem;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            color: var(--primary-light);
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #38bdf8, #5eead4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 2.5rem;
+            max-width: 620px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-glow {
+            background: linear-gradient(135deg, var(--primary) 0%, #0284c7 100%);
+            color: #fff;
+            padding: 0.9rem 2.2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(13, 148, 136, 0.6);
+        }
+
+        .btn-outline {
+            background-color: rgba(255, 255, 255, 0.15) !important;
+            border: 2px solid rgba(255, 255, 255, 0.4) !important;
+            color: #ffffff !important;
+            padding: 0.9rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary) !important;
+            border-color: var(--primary) !important;
+            color: #ffffff !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
+        }
+
+        .hero-card-preview {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .dashboard-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #fff;
+            padding: 3.5rem 1.5rem;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .dashboard-welcome {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .welcome-text h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .welcome-text h1 span { color: #38bdf8; }
+
+        .welcome-badge {
+            background: rgba(13, 148, 136, 0.25);
+            border: 1px solid var(--primary);
+            color: #5eead4;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+
+        .dash-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dash-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .dash-card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .dash-card h3 {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 0.6rem;
+        }
+
+        .dash-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dash-card-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .collapsible-wrapper {
+            margin-top: 2.5rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            background: var(--surface);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .collapsible-header {
+            padding: 1.2rem 1.8rem;
+            background: #f1f5f9;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .collapsible-header:hover {
+            background: #e2e8f0;
+        }
+
+        .collapsible-header h2 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0;
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            color: var(--text-muted);
+        }
+
+        .collapsible-wrapper.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.3s ease;
+            padding: 0 1.8rem;
+        }
+
+        .collapsible-wrapper.active .collapsible-content {
+            max-height: 2500px;
+            padding: 1.8rem;
+        }
+
+        .admin-task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .admin-task-card {
+            background: var(--surface);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .admin-task-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .admin-task-card h4 {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-task-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .admin-task-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .admin-task-link:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .book-frame-container {
+            width: 100%;
+            height: 320px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            background: #f1f5f9;
+        }
+
+        .book-frame-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .stats-section {
+            background: var(--surface);
+            padding: 4rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stats-container {
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1.5rem;
+            background: var(--bg-body);
+            border-radius: var(--radius);
+            border: 1px solid #f1f5f9;
+            transition: transform 0.3s;
+        }
+
+        .stat-item:hover { transform: translateY(-5px); }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .stat-item p {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 5px;
+        }
+
+        .section {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 5rem 1.5rem;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.4rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 2.5rem;
+        }
+
+        .tab-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #f1f5f9;
+            transition: all 0.35s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .course-banner {
+            height: 190px;
+            background: linear-gradient(135deg, #0f172a, #334155);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 3.5rem;
+            position: relative;
+        }
+
+        .course-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.95);
+            color: var(--primary-dark);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .course-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .course-content h3 {
+            font-size: 1.35rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .course-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+            flex-grow: 1;
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .course-lessons {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .btn-start {
+            color: var(--secondary);
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-start:hover { color: var(--primary); }
+
+        .ebooks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .ebook-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 2.2rem;
+            text-align: center;
+            border: 1px solid #f1f5f9;
+            box-shadow: var(--shadow-sm);
+            transition: 0.3s;
+        }
+
+        .ebook-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .ebook-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.2rem;
+        }
+
+        .ebook-card h3 {
+            font-size: 1.25rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .ebook-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .btn-download {
+            display: inline-block;
+            padding: 9px 22px;
+            background: #f1f5f9;
+            color: var(--secondary);
+            font-weight: 700;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-download:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(6px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-card {
+            background: var(--surface);
+            width: 90%;
+            max-width: 440px;
+            border-radius: 24px;
+            padding: 2.2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            animation: modalUp 0.3s ease;
+        }
+
+        @keyframes modalUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f1f5f9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .modal-tabs {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            gap: 4px;
+        }
+
+        .modal-tab-btn {
+            flex: 1;
+            padding: 8px 4px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-muted);
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .modal-tab-btn.active {
+            background: var(--surface);
+            color: var(--primary-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-group { margin-bottom: 1.2rem; }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+        }
+
+        /* পাসওয়ার্ড ফিল্ড ও আই আইকন র‍্যাপার */
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-wrapper input {
+            padding-right: 42px;
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+
+        .password-toggle-btn:hover {
+            color: var(--primary);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover { background: var(--primary-dark); }
+
+        .forgot-pin-box {
+            margin-top: 1rem;
+            padding: 10px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.88rem;
+            color: #166534;
+        }
+
+        .forgot-pin-box a {
+            color: #25d366;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .admin-table-container {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .admin-table th {
+            background: #f8fafc;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .embedded-page-overlay {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 80px);
+            background: #ffffff;
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden; /* এম্বেডেড পেজের স্ক্রল নিজেই হ্যান্ডেল করবে */
+        }
+
+        .embedded-page-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            overflow: auto; /* iframe এর নিজস্ব স্ক্রল */
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 58px;
+            height: 58px;
+            background-color: #25d366;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+        }
+
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            background-color: var(--secondary);
+            color: #fff;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-top-btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* কিডস কর্নার বটম বক্স স্টাইল */
+        .kids-corner-bottom-box {
+            max-width: 1240px;
+            margin: 3rem auto;
+            padding: 2.5rem 1.5rem;
+            background: linear-gradient(135deg, #a8ff78 0%, #78ffd6 100%);
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(120, 255, 214, 0.4);
+            text-align: center;
+            position: relative;
+            border: 3px dashed #fff;
+        }
+
+        .kids-corner-bottom-box h2 {
+            font-size: 2.2rem;
+            color: #2d3436;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .kids-corner-bottom-box p {
+            font-size: 1.1rem;
+            color: #485460;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-kids-corner-box {
+            background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
+            color: #fff;
+            padding: 0.9rem 2.2rem;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(214, 48, 49, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-kids-corner-box:hover {
+            transform: scale(1.06);
+            box-shadow: 0 8px 25px rgba(214, 48, 49, 0.5);
+        }
+
+        /* কিডস কর্নার মোডাল (পপ-আপ) গ্রিড ও অপশনস */
+        .kids-modal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            margin-top: 1.5rem;
+        }
+
+        .kids-option-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 1.2rem 0.8rem;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.06);
+            border: 2px solid #f1f2f6;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .kids-option-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 12px 22px rgba(0,0,0,0.12);
+        }
+
+        .kids-icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #fff;
+        }
+
+        .kids-option-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #2d3436;
+        }
+
+        footer {
+            background: var(--secondary);
+            color: #94a3b8;
+            padding: 4rem 1.5rem 2rem;
+            border-top: 1px solid #334155;
+        }
+
+        .footer-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+        }
+
+        .footer-col p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+
+        .footer-col ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .footer-col ul li a:hover {
+            color: #fff;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        @media(max-width: 900px) {
+            .hero-container { grid-template-columns: 1fr; text-align: center; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { margin-left: auto; margin-right: auto; }
+            .hero-btns { justify-content: center; }
+            .nav-links { display: none; }
+        }
+
+        @media(max-width: 600px) {
+            body { padding-top: 75px; }
+            .navbar { min-height: 75px; }
+            .nav-container { padding: 0.4rem 0.8rem; }
+            .logo-text { font-size: 1.25rem; }
+            .logo-svg { width: 36px; height: 36px; }
+            .nav-user-profile { padding: 3px 8px; gap: 5px; }
+            .user-badge { font-size: 0.8rem; }
+            .btn-logout, .btn-close-view { padding: 3px 7px; font-size: 0.75rem; }
+            .btn-auth { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+            .embedded-page-overlay { top: 75px; height: calc(100vh - 75px); }
+            .kids-modal-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* অ্যাপোলজি মোডাল স্টাইল */
+        .apology-modal .modal-card {
+            max-width: 480px;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            border: 3px solid var(--primary-light);
+        }
+        .apology-modal .modal-card h3 {
+            font-size: 1.6rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.8rem;
+        }
+        .apology-modal .modal-card .apology-icon {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .apology-modal .modal-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+        .apology-modal .modal-card .btn-apology-close {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .apology-modal .modal-card .btn-apology-close:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+        .apology-modal .modal-card .apology-cta {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 8px 20px;
+            background: #25d366;
+            color: #fff;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+        .apology-modal .modal-card .apology-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ALWAYS FIXED TOP BAR NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="closeEmbeddedPage(); switchView('landingView');">
+                <svg class="logo-svg" width="46" height="46" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100" height="100" rx="22" fill="#0D9488"/>
+                    <path d="M25 65C35 60 45 60 50 65V35C45 30 35 30 25 35V65Z" fill="#FFFFFF" fill-opacity="0.95"/>
+                    <path d="M75 65C65 60 55 60 50 65V35C55 30 65 30 75 35V65Z" fill="#E0F2FE"/>
+                    <path d="M50 20L72 31L50 42L28 31L50 20Z" fill="#F59E0B"/>
+                </svg>
+                <div class="logo-text">Tanjif <span>Academy</span></div>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="javascript:void(0)" onclick="closeEmbeddedPage(); switchView('landingView'); scrollToSection('courses')">কোর্সসমূহ</a></li>
+                <li><a href="javascript:void(0)" onclick="closeEmbeddedPage(); switchView('landingView'); scrollToSection('ebooks')">ই-বুক</a></li>
+                <li><a href="javascript:void(0)" onclick="closeEmbeddedPage(); switchView('landingView'); scrollToSection('about')">আমাদের সম্পর্কে</a></li>
+                <!-- টপ বার কিডস কর্নার বাটন -->
+                <li><a href="javascript:void(0)" onclick="openKidsModal()" class="kids-corner-nav-btn"><i class="fa-solid fa-child-reaching"></i> কিডস কর্নার</a></li>
+            </ul>
+
+            <div id="navAuthArea">
+                <button class="btn-auth" onclick="openAuthModal()">
+                    <i class="fa-solid fa-right-to-bracket"></i> লগইন / রেজিস্টার
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- IN-APP EMBEDDED PAGE CONTAINER -->
+    <div id="embeddedPageViewer" class="embedded-page-overlay">
+        <iframe id="embeddedIframe" class="embedded-page-frame" src=""></iframe>
+    </div>
+
+    <!-- 1. PUBLIC LANDING PAGE VIEW -->
+    <div id="landingView" class="page-view active">
+        <section class="hero">
+            <div class="hero-container">
+                <div>
+                    <div class="hero-badge"><i class="fa-solid fa-sparkles"></i> নতুন প্রজন্মের ই-লার্নিং প্ল্যাটফর্ম</div>
+                    <h1>সহজ ও ইন্টারেক্টিভ উপায়ে <span>আরবি ভাষা</span> শিখুন</h1>
+                    <p>তানজিফ একাডেমিতে স্বাগতম। ভিডিও টিউটোরিয়াল, ইন্টারেক্টিভ কুইজ, ৬-ট্যাবভিত্তিক লেসন এবং ভোকাবুলারি ফ্ল্যাশ কার্ডের মাধ্যমে আরবি শেখা এখন আরও সহজ।</p>
+                    <div class="hero-btns">
+                        <button onclick="scrollToSection('courses')" class="btn-glow">কোর্স শুরু করুন <i class="fa-solid fa-arrow-right"></i></button>
+                        <button onclick="scrollToSection('ebooks')" class="btn-outline">ফ্রি ই-বুক ডাউনলোড</button>
+                    </div>
+                </div>
+
+                <div class="hero-card-preview">
+                    <i class="fa-solid fa-graduation-cap" style="font-size: 4.5rem; color: var(--accent); margin-bottom: 1rem;"></i>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem; color: #fff;">স্মার্ট লার্নিং ড্যাশবোর্ড</h3>
+                    <p style="color: #cbd5e1; font-size: 0.95rem;">১১ ডিজিটের মোবাইল নম্বর ও ৪ সংখ্যার সিক্রেট পিন দিয়ে লগইন করে আপনার ব্যক্তিগত ড্যাশবোর্ডে প্রবেশ করুন।</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="stats-section">
+            <div class="stats-container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3 class="counter" data-target="1250">0</h3>
+                        <p>সক্রিয় শিক্ষার্থী</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 class="counter" data-target="65">0</h3>
+                        <p>ভিডিও লেসন</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 class="counter" data-target="15">0</h3>
+                        <p>ফ্রি ই-বুক ও নোট</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3><span class="counter" data-target="100">0</span>%</h3>
+                        <p>ফ্রি এক্সেস</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="section" id="courses">
+            <div class="section-header">
+                <h2>আমাদের কোর্সসমূহ</h2>
+                <p>আপনার শেখার সুবিধার্থে আমাদের কোর্সগুলোকে নিখুঁতভাবে সাজানো হয়েছে</p>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="tab-btn active" onclick="filterCourses('all', this)">সব কোর্স</button>
+                <button class="tab-btn" onclick="filterCourses('basic', this)">বেসিক</button>
+                <button class="tab-btn" onclick="filterCourses('advance', this)">এডভান্সড</button>
+            </div>
+
+            <div class="courses-grid">
+                <div class="course-card" data-category="basic">
+                    <div class="course-banner">
+                        <i class="fa-solid fa-book-open-reader"></i>
+                        <span class="course-badge">বেসিক</span>
+                    </div>
+                    <div class="course-content">
+                        <h3>এসো আরবি শিখি (১ম খণ্ড)</h3>
+                        <p>ইসমুল ইশারাহ, হরফে জার এবং দৈনিক প্রয়োজনীয় বাক্যগঠন দিয়ে সাজানো মৌলিক পাঠ।</p>
+                        <div class="course-footer">
+                            <span class="course-lessons"><i class="fa-solid fa-play-circle"></i> ৩০ টি পাঠ (৬-ট্যাব)</span>
+                            <a href="javascript:void(0)" onclick="openAuthModal()" class="btn-start">শুরু করুন →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" data-category="advance">
+                    <div class="course-banner" style="background: linear-gradient(135deg, #0f766e, #134e4a);">
+                        <i class="fa-solid fa-brain"></i>
+                        <span class="course-badge">এডভান্সড</span>
+                    </div>
+                    <div class="course-content">
+                        <h3>সহজ নাহু ও সরফ</h3>
+                        <p>আরবি ব্যাকরণ ও শব্দ রূপান্তরের নিয়মগুলো সহজ উদাহরণের মাধ্যমে শিখুন।</p>
+                        <div class="course-footer">
+                            <span class="course-lessons"><i class="fa-solid fa-play-circle"></i> ২০ টি পাঠ</span>
+                            <a href="javascript:void(0)" onclick="openAuthModal()" class="btn-start">শুরু করুন →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="ebooks" style="background: #f1f5f9; border-radius: 32px;">
+            <div class="section-header">
+                <h2>ফ্রি ই-বুক ও স্টাডি নোটস</h2>
+                <p>যেকোনো সময় পড়ার জন্য সহায়ক ই-বুক ডাউনলোড করুন</p>
+            </div>
+
+            <div class="ebooks-grid">
+                <div class="ebook-card">
+                    <div class="ebook-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                    <h3>এসো আরবি শিখি (নোটস)</h3>
+                    <p>সহজ ভাষায় প্রথম খণ্ডের নোটসমূহ সংগ্রহ করুন।</p>
+                    <a href="#" class="btn-download"><i class="fa-solid fa-download"></i> ডাউনলোড PDF</a>
+                </div>
+                <div class="ebook-card">
+                    <div class="ebook-icon"><i class="fa-solid fa-book"></i></div>
+                    <h3>দৈনন্দিন প্রয়োজনীয় আরবি</h3>
+                    <p>দৈনন্দিন ব্যবহারের জন্য ১০০+ গুরুত্বপূর্ণ বাক্য।</p>
+                    <a href="#" class="btn-download"><i class="fa-solid fa-download"></i> ডাউনলোড PDF</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- পেজের নিচে কিডস কর্নার বক্স -->
+        <div class="kids-corner-bottom-box">
+            <h2>🎈 কিডস কর্নার 🎨</h2>
+            <p>ছোট সোনামণিদের আনন্দে আনন্দে শেখার জন্য আমাদের বিশেষ আয়োজন!</p>
+            <button onclick="openKidsModal()" class="btn-kids-corner-box">
+                <i class="fa-solid fa-face-smile"></i> কিডস কর্নারে প্রবেশ করুন
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. STUDENT DASHBOARD VIEW -->
+    <div id="studentDashboardView" class="page-view">
+        <div class="dashboard-hero">
+            <div class="dashboard-welcome">
+                <div class="welcome-text">
+                    <h1>আহলান ওয়া সাহলান, <span id="studentWelcomeName">শিক্ষার্থী</span>! 👋</h1>
+                    <p style="color: #94a3b8; font-size: 1.05rem;">তানজিফ একাডেমির লার্নিং পোর্টালে আপনাকে স্বাগতম। নিচে আপনার পাঠ্যক্রম দেখতে পাবেন।</p>
+                    <span class="welcome-badge"><i class="fa-solid fa-graduation-cap"></i> শিক্ষার্থী ড্যাশবোর্ড</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+                <h2>আপনার শিক্ষণীয় কোর্সসমূহ</h2>
+                <p>নিচের অপশনগুলো থেকে আপনার ক্লাস নির্বাচন করে পড়া শুরু করুন:</p>
+            </div>
+
+            <div class="dash-grid">
+                <div class="dash-card">
+                    <div class="dash-card-icon"><i class="fa-solid fa-book-quran"></i></div>
+                    <h3>এসো আরবি শিখি (১ম খণ্ড)</h3>
+                    <p>৬-ট্যাব ইন্টারেক্টিভ পাঠ্যক্রম, শব্দার্থ ও অনুশীলন।</p>
+                    <a href="#" class="dash-card-btn">ক্লাস শুরু করুন <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="dash-card">
+                    <div class="dash-card-icon"><i class="fa-solid fa-spell-check"></i></div>
+                    <h3>সহজ নাহু ও সরফ</h3>
+                    <p>আরবি ব্যাকরণ শিখুন সহজ ও সাবলীল নিয়মাবলীতে।</p>
+                    <a href="#" class="dash-card-btn">ক্লাস শুরু করুন <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="dash-card">
+                    <div class="dash-card-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <h3>ভোকাবুলারি ফ্ল্যাশকার্ড</h3>
+                    <p>দৈনন্দিন ব্যবহারিক শব্দের শব্দকোষ এবং অনুশীলনী।</p>
+                    <a href="#" class="dash-card-btn">অনুশীলন করুন <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="dash-card">
+                    <div class="dash-card-icon"><i class="fa-solid fa-file-arrow-down"></i></div>
+                    <h3>আমার ই-বুক লাইব্রেরি</h3>
+                    <p>আপনার কোর্সের সাথে সম্পর্কিত সমস্ত লেকচার শিট ও PDF।</p>
+                    <a href="#" class="dash-card-btn">ডাউনলোড করুন <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ADMIN DASHBOARD VIEW -->
+    <div id="adminDashboardView" class="page-view">
+        <div class="dashboard-hero" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); border-bottom-color: #f59e0b;">
+            <div class="dashboard-welcome">
+                <div class="welcome-text">
+                    <h1>স্বাগতম, <span id="adminWelcomeName" style="color: #f59e0b;">অ্যাডমিন</span>! 👑</h1>
+                    <p style="color: #cbd5e1; font-size: 1.05rem;">তানজিফ একাডেমি অ্যাডমিন কন্ট্রোল প্যানেল। গুগোল শিট থেকে নিবন্ধিত শিক্ষার্থীদের তথ্য নিম্নে প্রদর্শিত হচ্ছে।</p>
+                    <span class="welcome-badge" style="background: rgba(245, 158, 11, 0.2); border-color: #f59e0b; color: #fde047;"><i class="fa-solid fa-user-shield"></i> প্রধান অ্যাডমিন</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" style="padding-top: 2rem;">
+            
+            <!-- ১. নিবন্ধিত শিক্ষার্থীদের তালিকা (COLLAPSIBLE / MINIMIZED BY DEFAULT) -->
+            <div class="collapsible-wrapper" id="collapseStudents">
+                <div class="collapsible-header" onclick="toggleCollapsible('collapseStudents')">
+                    <h2><i class="fa-solid fa-users" style="color: var(--primary);"></i> নিবন্ধিত শিক্ষার্থীদের তালিকা</h2>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="collapsible-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 15px; padding-top: 1rem;">
+                        <div>
+                            <p style="color: var(--text-muted);">গুগোল শিট হতে লাইভ ডাটা লোড করা হয়েছে</p>
+                        </div>
+                        <button onclick="fetchStudentList()" class="btn-auth" style="background: #0284c7;">
+                            <i class="fa-solid fa-rotate"></i> ডাটা রিফ্রেশ করুন
+                        </button>
+                    </div>
+
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>শিক্ষার্থীর নাম</th>
+                                    <th>মোবাইল নম্বর</th>
+                                    <th>ইমেইল ঠিকানা</th>
+                                    <th>পিন নম্বর (PIN)</th>
+                                    <th>নিবন্ধনের তারিখ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentTableBody">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                                        ডাটা লোড হচ্ছে... অনুগ্রহ করে অপেক্ষা করুন।
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ২. আমার কাজ (MY TASKS COLLAPSIBLE / MINIMIZED BY DEFAULT) -->
+            <div class="collapsible-wrapper" id="collapseTasks">
+                <div class="collapsible-header" onclick="toggleCollapsible('collapseTasks')">
+                    <h2><i class="fa-solid fa-list-check" style="color: var(--primary);"></i> আমার কাজ</h2>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="collapsible-content">
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem; padding-top: 1rem;">গুরুত্বপূর্ণ টাস্ক ও কাজের দ্রুত লিঙ্কসমূহ (লিঙ্কগুলো উপরে টপ বার ফিক্সড রেখেই খুলবে):</p>
+                    <div class="admin-task-grid">
+                        <div class="admin-task-card">
+                            <h4><i class="fa-solid fa-link" style="color: var(--primary);"></i> ভোকাবুলারি শিখি</h4>
+                            <p>কাজের সংক্ষিপ্ত বিবরণ লিখুন</p>
+                            <a onclick="openEmbeddedPage('Deepseek_Vocab_2.0_05-08-2026_Final.html', 'ভোকাবুলারি শিখি')" class="admin-task-link">প্রবেশ করুন <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="admin-task-card">
+                            <h4><i class="fa-solid fa-link" style="color: var(--primary);"></i> প্রতিদিনের কাজ</h4>
+                            <p>কাজের সংক্ষিপ্ত বিবরণ লিখুন</p>
+                            <a onclick="openEmbeddedPage('protidiner ovvash.html', 'প্রতিদিনের কাজ')" class="admin-task-link">প্রবেশ করুন <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="admin-task-card">
+                            <h4><i class="fa-solid fa-link" style="color: var(--primary);"></i> কাজ ৩</h4>
+                            <p>কাজের সংক্ষিপ্ত বিবরণ লিখুন</p>
+                            <a onclick="openEmbeddedPage('https://example.com', 'কাজ ৩')" class="admin-task-link">প্রবেশ করুন <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="admin-task-card">
+                            <h4><i class="fa-solid fa-link" style="color: var(--primary);"></i> কাজ ৪</h4>
+                            <p>কাজের সংক্ষিপ্ত বিবরণ লিখুন</p>
+                            <a onclick="openEmbeddedPage('https://example.com', 'কাজ ৪')" class="admin-task-link">প্রবেশ করুন <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="admin-task-card">
+                            <h4><i class="fa-solid fa-link" style="color: var(--primary);"></i> কাজ ৫</h4>
+                            <p>কাজের সংক্ষিপ্ত বিবরণ লিখুন</p>
+                            <a onclick="openEmbeddedPage('https://example.com', 'কাজ ৫')" class="admin-task-link">প্রবেশ করুন <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="admin-task-card">
+                            <h4><i class="fa-solid fa-link" style="color: var(--primary);"></i> কাজ ৬</h4>
+                            <p>কাজের সংক্ষিপ্ত বিবরণ লিখুন</p>
+                            <a onclick="openEmbeddedPage('https://example.com', 'কাজ ৬')" class="admin-task-link">প্রবেশ করুন <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="admin-task-card">
+                            <h4><i class="fa-solid fa-link" style="color: var(--primary);"></i> কাজ ৭</h4>
+                            <p>কাজের সংক্ষিপ্ত বিবরণ লিখুন</p>
+                            <a onclick="openEmbeddedPage('https://example.com', 'কাজ ৭')" class="admin-task-link">প্রবেশ করুন <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="admin-task-card">
+                            <h4><i class="fa-solid fa-link" style="color: var(--primary);"></i> কাজ ৮</h4>
+                            <p>কাজের সংক্ষিপ্ত বিবরণ লিখুন</p>
+                            <a onclick="openEmbeddedPage('https://example.com', 'কাজ ৮')" class="admin-task-link">প্রবেশ করুন <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="admin-task-card">
+                            <h4><i class="fa-solid fa-link" style="color: var(--primary);"></i> কাজ ৯</h4>
+                            <p>কাজের সংক্ষিপ্ত বিবরণ লিখুন</p>
+                            <a onclick="openEmbeddedPage('https://example.com', 'কাজ ৯')" class="admin-task-link">প্রবেশ করুন <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="admin-task-card">
+                            <h4><i class="fa-solid fa-link" style="color: var(--primary);"></i> কাজ ১০</h4>
+                            <p>কাজের সংক্ষিপ্ত বিবরণ লিখুন</p>
+                            <a onclick="openEmbeddedPage('https://example.com', 'কাজ ১০')" class="admin-task-link">প্রবেশ করুন <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ৩. আমার বই (MY BOOKS COLLAPSIBLE / MINIMIZED BY DEFAULT) -->
+            <div class="collapsible-wrapper" id="collapseBooks">
+                <div class="collapsible-header" onclick="toggleCollapsible('collapseBooks')">
+                    <h2><i class="fa-solid fa-book-bookmark" style="color: var(--accent);"></i> আমার বই</h2>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="collapsible-content">
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem; padding-top: 1rem;">গুগোল ড্রাইভে থাকা বইসমূহ লাইভ পড়ুন অথবা ডাউনলোড করুন:</p>
+                    <div class="ebooks-grid">
+                        <div class="ebook-card" style="text-align: left;">
+                            <div class="book-frame-container">
+                                <iframe src="https://drive.google.com/file/d/1yCsGe_JjB1LfO4yEf5YPQxD-FK21wp39/preview" allow="autoplay"></iframe>
+                            </div>
+                            <h3>বইয়ের নাম ১</h3>
+                            <p>গুগোল ড্রাইভ লাইব্রেরি ফাইল ১</p>
+                            <div style="display: flex; gap: 10px;">
+                                <a onclick="openEmbeddedPage('https://drive.google.com/file/d/1yCsGe_JjB1LfO4yEf5YPQxD-FK21wp39/view', 'বই ১')" class="btn-download" style="flex: 1; text-align: center; cursor: pointer;"><i class="fa-solid fa-eye"></i> পড়ুন</a>
+                                <a href="https://drive.google.com/file/d/1yCsGe_JjB1LfO4yEf5YPQxD-FK21wp39/view" target="_blank" class="btn-download" style="flex: 1; text-align: center; background: var(--primary); color: #fff;"><i class="fa-solid fa-download"></i> ডাউনলোড</a>
+                            </div>
+                        </div>
+
+                        <div class="ebook-card" style="text-align: left;">
+                            <div class="book-frame-container">
+                                <iframe src="https://drive.google.com/file/d/1eikSZot4EVIpVmfK1hVrMdh6CSPdlXny/preview" allow="autoplay"></iframe>
+                            </div>
+                            <h3>বইয়ের নাম ২</h3>
+                            <p>গুগোল ড্রাইভ লাইব্রেরি ফাইল ২</p>
+                            <div style="display: flex; gap: 10px;">
+                                <a onclick="openEmbeddedPage('https://drive.google.com/file/d/1eikSZot4EVIpVmfK1hVrMdh6CSPdlXny/view', 'বই ২')" class="btn-download" style="flex: 1; text-align: center; cursor: pointer;"><i class="fa-solid fa-eye"></i> পড়ুন</a>
+                                <a href="https://drive.google.com/file/d/1eikSZot4EVIpVmfK1hVrMdh6CSPdlXny/view" target="_blank" class="btn-download" style="flex: 1; text-align: center; background: var(--primary); color: #fff;"><i class="fa-solid fa-download"></i> ডাউনলোড</a>
+                            </div>
+                        </div>
+
+                        <div class="ebook-card" style="text-align: left;">
+                            <div class="book-frame-container">
+                                <iframe src="https://drive.google.com/file/d/15aqvZQlEUOTS1ceqoCf13lSz9pk1oqhO/preview" allow="autoplay"></iframe>
+                            </div>
+                            <h3>বইয়ের নাম ৩</h3>
+                            <p>গুগোল ড্রাইভ লাইব্রেরি ফাইল ৩</p>
+                            <div style="display: flex; gap: 10px;">
+                                <a onclick="openEmbeddedPage('https://drive.google.com/file/d/15aqvZQlEUOTS1ceqoCf13lSz9pk1oqhO/view', 'বই ৩')" class="btn-download" style="flex: 1; text-align: center; cursor: pointer;"><i class="fa-solid fa-eye"></i> পড়ুন</a>
+                                <a href="https://drive.google.com/file/d/15aqvZQlEUOTS1ceqoCf13lSz9pk1oqhO/view" target="_blank" class="btn-download" style="flex: 1; text-align: center; background: var(--primary); color: #fff;"><i class="fa-solid fa-download"></i> ডাউনলোড</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dash-grid" style="margin-top: 3rem;">
+                <div class="dash-card">
+                    <div class="dash-card-icon" style="background: #fef3c7; color: #d97706;"><i class="fa-solid fa-plus"></i></div>
+                    <h3>নতুন কোর্স যোগ করুন</h3>
+                    <p>প্ল্যাটফর্মে নতুন কোনো টিউটোরিয়াল বা বিষয়বস্তু যুক্ত করুন।</p>
+                    <a href="#" class="dash-card-btn" style="color: #d97706;">ম্যানেজ করুন <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="dash-card">
+                    <div class="dash-card-icon" style="background: #e0f2fe; color: #0284c7;"><i class="fa-solid fa-table"></i></div>
+                    <h3>গুগোল শিট সরাসরি খুলুন</h3>
+                    <p>গুগোল ড্রাইভের মূল স্প্রেডশিটে তথ্য দেখুন ও সম্পাদন করুন।</p>
+                    <a onclick="openEmbeddedPage('https://docs.google.com/spreadsheets', 'গুগোল শিট')" class="dash-card-btn" style="color: #0284c7; cursor: pointer;">শিটে যান <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KIDS CORNER MODAL -->
+    <div class="modal-overlay" id="kidsModal">
+        <div class="modal-card" style="max-width: 550px; background: linear-gradient(135deg, #ffffff 0%, #f0f3ff 100%); border: 3px solid #ff7675;">
+            <button class="modal-close" onclick="closeKidsModal()"><i class="fa-solid fa-xmark"></i></button>
+
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.8rem; color: #d63031; font-weight: 800;">🎈 কিডস কর্নার 🎨</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">ছোটদের আনন্দের সাথে শেখার জগত!</p>
+            </div>
+
+            <div class="kids-modal-grid">
+                <!-- ১. দেখা (See/Watch) - লগইন চেক সহ -->
+                <div onclick="handleKidsOption('Tanjif Video.html', 'কিডস কর্নার - দেখা')" class="kids-option-card">
+                    <div class="kids-icon-circle" style="background: linear-gradient(135deg, #ff7675, #d63031);">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <span class="kids-option-title">দেখা</span>
+                </div>
+
+                <!-- ২. শোনা (Listen) - নির্মাণাধীন -->
+                <div onclick="handleKidsOption(null, 'শোনা')" class="kids-option-card">
+                    <div class="kids-icon-circle" style="background: linear-gradient(135deg, #74b9ff, #0984e3);">
+                        <i class="fa-solid fa-headphones"></i>
+                    </div>
+                    <span class="kids-option-title">শোনা</span>
+                </div>
+
+                <!-- ৩. বলা (Speak) - নির্মাণাধীন -->
+                <div onclick="handleKidsOption(null, 'বলা')" class="kids-option-card">
+                    <div class="kids-icon-circle" style="background: linear-gradient(135deg, #55efc4, #00b894);">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <span class="kids-option-title">বলা</span>
+                </div>
+
+                <!-- ৪. পড়া (Read) - নির্মাণাধীন -->
+                <div onclick="handleKidsOption(null, 'পড়া')" class="kids-option-card">
+                    <div class="kids-icon-circle" style="background: linear-gradient(135deg, #ffeaa7, #fdcb6e);">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <span class="kids-option-title">পড়া</span>
+                </div>
+
+                <!-- ৫. লেখা (Write) - নির্মাণাধীন -->
+                <div onclick="handleKidsOption(null, 'লেখা')" class="kids-option-card">
+                    <div class="kids-icon-circle" style="background: linear-gradient(135deg, #a29bfe, #6c5ce7);">
+                        <i class="fa-solid fa-pen-ruler"></i>
+                    </div>
+                    <span class="kids-option-title">লেখা</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- APOLOGY MODAL (নির্মাণাধীন বার্তা) -->
+    <div class="modal-overlay apology-modal" id="apologyModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeApologyModal()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="apology-icon">🚧</div>
+            <h3>এই সেকশনটি নির্মাণাধীন</h3>
+            <p>
+                আপডেট পেতে দয়া করে ইমেইল এবং মোবাইল নম্বর দিয়ে সাইন আপ করে সাথেই থাকুন।<br>
+                <strong>ধন্যবাদ।</strong>
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                <button onclick="closeApologyModal(); openAuthModal();" class="btn-submit" style="width: auto; padding: 10px 30px; background: var(--primary);">
+                    <i class="fa-solid fa-user-plus"></i> সাইন আপ করুন
+                </button>
+                <a href="https://wa.me/8801700000000?text=আসসালামু%20আলাইকুম%2C%20তানজিফ%20একাডেমির%20নির্মাণাধীন%20সেকশন%20সম্পর্কে%20জানতে%20চাই।" target="_blank" class="apology-cta">
+                    <i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপে যোগাযোগ
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAuthModal()"><i class="fa-solid fa-xmark"></i></button>
+
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.5rem; color: var(--secondary);">Tanjif Academy</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">পড়াশোনা শুরু করতে একাউন্টে প্রবেশ করুন</p>
+            </div>
+
+            <div class="modal-tabs">
+                <button class="modal-tab-btn active" id="userTab" onclick="switchLoginMode('user')">📱 শিক্ষার্থী</button>
+                <button class="modal-tab-btn" id="adminTab" onclick="switchLoginMode('admin')">👑 এডমিন লগইন</button>
+            </div>
+
+            <!-- STUDENT AUTH AREA -->
+            <div id="studentAuthArea">
+                <form id="userLoginForm" onsubmit="handleUserLogin(event)">
+                    <div class="form-group">
+                        <label>মোবাইল নম্বর (১১ ডিজিট)</label>
+                        <input type="tel" class="form-control" id="loginPhone" maxlength="11" placeholder="01700000000" pattern="^01\d{9}$" title="১১ ডিজিটের সঠিক মোবাইল নম্বর দিন" required>
+                    </div>
+                    <div class="form-group">
+                        <label>৪ সংখ্যার পিন (PIN)</label>
+                        <input type="password" class="form-control" id="loginPin" maxlength="4" placeholder="••••" pattern="\d{4}" title="৪ টি সংখ্যা দিন" required>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <span>লগইন করুন</span> <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    
+                    <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">
+                        নতুন একাউন্ট করতে চান? <a href="javascript:void(0)" onclick="toggleStudentAuth('register')" style="color: var(--primary); font-weight: 700;">রেজিস্ট্রেশন করুন</a>
+                    </p>
+
+                    <div class="forgot-pin-box">
+                        <i class="fa-solid fa-circle-info"></i> পিন (PIN) ভুলে গিয়েছেন? <br>
+                        <a href="https://wa.me/8801700000000?text=আসসালামু%20আলাইকুম%2C%20আমি%20তানজিফ%20একাডেমির%20পিন%20ভুলে%20গেছি।%20সাহায্য%20করবেন।" target="_blank">
+                            <i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপে অ্যাডমিনকে মেসেজ দিন
+                        </a>
+                    </div>
+                </form>
+
+                <form id="userRegisterForm" style="display: none;" onsubmit="handleUserRegister(event)">
+                    <div class="form-group">
+                        <label>আপনার নাম</label>
+                        <input type="text" class="form-control" id="regName" placeholder="আপনার পুরো নাম" required>
+                    </div>
+                    <div class="form-group">
+                        <label>ইমেইল অ্যাড্রেস</label>
+                        <input type="email" class="form-control" id="regEmail" placeholder="example@mail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>মোবাইল নম্বর (১১ ডিজিট)</label>
+                        <input type="tel" class="form-control" id="regPhone" maxlength="11" placeholder="01700000000" pattern="^01\d{9}$" title="১১ ডিজিটের সঠিক মোবাইল নম্বর দিন (যেমন: 017xxxxxxxx)" required>
+                    </div>
+                    <div class="form-group">
+                        <label>নতুন ৪ সংখ্যার পিন (PIN) সেট করুন</label>
+                        <input type="password" class="form-control" id="regPin" maxlength="4" placeholder="যেমন: 0123" pattern="\d{4}" title="অবশ্যই ৪ সংখ্যার পিন হতে হবে" required>
+                    </div>
+                    <button type="submit" class="btn-submit" style="background: #0284c7;">
+                        <span>রেজিস্ট্রেশন নিশ্চিত করুন</span>
+                    </button>
+
+                    <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">
+                        একাউন্ট করা আছে? <a href="javascript:void(0)" onclick="toggleStudentAuth('login')" style="color: var(--primary); font-weight: 700;">লগইন করুন</a>
+                    </p>
+                </form>
+            </div>
+
+            <!-- ADMIN AUTH AREA -->
+            <div id="adminAuthArea" style="display: none;">
+                <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+                    <div class="form-group">
+                        <label>অ্যাডমিন ইমেইল</label>
+                        <input type="email" class="form-control" id="adminEmail" placeholder="admin@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>পাসওয়ার্ড / সিক্রেট পিন</label>
+                        <input type="password" class="form-control" id="adminPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-submit" style="background: var(--secondary);">
+                        <span>অ্যাডমিন প্যানেলে প্রবেশ</span>
+                    </button>
+
+                    <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">
+                        নতুন এডমিন একাউন্ট খুলতে চান? <a href="javascript:void(0)" onclick="openAdminVerifyModal()" style="color: var(--accent); font-weight: 700;">এডমিন সাইন-আপ করুন</a>
+                    </p>
+                </form>
+
+                <form id="adminSignupForm" style="display: none;" onsubmit="handleAdminSignup(event)">
+                    <div class="form-group">
+                        <label>এডমিন নাম</label>
+                        <input type="text" class="form-control" id="adminSignupName" placeholder="আপনার নাম" required>
+                    </div>
+                    <div class="form-group">
+                        <label>এডমিন ইমেইল</label>
+                        <input type="email" class="form-control" id="adminSignupEmail" placeholder="admin@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>নতুন পাসওয়ার্ড সেট করুন (সংখ্যা, বর্ণ ও বিশেষ চিহ্ন সহ)</label>
+                        <input type="password" class="form-control" id="adminSignupPassword" placeholder="যেমন: Admin@123" required>
+                    </div>
+                    <button type="submit" class="btn-submit" style="background: var(--accent);">
+                        <span>এডমিন সাইন-আপ নিশ্চিত করুন</span>
+                    </button>
+
+                    <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">
+                        ইতোমধ্যে এডমিন একাউন্ট আছে? <a href="javascript:void(0)" onclick="toggleAdminAuth('login')" style="color: var(--primary); font-weight: 700;">লগইন করুন</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN VERIFICATION CUSTOM MODAL (NO BROWSER POPUP) -->
+    <div class="modal-overlay" id="adminVerifyModal" style="z-index: 2500;">
+        <div class="modal-card" style="max-width: 380px;">
+            <button class="modal-close" onclick="closeAdminVerifyModal()"><i class="fa-solid fa-xmark"></i></button>
+
+            <div style="text-align: center; margin-bottom: 1.2rem;">
+                <div style="width: 50px; height: 50px; background: rgba(245, 158, 11, 0.15); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 0.8rem;">
+                    <i class="fa-solid fa-key"></i>
+                </div>
+                <h3 style="font-size: 1.3rem; color: var(--secondary);">এডমিন পাসওয়ার্ড যাচাই</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">এডমিন সাইন-আপ ফর্ম আনলক করতে সিক্রেট পাসওয়ার্ডটি টাইপ করুন।</p>
+            </div>
+
+            <form id="adminVerifyForm" onsubmit="handleVerifyAdminKey(event)">
+                <div class="form-group">
+                    <label>পাসওয়ার্ড</label>
+                    <div class="password-wrapper">
+                        <input type="password" class="form-control" id="verifyAdminKey" placeholder="পাসওয়ার্ড লিখুন" required>
+                        <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('verifyAdminKey', this)">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit" id="btnVerifySubmit" style="background: var(--accent); margin-top: 1rem;">
+                    <span>যাচাই করুন</span> <i class="fa-solid fa-shield-check"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- WHATSAPP & SCROLL TOP BUTTONS -->
+    <a href="https://wa.me/8801700000000?text=আসসালামু%20আলাইকুম%2C%20তানজিফ%20একাডেমি%20সম্পর্কে%20জানতে%20চাই।" target="_blank" class="whatsapp-float" id="whatsappFloat" title="হোয়াটসঅ্যাপে চ্যাট করুন">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <button class="scroll-top-btn" id="scrollTopBtn" onclick="scrollToTop()">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <footer id="about">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>তানজিফ একাডেমি</h4>
+                <p>আরবি ভাষাকে সহজ ও সাবলীল উপায়ে সবার কাছে পৌঁছে দেওয়ার একটি আধুনিক ই-লার্নিং উদ্যোগ। আমাদের লক্ষ্য শিক্ষার্থী ও গবেষকদের প্রাতিষ্ঠানিক সুবিধা প্রদান করা।</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="https://wa.me/8801700000000" target="_blank" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>দ্রুত লিঙ্ক</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="closeEmbeddedPage(); switchView('landingView'); scrollToSection('courses')">কোর্সসমূহ</a></li>
+                    <li><a href="javascript:void(0)" onclick="closeEmbeddedPage(); switchView('landingView'); scrollToSection('ebooks')">ই-বুক লাইব্রেরি</a></li>
+                    <li><a href="javascript:void(0)" onclick="openAuthModal()">স্টুডেন্ট লগইন</a></li>
+                    <li><a href="javascript:void(0)" onclick="openAuthModal()">রেজিস্ট্রেশন</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>যোগাযোগ</h4>
+                <ul>
+                    <li><i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> tanjifacademy@hotmail.com</li>
+                    <li><i class="fa-solid fa-phone" style="margin-right: 8px;"></i> +880 1700 000000</li>
+                    <li><i class="fa-solid fa-location-dot" style="margin-right: 8px;"></i> বরিশাল, বাংলাদেশ</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2026 Tanjif Academy (তানজিফ একাডেমি)। সর্বস্বত্ব সংরক্ষিত।</p>
+        </div>
+    </footer>
+
+    <!-- LOGIC & INTEGRATION SCRIPT -->
+    <script>
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbwrhgHZkSFd44x4EzRzSQ1EncIs7xcmh2Q5BmrOKw_iHefmEsUe7yfO523RpE1oE41eZQ/exec";
+
+        window.addEventListener('DOMContentLoaded', () => {
+            checkPersistedSession();
+            
+            document.addEventListener('contextmenu', function(e) {
+                if (!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) {
+                    e.preventDefault();
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) return;
+                if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'a' || e.key === 'x')) {
+                    e.preventDefault();
+                }
+            });
+
+            document.addEventListener('copy', function(e) {
+                if (!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault();
+            });
+            document.addEventListener('cut', function(e) {
+                if (!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault();
+            });
+            document.addEventListener('paste', function(e) {
+                if (!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault();
+            });
+        });
+
+        /* কিডস কর্নার অপশন হ্যান্ডলার - লগইন চেক + নির্মাণাধীন চেক */
+        function handleKidsOption(url, title) {
+            // প্রথমে কিডস কর্নার মোডাল বন্ধ করুন
+            closeKidsModal();
+
+            // ইউজার লগইন চেক করুন
+            const savedUser = localStorage.getItem('tanjif_active_user');
+            if (!savedUser) {
+                // লগইন না থাকলে অথেন্টিকেশন মোডাল খুলুন
+                openAuthModal();
+                return;
+            }
+
+            // URL নেই মানে নির্মাণাধীন
+            if (!url || url === '#' || url === '') {
+                openApologyModal();
+                return;
+            }
+
+            // সব ঠিক থাকলে এম্বেডেড পেজ খুলুন
+            openEmbeddedPage(url, title);
+        }
+
+        /* কিডস কর্নার মোডাল ওপেন ও ক্লোজ ফাংশন */
+        function openKidsModal() { 
+            document.getElementById('kidsModal').style.display = 'flex'; 
+        }
+        function closeKidsModal() { 
+            document.getElementById('kidsModal').style.display = 'none'; 
+        }
+
+        /* অ্যাপোলজি মোডাল */
+        function openApologyModal() {
+            document.getElementById('apologyModal').style.display = 'flex';
+        }
+        function closeApologyModal() {
+            document.getElementById('apologyModal').style.display = 'none';
+        }
+
+        function toggleCollapsible(elementId) {
+            const el = document.getElementById(elementId);
+            if (el) {
+                el.classList.toggle('active');
+            }
+        }
+
+        function openEmbeddedPage(url, title) {
+            if(!url || url === '#' || url === '') {
+                openApologyModal();
+                return;
+            }
+
+            let embedUrl = url;
+            if (embedUrl.includes('drive.google.com')) {
+                embedUrl = embedUrl.replace(/\/view(\?.*)?$/, '/preview');
+            }
+
+            document.getElementById('embeddedIframe').src = embedUrl;
+            document.getElementById('embeddedPageViewer').style.display = 'flex';
+            
+            // বডিতে ক্লাস যোগ করুন যাতে স্ক্রল বার ডাবল না হয়
+            document.body.classList.add('embedded-open');
+            
+            const closeBtn = document.getElementById('closeViewBtn');
+            if (closeBtn) closeBtn.style.display = 'inline-flex';
+
+            const waBtn = document.getElementById('whatsappFloat');
+            if (waBtn) waBtn.style.display = 'none';
+        }
+
+        function closeEmbeddedPage() {
+            document.getElementById('embeddedPageViewer').style.display = 'none';
+            document.getElementById('embeddedIframe').src = '';
+            
+            // বডি থেকে ক্লাস সরান
+            document.body.classList.remove('embedded-open');
+            
+            const closeBtn = document.getElementById('closeViewBtn');
+            if (closeBtn) closeBtn.style.display = 'none';
+
+            const isLanding = document.getElementById('landingView').classList.contains('active');
+            const waBtn = document.getElementById('whatsappFloat');
+            if (waBtn) waBtn.style.display = isLanding ? 'flex' : 'none';
+        }
+
+        function switchView(viewId) {
+            document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            const waBtn = document.getElementById('whatsappFloat');
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (viewId === 'landingView') {
+                if (waBtn) waBtn.style.display = 'flex';
+            } else {
+                if (waBtn) waBtn.style.display = 'none';
+                if (scrollTopBtn) scrollTopBtn.style.display = 'none';
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function openAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
+        function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
+        
+        function toggleStudentAuth(type) {
+            document.getElementById('userLoginForm').style.display = type === 'register' ? 'none' : 'block';
+            document.getElementById('userRegisterForm').style.display = type === 'register' ? 'block' : 'none';
+        }
+
+        function toggleAdminAuth(type) {
+            document.getElementById('adminLoginForm').style.display = type === 'signup' ? 'none' : 'block';
+            document.getElementById('adminSignupForm').style.display = type === 'signup' ? 'block' : 'none';
+        }
+
+        /* কাস্টম পপ-আপ মোডাল কন্ট্রোল */
+        function openAdminVerifyModal() {
+            document.getElementById('adminVerifyModal').style.display = 'flex';
+            document.getElementById('verifyAdminKey').value = '';
+        }
+
+        function closeAdminVerifyModal() {
+            document.getElementById('adminVerifyModal').style.display = 'none';
+        }
+
+        /* পাসওয়ার্ড দেখানো/লুকানোর টোগল ফাংশন */
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-regular fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-regular fa-eye';
+            }
+        }
+
+        /* এডমিন পাসওয়ার্ড যাচাই করার সাবমিট হ্যান্ডলার (লোডিং মেসেজ সহ) */
+        async function handleVerifyAdminKey(event) {
+            event.preventDefault();
+            const adminKey = document.getElementById('verifyAdminKey').value.trim();
+            if (!adminKey) return;
+
+            const submitBtn = document.getElementById('btnVerifySubmit');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> যাচাই হচ্ছে...';
+
+            const res = await sendApiRequest({
+                action: 'verifyAdminKey',
+                adminKey: adminKey
+            });
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>যাচাই করুন</span> <i class="fa-solid fa-shield-check"></i>';
+
+            if (res.success) {
+                alert("পাসওয়ার্ড সঠিক হয়েছে! সাইন-আপ ফর্ম ওপেন হচ্ছে।");
+                closeAdminVerifyModal();
+                toggleAdminAuth('signup');
+            } else {
+                alert(res.message || "ভুল পাসওয়ার্ড! আপনি এডমিন সাইন-আপ করতে পারবেন না।");
+            }
+        }
+
+        function switchLoginMode(mode) {
+            document.getElementById('userTab').classList.toggle('active', mode === 'user');
+            document.getElementById('adminTab').classList.toggle('active', mode === 'admin');
+            
+            document.getElementById('studentAuthArea').style.display = mode === 'user' ? 'block' : 'none';
+            document.getElementById('adminAuthArea').style.display = mode === 'admin' ? 'block' : 'none';
+            
+            if (mode === 'admin') {
+                toggleAdminAuth('login');
+            }
+        }
+
+        function updateNavAuthUI(user) {
+            const navAuthArea = document.getElementById('navAuthArea');
+            if (user) {
+                if (user.role === 'admin') {
+                    navAuthArea.innerHTML = `
+                        <div class="nav-user-profile">
+                            <span class="user-badge"><i class="fa-solid fa-user-shield"></i> ${user.name || 'অ্যাডমিন'}</span>
+                            <button onclick="closeEmbeddedPage(); switchView('adminDashboardView')" class="btn-logout" style="background: #f59e0b; color: #000;">ড্যাশবোর্ড</button>
+                            <button id="closeViewBtn" onclick="closeEmbeddedPage()" class="btn-close-view">বন্ধ করুন</button>
+                            <button onclick="handleLogout()" class="btn-logout">লগআউট</button>
+                        </div>
+                    `;
+                } else {
+                    navAuthArea.innerHTML = `
+                        <div class="nav-user-profile">
+                            <span class="user-badge"><i class="fa-solid fa-user-graduate"></i> ${user.name}</span>
+                            <button onclick="closeEmbeddedPage(); switchView('studentDashboardView')" class="btn-logout" style="background: #0d9488;">ড্যাশবোর্ড</button>
+                            <button id="closeViewBtn" onclick="closeEmbeddedPage()" class="btn-close-view"><i class="fa-solid fa-xmark"></i> বন্ধ করুন</button>
+                            <button onclick="handleLogout()" class="btn-logout">লগআউট</button>
+                        </div>
+                    `;
+                }
+            } else {
+                navAuthArea.innerHTML = `
+                    <button class="btn-auth" onclick="openAuthModal()">
+                        <i class="fa-solid fa-right-to-bracket"></i> লগইন / রেজিস্টার
+                    </button>
+                `;
+            }
+        }
+
+        function checkPersistedSession() {
+            const savedUser = localStorage.getItem('tanjif_active_user');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                updateNavAuthUI(user);
+                if (user.role === 'admin') {
+                    document.getElementById('adminWelcomeName').innerText = user.name || 'অ্যাডমিন';
+                } else {
+                    document.getElementById('studentWelcomeName').innerText = user.name;
+                }
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('tanjif_active_user');
+            closeEmbeddedPage();
+            updateNavAuthUI(null);
+            switchView('landingView');
+            alert("সফলভাবে লগআউট হয়েছেন।");
+        }
+
+        async function sendApiRequest(payload) {
+            try {
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                return await response.json();
+            } catch (err) {
+                console.error("Google Sheet API Error:", err);
+                alert("গুগোল শিটের সাথে সংযোগ করা সম্ভব হয়নি। অনুগ্রহ করে আপনার ডেপ্লয়মেন্ট ইউআরএল যাচাই করুন।");
+                return { success: false, message: "API সমস্যা" };
+            }
+        }
+
+        // শিক্ষার্থী রেজিস্ট্রেশন (ডুপ্লিকেট ইমেইল ও মোবাইল চেক সহ)
+        async function handleUserRegister(event) {
+            event.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const pin = document.getElementById('regPin').value.trim();
+
+            // ইমেইল ফরম্যাট যাচাই
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("অনুগ্রহ করে সঠিক ফরম্যাটের ইমেইল এড্রেস দিন!");
+                return;
+            }
+
+            // মোবাইল নম্বর ১১ ডিজিট যাচাই
+            const phoneRegex = /^01\d{9}$/;
+            if (!phoneRegex.test(phone)) {
+                alert("মোবাইল নম্বর অবশ্যই সঠিক ১১ ডিজিটের হতে হবে (যেমন: 017xxxxxxxx)!");
+                return;
+            }
+
+            // ৪ ডিজিট পিন যাচাই
+            const pinRegex = /^\d{4}$/;
+            if (!pinRegex.test(pin)) {
+                alert("পিন অবশ্যই ৪ সংখ্যার হতে হবে!");
+                return;
+            }
+
+            const submitBtn = event.target.querySelector('button');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...';
+
+            // ১. পূর্বে নিবন্ধিত কোনো ইমেইল বা ফোন আছে কিনা তা যাচাই করা
+            const checkRes = await sendApiRequest({ action: 'getStudents' });
+            if (checkRes.success && checkRes.students) {
+                const isEmailExists = checkRes.students.some(st => st.email && st.email.toLowerCase() === email.toLowerCase());
+                const cleanPhone = phone.replace(/^'/, '');
+                const isPhoneExists = checkRes.students.some(st => {
+                    const stPhone = String(st.phone).replace(/^'/, '').trim();
+                    return stPhone === cleanPhone;
+                });
+
+                if (isEmailExists) {
+                    alert("এই ইমেইল ঠিকানাটি দিয়ে ইতিমধ্যে একাউন্ট তৈরি করা হয়েছে! অনুগ্রহ করে অন্য ইমেইল ব্যবহার করুন বা লগইন করুন।");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span>রেজিস্ট্রেশন নিশ্চিত করুন</span>';
+                    return;
+                }
+
+                if (isPhoneExists) {
+                    alert("এই মোবাইল নম্বরটি দিয়ে ইতিমধ্যে একাউন্ট তৈরি করা হয়েছে! অনুগ্রহ করে লগইন করার চেষ্টা করুন।");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span>রেজিস্ট্রেশন নিশ্চিত করুন</span>';
+                    return;
+                }
+            }
+
+            // ২. জিরো মিসিং এড়াতে পিন ও ফোনের শুরুতে Single Quote (') যোগ করে নতুন রেজিস্ট্রেশন সম্পন্ন করা
+            const res = await sendApiRequest({
+                action: 'register',
+                name: name,
+                email: email,
+                phone: "'" + phone,
+                pin: "'" + pin
+            });
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>রেজিস্ট্রেশন নিশ্চিত করুন</span>';
+
+            if (res.success) {
+                alert(res.message || "রেজিস্ট্রেশন সফল হয়েছে!");
+                toggleStudentAuth('login');
+                document.getElementById('loginPhone').value = phone;
+            } else {
+                alert(res.message);
+            }
+        }
+
+        // শিক্ষার্থী লগইন (ভ্যালিডেশন সহ)
+        async function handleUserLogin(event) {
+            event.preventDefault();
+            const phone = document.getElementById('loginPhone').value.trim();
+            const pin = document.getElementById('loginPin').value.trim();
+
+            const phoneRegex = /^01\d{9}$/;
+            if (!phoneRegex.test(phone)) {
+                alert("মোবাইল নম্বর অবশ্যই সঠিক ১১ ডিজিটের হতে হবে!");
+                return;
+            }
+
+            if (pin.length !== 4) {
+                alert("পিন অবশ্যই ৪ সংখ্যার হতে হবে!");
+                return;
+            }
+
+            const submitBtn = event.target.querySelector('button');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> যাচাই হচ্ছে...';
+
+            const res = await sendApiRequest({
+                action: 'login',
+                phone: phone,
+                pin: pin
+            });
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>লগইন করুন</span> <i class="fa-solid fa-arrow-right"></i>';
+
+            if (res.success) {
+                const sessionUser = { name: res.name, phone: phone, role: 'student' };
+                localStorage.setItem('tanjif_active_user', JSON.stringify(sessionUser));
+                updateNavAuthUI(sessionUser);
+                
+                document.getElementById('studentWelcomeName').innerText = res.name;
+                closeAuthModal();
+                switchView('studentDashboardView');
+            } else {
+                alert(res.message);
+            }
+        }
+
+        // এডমিন সাইন-আপ হ্যান্ডলার (পাসওয়ার্ড পাসিং ভ্যালিডেশন সহ)
+        async function handleAdminSignup(event) {
+            event.preventDefault();
+            const name = document.getElementById('adminSignupName').value.trim();
+            const email = document.getElementById('adminSignupEmail').value.trim();
+            const password = document.getElementById('adminSignupPassword').value.trim();
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("অনুগ্রহ করে এডমিনের সঠিক ইমেইল ঠিকানা দিন!");
+                return;
+            }
+
+            // এডমিন পাসওয়ার্ড সংখ্যা, বর্ণ ও বিশেষ চিহ্নের সমন্বয়ে হতে হবে
+            const hasLetter = /[a-zA-Z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+            if (!hasLetter || !hasNumber || !hasSpecial) {
+                alert("এডমিন পাসওয়ার্ডে অবশ্যই বর্ণ (a-z), সংখ্যা (0-9) এবং অন্তত একটি বিশেষ চিহ্ন (!@#$%^&*) থাকতে হবে!");
+                return;
+            }
+
+            const submitBtn = event.target.querySelector('button');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...';
+
+            const res = await sendApiRequest({
+                action: 'adminRegister',
+                name: name,
+                email: email,
+                password: password
+            });
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>এডমিন সাইন-আপ নিশ্চিত করুন</span>';
+
+            if (res.success) {
+                alert(res.message || "এডমিন সাইন-আপ সফল হয়েছে! এখন লগইন করুন।");
+                toggleAdminAuth('login');
+                document.getElementById('adminEmail').value = email;
+            } else {
+                alert(res.message);
+            }
+        }
+
+        // এডমিন লগইন হ্যান্ডলার
+        async function handleAdminLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value.trim();
+
+            const submitBtn = event.target.querySelector('button');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> যাচাই হচ্ছে...';
+
+            const res = await sendApiRequest({
+                action: 'adminLogin',
+                email: email,
+                pin: password
+            });
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>অ্যাডমিন প্যানেলে প্রবেশ</span>';
+
+            if (res.success) {
+                const sessionUser = { name: res.name || 'অ্যাডমিন', email: email, role: 'admin' };
+                localStorage.setItem('tanjif_active_user', JSON.stringify(sessionUser));
+                updateNavAuthUI(sessionUser);
+                
+                document.getElementById('adminWelcomeName').innerText = sessionUser.name;
+                closeAuthModal();
+                switchView('adminDashboardView');
+                fetchStudentList();
+            } else {
+                alert(res.message);
+            }
+        }
+
+        // গুগোল শিট থেকে শিক্ষার্থীদের ডেটা ফেচ
+        async function fetchStudentList() {
+            const tbody = document.getElementById('studentTableBody');
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 25px;"><i class="fa-solid fa-spinner fa-spin"></i> গুগোল শিট থেকে শিক্ষার্থী তালিকা লোড হচ্ছে...</td></tr>`;
+
+            const res = await sendApiRequest({ action: 'getStudents' });
+
+            if (res.success && res.students && res.students.length > 0) {
+                tbody.innerHTML = res.students.map((st, idx) => `
+                    <tr>
+                        <td><strong>${idx + 1}</strong></td>
+                        <td><i class="fa-solid fa-user-graduate" style="color: var(--primary); margin-right: 6px;"></i> ${st.name}</td>
+                        <td>${st.phone}</td>
+                        <td>${st.email}</td>
+                        <td><span style="font-family: monospace; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; font-weight: 700;">${st.pin}</span></td>
+                        <td>${st.date || 'আজ'}</td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 25px;">এখনো কোনো শিক্ষার্থী রেজিস্ট্রেশন করেনি।</td></tr>`;
+            }
+        }
+
+        function filterCourses(category, btn) {
+            document.querySelectorAll('.filter-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.course-card').forEach(card => {
+                card.style.display = (category === 'all' || card.dataset.category === category) ? 'flex' : 'none';
+            });
+        }
+
+        let animated = false;
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 100;
+
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const inc = Math.ceil(target / speed);
+
+                    if (count < target) {
+                        counter.innerText = count + inc > target ? target : count + inc;
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCount();
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            const isLanding = document.getElementById('landingView').classList.contains('active');
+
+            if (isLanding && window.scrollY > 400) {
+                scrollTopBtn.style.display = 'flex';
+            } else {
+                scrollTopBtn.style.display = 'none';
+            }
+
+            const statsSection = document.querySelector('.stats-section');
+            if (statsSection) {
+                const sectionPos = statsSection.getBoundingClientRect().top;
+                const screenPos = window.innerHeight / 1.2;
+
+                if (sectionPos < screenPos && !animated) {
+                    animated = true;
+                    animateCounters();
+                }
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
