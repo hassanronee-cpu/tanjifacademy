@@ -35,26 +35,28 @@
                         url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
             color: var(--text-main);
             min-height: 100vh;
-            /* ইনডেক্স পাতার ফিক্সড হেডার বার এড়ানোর জন্য ওপরের মার্জিন/প্যাডিং */
-            padding-top: 10px !important; 
+            /* বটম নেভবারের কারণে কন্টেন্ট যেন ঢেকে না যায় তাই প্যাডিং বটম যুক্ত করা হয়েছে */
+            padding-bottom: 70px !important; 
+            padding-top: 10px !important;
         }
 
         .navbar {
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(12px);
-            position: relative; /* fixed তুলে দেওয়া হয়েছে যেন ইনডেক্স পেজের বারের নিচে স্বাভাবিকভাবে বসে */
+            position: fixed; /* স্ক্রিনের নিচে ফিক্সড করা হলো */
+            bottom: 0;
+            left: 0;
             width: 100%;
             min-height: 55px;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
-            padding: 10px 1rem;
-            justify-content: center; /* সব বক্স বারের একদম মাঝখানে থাকবে */
+            padding: 8px 1rem;
+            justify-content: center;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 15px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.25);
         }
 
         .top-app-title-box {
@@ -346,14 +348,31 @@
             .categories-grid { grid-template-columns: 1fr; }
         }
 
+        /* মোবাইল ফ্রেন্ডলি কাস্টমাইজেশন */
         @media(max-width: 600px) {
-            body { padding-top: 210px !important; }
-            .navbar { justify-content: center; }
+            body { 
+                padding-bottom: 110px !important; /* দুই লাইনে ছড়িয়ে পড়া নেভবারের জন্য স্পেস বৃদ্ধি */
+                padding-top: 10px !important; 
+            }
+            .navbar { 
+                justify-content: center;
+                padding: 6px 8px;
+                gap: 5px;
+            }
+            .top-app-title-box, .top-score-box, .top-sync-box, .btn-sheet-view {
+                font-size: 0.75rem;
+                padding: 4px 8px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <div class="app-container">
+        <div class="categories-grid" id="habitGrid"></div>
+    </div>
+
+    <!-- FIXED BOTTOM NAVBAR -->
     <nav class="navbar">
         <div class="top-app-title-box">
             <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> প্রতিদিনের অভ্যাস
@@ -368,10 +387,6 @@
             <i class="fa-solid fa-clock-rotate-left"></i> সংরক্ষিত
         </button>
     </nav>
-
-    <div class="app-container">
-        <div class="categories-grid" id="habitGrid"></div>
-    </div>
 
     <!-- SUMMARY MODAL -->
     <div class="modal-overlay" id="sheetModal">
