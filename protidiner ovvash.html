@@ -35,38 +35,39 @@
                         url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
             color: var(--text-main);
             min-height: 100vh;
-            padding-top: 115px; /* ইনডেক্স পাতার ফিক্সড বার ও টপ বারের জন্য ফাকা জায়গা বাড়ানো হয়েছে */
+            /* ইনডেক্স পাতার ফিক্সড হেডার বার এড়ানোর জন্য ওপরের মার্জিন/প্যাডিং */
+            padding-top: 100px !important; 
         }
 
         .navbar {
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(12px);
-            position: fixed;
-            top: 0;
-            left: 0;
+            position: relative; /* fixed তুলে দেওয়া হয়েছে যেন ইনডেক্স পেজের বারের নিচে স্বাভাবিকভাবে বসে */
             width: 100%;
-            min-height: 65px;
-            z-index: 1000;
+            min-height: 55px;
+            z-index: 100;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
-            padding: 8px 1rem;
-            justify-content: center; /* টপ বারের সব বক্স মাঝখানে রাখার জন্য */
+            padding: 10px 1rem;
+            justify-content: center; /* সব বক্স বারের একদম মাঝখানে থাকবে */
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
+            margin-bottom: 15px;
         }
 
         .top-app-title-box {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             white-space: nowrap;
         }
 
@@ -74,13 +75,13 @@
             background: rgba(13, 148, 136, 0.2);
             border: 1px solid var(--primary);
             color: #fff;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             white-space: nowrap;
         }
 
@@ -93,13 +94,13 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fef3c7;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             white-space: nowrap;
         }
 
@@ -112,7 +113,7 @@
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: #fff;
             border: none;
-            padding: 6px 12px;
+            padding: 5px 12px;
             border-radius: 20px;
             font-size: 0.82rem;
             font-weight: 600;
@@ -346,7 +347,7 @@
         }
 
         @media(max-width: 600px) {
-            body { padding-top: 150px; } /* মোবাইলে আরও কিছু বাড়তি স্পেস দেওয়া হয়েছে */
+            body { padding-top: 210px !important; }
             .navbar { justify-content: center; }
         }
     </style>
@@ -364,7 +365,7 @@
             <i class="fa-solid fa-circle-check"></i> রেডি
         </div>
         <button class="btn-sheet-view" onclick="openSheetModal()">
-            <i class="fa-solid fa-clock-rotate-left"></i> সংরক্ষিত ডাটা সামারি
+            <i class="fa-solid fa-clock-rotate-left"></i> সংরক্ষিত
         </button>
     </nav>
 
@@ -482,7 +483,7 @@
             return dateStr.toString().split('T')[0].split(' ')[0];
         }
 
-        // সংক্ষেপে বাংলায় তারিখ রূপান্তর করা (যেমন: 05-08-2026 -> ০৫ আগস্ট, ২০২৬)
+        // সংক্ষেপে বাংলায় তারিখ রূপান্তর করা
         function formatBanglaDate(isoDateStr) {
             if (!isoDateStr) return '';
             const parts = isoDateStr.split('-');
