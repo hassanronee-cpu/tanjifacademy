@@ -23,7 +23,7 @@
             --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
             --shadow-md: 0 10px 25px rgba(0,0,0,0.08);
             --radius: 16px;
-            --navbar-height: 55px;   /* increased from 65px to 72px for better visibility */
+            --navbar-height: 55px;
         }
 
         * {
@@ -38,11 +38,10 @@
             background-color: var(--bg-body);
             color: var(--text-main);
             line-height: 1.6;
-            padding-top: calc(var(--navbar-height) + 6px); /* extra breathing space */
+            padding-top: calc(var(--navbar-height) + 6px);
             min-height: 100vh;
         }
 
-        /* Navbar - lighter, brand-friendly */
         .navbar {
             background: rgba(255, 255, 255, 0.94);
             backdrop-filter: blur(14px);
@@ -65,14 +64,10 @@
             margin: 0 auto;
             padding: 0 1.2rem;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-        }
-
-        .nav-left, .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
+            gap: 8px 20px;
+            flex-wrap: wrap;
         }
 
         .logo {
@@ -80,6 +75,7 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
+            margin-right: 8px;
         }
 
         .logo-img {
@@ -145,25 +141,23 @@
             border: 1px solid #fcd34d;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             white-space: nowrap;
+            margin: 0 4px;
         }
 
         .timer-badge-header i { color: #d97706; }
 
-        /* hide old timer banner */
         .timer-banner {
             display: none !important;
         }
 
-        /* Main Layout Container */
         .container {
             max-width: 1350px;
             margin: 0 auto 3rem;
             padding: 0 1.5rem;
         }
 
-        /* TWO-COLUMN TOP SECTION (PLAYER + SIDEBAR) */
         .player-hero-section {
             display: grid;
             grid-template-columns: 1fr;
@@ -179,7 +173,6 @@
             }
         }
 
-        /* Player Wrapper */
         .player-wrapper {
             background: var(--surface);
             border-radius: 18px;
@@ -226,7 +219,6 @@
             border: none;
         }
 
-        /* Custom Play Thumbnail Overlay */
         .custom-player-thumbnail {
             position: absolute;
             top: 0;
@@ -299,7 +291,6 @@
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
         }
 
-        /* Lock Overlay */
         .time-lock-overlay {
             display: none;
             position: absolute;
@@ -316,7 +307,6 @@
         }
         .time-lock-overlay.active { display: flex; }
 
-        /* Player Controls */
         .player-controls {
             display: flex;
             justify-content: space-between;
@@ -342,7 +332,6 @@
         .ctrl-btn:hover { background: var(--primary); }
         .ctrl-btn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--secondary); }
 
-        /* SIDEBAR SUGGESTIONS BOX (Right Side of Player) */
         .sidebar-suggestions {
             background: var(--surface);
             border-radius: 18px;
@@ -447,7 +436,6 @@
             overflow: hidden;
         }
 
-        /* Bottom Grid Section */
         .suggestion-title {
             font-size: 1.25rem;
             font-weight: 700;
@@ -523,7 +511,6 @@
         }
         .del-btn:hover { background: #fecaca; }
 
-        /* Modal */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(5px);
@@ -544,13 +531,14 @@
 
         .btn-submit { width: 100%; padding: 10px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
 
-        /* Mobile & Tablet adjustments */
         @media (max-width: 768px) {
-            :root { --navbar-height: 76px; }
+            :root { --navbar-height: 60px; }
             body { padding-top: calc(var(--navbar-height) + 10px); }
             
-            .nav-container { padding: 0 0.8rem; flex-wrap: wrap; }
-            .nav-left, .nav-right { flex-wrap: wrap; gap: 8px; }
+            .nav-container { 
+                padding: 0 0.8rem; 
+                gap: 4px 12px;
+            }
             .logo-text { font-size: 1.1rem; }
             .btn-nav { padding: 6px 12px; font-size: 0.75rem; }
             .logo-img { width: 36px; height: 36px; font-size: 1rem; }
@@ -560,16 +548,20 @@
             .player-title { font-size: 0.9rem; }
             .sidebar-thumb { width: 80px; height: 50px; }
             .sidebar-title { font-size: 0.8rem; }
+            .logo { margin-right: 0; }
         }
 
         @media (max-width: 480px) {
-            :root { --navbar-height: 82px; }
+            :root { --navbar-height: 56px; }
             body { padding-top: calc(var(--navbar-height) + 12px); }
+            .nav-container { gap: 2px 8px; padding: 0 0.5rem; }
             .nav-controls { gap: 4px; }
             .btn-nav { padding: 4px 10px; font-size: 0.7rem; }
             .logo-text { font-size: 1rem; }
             .timer-badge-header { font-size: 0.7rem; padding: 3px 10px; }
             .sidebar-thumb { width: 70px; height: 44px; }
+            .logo { gap: 8px; }
+            .logo-img { width: 32px; height: 32px; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -577,36 +569,31 @@
 
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-left">
-                <a href="#" class="logo">
-                    <div class="logo-img">
-                        <i class="fa-solid fa-futbol fa-spin" style="animation-duration: 6s;"></i>
-                    </div>
-                    <div class="logo-text">তানজিফ <span>ভিডিও</span></div>
-                </a>
-            </div>
-            <div class="nav-right">
-                <span class="timer-badge-header">
-                    <span id="timerDisplay">60:00</span>
-                </span>
-                <div class="nav-controls">
-                    <button class="btn-nav" onclick="promptPinForAction('add_video')">
-                        <i class="fa-solid fa-plus"></i> ভিডিও
-                    </button>
-                    <button class="btn-nav" onclick="promptPinForAction('unlock_timer')">
-                        <i class="fa-solid fa-key"></i> পিন
-                    </button>
+            <a href="#" class="logo">
+                <div class="logo-img">
+                    <i class="fa-solid fa-futbol fa-spin" style="animation-duration: 6s;"></i>
                 </div>
+                <div class="logo-text">তানজিফ <span>ভিডিও</span></div>
+            </a>
+
+            <span class="timer-badge-header">
+                <i class="fa-regular fa-clock"></i>
+                <span id="timerDisplay">60:00</span>
+            </span>
+
+            <div class="nav-controls">
+                <button class="btn-nav" onclick="promptPinForAction('add_video')">
+                    <i class="fa-solid fa-plus"></i> ভিডিও
+                </button>
+                <button class="btn-nav" onclick="promptPinForAction('unlock_timer')">
+                    <i class="fa-solid fa-key"></i> পিন
+                </button>
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <!-- old banner hidden via CSS -->
-
-        <!-- PLAYER & SIDEBAR SECTION -->
         <section class="player-hero-section" id="playerHero">
-            <!-- MAIN VIDEO PLAYER -->
             <div class="player-wrapper">
                 <div class="time-lock-overlay" id="timeLockOverlay">
                     <i class="fa-solid fa-user-lock" style="font-size: 3.5rem; color: #f59e0b; margin-bottom: 1rem;"></i>
@@ -626,7 +613,6 @@
                 </div>
 
                 <div class="video-container">
-                    <!-- KIDS PLAYFUL THUMBNAIL OVERLAY -->
                     <div class="custom-player-thumbnail" id="playerThumbnail" onclick="startPlayFromThumbnail()">
                         <div class="thumb-animated-bg">
                             <span class="floating-balloon" style="left: 10%; animation-delay: 0s;">🎈</span>
@@ -647,26 +633,22 @@
                     <iframe id="mainVideoPlayer" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
 
-                <!-- PLAYER CONTROLS -->
                 <div class="player-controls">
                     <button class="ctrl-btn" id="prevBtn" onclick="playPrevVideo()"><i class="fa-solid fa-backward-step"></i> আগের</button>
                     <button class="ctrl-btn" id="nextBtn" onclick="playNextVideo()">পরের <i class="fa-solid fa-forward-step"></i></button>
                 </div>
             </div>
 
-            <!-- RIGHT SIDEBAR SUGGESTIONS BOX -->
             <div class="sidebar-suggestions">
                 <div class="sidebar-header">
                     <span><i class="fa-solid fa-list-ul" style="color: var(--primary);"></i> পরবর্তী ভিডিওসমূহ</span>
                     <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-muted);" id="sidebarCount">২৫ টি</span>
                 </div>
                 <div class="sidebar-list" id="sidebarList">
-                    <!-- Sidebar Items Injected Dynamically -->
                 </div>
             </div>
         </section>
 
-        <!-- LARGER SUGGESTION GRID AT BOTTOM -->
         <section>
             <div class="suggestion-title">
                 <i class="fa-solid fa-grid-2" style="color: var(--primary);"></i>
@@ -674,12 +656,10 @@
             </div>
 
             <div class="video-grid" id="videoGrid">
-                <!-- Video cards inserted dynamically -->
             </div>
         </section>
     </div>
 
-    <!-- ADD VIDEO MODAL -->
     <div class="modal-overlay" id="addVideoModal">
         <div class="modal-card">
             <button class="modal-close" onclick="closeModal('addVideoModal')"><i class="fa-solid fa-xmark"></i></button>
@@ -700,7 +680,6 @@
         </div>
     </div>
 
-    <!-- PIN MODAL -->
     <div class="modal-overlay" id="pinModal">
         <div class="modal-card">
             <button class="modal-close" onclick="closeModal('pinModal')"><i class="fa-solid fa-xmark"></i></button>
@@ -844,7 +823,6 @@
 
             currentPlayingId = id;
             
-            // Hide thumbnail overlay when any video is played
             document.getElementById('playerThumbnail').classList.add('hidden');
 
             let playUrl = vid.url;
@@ -911,7 +889,7 @@
             const mins = Math.floor(remainingSeconds / 60);
             const secs = remainingSeconds % 60;
             const formatted = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-            document.getElementById('timerDisplay').innerHTML = `<i class="fa-regular fa-clock"></i> ${formatted}`;
+            document.getElementById('timerDisplay').innerHTML = `${formatted}`;
         }
 
         function lockScreen() {
@@ -990,58 +968,6 @@
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        // Auto-play next video when current ends (using 'ended' event on iframe)
-        document.addEventListener('DOMContentLoaded', function() {
-            const iframe = document.getElementById('mainVideoPlayer');
-            iframe.addEventListener('load', function() {
-                try {
-                    // attempt to listen for ended event via postMessage or simply use timeupdate fallback
-                    // we use a workaround: check periodically if video ended (since direct access is limited)
-                    let lastTime = 0;
-                    const checkEnded = setInterval(() => {
-                        try {
-                            const player = iframe.contentWindow;
-                            // if we can access, we check if ended
-                            // but due to cross-origin, we use a different approach: check if src changed
-                            // simpler: use the 'ended' event if possible
-                        } catch(e) {
-                            // cross-origin, fallback to time based
-                        }
-                    }, 3000);
-                } catch(e) {}
-            });
-
-            // Better: use a time-based check for ended (polling)
-            setInterval(() => {
-                try {
-                    const iframe = document.getElementById('mainVideoPlayer');
-                    const src = iframe.src;
-                    if (src && src.includes('drive.google.com')) {
-                        // check if video likely ended by checking if iframe has ended state 
-                        // we use a trick: if the iframe is still playing but we cannot detect ended, we rely on user click next
-                    }
-                } catch(e) {}
-            }, 5000);
-
-            // Since cross-origin prevents direct ended detection, we implement a user-friendly approach:
-            // listen for keyboard and UI events, and auto-advance after a fixed time (video duration approximate)
-            // but we will use a smart fallback: when user clicks "next" we go next, and we also auto-advance after 5 minutes?
-            // We'll just keep the prev/next buttons and let users navigate.
-        });
-
-        // Actually we implement a lightweight auto-next using a timer based on video duration (assume ~5 mins)
-        // But we can't get duration. So we use a "watch" interval: if the player hasn't been interacted with and time passes,
-        // we move to next? Too complex. Instead we rely on user to click next.
-        // But user requested auto-play next. We'll add a simple detection: if the iframe source changes to a "finished" state,
-        // but cross-origin blocks that. We'll use a workaround: listen for 'message' events from the iframe (if any)
-        // and also use a fallback: when the video ends, the iframe may show a related video, but we can't detect.
-        // So we implement a manual "next" button and also auto-advance after 5 minutes if the video is still playing?
-        // Let's add a gentle auto-advance if the video is likely finished based on a timer (video duration approx 4-6 min)
-        // We'll set a timeout for 5 minutes and then auto-advance if the same video is still playing.
-        // But this may be intrusive. Instead, we just improve the UI and let users know they can click next.
-        // We'll add a small hint: "ভিডিও শেষ হলে পরের ভিডিও চালাতে 'পরের' বাটনে ক্লিক করুন"
-        // However, to satisfy the request, we'll implement a basic auto-advance using a 5-minute timer that resets on play.
-        // Auto-play next video with 5 seconds delay
         let autoNextTimer = null;
         function resetAutoNext() {
             if (autoNextTimer) clearTimeout(autoNextTimer);
@@ -1051,28 +977,24 @@
                     if (currentIndex < pdfVideos.length - 1) {
                         playNextVideo();
                     } else {
-                        // শেষ ভিডিও হলে প্রথমে চলে যাবে
                         playVideo(pdfVideos[0].id, true);
                     }
                 }
-            }, 5000); // ৫ সেকেন্ড
+            }, 5000);
         }
 
-        // playVideo ফাংশন ওভাররাইড
         const originalPlayVideo = playVideo;
         playVideo = function(id, shouldScroll = true) {
             originalPlayVideo(id, shouldScroll);
             resetAutoNext();
         };
 
-        // থাম্বনেইল থেকে প্লে করলে
         const originalStartPlay = startPlayFromThumbnail;
         startPlayFromThumbnail = function() {
             originalStartPlay();
             resetAutoNext();
         };
 
-        // আগে/পরে বাটনে ক্লিক করলে
         const origNext = playNextVideo;
         playNextVideo = function() {
             origNext();
