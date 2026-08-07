@@ -203,7 +203,7 @@
 
         .video-container {
             position: relative;
-            padding-bottom: 56.25%; /* Standard 16:9 aspect ratio */
+            padding-bottom: 51%; 
             height: 0;
             overflow: hidden;
             border-radius: 12px;
@@ -845,13 +845,8 @@
             
             document.getElementById('playerThumbnail').classList.add('hidden');
 
+            // Standard Preview URL without forced autoplay param for proper mobile rendering
             let playUrl = vid.url;
-            if (playUrl.includes('drive.google.com')) {
-                playUrl = playUrl.replace('/preview', '/preview?autoplay=1');
-                if (!playUrl.includes('autoplay=1')) {
-                    playUrl += (playUrl.includes('?') ? '&' : '?') + 'autoplay=1';
-                }
-            }
 
             document.getElementById('mainVideoPlayer').src = playUrl;
             document.getElementById('currentVideoTitle').innerText = vid.title;
