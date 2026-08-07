@@ -35,14 +35,14 @@
                         url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
             color: var(--text-main);
             min-height: 100vh;
-            padding-top: 140px; /* মূল পেজের বারের নিচে যেন ঢাকা না পড়ে */
+            padding-top: 0; /* প্যাডিং ঠিক করা হলো */
         }
 
         .navbar {
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(12px);
-            position: fixed;
-            top: 60px; /* মূল ফিক্সড টপ বারের নিচে বসানোর জন্য */
+            position: relative; /* পেজ স্ক্রল করলে টপ বার সাথে চলে যাবে */
+            top: 0;
             left: 0;
             width: 100%;
             min-height: 65px;
@@ -352,7 +352,7 @@
         }
 
         @media(max-width: 600px) {
-            body { padding-top: 170px; }
+            body { padding-top: 0; }
             .navbar { justify-content: center; }
             .nav-right { justify-content: center; width: 100%; }
         }
@@ -479,7 +479,6 @@
             return `${year}-${month}-${day}`;
         }
 
-        // তারিখ পার্স করে সঠিক YYYY-MM-DD বের করা
         function formatDateClean(dateStr) {
             if (!dateStr) return '';
             const d = new Date(dateStr);
@@ -492,7 +491,6 @@
             return dateStr.toString().split('T')[0].split(' ')[0];
         }
 
-        // সংক্ষেপে বাংলায় তারিখ রূপান্তর করা (যেমন: 05-08-2026 -> ০৫ আগস্ট, ২০২৬)
         function formatBanglaDate(isoDateStr) {
             if (!isoDateStr) return '';
             const parts = isoDateStr.split('-');
