@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>তানজিফ আব্দুল্লাহ ভিডিও সমগ্র | Tanjif Abdullah Video Hub</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230D9488'/><circle cx='50' cy='50' r='30' fill='%23F59E0B'/><polygon points='43,35 65,50 43,65' fill='%23FFFFFF'/></svg>">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --primary-light: #ccfbf1;
+            --secondary: #0f172a;
+            --accent: #f59e0b;
+            --bg-body: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px rgba(0,0,0,0.08);
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-top: 65px;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            top: 5;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container {
+            max-width: 1350px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+            background: #0d9488;
+        }
+
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .logo-text span { color: var(--accent); }
+
+        .nav-center-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #fff;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+
+        .btn-nav:hover { transform: translateY(-2px); }
+
+        /* Timer Banner */
+        .timer-banner {
+            background: #fffbe3;
+            border: 1.5px dashed #f59e0b;
+            padding: 8px 16px;
+            border-radius: 12px;
+            margin: 1rem auto 0.8rem;
+            max-width: 1350px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .timer-badge {
+            background: #d97706;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        /* Main Layout Container */
+        .container {
+            max-width: 1350px;
+            margin: 0 auto 3rem;
+            padding: 0 1.5rem;
+        }
+
+        /* TWO-COLUMN TOP SECTION (PLAYER + SIDEBAR) */
+        .player-hero-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+            scroll-margin-top: 80px;
+        }
+
+        @media (min-width: 992px) {
+            .player-hero-section {
+                grid-template-columns: 1fr 380px;
+                align-items: start;
+            }
+        }
+
+        /* Player Wrapper */
+        .player-wrapper {
+            background: var(--surface);
+            border-radius: 18px;
+            padding: 0.8rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid #e2e8f0;
+            position: relative;
+            width: 100%;
+        }
+
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .player-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Custom Play Thumbnail Overlay */
+        .custom-player-thumbnail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: opacity 0.4s ease;
+        }
+
+        .custom-player-thumbnail.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .thumb-animated-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+        }
+
+        .floating-balloon {
+            position: absolute;
+            font-size: 2rem;
+            animation: floatUp 6s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110%) scale(0.8); }
+            100% { transform: translateY(-120%) scale(1.2); }
+        }
+
+        .thumb-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .thumb-play-btn {
+            width: 75px;
+            height: 75px;
+            background: #f59e0b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #fff;
+            margin: 0 auto 12px;
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.8);
+            animation: pulsePlay 1.5s infinite;
+        }
+
+        @keyframes pulsePlay {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+            70% { transform: scale(1.08); box-shadow: 0 0 0 20px rgba(245, 158, 11, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
+
+        /* Lock Overlay */
+        .time-lock-overlay {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.96);
+            z-index: 50;
+            border-radius: 18px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+        }
+        .time-lock-overlay.active { display: flex; }
+
+        /* Player Controls */
+        .player-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            gap: 10px;
+        }
+
+        .ctrl-btn {
+            background: var(--secondary);
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        .ctrl-btn:hover { background: var(--primary); }
+        .ctrl-btn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--secondary); }
+
+        /* SIDEBAR SUGGESTIONS BOX (Right Side of Player) */
+        .sidebar-suggestions {
+            background: var(--surface);
+            border-radius: 18px;
+            padding: 0.8rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: 520px;
+        }
+
+        .sidebar-header {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-list {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-right: 4px;
+            flex-grow: 1;
+        }
+
+        .sidebar-list::-webkit-scrollbar {
+            width: 5px;
+        }
+        .sidebar-list::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .sidebar-card {
+            display: flex;
+            gap: 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            align-items: center;
+        }
+
+        .sidebar-card:hover {
+            background: #f1f5f9;
+            transform: translateX(3px);
+        }
+
+        .sidebar-card.active {
+            border: 1.5px solid var(--accent);
+            background: #fffbeb;
+        }
+
+        .sidebar-thumb {
+            width: 90px;
+            height: 55px;
+            border-radius: 6px;
+            background: #0f172a;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .sidebar-thumb img {
+            width: 100%; height: 100%; object-fit: cover; opacity: 0.85;
+        }
+
+        .sidebar-thumb-overlay {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.2);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 0.8rem;
+        }
+
+        .sidebar-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .sidebar-title {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--secondary);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Bottom Grid Section */
+        .suggestion-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .video-card {
+            background: var(--surface);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        .video-card.active { border: 2px solid var(--accent); background: #fffbeb; }
+
+        .thumb-box {
+            position: relative;
+            padding-bottom: 56.25%;
+            background: #0f172a;
+            overflow: hidden;
+        }
+
+        .thumb-box img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0.85;
+        }
+
+        .play-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .play-btn-circle {
+            width: 44px; height: 44px;
+            background: rgba(245, 158, 11, 0.95); color: #fff;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.3s;
+        }
+
+        .video-card:hover .play-btn-circle { transform: scale(1.1); background: #d97706; }
+
+        .card-details {
+            padding: 1rem; display: flex; flex-direction: column; gap: 6px; flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 0.95rem; font-weight: 700; color: var(--secondary); line-height: 1.4;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        .card-actions {
+            margin-top: 6px; display: flex; gap: 6px; justify-content: flex-end;
+        }
+
+        .del-btn {
+            background: #fee2e2; color: #dc2626; border: none; padding: 3px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: 700;
+        }
+        .del-btn:hover { background: #fecaca; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(5px);
+            display: none; justify-content: center; align-items: center; z-index: 2000;
+        }
+
+        .modal-card {
+            background: var(--surface); width: 90%; max-width: 400px; border-radius: 20px; padding: 1.8rem; position: relative;
+        }
+
+        .modal-close {
+            position: absolute; top: 15px; right: 15px; background: #f1f5f9; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+        }
+
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 0.9rem;}
+        .form-control { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 10px; outline: none; }
+
+        .btn-submit { width: 100%; padding: 10px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
+
+        @media(max-width: 768px) {
+            .nav-center-group { flex-direction: column; gap: 8px; }
+            .timer-banner { flex-direction: column; text-align: center; }
+            .video-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+            .sidebar-suggestions { max-height: 380px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-center-group">
+                <a href="#" class="logo">
+                    <div class="logo-img" style="display:flex; align-items:center; justify-content:center; color:#fff;">
+                        <i class="fa-solid fa-futbol fa-spin" style="animation-duration: 6s;"></i>
+                    </div>
+                    <div class="logo-text">তানজিফ <span>ভিডিও</span></div>
+                </a>
+
+                <div class="nav-controls">
+                    <button class="btn-nav" onclick="promptPinForAction('add_video')">
+                        <i class="fa-solid fa-plus"></i> ভিডিও যুক্ত করুন
+                    </button>
+                    <button class="btn-nav" onclick="promptPinForAction('unlock_timer')">
+                        <i class="fa-solid fa-key"></i> পিন
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="timer-banner">
+            <div style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: #92400e;">
+                <i class="fa-solid fa-hourglass-half fa-spin"></i>
+                <span>দৈনিক দেখার সময় সীমা: <strong>১ ঘণ্টা</strong></span>
+            </div>
+            <div>
+                <span class="timer-badge" id="timerDisplay"><i class="fa-regular fa-clock"></i> 60:00</span>
+            </div>
+        </div>
+
+        <!-- PLAYER & SIDEBAR SECTION -->
+        <section class="player-hero-section" id="playerHero">
+            <!-- MAIN VIDEO PLAYER -->
+            <div class="player-wrapper">
+                <div class="time-lock-overlay" id="timeLockOverlay">
+                    <i class="fa-solid fa-user-lock" style="font-size: 3.5rem; color: #f59e0b; margin-bottom: 1rem;"></i>
+                    <h2>আজকের ১ ঘণ্টা দেখার সময় শেষ! 🎉</h2>
+                    <p style="margin: 10px 0 20px; color: #cbd5e1;">আবার চালানোর জন্য অভিভাবকের পিন (PIN) প্রয়োজন।</p>
+                    <button class="btn-submit" style="max-width: 220px; background: var(--accent);" onclick="promptPinForAction('unlock_timer')">
+                        <i class="fa-solid fa-key"></i> পিন দিয়ে পুনরায় খুলুন
+                    </button>
+                </div>
+
+                <div class="player-header">
+                    <div class="player-title">
+                        <i class="fa-solid fa-circle-play" style="color: #ef4444;"></i>
+                        <span id="currentVideoTitle">প্লে শুরু করতে ক্লিক করুন</span>
+                    </div>
+                    <span class="card-tag" id="currentVideoIndex" style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">ভিডিও #১</span>
+                </div>
+
+                <div class="video-container">
+                    <!-- KIDS PLAYFUL THUMBNAIL OVERLAY -->
+                    <div class="custom-player-thumbnail" id="playerThumbnail" onclick="startPlayFromThumbnail()">
+                        <div class="thumb-animated-bg">
+                            <span class="floating-balloon" style="left: 10%; animation-delay: 0s;">🎈</span>
+                            <span class="floating-balloon" style="left: 30%; animation-delay: 2s;">⚽</span>
+                            <span class="floating-balloon" style="left: 50%; animation-delay: 4s;">⭐</span>
+                            <span class="floating-balloon" style="left: 70%; animation-delay: 1.5s;">🎨</span>
+                            <span class="floating-balloon" style="left: 90%; animation-delay: 3s;">🚀</span>
+                        </div>
+                        <div class="thumb-content">
+                            <div class="thumb-play-btn">
+                                <i class="fa-solid fa-play" style="margin-left: 5px;"></i>
+                            </div>
+                            <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">তানজিফের মজার ভিডিও জগত! 🎈</h3>
+                            <p style="font-size: 0.95rem; opacity: 0.9;">ভিডিওটি প্লে করতে যেকোনো জায়গায় ক্লিক করুন</p>
+                        </div>
+                    </div>
+
+                    <iframe id="mainVideoPlayer" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+
+                <!-- PLAYER CONTROLS -->
+                <div class="player-controls">
+                    <button class="ctrl-btn" id="prevBtn" onclick="playPrevVideo()"><i class="fa-solid fa-backward-step"></i> আগের</button>
+                    <button class="ctrl-btn" id="nextBtn" onclick="playNextVideo()">পরের <i class="fa-solid fa-forward-step"></i></button>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR SUGGESTIONS BOX -->
+            <div class="sidebar-suggestions">
+                <div class="sidebar-header">
+                    <span><i class="fa-solid fa-list-ul" style="color: var(--primary);"></i> পরবর্তী ভিডিওসমূহ</span>
+                    <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-muted);" id="sidebarCount">২৫ টি</span>
+                </div>
+                <div class="sidebar-list" id="sidebarList">
+                    <!-- Sidebar Items Injected Dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- LARGER SUGGESTION GRID AT BOTTOM -->
+        <section>
+            <div class="suggestion-title">
+                <i class="fa-solid fa-grid-2" style="color: var(--primary);"></i>
+                <span>সব ভিডিও গ্যালা‌রি</span>
+            </div>
+
+            <div class="video-grid" id="videoGrid">
+                <!-- Video cards inserted dynamically -->
+            </div>
+        </section>
+    </div>
+
+    <!-- ADD VIDEO MODAL -->
+    <div class="modal-overlay" id="addVideoModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('addVideoModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.2rem; color: var(--secondary);">নতুন ভিডিও যুক্ত করুন</h3>
+            </div>
+            <form onsubmit="handleAddVideo(event)">
+                <div class="form-group">
+                    <label>ভিডিওর শিরোনাম</label>
+                    <input type="text" class="form-control" id="newVideoTitle" placeholder="ভিডিওর নাম লিখুন" required>
+                </div>
+                <div class="form-group">
+                    <label>Google Drive লিংক</label>
+                    <input type="url" class="form-control" id="newVideoUrl" placeholder="https://drive.google.com/file/d/..../preview" required>
+                </div>
+                <button type="submit" class="btn-submit">ভিডিও যুক্ত করুন</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PIN MODAL -->
+    <div class="modal-overlay" id="pinModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('pinModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.2rem; color: var(--secondary);">অভিভাবক সিক্রেট পিন</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">ডিফল্ট পিন: 1234</p>
+            </div>
+            <form onsubmit="handlePinSubmit(event)">
+                <div class="form-group">
+                    <input type="password" class="form-control" id="inputPin" placeholder="••••" maxlength="4" style="text-align: center; font-size: 1.4rem;" required>
+                </div>
+                <button type="submit" class="btn-submit">যাচাই করুন</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const SECRET_PIN = "1234";
+
+        let pdfVideos = [
+            { id: 1, title: "হ্যা মেলিন-এর বাঁশিওয়ালা (Pied Piper Of Hamelin)", url: "https://drive.google.com/file/d/1bVoW42po-_RuIDYvTSL7GqYEa5VcjbJb/preview" },
+            { id: 2, title: "আমাদের ছোট নদী (Amader Choto Nodi) - বাংলা কবিতা", url: "https://drive.google.com/file/d/1AaqddOO0TNkpsllkOQF-Wm_tvmYtBZYA/preview" },
+            { id: 3, title: "Healthy Eating for Kids - Ethan Learns Healthy Food Habits", url: "https://drive.google.com/file/d/1ihHc9IwCud54MhIWo05V5fZ5u-FlSkIk/preview" },
+            { id: 4, title: "Animal Learning - Learn Animal Names in English & Bangla", url: "https://drive.google.com/file/d/1Zr7iNYUzcEmbuebBX-n9ro5D0-_L0m-9/preview" },
+            { id: 5, title: "নতুন বনে ফরেস্ট রেঞ্জার (The New Little Forest Ranger)", url: "https://drive.google.com/file/d/11PT8CkE891Io4suvbClmEdmfSJtBFc44/preview" },
+            { id: 6, title: "বিসমিল্লাহ না বললে কি হয় - Labider Golpo", url: "https://drive.google.com/file/d/1nICb0AsLV4cVgp9FT9tm5KMvgQJfCZxe/preview" },
+            { id: 7, title: "বাথরুমে ঢোকার দোয়া - কার্টুন সিরিজ", url: "https://drive.google.com/file/d/1FEuhzzjPiw9wirTqUkMvRrS0iIx1MJaT/preview" },
+            { id: 8, title: "শিক্ষা জীবনের সবচেয়ে মূল্যবান - আব্দুল্লাহ পর্ব ৯", url: "https://drive.google.com/file/d/1sxsRjCLeduOe-sOyjokcX9VqOQ0PmdP6/preview" },
+            { id: 9, title: "সত্যবাদী বালক - Sotto Badi Balok Islamic Cartoon", url: "https://drive.google.com/file/d/1N7hLw8ov9Clscj3rVBs83H9iT3H4KCSZ/preview" },
+            { id: 10, title: "সব সময় বড়দের সম্মান করতে হয় - সাকিব পাঠশালা", url: "https://drive.google.com/file/d/1CzsBUL6jH24IHiqmJgCaa35zECA-fss4/preview" },
+            { id: 11, title: " হারিয়ে যাওয়া পাখির বাচ্চা - GPS Story", url: "https://drive.google.com/file/d/119VrB0qtE3nW3RbZeDR2y5CA1dHrSD1R/preview" },
+            { id: 12, title: "কানা বগির ছা - বাংলা ছড়া (Kana Bogir Chha)", url: "https://drive.google.com/file/d/1IpikXpdUWd5-SxTyiLIAzdSf38sVzBTy/preview" },
+            { id: 13, title: "আবার চেষ্টা করো ChaCha Try Again", url: "https://drive.google.com/file/d/1Vwmxl2WKqQmAYDk015PBLQYbHLJqULFQ/preview" },
+            { id: 14, title: "The Smart Rabbit - ChuChu TV Moral Story", url: "https://drive.google.com/file/d/1j-ARAkOofGkUCJ2CH3tHV0di7WkZbCr7/preview" },
+            { id: 15, title: "SUPER MAN SAKIB - সুপারম্যান সাকিব 3D", url: "https://drive.google.com/file/d/1tkUJL_gZ0g6G9SBzxM5xfAM_ve1CAZZm/preview" },
+            { id: 16, title: "Squeaky ইঁদুর (Squeaky Mouse) - ChuChu TV Bangla", url: "https://drive.google.com/file/d/1b8zAPlWfymjNyvDCKtCD3xC8Suxd2Gw8/preview" },
+            { id: 17, title: "Good Manners Song - Lalafun Nursery Rhymes", url: "https://drive.google.com/file/d/1_m81GxMed3Nlyp4UcVB8leTu9zl94l11/preview" },
+            { id: 18, title: "কাউকে কষ্ট দিবেন না - গোলাম রসূল বাংলা ৩ডি কার্টুন", url: "https://drive.google.com/file/d/1FjcDrN0rskYfa0a0M_23K1cxX2yuNiVT/preview" },
+            { id: 19, title: "কথা বলা ময়না পাখি - গোলাম রসূল কার্টুন", url: "https://drive.google.com/file/d/1iYlIcYkEPGcJdgJvETKXyjIyTY6m7y2D/preview" },
+            { id: 20, title: "Good Habits & Moral Stories for Kids", url: "https://drive.google.com/file/d/16bmv_vamIiSaNY-cJBaFrUkgL5EEtdlZ/preview" },
+            { id: 21, title: "ChaCha লিখতে শেখা (ChaCha Learns to Write)", url: "https://drive.google.com/file/d/1wxBxYBieyixxVP6PUoji27IbtHDRTCe8/preview" },
+            { id: 22, title: "Best Islamic Cartoon Series - সাকিব পাঠশালা", url: "https://drive.google.com/file/d/1_YJCWMkb8QCRx4x7gNQzvvzeHbSME21A/preview" },
+            { id: 23, title: "Arabic Alphabet song for Kids", url: "https://drive.google.com/file/d/1o9yxNFDwzfPoeHl7y_s7EKcJK_Yst3BQ/preview" },
+            { id: 24, title: "Adhan - 30 Days Ramadan - Omar & Hana", url: "https://drive.google.com/file/d/13Zjf_tzsKdaZwUUM_pf-gDRjPLS0oPBT/preview" },
+            { id: 25, title: "বিড়ালকে পানি খেতে বাঁচালো - Abdullah Cartoon Part 4", url: "https://drive.google.com/file/d/1yja1Gj5tuSKXaW-9HwqpsYHqBhocP8Yc/preview" }
+        ];
+
+        let currentPlayingId = 1;
+        let nextId = 26;
+        let pendingAction = null;
+
+        const TOTAL_TIME = 3600; 
+        let remainingSeconds = TOTAL_TIME;
+        let timerInterval = null;
+
+        function getDriveThumbnail(url) {
+            const match = url.match(/\/d\/([^\/]+)/);
+            if (match && match[1]) {
+                return `https://drive.google.com/thumbnail?id=${match[1]}&s=400`;
+            }
+            return 'https://via.placeholder.com/300x170/0f172a/ffffff?text=Video';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderGallery();
+            renderSidebar();
+            initTimer();
+            // Show thumbnail initially without auto-playing
+            updatePlayerTitleOnly(1);
+        });
+
+        function updatePlayerTitleOnly(id) {
+            const vid = pdfVideos.find(v => v.id === id);
+            if (!vid) return;
+            currentPlayingId = id;
+            document.getElementById('currentVideoTitle').innerText = vid.title;
+            const idx = pdfVideos.findIndex(v => v.id === id) + 1;
+            document.getElementById('currentVideoIndex').innerText = `ভিডিও #${idx}`;
+        }
+
+        function startPlayFromThumbnail() {
+            document.getElementById('playerThumbnail').classList.add('hidden');
+            playVideo(currentPlayingId, false);
+        }
+
+        function renderGallery() {
+            const grid = document.getElementById('videoGrid');
+            grid.innerHTML = '';
+
+            pdfVideos.forEach((vid) => {
+                const card = document.createElement('div');
+                card.className = `video-card ${vid.id === currentPlayingId ? 'active' : ''}`;
+                card.onclick = () => playVideo(vid.id, true);
+
+                card.innerHTML = `
+                    <div class="thumb-box">
+                        <img src="${getDriveThumbnail(vid.url)}" alt="${vid.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x170/0f172a/ffffff?text=Video'">
+                        <div class="play-overlay">
+                            <div class="play-btn-circle">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-details">
+                        <div class="card-title">${vid.title}</div>
+                        <div class="card-actions">
+                            <button class="del-btn" onclick="event.stopPropagation(); promptPinForAction('delete_video', ${vid.id})"><i class="fa-solid fa-trash-can"></i> মুছে ফেলুন</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderSidebar() {
+            const sidebar = document.getElementById('sidebarList');
+            sidebar.innerHTML = '';
+            document.getElementById('sidebarCount').innerText = `${pdfVideos.length} টি`;
+
+            pdfVideos.forEach((vid) => {
+                const sCard = document.createElement('div');
+                sCard.className = `sidebar-card ${vid.id === currentPlayingId ? 'active' : ''}`;
+                sCard.onclick = () => playVideo(vid.id, true);
+
+                sCard.innerHTML = `
+                    <div class="sidebar-thumb">
+                        <img src="${getDriveThumbnail(vid.url)}" alt="${vid.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/100x60/0f172a/ffffff?text=Video'">
+                        <div class="sidebar-thumb-overlay">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="sidebar-info">
+                        <div class="sidebar-title">${vid.title}</div>
+                    </div>
+                `;
+                sidebar.appendChild(sCard);
+            });
+        }
+
+        function playVideo(id, shouldScroll = true) {
+            const vid = pdfVideos.find(v => v.id === id);
+            if (!vid) return;
+
+            currentPlayingId = id;
+            
+            // Hide thumbnail overlay when any video is played
+            document.getElementById('playerThumbnail').classList.add('hidden');
+
+            let playUrl = vid.url;
+            if (playUrl.includes('drive.google.com')) {
+                playUrl = playUrl.replace('/preview', '/preview?autoplay=1');
+                if (!playUrl.includes('autoplay=1')) {
+                    playUrl += (playUrl.includes('?') ? '&' : '?') + 'autoplay=1';
+                }
+            }
+
+            document.getElementById('mainVideoPlayer').src = playUrl;
+            document.getElementById('currentVideoTitle').innerText = vid.title;
+            
+            const idx = pdfVideos.findIndex(v => v.id === id) + 1;
+            document.getElementById('currentVideoIndex').innerText = `ভিডিও #${idx}`;
+
+            document.getElementById('prevBtn').disabled = (idx === 1);
+            document.getElementById('nextBtn').disabled = (idx === pdfVideos.length);
+
+            renderGallery();
+            renderSidebar();
+
+            if (shouldScroll) {
+                const playerHero = document.getElementById('playerHero');
+                const yOffset = -80; 
+                const y = playerHero.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+        }
+
+        function playNextVideo() {
+            const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
+            if (currentIndex < pdfVideos.length - 1) {
+                playVideo(pdfVideos[currentIndex + 1].id, true);
+            }
+        }
+
+        function playPrevVideo() {
+            const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
+            if (currentIndex > 0) {
+                playVideo(pdfVideos[currentIndex - 1].id, true);
+            }
+        }
+
+        function initTimer() {
+            startTimer();
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (remainingSeconds > 0) {
+                    remainingSeconds--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    lockScreen();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(remainingSeconds / 60);
+            const secs = remainingSeconds % 60;
+            const formatted = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').innerHTML = `<i class="fa-regular fa-clock"></i> ${formatted}`;
+        }
+
+        function lockScreen() {
+            document.getElementById('timeLockOverlay').classList.add('active');
+            document.getElementById('mainVideoPlayer').src = '';
+        }
+
+        function unlockTimer() {
+            remainingSeconds = TOTAL_TIME;
+            document.getElementById('timeLockOverlay').classList.remove('active');
+            startTimer();
+            playVideo(1, true);
+        }
+
+        function promptPinForAction(action, videoId = null) {
+            pendingAction = { type: action, id: videoId };
+            document.getElementById('inputPin').value = '';
+            openModal('pinModal');
+        }
+
+        function handlePinSubmit(e) {
+            e.preventDefault();
+            const pinVal = document.getElementById('inputPin').value;
+            if (pinVal === SECRET_PIN) {
+                closeModal('pinModal');
+                
+                if (pendingAction.type === 'unlock_timer') {
+                    unlockTimer();
+                } else if (pendingAction.type === 'add_video') {
+                    openModal('addVideoModal');
+                } else if (pendingAction.type === 'delete_video') {
+                    deleteVideoById(pendingAction.id);
+                }
+                pendingAction = null;
+            } else {
+                alert('ভুল পিন দিয়েছেন! সঠিক পিন হলো: ' + SECRET_PIN);
+            }
+        }
+
+        function handleAddVideo(e) {
+            e.preventDefault();
+            const title = document.getElementById('newVideoTitle').value;
+            const url = document.getElementById('newVideoUrl').value;
+
+            if(title && url) {
+                pdfVideos.push({ id: nextId++, title: title, url: url });
+                closeModal('addVideoModal');
+                document.getElementById('newVideoTitle').value = '';
+                document.getElementById('newVideoUrl').value = '';
+                renderGallery();
+                renderSidebar();
+                alert('নতুন ভিডিও সফলভাবে যুক্ত করা হয়েছে!');
+            }
+        }
+
+        function deleteVideoById(id) {
+            if (pdfVideos.length <= 1) {
+                alert('শেষ ভিডিওটি ডিলিট করা যাবে না।');
+                return;
+            }
+            
+            const index = pdfVideos.findIndex(v => v.id === id);
+            if (index > -1) {
+                if(confirm(`আপনি কি নিশ্চিত "${pdfVideos[index].title}" ডিলিট করতে চান?`)) {
+                    pdfVideos.splice(index, 1);
+                    if (currentPlayingId === id) {
+                        playVideo(pdfVideos[0].id, false);
+                    }
+                    renderGallery();
+                    renderSidebar();
+                    alert('ভিডিওটি সফলভাবে ডিলিট করা হয়েছে।');
+                }
+            }
+        }
+
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    </script>
+</body>
+</html>
