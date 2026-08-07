@@ -203,7 +203,7 @@
 
         .video-container {
             position: relative;
-            padding-bottom: 51%; /* Fixed 16:9 aspect ratio for all devices */
+            padding-bottom: 56.25%; /* Standard 16:9 aspect ratio */
             height: 0;
             overflow: hidden;
             border-radius: 12px;
@@ -549,6 +549,7 @@
             .sidebar-thumb { width: 80px; height: 50px; }
             .sidebar-title { font-size: 0.8rem; }
             .logo { margin-right: 0; }
+            .video-container { padding-bottom: 62%; min-height: 220px; }
         }
 
         @media (max-width: 480px) {
@@ -562,7 +563,7 @@
             .sidebar-thumb { width: 70px; height: 44px; }
             .logo { gap: 8px; }
             .logo-img { width: 32px; height: 32px; font-size: 0.9rem; }
-            .video-container { padding-bottom: 60%; } /* Extra padding for mobile controls */
+            .video-container { padding-bottom: 68%; min-height: 240px; } /* Ensures all Google Drive controls (play bar, volume, full screen, popout icon) fit perfectly on mobile */
         }
     </style>
 </head>
@@ -828,7 +829,6 @@
 
         function scheduleNextVideoAfterEnded() {
             clearNextTimeout();
-            // 10 seconds wait AFTER video is finished before moving to next
             autoNextTimer = setTimeout(() => {
                 if (!document.getElementById('timeLockOverlay').classList.contains('active')) {
                     playNextVideo();
