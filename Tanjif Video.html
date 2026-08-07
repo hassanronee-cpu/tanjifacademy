@@ -203,7 +203,7 @@
 
         .video-container {
             position: relative;
-            padding-bottom: 51%;
+            padding-bottom: 51%; /* Fixed 16:9 aspect ratio for all devices */
             height: 0;
             overflow: hidden;
             border-radius: 12px;
@@ -562,6 +562,7 @@
             .sidebar-thumb { width: 70px; height: 44px; }
             .logo { gap: 8px; }
             .logo-img { width: 32px; height: 32px; font-size: 0.9rem; }
+            .video-container { padding-bottom: 60%; } /* Extra padding for mobile controls */
         }
     </style>
 </head>
@@ -652,7 +653,7 @@
         <section>
             <div class="suggestion-title">
                 <i class="fa-solid fa-grid-2" style="color: var(--primary);"></i>
-                <span>সব ভিডিও গ্যালা‌রি</span>
+                <span>সব ভিডিও গ্যালারি</span>
             </div>
 
             <div class="video-grid" id="videoGrid">
@@ -729,6 +730,7 @@
         let currentPlayingId = 1;
         let nextId = 26;
         let pendingAction = null;
+        let autoNextTimer = null;
 
         const TOTAL_TIME = 3600; 
         let remainingSeconds = TOTAL_TIME;
@@ -817,7 +819,25 @@
             });
         }
 
+        function clearNextTimeout() {
+            if (autoNextTimer) {
+                clearTimeout(autoNextTimer);
+                autoNextTimer = null;
+            }
+        }
+
+        function scheduleNextVideoAfterEnded() {
+            clearNextTimeout();
+            // 10 seconds wait AFTER video is finished before moving to next
+            autoNextTimer = setTimeout(() => {
+                if (!document.getElementById('timeLockOverlay').classList.contains('active')) {
+                    playNextVideo();
+                }
+            }, 10000); 
+        }
+
         function playVideo(id, shouldScroll = true) {
+            clearNextTimeout();
             const vid = pdfVideos.find(v => v.id === id);
             if (!vid) return;
 
@@ -855,13 +875,17 @@
         }
 
         function playNextVideo() {
+            clearNextTimeout();
             const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
             if (currentIndex < pdfVideos.length - 1) {
                 playVideo(pdfVideos[currentIndex + 1].id, true);
+            } else {
+                playVideo(pdfVideos[0].id, true);
             }
         }
 
         function playPrevVideo() {
+            clearNextTimeout();
             const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
             if (currentIndex > 0) {
                 playVideo(pdfVideos[currentIndex - 1].id, true);
@@ -893,6 +917,7 @@
         }
 
         function lockScreen() {
+            clearNextTimeout();
             document.getElementById('timeLockOverlay').classList.add('active');
             document.getElementById('mainVideoPlayer').src = '';
         }
@@ -967,44 +992,6 @@
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        let autoNextTimer = null;
-        function resetAutoNext() {
-            if (autoNextTimer) clearTimeout(autoNextTimer);
-            autoNextTimer = setTimeout(() => {
-                if (!document.getElementById('timeLockOverlay').classList.contains('active')) {
-                    const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
-                    if (currentIndex < pdfVideos.length - 1) {
-                        playNextVideo();
-                    } else {
-                        playVideo(pdfVideos[0].id, true);
-                    }
-                }
-            }, 5000);
-        }
-
-        const originalPlayVideo = playVideo;
-        playVideo = function(id, shouldScroll = true) {
-            originalPlayVideo(id, shouldScroll);
-            resetAutoNext();
-        };
-
-        const originalStartPlay = startPlayFromThumbnail;
-        startPlayFromThumbnail = function() {
-            originalStartPlay();
-            resetAutoNext();
-        };
-
-        const origNext = playNextVideo;
-        playNextVideo = function() {
-            origNext();
-            resetAutoNext();
-        };
-        const origPrev = playPrevVideo;
-        playPrevVideo = function() {
-            origPrev();
-            resetAutoNext();
-        };
     </script>
 </body>
 </html>
