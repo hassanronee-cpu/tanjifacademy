@@ -35,13 +35,13 @@
                         url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
             color: var(--text-main);
             min-height: 100vh;
-            padding-top: 0; /* প্যাডিং ঠিক করা হলো */
+            padding-top: 115px; /* ইনডেক্স পাতার ফিক্সড বার ও টপ বারের জন্য ফাকা জায়গা বাড়ানো হয়েছে */
         }
 
         .navbar {
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(12px);
-            position: relative; /* পেজ স্ক্রল করলে টপ বার সাথে চলে যাবে */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -51,29 +51,23 @@
             display: flex;
             align-items: center;
             padding: 8px 1rem;
-            justify-content: space-between;
+            justify-content: center; /* টপ বারের সব বক্স মাঝখানে রাখার জন্য */
             flex-wrap: wrap;
             gap: 10px;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .top-app-title-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
-        .logo span { color: var(--primary); }
-
-        .nav-right {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
+            gap: 5px;
+            white-space: nowrap;
         }
 
         .top-score-box {
@@ -352,30 +346,26 @@
         }
 
         @media(max-width: 600px) {
-            body { padding-top: 0; }
+            body { padding-top: 150px; } /* মোবাইলে আরও কিছু বাড়তি স্পেস দেওয়া হয়েছে */
             .navbar { justify-content: center; }
-            .nav-right { justify-content: center; width: 100%; }
         }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="#" class="logo">
-            <i class="fa-solid fa-list-check" style="color: var(--primary);"></i>
-            <span>প্রতিদিনের অভ্যাস</span> 
-        </a>
-        <div class="nav-right">
-            <div class="top-score-box">
-                আজকের স্কোর: <span id="navTodayScore">০%</span>
-            </div>
-            <div class="top-sync-box" id="syncStatus">
-                <i class="fa-solid fa-circle-check"></i> রেডি
-            </div>
-            <button class="btn-sheet-view" onclick="openSheetModal()">
-                <i class="fa-solid fa-clock-rotate-left"></i> সংরক্ষিত ডাটা সামারি
-            </button>
+        <div class="top-app-title-box">
+            <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> প্রতিদিনের অভ্যাস
         </div>
+        <div class="top-score-box">
+            আজকের স্কোর: <span id="navTodayScore">০%</span>
+        </div>
+        <div class="top-sync-box" id="syncStatus">
+            <i class="fa-solid fa-circle-check"></i> রেডি
+        </div>
+        <button class="btn-sheet-view" onclick="openSheetModal()">
+            <i class="fa-solid fa-clock-rotate-left"></i> সংরক্ষিত ডাটা সামারি
+        </button>
     </nav>
 
     <div class="app-container">
@@ -479,6 +469,7 @@
             return `${year}-${month}-${day}`;
         }
 
+        // তারিখ পার্স করে সঠিক YYYY-MM-DD বের করা
         function formatDateClean(dateStr) {
             if (!dateStr) return '';
             const d = new Date(dateStr);
@@ -491,6 +482,7 @@
             return dateStr.toString().split('T')[0].split(' ')[0];
         }
 
+        // সংক্ষেপে বাংলায় তারিখ রূপান্তর করা (যেমন: 05-08-2026 -> ০৫ আগস্ট, ২০২৬)
         function formatBanglaDate(isoDateStr) {
             if (!isoDateStr) return '';
             const parts = isoDateStr.split('-');
