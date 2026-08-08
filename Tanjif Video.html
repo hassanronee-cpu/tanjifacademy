@@ -8,6 +8,9 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Plyr Player CSS -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
     <style>
         :root {
@@ -168,7 +171,7 @@
 
         @media (min-width: 992px) {
             .player-hero-section {
-                grid-template-columns: 1fr 380px;
+                grid-template-columns: 1fr 420px;
                 align-items: start;
             }
         }
@@ -210,7 +213,7 @@
             background: #000;
         }
 
-        .video-container video, .video-container iframe {
+        .video-container video, .video-container iframe, .video-container .plyr {
             position: absolute;
             top: 0;
             left: 0;
@@ -335,25 +338,26 @@
         .ctrl-btn:hover { background: var(--primary); }
         .ctrl-btn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--secondary); }
 
+        /* Enhanced Sidebar Suggestions Style */
         .sidebar-suggestions {
             background: var(--surface);
             border-radius: 18px;
-            padding: 0.8rem;
+            padding: 1rem;
             box-shadow: var(--shadow-md);
             border: 1px solid #e2e8f0;
             display: flex;
             flex-direction: column;
             height: 100%;
-            max-height: 550px;
-            min-height: 400px;
+            max-height: 600px;
+            min-height: 440px;
         }
 
         .sidebar-header {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: var(--secondary);
-            padding-bottom: 8px;
-            margin-bottom: 8px;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
             border-bottom: 2px solid var(--primary-light);
             display: flex;
             align-items: center;
@@ -364,13 +368,13 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            padding-right: 4px;
+            gap: 12px;
+            padding-right: 6px;
             flex-grow: 1;
         }
 
         .sidebar-list::-webkit-scrollbar {
-            width: 5px;
+            width: 6px;
         }
         .sidebar-list::-webkit-scrollbar-thumb {
             background: #cbd5e1;
@@ -379,30 +383,31 @@
 
         .sidebar-card {
             display: flex;
-            gap: 12px;
+            gap: 14px;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 8px;
+            border-radius: 14px;
+            padding: 10px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
             align-items: center;
         }
 
         .sidebar-card:hover {
             background: #f1f5f9;
-            transform: translateX(3px);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-sm);
         }
 
         .sidebar-card.active {
-            border: 1.5px solid var(--accent);
+            border: 2px solid var(--accent);
             background: #fffbeb;
         }
 
         .sidebar-thumb {
-            width: 110px;
-            height: 65px;
-            border-radius: 8px;
+            width: 140px;
+            height: 80px;
+            border-radius: 10px;
             background: #0f172a;
             position: relative;
             overflow: hidden;
@@ -410,14 +415,14 @@
         }
 
         .sidebar-thumb img {
-            width: 100%; height: 100%; object-fit: cover; opacity: 0.85;
+            width: 100%; height: 100%; object-fit: cover; opacity: 0.9;
         }
 
         .sidebar-thumb-overlay {
             position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.25);
             display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: 0.8rem;
+            color: #fff; font-size: 1.1rem;
         }
 
         .sidebar-info {
@@ -429,10 +434,10 @@
         }
 
         .sidebar-title {
-            font-size: 0.9rem;
+            font-size: 0.98rem;
             font-weight: 600;
             color: var(--secondary);
-            line-height: 1.3;
+            line-height: 1.4;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -536,7 +541,8 @@
 
         @media (max-width: 768px) {
             :root { --navbar-height: 60px; }
-            body { padding-top: calc(var(--navbar-height) + 10px); }
+            body { padding-top: calc(var(--navbar-height) + 4px); }
+            .container { padding: 0 0.8rem; }
             
             .nav-container { 
                 padding: 0 0.8rem; 
@@ -547,24 +553,26 @@
             .logo-img { width: 36px; height: 36px; font-size: 1rem; }
             .timer-badge-header { font-size: 0.8rem; padding: 4px 12px; }
             .video-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-            .sidebar-suggestions { max-height: 380px; min-height: 200px; }
+            .sidebar-suggestions { max-height: 480px; min-height: 280px; padding: 0.8rem; }
             .player-title { font-size: 0.9rem; }
-            .sidebar-thumb { width: 80px; height: 50px; }
-            .sidebar-title { font-size: 0.8rem; }
+            .sidebar-thumb { width: 110px; height: 65px; }
+            .sidebar-title { font-size: 0.88rem; }
             .logo { margin-right: 0; }
         }
 
         @media (max-width: 480px) {
             :root { --navbar-height: 56px; }
-            body { padding-top: calc(var(--navbar-height) + 12px); }
+            body { padding-top: calc(var(--navbar-height) + 4px); }
             .nav-container { gap: 2px 8px; padding: 0 0.5rem; }
             .nav-controls { gap: 4px; }
             .btn-nav { padding: 4px 10px; font-size: 0.7rem; }
             .logo-text { font-size: 1rem; }
             .timer-badge-header { font-size: 0.7rem; padding: 3px 10px; }
-            .sidebar-thumb { width: 70px; height: 44px; }
+            .sidebar-thumb { width: 95px; height: 58px; }
+            .sidebar-title { font-size: 0.82rem; }
             .logo { gap: 8px; }
             .logo-img { width: 32px; height: 32px; font-size: 0.9rem; }
+            .player-wrapper { padding: 0.5rem; }
         }
     </style>
 </head>
@@ -633,14 +641,13 @@
                         </div>
                     </div>
 
-                    <!-- Native HTML5 Inline Video Element for Full Mobile Compatibility -->
+                    <!-- Responsive Player Container -->
                     <video id="mainVideoPlayer" controls playsinline webkit-playsinline preload="metadata"></video>
                     <iframe id="iframeVideoPlayer" allow="autoplay; encrypted-media" allowfullscreen style="display:none;"></iframe>
                 </div>
 
                 <div class="player-controls">
                     <button class="ctrl-btn" id="prevBtn" onclick="playPrevVideo()"><i class="fa-solid fa-backward-step"></i> আগের</button>
-                    <button class="ctrl-btn" id="playPauseBtn" onclick="togglePlayPause()"><i class="fa-solid fa-play"></i> প্লে / পজ</button>
                     <button class="ctrl-btn" id="nextBtn" onclick="playNextVideo()">পরের <i class="fa-solid fa-forward-step"></i></button>
                 </div>
             </div>
@@ -648,7 +655,7 @@
             <div class="sidebar-suggestions">
                 <div class="sidebar-header">
                     <span><i class="fa-solid fa-list-ul" style="color: var(--primary);"></i> পরবর্তী ভিডিওসমূহ</span>
-                    <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-muted);" id="sidebarCount">২৫ টি</span>
+                    <span style="font-size: 0.8rem; font-weight: 600; color: var(--primary); background: var(--primary-light); padding: 2px 10px; border-radius: 12px;" id="sidebarCount">২৫ টি</span>
                 </div>
                 <div class="sidebar-list" id="sidebarList">
                 </div>
@@ -701,6 +708,9 @@
         </div>
     </div>
 
+    <!-- Plyr Player Script -->
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+
     <script>
         const SECRET_PIN = "0000";
 
@@ -736,6 +746,7 @@
         let nextId = 26;
         let pendingAction = null;
         let autoNextTimer = null;
+        let plyrPlayer = null;
 
         const TOTAL_TIME = 3600; 
         let remainingSeconds = TOTAL_TIME;
@@ -754,7 +765,6 @@
             return 'https://via.placeholder.com/300x170/0f172a/ffffff?text=Video';
         }
 
-        // Convert Google Drive Preview link to direct video stream link
         function getDirectStreamUrl(url) {
             const id = getDriveFileId(url);
             if (id) {
@@ -768,6 +778,12 @@
             renderSidebar();
             initTimer();
             updatePlayerTitleOnly(1);
+
+            // Initialize Plyr Video Player for modern interactive look
+            plyrPlayer = new Plyr('#mainVideoPlayer', {
+                controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+                ratio: '16:9'
+            });
 
             const videoElement = document.getElementById('mainVideoPlayer');
             videoElement.addEventListener('ended', () => {
@@ -830,7 +846,7 @@
 
                 sCard.innerHTML = `
                     <div class="sidebar-thumb">
-                        <img src="${getDriveThumbnail(vid.url)}" alt="${vid.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/100x60/0f172a/ffffff?text=Video'">
+                        <img src="${getDriveThumbnail(vid.url)}" alt="${vid.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/140x80/0f172a/ffffff?text=Video'">
                         <div class="sidebar-thumb-overlay">
                             <i class="fa-solid fa-play"></i>
                         </div>
@@ -860,12 +876,13 @@
 
             const videoElement = document.getElementById('mainVideoPlayer');
             const iframeElement = document.getElementById('iframeVideoPlayer');
+            const plyrContainer = videoElement.closest('.plyr');
 
             const directUrl = getDirectStreamUrl(vid.url);
             
-            // Show video element with native controls for mobile inline playback
             iframeElement.style.display = "none";
             iframeElement.src = "";
+            if(plyrContainer) plyrContainer.style.display = "block";
             videoElement.style.display = "block";
             
             videoElement.src = directUrl;
@@ -874,7 +891,8 @@
             const playPromise = videoElement.play();
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    // Fallback to embedded iframe if direct video stream is restricted
+                    // Fallback to embedded Google Drive preview iframe if direct playback is limited
+                    if(plyrContainer) plyrContainer.style.display = "none";
                     videoElement.style.display = "none";
                     iframeElement.style.display = "block";
                     let embedUrl = vid.url;
@@ -897,21 +915,10 @@
 
             if (shouldScroll) {
                 const playerHero = document.getElementById('playerHero');
-                const navbarHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 72;
-                const yOffset = -(navbarHeight + 15); 
+                const navbarHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 60;
+                const yOffset = -(navbarHeight + 10); 
                 const y = playerHero.getBoundingClientRect().top + window.pageYOffset + yOffset;
                 window.scrollTo({ top: y, behavior: 'smooth' });
-            }
-        }
-
-        function togglePlayPause() {
-            const videoElement = document.getElementById('mainVideoPlayer');
-            if (videoElement.style.display !== "none" && videoElement.src) {
-                if (videoElement.paused) {
-                    videoElement.play();
-                } else {
-                    videoElement.pause();
-                }
             }
         }
 
