@@ -678,7 +678,7 @@
             <!-- Interstitial Video Toggle Switch Button -->
             <button class="interstitial-toggle-btn active" id="interstitialToggleBtn" onclick="toggleInterstitialSetting()">
                 <i class="fa-solid fa-film"></i>
-                <span>বিরতি: ON</span>
+                <span>অন</span>
             </button>
 
             <span class="timer-badge-header">
@@ -869,10 +869,10 @@
             const btn = document.getElementById('interstitialToggleBtn');
             if (isInterstitialEnabled) {
                 btn.classList.add('active');
-                btn.innerHTML = '<i class="fa-solid fa-film"></i> <span>বিরতি: ON</span>';
+                btn.innerHTML = '<i class="fa-solid fa-film"></i> <span>অন</span>';
             } else {
                 btn.classList.remove('active');
-                btn.innerHTML = '<i class="fa-solid fa-film"></i> <span>বিরতি: OFF</span>';
+                btn.innerHTML = '<i class="fa-solid fa-film"></i> <span>অফ</span>';
             }
         }
 
