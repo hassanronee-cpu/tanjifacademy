@@ -8,9 +8,6 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Plyr Player CSS -->
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
     <style>
         :root {
@@ -151,10 +148,6 @@
 
         .timer-badge-header i { color: #d97706; }
 
-        .timer-banner {
-            display: none !important;
-        }
-
         .container {
             max-width: 1350px;
             margin: 0 auto 3rem;
@@ -204,24 +197,39 @@
             gap: 8px;
         }
 
+        /* Fixed video container & responsive wrapper */
         .video-container {
             position: relative;
-            padding-bottom: 56.25%;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             height: 0;
             overflow: hidden;
             border-radius: 12px;
             background: #000;
         }
 
-        .video-container video, .video-container iframe, .video-container .plyr {
+        .video-container iframe, 
+        .video-container video {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100% !important;
+            height: 100% !important;
             border: none;
             background: #000;
             object-fit: contain;
+        }
+
+        /* Overlay mask to hide Google Drive popout icon on mobile */
+        .drive-mask {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 55px;
+            z-index: 15;
+            background: transparent;
+            pointer-events: auto;
         }
 
         .custom-player-thumbnail {
@@ -231,7 +239,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
-            z-index: 10;
+            z-index: 20;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -338,7 +346,6 @@
         .ctrl-btn:hover { background: var(--primary); }
         .ctrl-btn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--secondary); }
 
-        /* Enhanced Sidebar Suggestions Style */
         .sidebar-suggestions {
             background: var(--surface);
             border-radius: 18px;
@@ -624,6 +631,7 @@
                 </div>
 
                 <div class="video-container" id="videoContainer">
+                    <div class="drive-mask"></div>
                     <div class="custom-player-thumbnail" id="playerThumbnail" onclick="startPlayFromThumbnail()">
                         <div class="thumb-animated-bg">
                             <span class="floating-balloon" style="left: 10%; animation-delay: 0s;">🎈</span>
@@ -641,9 +649,8 @@
                         </div>
                     </div>
 
-                    <!-- Responsive Player Container -->
-                    <video id="mainVideoPlayer" controls playsinline webkit-playsinline preload="metadata"></video>
-                    <iframe id="iframeVideoPlayer" allow="autoplay; encrypted-media" allowfullscreen style="display:none;"></iframe>
+                    <!-- Clean Standard Embedded Iframe -->
+                    <iframe id="iframeVideoPlayer" allow="autoplay; encrypted-media" allowfullscreen style="width:100%; height:100%; border:0;"></iframe>
                 </div>
 
                 <div class="player-controls">
@@ -708,9 +715,6 @@
         </div>
     </div>
 
-    <!-- Plyr Player Script -->
-    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-
     <script>
         const SECRET_PIN = "0000";
 
@@ -745,8 +749,6 @@
         let currentPlayingId = 1;
         let nextId = 26;
         let pendingAction = null;
-        let autoNextTimer = null;
-        let plyrPlayer = null;
 
         const TOTAL_TIME = 3600; 
         let remainingSeconds = TOTAL_TIME;
@@ -765,30 +767,11 @@
             return 'https://via.placeholder.com/300x170/0f172a/ffffff?text=Video';
         }
 
-        function getDirectStreamUrl(url) {
-            const id = getDriveFileId(url);
-            if (id) {
-                return `https://drive.google.com/uc?export=download&id=${id}`;
-            }
-            return url;
-        }
-
         window.addEventListener('DOMContentLoaded', () => {
             renderGallery();
             renderSidebar();
             initTimer();
             updatePlayerTitleOnly(1);
-
-            // Initialize Plyr Video Player for modern interactive look
-            plyrPlayer = new Plyr('#mainVideoPlayer', {
-                controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
-                ratio: '16:9'
-            });
-
-            const videoElement = document.getElementById('mainVideoPlayer');
-            videoElement.addEventListener('ended', () => {
-                playNextVideo();
-            });
         });
 
         function updatePlayerTitleOnly(id) {
@@ -859,49 +842,20 @@
             });
         }
 
-        function clearNextTimeout() {
-            if (autoNextTimer) {
-                clearTimeout(autoNextTimer);
-                autoNextTimer = null;
-            }
-        }
-
         function playVideo(id, shouldScroll = true) {
-            clearNextTimeout();
             const vid = pdfVideos.find(v => v.id === id);
             if (!vid) return;
 
             currentPlayingId = id;
             document.getElementById('playerThumbnail').classList.add('hidden');
 
-            const videoElement = document.getElementById('mainVideoPlayer');
             const iframeElement = document.getElementById('iframeVideoPlayer');
-            const plyrContainer = videoElement.closest('.plyr');
-
-            const directUrl = getDirectStreamUrl(vid.url);
             
-            iframeElement.style.display = "none";
-            iframeElement.src = "";
-            if(plyrContainer) plyrContainer.style.display = "block";
-            videoElement.style.display = "block";
-            
-            videoElement.src = directUrl;
-            videoElement.load();
-            
-            const playPromise = videoElement.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    // Fallback to embedded Google Drive preview iframe if direct playback is limited
-                    if(plyrContainer) plyrContainer.style.display = "none";
-                    videoElement.style.display = "none";
-                    iframeElement.style.display = "block";
-                    let embedUrl = vid.url;
-                    if (embedUrl.includes('/preview')) {
-                        embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
-                    }
-                    iframeElement.src = embedUrl;
-                });
+            let embedUrl = vid.url;
+            if (embedUrl.includes('/preview')) {
+                embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
             }
+            iframeElement.src = embedUrl;
 
             document.getElementById('currentVideoTitle').innerText = vid.title;
             const idx = pdfVideos.findIndex(v => v.id === id) + 1;
@@ -923,7 +877,6 @@
         }
 
         function playNextVideo() {
-            clearNextTimeout();
             const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
             if (currentIndex < pdfVideos.length - 1) {
                 playVideo(pdfVideos[currentIndex + 1].id, true);
@@ -933,7 +886,6 @@
         }
 
         function playPrevVideo() {
-            clearNextTimeout();
             const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
             if (currentIndex > 0) {
                 playVideo(pdfVideos[currentIndex - 1].id, true);
@@ -965,11 +917,7 @@
         }
 
         function lockScreen() {
-            clearNextTimeout();
             document.getElementById('timeLockOverlay').classList.add('active');
-            const videoElement = document.getElementById('mainVideoPlayer');
-            videoElement.pause();
-            videoElement.src = '';
             document.getElementById('iframeVideoPlayer').src = '';
         }
 
