@@ -8,6 +8,9 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Plyr Player CSS -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
     <style>
         :root {
@@ -148,6 +151,10 @@
 
         .timer-badge-header i { color: #d97706; }
 
+        .timer-banner {
+            display: none !important;
+        }
+
         .container {
             max-width: 1350px;
             margin: 0 auto 3rem;
@@ -197,39 +204,24 @@
             gap: 8px;
         }
 
-        /* Fixed video container & responsive wrapper */
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
+            aspect-ratio: 16 / 9;
             overflow: hidden;
             border-radius: 12px;
             background: #000;
         }
 
-        .video-container iframe, 
-        .video-container video {
+        .video-container video, .video-container iframe, .video-container .plyr {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100% !important;
-            height: 100% !important;
+            width: 100%;
+            height: 100%;
             border: none;
             background: #000;
             object-fit: contain;
-        }
-
-        /* Overlay mask to hide Google Drive popout icon on mobile */
-        .drive-mask {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 60px;
-            height: 55px;
-            z-index: 15;
-            background: transparent;
-            pointer-events: auto;
         }
 
         .custom-player-thumbnail {
@@ -239,7 +231,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
-            z-index: 20;
+            z-index: 10;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -325,8 +317,14 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 10px;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
+        }
+
+        .ctrl-btn-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         .ctrl-btn {
@@ -346,6 +344,21 @@
         .ctrl-btn:hover { background: var(--primary); }
         .ctrl-btn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--secondary); }
 
+        .btn-play-action {
+            background: var(--primary);
+        }
+        .btn-play-action:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-pause-action {
+            background: #d97706;
+        }
+        .btn-pause-action:hover {
+            background: #b45309;
+        }
+
+        /* Enhanced Sidebar Suggestions Style */
         .sidebar-suggestions {
             background: var(--surface);
             border-radius: 18px;
@@ -565,6 +578,7 @@
             .sidebar-thumb { width: 110px; height: 65px; }
             .sidebar-title { font-size: 0.88rem; }
             .logo { margin-right: 0; }
+            .ctrl-btn { padding: 6px 10px; font-size: 0.8rem; }
         }
 
         @media (max-width: 480px) {
@@ -580,6 +594,9 @@
             .logo { gap: 8px; }
             .logo-img { width: 32px; height: 32px; font-size: 0.9rem; }
             .player-wrapper { padding: 0.5rem; }
+            .player-controls { gap: 6px; }
+            .ctrl-btn-group { gap: 4px; }
+            .ctrl-btn { padding: 6px 8px; font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -631,7 +648,6 @@
                 </div>
 
                 <div class="video-container" id="videoContainer">
-                    <div class="drive-mask"></div>
                     <div class="custom-player-thumbnail" id="playerThumbnail" onclick="startPlayFromThumbnail()">
                         <div class="thumb-animated-bg">
                             <span class="floating-balloon" style="left: 10%; animation-delay: 0s;">🎈</span>
@@ -649,12 +665,19 @@
                         </div>
                     </div>
 
-                    <!-- Clean Standard Embedded Iframe -->
-                    <iframe id="iframeVideoPlayer" allow="autoplay; encrypted-media" allowfullscreen style="width:100%; height:100%; border:0;"></iframe>
+                    <!-- Responsive Player Container -->
+                    <video id="mainVideoPlayer" controls playsinline webkit-playsinline preload="metadata"></video>
+                    <iframe id="iframeVideoPlayer" allow="autoplay; encrypted-media" allowfullscreen style="display:none;"></iframe>
                 </div>
 
                 <div class="player-controls">
                     <button class="ctrl-btn" id="prevBtn" onclick="playPrevVideo()"><i class="fa-solid fa-backward-step"></i> আগের</button>
+                    
+                    <div class="ctrl-btn-group">
+                        <button class="ctrl-btn btn-play-action" id="playBtn" onclick="togglePlay()"><i class="fa-solid fa-play"></i> প্লে</button>
+                        <button class="ctrl-btn btn-pause-action" id="pauseBtn" onclick="togglePause()"><i class="fa-solid fa-pause"></i> পজ</button>
+                    </div>
+
                     <button class="ctrl-btn" id="nextBtn" onclick="playNextVideo()">পরের <i class="fa-solid fa-forward-step"></i></button>
                 </div>
             </div>
@@ -715,6 +738,9 @@
         </div>
     </div>
 
+    <!-- Plyr Player Script -->
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+
     <script>
         const SECRET_PIN = "0000";
 
@@ -749,6 +775,8 @@
         let currentPlayingId = 1;
         let nextId = 26;
         let pendingAction = null;
+        let autoNextTimer = null;
+        let plyrPlayer = null;
 
         const TOTAL_TIME = 3600; 
         let remainingSeconds = TOTAL_TIME;
@@ -767,11 +795,30 @@
             return 'https://via.placeholder.com/300x170/0f172a/ffffff?text=Video';
         }
 
+        function getDirectStreamUrl(url) {
+            const id = getDriveFileId(url);
+            if (id) {
+                return `https://drive.google.com/uc?export=download&id=${id}`;
+            }
+            return url;
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             renderGallery();
             renderSidebar();
             initTimer();
             updatePlayerTitleOnly(1);
+
+            // Initialize Plyr Video Player for modern interactive look
+            plyrPlayer = new Plyr('#mainVideoPlayer', {
+                controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+                ratio: '16:9'
+            });
+
+            const videoElement = document.getElementById('mainVideoPlayer');
+            videoElement.addEventListener('ended', () => {
+                playNextVideo();
+            });
         });
 
         function updatePlayerTitleOnly(id) {
@@ -842,20 +889,90 @@
             });
         }
 
+        function clearNextTimeout() {
+            if (autoNextTimer) {
+                clearTimeout(autoNextTimer);
+                autoNextTimer = null;
+            }
+        }
+
+        function togglePlay() {
+            const thumb = document.getElementById('playerThumbnail');
+            if (!thumb.classList.contains('hidden')) {
+                startPlayFromThumbnail();
+                return;
+            }
+
+            const videoElement = document.getElementById('mainVideoPlayer');
+            const iframeElement = document.getElementById('iframeVideoPlayer');
+
+            if (videoElement.style.display !== 'none') {
+                if (plyrPlayer) {
+                    plyrPlayer.play();
+                } else {
+                    videoElement.play();
+                }
+            } else if (iframeElement.style.display !== 'none') {
+                const src = iframeElement.src;
+                if (!src.includes('autoplay=1')) {
+                    iframeElement.src = src + (src.includes('?') ? '&' : '?') + 'autoplay=1';
+                }
+            }
+        }
+
+        function togglePause() {
+            const videoElement = document.getElementById('mainVideoPlayer');
+            const iframeElement = document.getElementById('iframeVideoPlayer');
+
+            if (videoElement.style.display !== 'none') {
+                if (plyrPlayer) {
+                    plyrPlayer.pause();
+                } else {
+                    videoElement.pause();
+                }
+            } else if (iframeElement.style.display !== 'none') {
+                // For embedded drive iframe pause fallback
+                let src = iframeElement.src;
+                iframeElement.src = src.replace('&autoplay=1', '').replace('?autoplay=1', '');
+            }
+        }
+
         function playVideo(id, shouldScroll = true) {
+            clearNextTimeout();
             const vid = pdfVideos.find(v => v.id === id);
             if (!vid) return;
 
             currentPlayingId = id;
             document.getElementById('playerThumbnail').classList.add('hidden');
 
+            const videoElement = document.getElementById('mainVideoPlayer');
             const iframeElement = document.getElementById('iframeVideoPlayer');
+            const plyrContainer = videoElement.closest('.plyr');
+
+            const directUrl = getDirectStreamUrl(vid.url);
             
-            let embedUrl = vid.url;
-            if (embedUrl.includes('/preview')) {
-                embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
+            iframeElement.style.display = "none";
+            iframeElement.src = "";
+            if(plyrContainer) plyrContainer.style.display = "block";
+            videoElement.style.display = "block";
+            
+            videoElement.src = directUrl;
+            videoElement.load();
+            
+            const playPromise = videoElement.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // Fallback to embedded Google Drive preview iframe if direct playback is limited
+                    if(plyrContainer) plyrContainer.style.display = "none";
+                    videoElement.style.display = "none";
+                    iframeElement.style.display = "block";
+                    let embedUrl = vid.url;
+                    if (!embedUrl.includes('autoplay=1')) {
+                        embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
+                    }
+                    iframeElement.src = embedUrl;
+                });
             }
-            iframeElement.src = embedUrl;
 
             document.getElementById('currentVideoTitle').innerText = vid.title;
             const idx = pdfVideos.findIndex(v => v.id === id) + 1;
@@ -877,6 +994,7 @@
         }
 
         function playNextVideo() {
+            clearNextTimeout();
             const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
             if (currentIndex < pdfVideos.length - 1) {
                 playVideo(pdfVideos[currentIndex + 1].id, true);
@@ -886,6 +1004,7 @@
         }
 
         function playPrevVideo() {
+            clearNextTimeout();
             const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
             if (currentIndex > 0) {
                 playVideo(pdfVideos[currentIndex - 1].id, true);
@@ -917,7 +1036,11 @@
         }
 
         function lockScreen() {
+            clearNextTimeout();
             document.getElementById('timeLockOverlay').classList.add('active');
+            const videoElement = document.getElementById('mainVideoPlayer');
+            videoElement.pause();
+            videoElement.src = '';
             document.getElementById('iframeVideoPlayer').src = '';
         }
 
