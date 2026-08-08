@@ -186,6 +186,13 @@
             width: 100%;
         }
 
+        .player-content-layout {
+            display: flex;
+            gap: 12px;
+            align-items: stretch;
+
+        }
+
         .player-header {
             display: flex;
             justify-content: space-between;
@@ -207,10 +214,12 @@
         .video-container {
             position: relative;
             width: 100%;
+            padding-bottom: 60.60%;
             aspect-ratio: 16 / 9;
             overflow: hidden;
             border-radius: 12px;
             background: #000;
+            flex: 1;
         }
 
         .video-container video, .video-container iframe, .video-container .plyr {
@@ -312,37 +321,38 @@
         }
         .time-lock-overlay.active { display: flex; }
 
-        .player-controls {
+        /* Left side vertical controls layout */
+        .player-controls-sidebar {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .ctrl-btn-group {
-            display: flex;
-            gap: 8px;
-            align-items: center;
+            flex-direction: column;
+            justify-content: space-evenly;
+            gap: 12px;
+            padding: 8px 10px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            min-width: 110px;
         }
 
         .ctrl-btn {
             background: var(--secondary);
             color: #fff;
             border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 10px 14px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
             font-size: 0.9rem;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
+            gap: 8px;
             transition: 0.2s;
+            width: 100%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
         }
-        .ctrl-btn:hover { background: var(--primary); }
-        .ctrl-btn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--secondary); }
+        .ctrl-btn:hover { background: var(--primary); transform: translateY(-1px); }
+        .ctrl-btn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--secondary); transform: none; }
 
         .btn-play-action {
             background: var(--primary);
@@ -368,7 +378,7 @@
             display: flex;
             flex-direction: column;
             height: 100%;
-            max-height: 600px;
+            max-height: 566px;
             min-height: 440px;
         }
 
@@ -426,7 +436,7 @@
 
         .sidebar-thumb {
             width: 140px;
-            height: 80px;
+            height: 87px;
             border-radius: 10px;
             background: #0f172a;
             position: relative;
@@ -578,7 +588,9 @@
             .sidebar-thumb { width: 110px; height: 65px; }
             .sidebar-title { font-size: 0.88rem; }
             .logo { margin-right: 0; }
-            .ctrl-btn { padding: 6px 10px; font-size: 0.8rem; }
+            .player-content-layout { gap: 8px; }
+            .player-controls-sidebar { min-width: 90px; padding: 6px; gap: 8px; }
+            .ctrl-btn { padding: 8px 6px; font-size: 0.78rem; gap: 4px; }
         }
 
         @media (max-width: 480px) {
@@ -594,9 +606,9 @@
             .logo { gap: 8px; }
             .logo-img { width: 32px; height: 32px; font-size: 0.9rem; }
             .player-wrapper { padding: 0.5rem; }
-            .player-controls { gap: 6px; }
-            .ctrl-btn-group { gap: 4px; }
-            .ctrl-btn { padding: 6px 8px; font-size: 0.75rem; }
+            .player-content-layout { gap: 6px; }
+            .player-controls-sidebar { min-width: 75px; padding: 4px; gap: 6px; }
+            .ctrl-btn { padding: 6px 4px; font-size: 0.72rem; flex-direction: column; gap: 2px; }
         }
     </style>
 </head>
@@ -647,38 +659,37 @@
                     <span class="card-tag" id="currentVideoIndex" style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">ভিডিও #১</span>
                 </div>
 
-                <div class="video-container" id="videoContainer">
-                    <div class="custom-player-thumbnail" id="playerThumbnail" onclick="startPlayFromThumbnail()">
-                        <div class="thumb-animated-bg">
-                            <span class="floating-balloon" style="left: 10%; animation-delay: 0s;">🎈</span>
-                            <span class="floating-balloon" style="left: 30%; animation-delay: 2s;">⚽</span>
-                            <span class="floating-balloon" style="left: 50%; animation-delay: 4s;">⭐</span>
-                            <span class="floating-balloon" style="left: 70%; animation-delay: 1.5s;">🎨</span>
-                            <span class="floating-balloon" style="left: 90%; animation-delay: 3s;">🚀</span>
-                        </div>
-                        <div class="thumb-content">
-                            <div class="thumb-play-btn">
-                                <i class="fa-solid fa-play" style="margin-left: 5px;"></i>
-                            </div>
-                            <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">তানজিফের মজার ভিডিও জগত! 🎈</h3>
-                            <p style="font-size: 0.95rem; opacity: 0.9;">ভিডিওটি প্লে করতে যেকোনো জায়গায় ক্লিক করুন</p>
-                        </div>
-                    </div>
-
-                    <!-- Responsive Player Container -->
-                    <video id="mainVideoPlayer" controls playsinline webkit-playsinline preload="metadata"></video>
-                    <iframe id="iframeVideoPlayer" allow="autoplay; encrypted-media" allowfullscreen style="display:none;"></iframe>
-                </div>
-
-                <div class="player-controls">
-                    <button class="ctrl-btn" id="prevBtn" onclick="playPrevVideo()"><i class="fa-solid fa-backward-step"></i> আগের</button>
-                    
-                    <div class="ctrl-btn-group">
+                <div class="player-content-layout">
+                    <!-- Left side controls layout -->
+                    <div class="player-controls-sidebar">
+                        <button class="ctrl-btn" id="prevBtn" onclick="playPrevVideo()"><i class="fa-solid fa-backward-step"></i> আগের</button>
                         <button class="ctrl-btn btn-play-action" id="playBtn" onclick="togglePlay()"><i class="fa-solid fa-play"></i> প্লে</button>
                         <button class="ctrl-btn btn-pause-action" id="pauseBtn" onclick="togglePause()"><i class="fa-solid fa-pause"></i> পজ</button>
+                        <button class="ctrl-btn" id="nextBtn" onclick="playNextVideo()">পরের <i class="fa-solid fa-forward-step"></i></button>
                     </div>
 
-                    <button class="ctrl-btn" id="nextBtn" onclick="playNextVideo()">পরের <i class="fa-solid fa-forward-step"></i></button>
+                    <div class="video-container" id="videoContainer">
+                        <div class="custom-player-thumbnail" id="playerThumbnail" onclick="startPlayFromThumbnail()">
+                            <div class="thumb-animated-bg">
+                                <span class="floating-balloon" style="left: 10%; animation-delay: 0s;">🎈</span>
+                                <span class="floating-balloon" style="left: 30%; animation-delay: 2s;">⚽</span>
+                                <span class="floating-balloon" style="left: 50%; animation-delay: 4s;">⭐</span>
+                                <span class="floating-balloon" style="left: 70%; animation-delay: 1.5s;">🎨</span>
+                                <span class="floating-balloon" style="left: 90%; animation-delay: 3s;">🚀</span>
+                            </div>
+                            <div class="thumb-content">
+                                <div class="thumb-play-btn">
+                                    <i class="fa-solid fa-play" style="margin-left: 5px;"></i>
+                                </div>
+                                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">তানজিফের মজার ভিডিও জগত! 🎈</h3>
+                                <p style="font-size: 0.95rem; opacity: 0.9;">ভিডিওটি প্লে করতে যেকোনো জায়গায় ক্লিক করুন</p>
+                            </div>
+                        </div>
+
+                        <!-- Responsive Player Container -->
+                        <video id="mainVideoPlayer" controls playsinline webkit-playsinline preload="metadata"></video>
+                        <iframe id="iframeVideoPlayer" allow="autoplay; encrypted-media" allowfullscreen style="display:none;"></iframe>
+                    </div>
                 </div>
             </div>
 
