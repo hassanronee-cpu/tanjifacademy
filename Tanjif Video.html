@@ -27,6 +27,34 @@
             --shadow-md: 0 10px 25px rgba(0,0,0,0.08);
             --radius: 16px;
             --navbar-height: 55px;
+
+            /* Custom Plyr Controls Scale Down */
+            --plyr-control-icon-size: 13px;
+            --plyr-control-padding: 4px 6px;
+            --plyr-control-radius: 4px;
+            --plyr-font-size-time: 11px;
+            --plyr-range-track-height: 3px;
+            --plyr-range-thumb-height: 10px;
+        }
+
+        /* Plyr Compact Overrides */
+        .plyr--full-ui input[type=range] {
+            height: 12px !important;
+        }
+        .plyr__controls {
+            padding: 4px 8px !important;
+            gap: 4px !important;
+        }
+        .plyr__controls .plyr__controls__item {
+            margin-left: 2px !important;
+        }
+        .plyr__control--overlaid {
+            padding: 10px !important;
+            border-radius: 50% !important;
+        }
+        .plyr__control--overlaid svg {
+            width: 18px !important;
+            height: 18px !important;
         }
 
         * {
@@ -69,7 +97,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px 20px;
+            gap: 8px 15px;
             flex-wrap: wrap;
         }
 
@@ -108,7 +136,7 @@
         .nav-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn-nav {
@@ -133,6 +161,29 @@
         }
 
         .btn-nav:active { transform: scale(0.96); }
+
+        /* Interstitial Video Toggle Control */
+        .interstitial-toggle-btn {
+            background: #e2e8f0;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .interstitial-toggle-btn.active {
+            background: #dcfce7;
+            color: #15803d;
+            border-color: #86efac;
+        }
 
         .timer-badge-header {
             background: #fef3c7;
@@ -576,7 +627,7 @@
             
             .nav-container { 
                 padding: 0 0.8rem; 
-                gap: 4px 12px;
+                gap: 4px 10px;
             }
             .logo-text { font-size: 1.1rem; }
             .btn-nav { padding: 6px 12px; font-size: 0.75rem; }
@@ -596,11 +647,12 @@
         @media (max-width: 480px) {
             :root { --navbar-height: 56px; }
             body { padding-top: calc(var(--navbar-height) + 4px); }
-            .nav-container { gap: 2px 8px; padding: 0 0.5rem; }
+            .nav-container { gap: 2px 6px; padding: 0 0.5rem; }
             .nav-controls { gap: 4px; }
-            .btn-nav { padding: 4px 10px; font-size: 0.7rem; }
+            .btn-nav { padding: 4px 8px; font-size: 0.7rem; }
+            .interstitial-toggle-btn { font-size: 0.68rem; padding: 3px 6px; }
             .logo-text { font-size: 1rem; }
-            .timer-badge-header { font-size: 0.7rem; padding: 3px 10px; }
+            .timer-badge-header { font-size: 0.7rem; padding: 3px 8px; }
             .sidebar-thumb { width: 95px; height: 58px; }
             .sidebar-title { font-size: 0.82rem; }
             .logo { gap: 8px; }
@@ -622,6 +674,12 @@
                 </div>
                 <div class="logo-text">তানজিফ <span>ভিডিও</span></div>
             </a>
+
+            <!-- Interstitial Video Toggle Switch Button -->
+            <button class="interstitial-toggle-btn active" id="interstitialToggleBtn" onclick="toggleInterstitialSetting()">
+                <i class="fa-solid fa-film"></i>
+                <span>বিরতি: ON</span>
+            </button>
 
             <span class="timer-badge-header">
                 <i class="fa-regular fa-clock"></i>
@@ -687,7 +745,7 @@
                         </div>
 
                         <!-- Responsive Player Container -->
-                        <video id="mainVideoPlayer" controls playsinline webkit-playsinline preload="metadata"></video>
+                        <video id="mainVideoPlayer" controls playsinline webkit-playsinline preload="auto"></video>
                         <iframe id="iframeVideoPlayer" allow="autoplay; encrypted-media" allowfullscreen style="display:none;"></iframe>
                     </div>
                 </div>
@@ -755,8 +813,11 @@
     <script>
         const SECRET_PIN = "0000";
 
-        // ছোট্ট ভিডিওর লিংক যা প্রতিটি ভিডিওর মাঝে চালানো হবে
+        // ছোট্ট বিশেষ ইন্ট্রো/বিরতি ভিডিওর লিংক
         const INTERSTITIAL_VIDEO_URL = "https://drive.google.com/file/d/1q3PpYkz1SHYWhMG-lPKz7Qr2oh_E2g0H/preview";
+
+        // Interstitial video active state (Default ON)
+        let isInterstitialEnabled = true;
 
         let pdfVideos = [
             { id: 1, title: "হ্যা মেলিন-এর বাঁশিওয়ালা (Pied Piper Of Hamelin)", url: "https://drive.google.com/file/d/1bVoW42po-_RuIDYvTSL7GqYEa5VcjbJb/preview" },
@@ -787,18 +848,33 @@
         ];
 
         let currentPlayingId = 1;
+        let targetVideoId = 1;
         let nextId = 26;
         let pendingAction = null;
         let autoNextTimer = null;
         let plyrPlayer = null;
 
+        // Hidden preloader element for instant transition
+        let nextVideoPreloader = null;
+
         // Interstitial state handling
         let isInterstitialPlaying = false;
-        let targetNextVideoId = null;
 
         const TOTAL_TIME = 3600; 
         let remainingSeconds = TOTAL_TIME;
         let timerInterval = null;
+
+        function toggleInterstitialSetting() {
+            isInterstitialEnabled = !isInterstitialEnabled;
+            const btn = document.getElementById('interstitialToggleBtn');
+            if (isInterstitialEnabled) {
+                btn.classList.add('active');
+                btn.innerHTML = '<i class="fa-solid fa-film"></i> <span>বিরতি: ON</span>';
+            } else {
+                btn.classList.remove('active');
+                btn.innerHTML = '<i class="fa-solid fa-film"></i> <span>বিরতি: OFF</span>';
+            }
+        }
 
         function getDriveFileId(url) {
             const match = url.match(/\/d\/([^\/]+)/);
@@ -829,13 +905,24 @@
             return url;
         }
 
+        function preloadNextVideo(url) {
+            if (!nextVideoPreloader) {
+                nextVideoPreloader = document.createElement('video');
+                nextVideoPreloader.style.display = 'none';
+                nextVideoPreloader.preload = 'auto';
+                document.body.appendChild(nextVideoPreloader);
+            }
+            nextVideoPreloader.src = getDirectStreamUrl(url);
+            nextVideoPreloader.load();
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             renderGallery();
             renderSidebar();
             initTimer();
             updatePlayerTitleOnly(1);
 
-            // Initialize Plyr Video Player
+            // Initialize Plyr Video Player with Compact Controls
             plyrPlayer = new Plyr('#mainVideoPlayer', {
                 controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
                 ratio: '16:9'
@@ -851,22 +938,15 @@
         });
 
         function handleVideoEnded() {
-            if (!isInterstitialPlaying) {
-                // Main video finished -> Play Interstitial video
+            if (isInterstitialPlaying) {
+                // Intro video finished -> Instantly load requested main video
+                isInterstitialPlaying = false;
+                playMainVideoDirect(targetVideoId);
+            } else {
+                // Main video finished -> Play intro video before next main video
                 const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
                 let nextIdx = (currentIndex + 1) % pdfVideos.length;
-                targetNextVideoId = pdfVideos[nextIdx].id;
-                playInterstitial();
-            } else {
-                // Interstitial finished -> Play target main video
-                isInterstitialPlaying = false;
-                let nextId = targetNextVideoId;
-                targetNextVideoId = null;
-                if (nextId) {
-                    playVideo(nextId, true);
-                } else {
-                    playNextVideoDirect();
-                }
+                requestPlayVideo(pdfVideos[nextIdx].id, true);
             }
         }
 
@@ -883,9 +963,9 @@
             let currentUrl = isInterstitialPlaying ? INTERSTITIAL_VIDEO_URL : (pdfVideos.find(v => v.id === currentPlayingId)?.url || '');
             iframeElement.src = getEmbedUrl(currentUrl);
 
-            // Set fallback timeout for auto-next if iframe is active (since iframe cannot emit cross-domain 'ended' event easily)
+            // Set fallback timeout for auto-next if iframe is active
             clearNextTimeout();
-            let duration = isInterstitialPlaying ? 15000 : 180000; // default estimated duration if fallback occurs
+            let duration = isInterstitialPlaying ? 15000 : 180000; 
             autoNextTimer = setTimeout(() => {
                 handleVideoEnded();
             }, duration);
@@ -895,6 +975,7 @@
             const vid = pdfVideos.find(v => v.id === id);
             if (!vid) return;
             currentPlayingId = id;
+            targetVideoId = id;
             document.getElementById('currentVideoTitle').innerText = vid.title;
             const idx = pdfVideos.findIndex(v => v.id === id) + 1;
             document.getElementById('currentVideoIndex').innerText = `ভিডিও #${idx}`;
@@ -902,7 +983,7 @@
 
         function startPlayFromThumbnail() {
             document.getElementById('playerThumbnail').classList.add('hidden');
-            playVideo(currentPlayingId, false);
+            requestPlayVideo(currentPlayingId, false);
         }
 
         function renderGallery() {
@@ -911,10 +992,9 @@
 
             pdfVideos.forEach((vid) => {
                 const card = document.createElement('div');
-                card.className = `video-card ${vid.id === currentPlayingId ? 'active' : ''}`;
+                card.className = `video-card ${vid.id === targetVideoId ? 'active' : ''}`;
                 card.onclick = () => {
-                    isInterstitialPlaying = false;
-                    playVideo(vid.id, true);
+                    requestPlayVideo(vid.id, true);
                 };
 
                 card.innerHTML = `
@@ -944,10 +1024,9 @@
 
             pdfVideos.forEach((vid) => {
                 const sCard = document.createElement('div');
-                sCard.className = `sidebar-card ${vid.id === currentPlayingId ? 'active' : ''}`;
+                sCard.className = `sidebar-card ${vid.id === targetVideoId ? 'active' : ''}`;
                 sCard.onclick = () => {
-                    isInterstitialPlaying = false;
-                    playVideo(vid.id, true);
+                    requestPlayVideo(vid.id, true);
                 };
 
                 sCard.innerHTML = `
@@ -1012,48 +1091,28 @@
             }
         }
 
-        function playVideo(id, shouldScroll = true) {
+        // Requests to play a video
+        function requestPlayVideo(id, shouldScroll = true) {
             clearNextTimeout();
             const vid = pdfVideos.find(v => v.id === id);
             if (!vid) return;
 
-            isInterstitialPlaying = false;
-            currentPlayingId = id;
+            targetVideoId = id;
             document.getElementById('playerThumbnail').classList.add('hidden');
-
-            const videoElement = document.getElementById('mainVideoPlayer');
-            const iframeElement = document.getElementById('iframeVideoPlayer');
-            const plyrContainer = videoElement.closest('.plyr');
-
-            const directUrl = getDirectStreamUrl(vid.url);
-            
-            iframeElement.style.display = "none";
-            iframeElement.src = "";
-            if(plyrContainer) plyrContainer.style.display = "block";
-            videoElement.style.display = "block";
-            
-            videoElement.src = directUrl;
-            videoElement.load();
-            
-            const playPromise = videoElement.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    handleVideoError();
-                });
-            }
-
-            document.getElementById('currentVideoTitle').innerText = vid.title;
-            const idx = pdfVideos.findIndex(v => v.id === id) + 1;
-            document.getElementById('currentVideoIndex').innerText = `ভিডিও #${idx}`;
-
-            document.getElementById('prevBtn').disabled = (idx === 1);
-            document.getElementById('nextBtn').disabled = false;
 
             renderGallery();
             renderSidebar();
 
             if (shouldScroll) {
                 scrollToPlayer();
+            }
+
+            // Check if interstitial (birati) video is enabled
+            if (isInterstitialEnabled) {
+                preloadNextVideo(vid.url);
+                playInterstitial();
+            } else {
+                playMainVideoDirect(id);
             }
         }
 
@@ -1086,43 +1145,55 @@
             document.getElementById('currentVideoIndex').innerText = "বিরতি ভিডিও";
         }
 
-        function playNextVideo() {
+        function playMainVideoDirect(id) {
             clearNextTimeout();
-            if (isInterstitialPlaying) {
-                // If clicked 'Next' while interstitial is playing, skip directly to target next video
-                isInterstitialPlaying = false;
-                let nextId = targetNextVideoId;
-                targetNextVideoId = null;
-                if (nextId) {
-                    playVideo(nextId, true);
-                } else {
-                    playNextVideoDirect();
-                }
-            } else {
-                // If clicked 'Next' on normal video, trigger interstitial first then target next video
-                const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
-                let nextIdx = (currentIndex + 1) % pdfVideos.length;
-                targetNextVideoId = pdfVideos[nextIdx].id;
-                playInterstitial();
+            const vid = pdfVideos.find(v => v.id === id);
+            if (!vid) return;
+
+            isInterstitialPlaying = false;
+            currentPlayingId = id;
+
+            const videoElement = document.getElementById('mainVideoPlayer');
+            const iframeElement = document.getElementById('iframeVideoPlayer');
+            const plyrContainer = videoElement.closest('.plyr');
+
+            const directUrl = getDirectStreamUrl(vid.url);
+            
+            iframeElement.style.display = "none";
+            iframeElement.src = "";
+            if(plyrContainer) plyrContainer.style.display = "block";
+            videoElement.style.display = "block";
+            
+            videoElement.src = directUrl;
+            videoElement.load();
+            
+            const playPromise = videoElement.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    handleVideoError();
+                });
             }
+
+            document.getElementById('currentVideoTitle').innerText = vid.title;
+            const idx = pdfVideos.findIndex(v => v.id === id) + 1;
+            document.getElementById('currentVideoIndex').innerText = `ভিডিও #${idx}`;
+
+            document.getElementById('prevBtn').disabled = (idx === 1);
+            document.getElementById('nextBtn').disabled = false;
         }
 
-        function playNextVideoDirect() {
-            const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
+        function playNextVideo() {
+            clearNextTimeout();
+            const currentIndex = pdfVideos.findIndex(v => v.id === targetVideoId);
             let nextIdx = (currentIndex + 1) % pdfVideos.length;
-            playVideo(pdfVideos[nextIdx].id, true);
+            requestPlayVideo(pdfVideos[nextIdx].id, true);
         }
 
         function playPrevVideo() {
             clearNextTimeout();
-            if (isInterstitialPlaying) {
-                isInterstitialPlaying = false;
-                playVideo(currentPlayingId, true);
-            } else {
-                const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
-                if (currentIndex > 0) {
-                    playVideo(pdfVideos[currentIndex - 1].id, true);
-                }
+            const currentIndex = pdfVideos.findIndex(v => v.id === targetVideoId);
+            if (currentIndex > 0) {
+                requestPlayVideo(pdfVideos[currentIndex - 1].id, true);
             }
         }
 
@@ -1166,14 +1237,13 @@
             videoElement.src = '';
             document.getElementById('iframeVideoPlayer').src = '';
             isInterstitialPlaying = false;
-            targetNextVideoId = null;
         }
 
         function unlockTimer() {
             remainingSeconds = TOTAL_TIME;
             document.getElementById('timeLockOverlay').classList.remove('active');
             startTimer();
-            playVideo(currentPlayingId, true);
+            requestPlayVideo(targetVideoId, true);
         }
 
         function promptPinForAction(action, videoId = null) {
@@ -1227,11 +1297,12 @@
             if (index > -1) {
                 if(confirm(`আপনি কি নিশ্চিত "${pdfVideos[index].title}" ডিলিট করতে চান?`)) {
                     pdfVideos.splice(index, 1);
-                    if (currentPlayingId === id) {
-                        playVideo(pdfVideos[0].id, false);
+                    if (targetVideoId === id) {
+                        requestPlayVideo(pdfVideos[0].id, false);
+                    } else {
+                        renderGallery();
+                        renderSidebar();
                     }
-                    renderGallery();
-                    renderSidebar();
                     alert('ভিডিওটি সফলভাবে ডিলিট করা হয়েছে।');
                 }
             }
