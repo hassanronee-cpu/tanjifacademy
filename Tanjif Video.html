@@ -28,7 +28,7 @@
             --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
             --shadow-md: 0 10px 25px rgba(0,0,0,0.08);
             --radius: 16px;
-            --navbar-height: 60px;
+            --navbar-height: 42px;
 
             /* Custom Plyr Controls Scale Down */
             --plyr-control-icon-size: 13px;
@@ -107,29 +107,29 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
             flex-shrink: 0;
         }
 
         .logo-img {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
             object-fit: cover;
-            border: 2px solid var(--accent);
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+            border: 1.5px solid var(--accent);
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
             background: #0d9488;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-size: 1.1rem;
+            font-size: 0.85rem;
             flex-shrink: 0;
         }
 
         .logo-text {
-            font-size: 1.15rem;
+            font-size: 0.95rem;
             font-weight: 700;
             color: #0f172a;
             white-space: nowrap;
@@ -151,7 +151,7 @@
             padding: 0;
             border-radius: 30px;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
@@ -159,14 +159,14 @@
             gap: 4px;
             transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(13, 148, 136, 0.2);
-            width: 38px;
-            height: 34px;
+            width: 28px;
+            height: 28px;
             flex-shrink: 0;
         }
 
         .btn-nav:hover { 
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
         }
 
         .btn-nav:active { transform: scale(0.96); }
@@ -183,7 +183,7 @@
             border: 1px solid #cbd5e1;
             padding: 0;
             border-radius: 30px;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
@@ -191,8 +191,8 @@
             justify-content: center;
             transition: all 0.3s ease;
             user-select: none;
-            width: 38px;
-            height: 34px;
+            width: 28px;
+            height: 28px;
             flex-shrink: 0;
         }
 
@@ -204,15 +204,15 @@
 
         .timer-badge-header {
             background: #fef3c7;
-            padding: 4px 10px;
+            padding: 2px 8px;
             border-radius: 40px;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: #92400e;
             border: 1px solid #fcd34d;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             white-space: nowrap;
             flex-shrink: 0;
         }
@@ -278,6 +278,7 @@
         .video-container {
             position: relative;
             width: 100%;
+            padding-bottom: 59%;
             aspect-ratio: 16 / 9;
             overflow: hidden;
             border-radius: 12px;
@@ -434,7 +435,7 @@
             display: flex;
             flex-direction: column;
             height: 100%;
-            max-height: 500px;
+            max-height: 585px;
             min-height: 350px;
         }
 
@@ -660,13 +661,13 @@
 
         /* Mobile Adjustments for Topbar & Layout */
         @media (max-width: 768px) {
-            :root { --navbar-height: 55px; }
+            :root { --navbar-height: 40px; }
             body { padding-top: calc(var(--navbar-height) + 6px); }
             .container { padding: 0 0.5rem; }
-            .logo-text { font-size: 0.95rem; }
-            .logo-img { width: 32px; height: 32px; font-size: 0.9rem; }
-            .btn-nav, .interstitial-toggle-btn { width: 34px; height: 30px; font-size: 0.75rem; }
-            .timer-badge-header { font-size: 0.75rem; padding: 3px 8px; }
+            .logo-text { font-size: 0.88rem; }
+            .logo-img { width: 26px; height: 26px; font-size: 0.8rem; }
+            .btn-nav, .interstitial-toggle-btn { width: 26px; height: 26px; font-size: 0.7rem; }
+            .timer-badge-header { font-size: 0.7rem; padding: 2px 6px; }
             .player-wrapper { padding: 0.5rem; }
             .player-content-layout { gap: 6px; }
             .player-controls-sidebar { min-width: 65px; padding: 4px; gap: 4px; }
@@ -899,6 +900,7 @@
 
         // Interstitial state handling
         let isInterstitialPlaying = false;
+        let interstitialSafetyTimer = null;
 
         const TOTAL_TIME = 3600; 
         let remainingSeconds = TOTAL_TIME;
@@ -1053,11 +1055,14 @@
         });
 
         function handleVideoEnded() {
+            if (interstitialSafetyTimer) {
+                clearTimeout(interstitialSafetyTimer);
+                interstitialSafetyTimer = null;
+            }
             if (isInterstitialPlaying) {
                 isInterstitialPlaying = false;
                 playMainVideoDirect(targetVideoId);
             }
-            // স্বয়ংক্রিয়ভাবে পরবর্তী ভিডিও প্লে হওয়া বন্ধ করা হয়েছে
         }
 
         function handleVideoError() {
@@ -1065,15 +1070,32 @@
             const iframeElement = document.getElementById('iframeVideoPlayer');
             const plyrContainer = videoElement.closest('.plyr');
 
+            if (isInterstitialPlaying) {
+                // বিরতি ভিডিওতে ত্রুটি দেখা দিলে সরাসরি স্কিপ না করে আইফ্রেম ব্যবহার করে সুন্দরভাবে ভিডিওটি প্লে করবে
+                if (plyrContainer) plyrContainer.style.display = "none";
+                videoElement.style.display = "none";
+                iframeElement.style.display = "block";
+                iframeElement.src = getEmbedUrl(INTERSTITIAL_VIDEO_URL);
+
+                if (interstitialSafetyTimer) clearTimeout(interstitialSafetyTimer);
+                // বিরতি ভিডিও শেষ হলে মূল ভিডিওতে নেওয়ার জন্য ব্যাকআপ টাইমার
+                interstitialSafetyTimer = setTimeout(() => {
+                    if (isInterstitialPlaying) {
+                        isInterstitialPlaying = false;
+                        playMainVideoDirect(targetVideoId);
+                    }
+                }, 12000); // ১২ সেকেন্ড ব্যাকআপ সময়সূচি
+                return;
+            }
+
             if(plyrContainer) plyrContainer.style.display = "none";
             videoElement.style.display = "none";
             iframeElement.style.display = "block";
 
-            let currentUrl = isInterstitialPlaying ? INTERSTITIAL_VIDEO_URL : (pdfVideos.find(v => v.id === currentPlayingId)?.url || '');
+            let currentUrl = pdfVideos.find(v => v.id === currentPlayingId)?.url || '';
             iframeElement.src = getEmbedUrl(currentUrl);
 
             clearNextTimeout();
-            // অটো টাইমার ও স্বয়ংক্রিয় প্লে রিমুভ করা হয়েছে
         }
 
         function updatePlayerTitleOnly(id) {
@@ -1153,6 +1175,10 @@
             if (autoNextTimer) {
                 clearTimeout(autoNextTimer);
                 autoNextTimer = null;
+            }
+            if (interstitialSafetyTimer) {
+                clearTimeout(interstitialSafetyTimer);
+                interstitialSafetyTimer = null;
             }
         }
 
@@ -1255,6 +1281,7 @@
 
             isInterstitialPlaying = false;
             currentPlayingId = id;
+            targetVideoId = id;
 
             const videoElement = document.getElementById('mainVideoPlayer');
             const iframeElement = document.getElementById('iframeVideoPlayer');
@@ -1302,7 +1329,7 @@
 
         function scrollToPlayer() {
             const playerHero = document.getElementById('playerHero');
-            const navbarHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 60;
+            const navbarHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 42;
             const yOffset = -(navbarHeight + 10); 
             const y = playerHero.getBoundingClientRect().top + window.pageYOffset + yOffset;
             window.scrollTo({ top: y, behavior: 'smooth' });
