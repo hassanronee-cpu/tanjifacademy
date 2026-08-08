@@ -24,7 +24,7 @@
             --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
             --shadow-lg: 0 20px 40px rgba(13, 148, 136, 0.15);
             --radius: 16px;
-            --nav-height: 64px;
+            --nav-height: 48px;
         }
 
         * {
@@ -89,7 +89,7 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
             cursor: pointer;
             flex-shrink: 0;
@@ -99,8 +99,8 @@
             filter: drop-shadow(0 0 8px rgba(13, 148, 136, 0.6));
             animation: pulseGlow 3s infinite alternate;
             flex-shrink: 0;
-            width: 36px;
-            height: 36px;
+            width: 28px;
+            height: 28px;
         }
 
         @keyframes pulseGlow {
@@ -109,7 +109,7 @@
         }
 
         .logo-text {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #ffffff;
             letter-spacing: -0.5px;
@@ -122,7 +122,7 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1.2rem;
             list-style: none;
             margin: 0 auto;
         }
@@ -131,7 +131,7 @@
             text-decoration: none;
             color: #cbd5e1;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             transition: color 0.3s;
             white-space: nowrap;
         }
@@ -148,9 +148,9 @@
             background: rgba(255,255,255,0.08);
             border: none;
             color: #cbd5e1;
-            font-size: 1.5rem;
-            padding: 4px 10px;
-            border-radius: 8px;
+            font-size: 1.2rem;
+            padding: 2px 8px;
+            border-radius: 6px;
             cursor: pointer;
             transition: 0.2s;
             display: flex;
@@ -166,7 +166,7 @@
             display: none;
             position: absolute;
             right: 0;
-            top: 45px;
+            top: 38px;
             background: #1e293b;
             min-width: 200px;
             border-radius: 12px;
@@ -214,17 +214,17 @@
         .kids-corner-nav-btn {
             background: linear-gradient(135deg, #ff7675 0%, #fd79a8 100%);
             color: #ffffff !important;
-            padding: 0.3rem 1rem;
+            padding: 0.2rem 0.8rem;
             border-radius: 20px;
             font-weight: 700 !important;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             box-shadow: 0 4px 12px rgba(253, 121, 168, 0.4);
             transition: all 0.3s ease !important;
             cursor: pointer;
             border: none;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         .kids-corner-nav-btn:hover {
             transform: scale(1.05);
@@ -235,9 +235,9 @@
         .nav-user-profile {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             background: rgba(255,255,255,0.08);
-            padding: 2px 10px;
+            padding: 2px 8px;
             border-radius: 30px;
             border: 1px solid rgba(255,255,255,0.15);
             color: #fff;
@@ -247,7 +247,7 @@
 
         .user-badge {
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #5eead4;
             display: flex;
             align-items: center;
@@ -258,22 +258,22 @@
         .btn-auth {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: #fff !important;
-            padding: 0.4rem 1rem;
+            padding: 0.25rem 0.8rem;
             border-radius: 30px;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);
             transition: all 0.3s ease;
             cursor: pointer;
             border: none;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             white-space: nowrap;
         }
 
         .btn-auth:hover {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
             box-shadow: 0 6px 22px rgba(13, 148, 136, 0.6);
         }
 
@@ -281,10 +281,10 @@
             background: #ef4444;
             color: #fff;
             border: none;
-            padding: 3px 8px;
-            border-radius: 15px;
+            padding: 2px 7px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             cursor: pointer;
             transition: 0.2s;
             display: inline-flex;
@@ -299,10 +299,10 @@
             background: #6366f1;
             color: #fff;
             border: none;
-            padding: 3px 8px;
-            border-radius: 15px;
+            padding: 2px 7px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             cursor: pointer;
             transition: 0.2s;
             display: none;
@@ -440,7 +440,6 @@
             text-align: center;
         }
 
-        /* বাকি সব স্টাইল পূর্বের মতোই থাকবে, শুধু প্রয়োজনীয় অংশ সংযোজিত */
         .embedded-page-overlay {
             position: fixed;
             top: var(--nav-height);
@@ -476,22 +475,22 @@
             .hero h1 { font-size: 2.2rem; }
             .hero p { margin-left: auto; margin-right: auto; }
             .hero-btns { justify-content: center; }
-            .logo-text { font-size: 1.1rem; }
+            .logo-text { font-size: 1rem; }
         }
 
         @media(max-width: 600px) {
             body { padding-top: var(--nav-height); }
-            :root { --nav-height: 58px; }
+            :root { --nav-height: 44px; }
             .navbar { height: var(--nav-height); }
-            .nav-container { padding: 0 0.8rem; }
-            .logo-svg { width: 30px; height: 30px; }
-            .logo-text { font-size: 1rem; }
-            .btn-auth { padding: 0.3rem 0.7rem; font-size: 0.7rem; }
-            .nav-user-profile { padding: 2px 6px; gap: 3px; }
-            .user-badge { font-size: 0.7rem; }
-            .btn-logout, .btn-close-view { padding: 2px 6px; font-size: 0.65rem; }
-            .nav-dropdown-btn { font-size: 1.3rem; padding: 2px 8px; }
-            .nav-dropdown-content { right: -10px; min-width: 170px; }
+            .nav-container { padding: 0 0.6rem; }
+            .logo-svg { width: 24px; height: 24px; }
+            .logo-text { font-size: 0.92rem; }
+            .btn-auth { padding: 0.2rem 0.6rem; font-size: 0.68rem; }
+            .nav-user-profile { padding: 2px 5px; gap: 3px; }
+            .user-badge { font-size: 0.68rem; }
+            .btn-logout, .btn-close-view { padding: 2px 5px; font-size: 0.6rem; }
+            .nav-dropdown-btn { font-size: 1.1rem; padding: 2px 6px; }
+            .nav-dropdown-content { right: -5px; min-width: 160px; top: 34px; }
             .embedded-page-overlay { top: var(--nav-height); height: calc(100vh - var(--nav-height)); }
             .kids-modal-grid { grid-template-columns: repeat(2, 1fr); }
         }
@@ -543,7 +542,6 @@
             color: #2d3436;
         }
 
-        /* বাকি স্টাইল পূর্বের মতো */
         .stats-section { background: var(--surface); padding: 3rem 1.5rem; border-bottom: 1px solid #e2e8f0; }
         .stats-container { max-width: 1240px; margin: 0 auto; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; text-align: center; }
