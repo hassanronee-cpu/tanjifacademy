@@ -1056,11 +1056,8 @@
             if (isInterstitialPlaying) {
                 isInterstitialPlaying = false;
                 playMainVideoDirect(targetVideoId);
-            } else {
-                const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
-                let nextIdx = (currentIndex + 1) % pdfVideos.length;
-                requestPlayVideo(pdfVideos[nextIdx].id, true);
             }
+            // স্বয়ংক্রিয়ভাবে পরবর্তী ভিডিও প্লে হওয়া বন্ধ করা হয়েছে
         }
 
         function handleVideoError() {
@@ -1076,10 +1073,7 @@
             iframeElement.src = getEmbedUrl(currentUrl);
 
             clearNextTimeout();
-            let duration = isInterstitialPlaying ? 15000 : 180000; 
-            autoNextTimer = setTimeout(() => {
-                handleVideoEnded();
-            }, duration);
+            // অটো টাইমার ও স্বয়ংক্রিয় প্লে রিমুভ করা হয়েছে
         }
 
         function updatePlayerTitleOnly(id) {
