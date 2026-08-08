@@ -1,4 +1,4 @@
-"""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
@@ -755,12 +755,8 @@
     <script>
         const SECRET_PIN = "0000";
 
-        // Short Interstitial Video details
-        const INTERSTITIAL_VIDEO = {
-            id: 'short_promo',
-            title: "তানজিফ এর পরের ভিডিও আসছে...",
-            url: "https://drive.google.com/file/d/1q3PpYkz1SHYWhMG-lPKz7Qr2oh_E2g0H/preview"
-        };
+        // ছোট্ট ভিডিওর লিংক যা প্রতিটি ভিডিওর মাঝে চালানো হবে
+        const INTERSTITIAL_VIDEO_URL = "https://drive.google.com/file/d/1q3PpYkz1SHYWhMG-lPKz7Qr2oh_E2g0H/preview";
 
         let pdfVideos = [
             { id: 1, title: "হ্যা মেলিন-এর বাঁশিওয়ালা (Pied Piper Of Hamelin)", url: "https://drive.google.com/file/d/1bVoW42po-_RuIDYvTSL7GqYEa5VcjbJb/preview" },
@@ -791,12 +787,14 @@
         ];
 
         let currentPlayingId = 1;
-        let nextTargetId = null; // Tracks which main video to play after short promo
-        let isPlayingInterstitial = false;
         let nextId = 26;
         let pendingAction = null;
         let autoNextTimer = null;
         let plyrPlayer = null;
+
+        // Interstitial state handling
+        let isInterstitialPlaying = false;
+        let targetNextVideoId = null;
 
         const TOTAL_TIME = 3600; 
         let remainingSeconds = TOTAL_TIME;
@@ -823,23 +821,75 @@
             return url;
         }
 
+        function getEmbedUrl(url) {
+            const id = getDriveFileId(url);
+            if (id) {
+                return `https://drive.google.com/file/d/${id}/preview?autoplay=1`;
+            }
+            return url;
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             renderGallery();
             renderSidebar();
             initTimer();
             updatePlayerTitleOnly(1);
 
-            // Initialize Plyr Video Player for modern interactive look
+            // Initialize Plyr Video Player
             plyrPlayer = new Plyr('#mainVideoPlayer', {
                 controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
                 ratio: '16:9'
             });
 
             const videoElement = document.getElementById('mainVideoPlayer');
-            videoElement.addEventListener('ended', () => {
-                onVideoEnded();
-            });
+            
+            // Video ended event listener
+            videoElement.addEventListener('ended', handleVideoEnded);
+            
+            // Safety error handler for direct stream CORS/quota limits
+            videoElement.addEventListener('error', handleVideoError);
         });
+
+        function handleVideoEnded() {
+            if (!isInterstitialPlaying) {
+                // Main video finished -> Play Interstitial video
+                const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
+                let nextIdx = (currentIndex + 1) % pdfVideos.length;
+                targetNextVideoId = pdfVideos[nextIdx].id;
+                playInterstitial();
+            } else {
+                // Interstitial finished -> Play target main video
+                isInterstitialPlaying = false;
+                let nextId = targetNextVideoId;
+                targetNextVideoId = null;
+                if (nextId) {
+                    playVideo(nextId, true);
+                } else {
+                    playNextVideoDirect();
+                }
+            }
+        }
+
+        function handleVideoError() {
+            // Switch fallback to iframe embed if direct HTML5 stream fails
+            const videoElement = document.getElementById('mainVideoPlayer');
+            const iframeElement = document.getElementById('iframeVideoPlayer');
+            const plyrContainer = videoElement.closest('.plyr');
+
+            if(plyrContainer) plyrContainer.style.display = "none";
+            videoElement.style.display = "none";
+            iframeElement.style.display = "block";
+
+            let currentUrl = isInterstitialPlaying ? INTERSTITIAL_VIDEO_URL : (pdfVideos.find(v => v.id === currentPlayingId)?.url || '');
+            iframeElement.src = getEmbedUrl(currentUrl);
+
+            // Set fallback timeout for auto-next if iframe is active (since iframe cannot emit cross-domain 'ended' event easily)
+            clearNextTimeout();
+            let duration = isInterstitialPlaying ? 15000 : 180000; // default estimated duration if fallback occurs
+            autoNextTimer = setTimeout(() => {
+                handleVideoEnded();
+            }, duration);
+        }
 
         function updatePlayerTitleOnly(id) {
             const vid = pdfVideos.find(v => v.id === id);
@@ -862,7 +912,10 @@
             pdfVideos.forEach((vid) => {
                 const card = document.createElement('div');
                 card.className = `video-card ${vid.id === currentPlayingId ? 'active' : ''}`;
-                card.onclick = () => playVideo(vid.id, true);
+                card.onclick = () => {
+                    isInterstitialPlaying = false;
+                    playVideo(vid.id, true);
+                };
 
                 card.innerHTML = `
                     <div class="thumb-box">
@@ -892,7 +945,10 @@
             pdfVideos.forEach((vid) => {
                 const sCard = document.createElement('div');
                 sCard.className = `sidebar-card ${vid.id === currentPlayingId ? 'active' : ''}`;
-                sCard.onclick = () => playVideo(vid.id, true);
+                sCard.onclick = () => {
+                    isInterstitialPlaying = false;
+                    playVideo(vid.id, true);
+                };
 
                 sCard.innerHTML = `
                     <div class="sidebar-thumb">
@@ -951,18 +1007,25 @@
                     videoElement.pause();
                 }
             } else if (iframeElement.style.display !== 'none') {
-                // For embedded drive iframe pause fallback
                 let src = iframeElement.src;
                 iframeElement.src = src.replace('&autoplay=1', '').replace('?autoplay=1', '');
             }
         }
 
-        function loadVideoSource(vidObj) {
+        function playVideo(id, shouldScroll = true) {
+            clearNextTimeout();
+            const vid = pdfVideos.find(v => v.id === id);
+            if (!vid) return;
+
+            isInterstitialPlaying = false;
+            currentPlayingId = id;
+            document.getElementById('playerThumbnail').classList.add('hidden');
+
             const videoElement = document.getElementById('mainVideoPlayer');
             const iframeElement = document.getElementById('iframeVideoPlayer');
             const plyrContainer = videoElement.closest('.plyr');
 
-            const directUrl = getDirectStreamUrl(vidObj.url);
+            const directUrl = getDirectStreamUrl(vid.url);
             
             iframeElement.style.display = "none";
             iframeElement.src = "";
@@ -975,105 +1038,100 @@
             const playPromise = videoElement.play();
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    // Fallback to embedded Google Drive preview iframe if direct playback is limited
-                    if(plyrContainer) plyrContainer.style.display = "none";
-                    videoElement.style.display = "none";
-                    iframeElement.style.display = "block";
-                    let embedUrl = vidObj.url;
-                    if (!embedUrl.includes('autoplay=1')) {
-                        embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
-                    }
-                    iframeElement.src = embedUrl;
+                    handleVideoError();
                 });
             }
-        }
-
-        function playVideo(id, shouldScroll = true) {
-            clearNextTimeout();
-            isPlayingInterstitial = false;
-            nextTargetId = null;
-
-            const vid = pdfVideos.find(v => v.id === id);
-            if (!vid) return;
-
-            currentPlayingId = id;
-            document.getElementById('playerThumbnail').classList.add('hidden');
-
-            loadVideoSource(vid);
 
             document.getElementById('currentVideoTitle').innerText = vid.title;
             const idx = pdfVideos.findIndex(v => v.id === id) + 1;
             document.getElementById('currentVideoIndex').innerText = `ভিডিও #${idx}`;
 
             document.getElementById('prevBtn').disabled = (idx === 1);
-            document.getElementById('nextBtn').disabled = (idx === pdfVideos.length);
+            document.getElementById('nextBtn').disabled = false;
 
             renderGallery();
             renderSidebar();
 
             if (shouldScroll) {
-                const playerHero = document.getElementById('playerHero');
-                const navbarHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 60;
-                const yOffset = -(navbarHeight + 10); 
-                const y = playerHero.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                window.scrollTo({ top: y, behavior: 'smooth' });
+                scrollToPlayer();
             }
         }
 
-        function playInterstitial(targetNextId) {
+        function playInterstitial() {
             clearNextTimeout();
-            isPlayingInterstitial = true;
-            nextTargetId = targetNextId;
+            isInterstitialPlaying = true;
 
-            document.getElementById('playerThumbnail').classList.add('hidden');
-            document.getElementById('currentVideoTitle').innerText = INTERSTITIAL_VIDEO.title;
-            document.getElementById('currentVideoIndex').innerText = "বিজ্ঞপ্তি 🎬";
+            const videoElement = document.getElementById('mainVideoPlayer');
+            const iframeElement = document.getElementById('iframeVideoPlayer');
+            const plyrContainer = videoElement.closest('.plyr');
 
-            loadVideoSource(INTERSTITIAL_VIDEO);
-        }
-
-        function onVideoEnded() {
-            if (isPlayingInterstitial) {
-                // Short video finished, now play the next main video
-                isPlayingInterstitial = false;
-                if (nextTargetId !== null) {
-                    const target = nextTargetId;
-                    nextTargetId = null;
-                    playVideo(target, true);
-                } else {
-                    playNextVideo();
-                }
-            } else {
-                // Main video finished, compute next main video ID and show interstitial
-                const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
-                let nextMainId;
-                if (currentIndex < pdfVideos.length - 1) {
-                    nextMainId = pdfVideos[currentIndex + 1].id;
-                } else {
-                    nextMainId = pdfVideos[0].id;
-                }
-                playInterstitial(nextMainId);
+            const directUrl = getDirectStreamUrl(INTERSTITIAL_VIDEO_URL);
+            
+            iframeElement.style.display = "none";
+            iframeElement.src = "";
+            if(plyrContainer) plyrContainer.style.display = "block";
+            videoElement.style.display = "block";
+            
+            videoElement.src = directUrl;
+            videoElement.load();
+            
+            const playPromise = videoElement.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    handleVideoError();
+                });
             }
+
+            document.getElementById('currentVideoTitle').innerText = "🎬 তানজিফের ছোট্ট বিশেষ ভিডিও!";
+            document.getElementById('currentVideoIndex').innerText = "বিরতি ভিডিও";
         }
 
         function playNextVideo() {
             clearNextTimeout();
-            const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
-            let nextMainId;
-            if (currentIndex < pdfVideos.length - 1) {
-                nextMainId = pdfVideos[currentIndex + 1].id;
+            if (isInterstitialPlaying) {
+                // If clicked 'Next' while interstitial is playing, skip directly to target next video
+                isInterstitialPlaying = false;
+                let nextId = targetNextVideoId;
+                targetNextVideoId = null;
+                if (nextId) {
+                    playVideo(nextId, true);
+                } else {
+                    playNextVideoDirect();
+                }
             } else {
-                nextMainId = pdfVideos[0].id;
+                // If clicked 'Next' on normal video, trigger interstitial first then target next video
+                const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
+                let nextIdx = (currentIndex + 1) % pdfVideos.length;
+                targetNextVideoId = pdfVideos[nextIdx].id;
+                playInterstitial();
             }
-            playInterstitial(nextMainId);
+        }
+
+        function playNextVideoDirect() {
+            const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
+            let nextIdx = (currentIndex + 1) % pdfVideos.length;
+            playVideo(pdfVideos[nextIdx].id, true);
         }
 
         function playPrevVideo() {
             clearNextTimeout();
-            const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
-            if (currentIndex > 0) {
-                playVideo(pdfVideos[currentIndex - 1].id, true);
+            if (isInterstitialPlaying) {
+                isInterstitialPlaying = false;
+                playVideo(currentPlayingId, true);
+            } else {
+                const currentIndex = pdfVideos.findIndex(v => v.id === currentPlayingId);
+                if (currentIndex > 0) {
+                    playVideo(pdfVideos[currentIndex - 1].id, true);
+                }
             }
+        }
+
+        function scrollToPlayer() {
+            const playerHero = document.getElementById('playerHero');
+            const navbarHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 60;
+            const yOffset = -(navbarHeight + 10); 
+            const y = playerHero.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
         }
 
         function initTimer() {
@@ -1107,6 +1165,8 @@
             videoElement.pause();
             videoElement.src = '';
             document.getElementById('iframeVideoPlayer').src = '';
+            isInterstitialPlaying = false;
+            targetNextVideoId = null;
         }
 
         function unlockTimer() {
