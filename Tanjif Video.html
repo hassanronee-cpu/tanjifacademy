@@ -11,6 +11,8 @@
     
     <!-- Plyr Player CSS -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <!-- SheetJS for Excel parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
         :root {
@@ -150,9 +152,12 @@
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(13, 148, 136, 0.2);
+            width: 62px;
+            height: 36px;
         }
 
         .btn-nav:hover { 
@@ -162,21 +167,33 @@
 
         .btn-nav:active { transform: scale(0.96); }
 
+        .btn-download {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-download:hover {
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+        }
+
         /* Interstitial Video Toggle Control */
         .interstitial-toggle-btn {
             background: #e2e8f0;
             color: #334155;
             border: 1px solid #cbd5e1;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
             transition: all 0.3s ease;
             user-select: none;
+            width: 62px;
+            height: 36px;
         }
 
         .interstitial-toggle-btn.active {
@@ -607,7 +624,7 @@
         }
 
         .modal-card {
-            background: var(--surface); width: 90%; max-width: 400px; border-radius: 20px; padding: 1.8rem; position: relative;
+            background: var(--surface); width: 90%; max-width: 420px; border-radius: 20px; padding: 1.8rem; position: relative;
         }
 
         .modal-close {
@@ -620,6 +637,47 @@
 
         .btn-submit { width: 100%; padding: 10px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
 
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background: #f1f5f9;
+            color: var(--text-muted);
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .excel-upload-zone {
+            border: 2px dashed #0d9488;
+            background: #f0fdf4;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 1rem;
+        }
+
+        .excel-upload-zone:hover {
+            background: #dcfce7;
+        }
+
         @media (max-width: 768px) {
             :root { --navbar-height: 60px; }
             body { padding-top: calc(var(--navbar-height) + 4px); }
@@ -630,7 +688,7 @@
                 gap: 4px 10px;
             }
             .logo-text { font-size: 1.1rem; }
-            .btn-nav { padding: 6px 12px; font-size: 0.75rem; }
+            .btn-nav, .interstitial-toggle-btn { width: 50px; height: 32px; padding: 4px 8px; font-size: 0.75rem; }
             .logo-img { width: 36px; height: 36px; font-size: 1rem; }
             .timer-badge-header { font-size: 0.8rem; padding: 4px 12px; }
             .video-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
@@ -649,8 +707,7 @@
             body { padding-top: calc(var(--navbar-height) + 4px); }
             .nav-container { gap: 2px 6px; padding: 0 0.5rem; }
             .nav-controls { gap: 4px; }
-            .btn-nav { padding: 4px 8px; font-size: 0.7rem; }
-            .interstitial-toggle-btn { font-size: 0.68rem; padding: 3px 6px; }
+            .btn-nav, .interstitial-toggle-btn { width: 44px; height: 30px; padding: 2px 6px; font-size: 0.7rem; }
             .logo-text { font-size: 1rem; }
             .timer-badge-header { font-size: 0.7rem; padding: 3px 8px; }
             .sidebar-thumb { width: 95px; height: 58px; }
@@ -688,6 +745,9 @@
             <div class="nav-controls">
                 <button class="btn-nav" onclick="promptPinForAction('add_video')">
                     <i class="fa-solid fa-plus"></i>
+                </button>
+                <button class="btn-nav btn-download" onclick="downloadUpdatedHTML()" title="আপডেটেড ফাইল ডাউনলোড করুন">
+                    <i class="fa-solid fa-download"></i>
                 </button>
                 <button class="btn-nav" onclick="promptPinForAction('unlock_timer')">
                     <i class="fa-solid fa-key"></i>
@@ -775,9 +835,16 @@
         <div class="modal-card">
             <button class="modal-close" onclick="closeModal('addVideoModal')"><i class="fa-solid fa-xmark"></i></button>
             <div style="text-align: center; margin-bottom: 1rem;">
-                <h3 style="font-size: 1.2rem; color: var(--secondary);">নতুন ভিডিও যুক্ত করুন</h3>
+                <h3 style="font-size: 1.2rem; color: var(--secondary);">ভিডিও যুক্ত করুন</h3>
             </div>
-            <form onsubmit="handleAddVideo(event)">
+
+            <div class="tab-buttons">
+                <button class="tab-btn active" id="tabSingleBtn" onclick="switchAddTab('single')"><i class="fa-solid fa-plus"></i> একক আপলোড</button>
+                <button class="tab-btn" id="tabBulkBtn" onclick="switchAddTab('bulk')"><i class="fa-solid fa-file-excel"></i> বাল্ক (Excel)</button>
+            </div>
+
+            <!-- Single Video Form -->
+            <form id="singleVideoForm" onsubmit="handleAddVideo(event)">
                 <div class="form-group">
                     <label>ভিডিওর শিরোনাম</label>
                     <input type="text" class="form-control" id="newVideoTitle" placeholder="ভিডিওর নাম লিখুন" required>
@@ -788,6 +855,17 @@
                 </div>
                 <button type="submit" class="btn-submit">ভিডিও যুক্ত করুন</button>
             </form>
+
+            <!-- Bulk Excel Upload Form -->
+            <div id="bulkVideoForm" style="display: none;">
+                <div class="excel-upload-zone" onclick="document.getElementById('excelFileInput').click()">
+                    <i class="fa-solid fa-file-circle-plus" style="font-size: 2.2rem; color: var(--primary); margin-bottom: 8px;"></i>
+                    <p style="font-weight: 700; color: var(--secondary); font-size: 0.95rem;">এক্সেল (.xlsx, .xls, .csv) ফাইল বাছাই করুন</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">কলাম ১: ভিডিও শিরোনাম | কলাম ২: ভিডিও লিংক</p>
+                    <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display: none;" onchange="handleExcelUpload(event)">
+                </div>
+                <p style="font-size: 0.8rem; color: #64748b; text-align: center;">পরামর্শ: আপলোড শেষে ওপরের ডাউনলোড বাটন দিয়ে ফাইলটি সেভ করে রাখুন।</p>
+            </div>
         </div>
     </div>
 
@@ -863,15 +941,105 @@
         let remainingSeconds = TOTAL_TIME;
         let timerInterval = null;
 
+        function switchAddTab(tab) {
+            const singleForm = document.getElementById('singleVideoForm');
+            const bulkForm = document.getElementById('bulkVideoForm');
+            const singleBtn = document.getElementById('tabSingleBtn');
+            const bulkBtn = document.getElementById('tabBulkBtn');
+
+            if (tab === 'single') {
+                singleForm.style.display = 'block';
+                bulkForm.style.display = 'none';
+                singleBtn.classList.add('active');
+                bulkBtn.classList.remove('active');
+            } else {
+                singleForm.style.display = 'none';
+                bulkForm.style.display = 'block';
+                singleBtn.classList.remove('active');
+                bulkBtn.classList.add('active');
+            }
+        }
+
+        function handleExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                    let addedCount = 0;
+
+                    rows.forEach((row) => {
+                        if (row && row.length >= 2) {
+                            const title = String(row[0]).trim();
+                            const url = String(row[1]).trim();
+
+                            // Filter out headers or empty cells
+                            if (title && url && url.startsWith('http') && !title.toLowerCase().includes('title') && !title.toLowerCase().includes('শিরোনাম')) {
+                                pdfVideos.push({ id: nextId++, title: title, url: url });
+                                addedCount++;
+                            }
+                        }
+                    });
+
+                    if (addedCount > 0) {
+                        closeModal('addVideoModal');
+                        renderGallery();
+                        renderSidebar();
+                        alert(`সফলভাবে ${addedCount} টি ভিডিও বাল্ক আপলোড করা হয়েছে!
+এখন ডাউনলোড বাটন দিয়ে ফাইলটি সেভ করে রাখতে পারেন।`);
+                    } else {
+                        alert('এক্সেল ফাইল থেকে কোনো বৈধ ভিডিও ডাটা পাওয়া যায়নি। অনুগ্রহ করে প্রথম কলামে ভিডিও শিরোনাম এবং দ্বিতীয় কলামে লিঙ্ক নিশ্চিত করুন।');
+                    }
+                } catch (err) {
+                    alert('এক্সেল ফাইল রিড করতে সমস্যা হয়েছে: ' + err.message);
+                }
+                e.target.value = '';
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function downloadUpdatedHTML() {
+            // Clone document clone to prepare exact current HTML snapshot
+            let fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+
+            // Replace the pdfVideos array in HTML string with the current pdfVideos JSON data
+            const videosJson = JSON.stringify(pdfVideos, null, 12);
+
+            // Pattern replacement for pdfVideos = [...]
+            fullHtml = fullHtml.replace(/let pdfVideos = \[[\s\S]*?\];/, `let pdfVideos = ${videosJson};`);
+
+            // Clean up any temporary UI states or open modals in saved file
+            fullHtml = fullHtml.replace(/display:\s*flex;?/g, function(match, offset, str) {
+                // If inside modal style active, keep default hidden
+                return match;
+            });
+
+            const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'Tanjif_Video_Hub.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+        }
+
         function toggleInterstitialSetting() {
             isInterstitialEnabled = !isInterstitialEnabled;
             const btn = document.getElementById('interstitialToggleBtn');
             if (isInterstitialEnabled) {
                 btn.classList.add('active');
-                btn.innerHTML = '<i class="fa-solid fa-film"></i> <span>অন</span>';
+                btn.innerHTML = '<i class="fa-solid fa-film"></i>';
             } else {
                 btn.classList.remove('active');
-                btn.innerHTML = '<i class="fa-solid fa-film"></i> <span>অফ</span>';
+                btn.innerHTML = '<i class="fa-solid fa-film"></i>';
             }
         }
 
@@ -916,10 +1084,16 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            // Find highest current video id to update nextId
+            if (pdfVideos && pdfVideos.length > 0) {
+                const maxId = Math.max(...pdfVideos.map(v => v.id));
+                nextId = maxId + 1;
+            }
+
             renderGallery();
             renderSidebar();
             initTimer();
-            updatePlayerTitleOnly(1);
+            updatePlayerTitleOnly(pdfVideos[0] ? pdfVideos[0].id : 1);
 
             // Initialize Plyr Video Player with Compact Controls
             plyrPlayer = new Plyr('#mainVideoPlayer', {
@@ -1266,7 +1440,7 @@
                 }
                 pendingAction = null;
             } else {
-                alert('ভুল পিন দিয়েছেন! সঠিক পিন হলো: ' + SECRET_PIN);
+                alert('ভুল পিন দিয়েছেন!);
             }
         }
 
