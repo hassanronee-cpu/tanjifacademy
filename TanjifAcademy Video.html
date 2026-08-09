@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
@@ -13,13 +13,11 @@
   <!-- YouTube IFrame Player API -->
   <script src="https://www.youtube.com/iframe_api"></script>
 
-
   <script>
     tailwind.config = {
       darkMode: 'class',
     }
   </script>
-
 
   <style>
     body {
@@ -43,7 +41,6 @@
 </head>
 <body class="min-h-screen flex flex-col bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100">
 
-
   <!-- Header Section -->
   <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 shadow-md transition-colors">
     <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-4">
@@ -59,14 +56,12 @@
         </div>
       </div>
 
-
       <div class="flex items-center gap-3 flex-wrap">
         <!-- Theme Toggle Button -->
         <button id="themeToggleBtn" onclick="toggleTheme()" class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-700 px-3 py-2 rounded-lg font-medium transition flex items-center gap-2 text-sm shadow-sm" title="লাইটিং / ডার্ক মোড পরিবর্তন">
           <i id="themeIcon" class="fa-solid fa-moon text-indigo-500 dark:text-yellow-400"></i>
           <span id="themeText" class="hidden sm:inline">ডার্ক মোড</span>
         </button>
-
 
         <!-- Dynamic Controls (Only visible in original master page) -->
         <!-- ENABLE_CONTROLS_START -->
@@ -80,7 +75,6 @@
       </div>
     </div>
   </header>
-
 
   <!-- Main Content Area -->
   <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
@@ -96,9 +90,8 @@
             
             <!-- Ad Overlay Indicator -->
             <div id="adNotice" class="hidden absolute top-4 left-4 bg-red-600 text-white text-xs px-3 py-1.5 rounded-md font-semibold shadow-lg flex items-center gap-2 z-10 animate-pulse">
-              <i class="fa-solid fa-bullhorn"></i> বিজ্ঞপ্তি ভিডিও প্লে হচ্ছে...
+              <i class="fa-solid fa-bullhorn"></i>
             </div>
-
 
             <div id="playerPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900 text-slate-400 p-4 text-center">
               <i class="fa-brands fa-youtube text-6xl text-red-600 mb-3 animate-pulse"></i>
@@ -106,7 +99,6 @@
               <p class="text-xs text-slate-400 mt-1">প্লেলিস্ট থেকে যেকোনো ভিডিও বেছে নিন</p>
             </div>
           </div>
-
 
           <!-- Video Details & Player Custom Controls -->
           <div class="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 transition-colors">
@@ -118,18 +110,17 @@
               <div class="flex flex-wrap items-center gap-4">
                 <label class="flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-white transition">
                   <input type="checkbox" id="adEnableCheck" checked onchange="saveSettings()" class="rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-0">
-                  বিজ্ঞপ্তি চালু রাখুন (Ad)
+                  বিজ্ঞপ্তি
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-white transition">
                   <input type="checkbox" id="autoplayCheck" onchange="saveSettings()" class="rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-0">
-                  অটোপ্লে (Autoplay)
+                  অটোপ্লে
                 </label>
               </div>
             </div>
           </div>
         </div>
       </div>
-
 
       <!-- Playlist Section (Right - 1 Column) -->
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-col h-[600px] shadow-xl transition-colors">
@@ -143,17 +134,14 @@
           </span>
         </div>
 
-
         <!-- Video List Items -->
         <div id="playlistContainer" class="flex-grow overflow-y-auto space-y-3 custom-scrollbar pr-1">
           <!-- Dynamic Content Loads Here -->
         </div>
       </div>
 
-
     </div>
   </main>
-
 
   <!-- Dynamic Modal (Only in original master page) -->
   <!-- ENABLE_CONTROLS_START -->
@@ -169,7 +157,6 @@
         <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
-
       <!-- Tab Buttons -->
       <div class="flex border-b border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950">
         <button id="singleTabBtn" onclick="switchTab('single')" class="flex-1 py-3 text-sm font-semibold border-b-2 border-blue-500 text-blue-600 dark:text-blue-400 transition">
@@ -179,7 +166,6 @@
           বাল্ক আপলোড (Excel/CSV)
         </button>
       </div>
-
 
       <div class="p-6">
         <!-- Single Upload Form -->
@@ -197,7 +183,6 @@
           </button>
         </form>
 
-
         <!-- Bulk Upload Form -->
         <div id="bulkForm" class="hidden space-y-4">
           <div class="p-4 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-600 dark:text-slate-300 space-y-2">
@@ -211,18 +196,15 @@
           
           <input type="file" id="excelFile" accept=".xlsx, .xls, .csv" class="block w-full text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
 
-
           <button onclick="handleBulkUpload()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-lg transition shadow-md text-sm">
             এক্সেলে থাকা সব ভিডিও আপলোড করুন
           </button>
         </div>
       </div>
 
-
     </div>
   </div>
   <!-- ENABLE_CONTROLS_END -->
-
 
   <!-- Embedded Data Script Tag for Download Persistence -->
   <script id="embeddedData" type="application/json">
@@ -235,7 +217,6 @@
     ]
   </script>
 
-
   <!-- Application Logic JS -->
   <script>
     const AD_VIDEO_ID = "gtuTn2Js9fk"; // Ad Video Link: https://youtu.be/gtuTn2Js9fk
@@ -245,7 +226,6 @@
     let isPlayingAd = false;
     let pendingMainVideoId = null;
     let isApiReady = false;
-
 
     // Mode Toggle Logic
     function initTheme() {
@@ -258,13 +238,11 @@
       }
     }
 
-
     function toggleTheme() {
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.theme = isDark ? 'dark' : 'light';
       updateThemeUI(isDark);
     }
-
 
     function updateThemeUI(isDark) {
       const icon = document.getElementById('themeIcon');
@@ -277,7 +255,6 @@
         text.innerText = 'ডার্ক মোড';
       }
     }
-
 
     // YouTube API Ready Callback
     function onYouTubeIframeAPIReady() {
@@ -296,7 +273,6 @@
       });
     }
 
-
     function onPlayerStateChange(event) {
       // YT.PlayerState.ENDED is 0
       if (event.data === YT.PlayerState.ENDED) {
@@ -314,7 +290,6 @@
       }
     }
 
-
     // Load initial data
     window.onload = function() {
       initTheme();
@@ -330,7 +305,6 @@
       }
     };
 
-
     // YouTube Video ID Extraction Helper
     function extractVideoID(url) {
       const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -338,14 +312,12 @@
       return (match && match[2].length === 11) ? match[2] : null;
     }
 
-
     // Render Playlist Dynamic Cards
     function renderPlaylist() {
       const container = document.getElementById('playlistContainer');
       const countLabel = document.getElementById('videoCount');
       container.innerHTML = '';
       countLabel.innerText = `${videos.length} টি ভিডিও`;
-
 
       if(videos.length === 0) {
         container.innerHTML = `
@@ -355,10 +327,8 @@
         return;
       }
 
-
       // Check if delete button should be allowed (Only if ENABLE_CONTROLS block exists)
       const isEditable = typeof openModal === "function";
-
 
       videos.forEach((video, index) => {
         const isActive = index === currentVideoIndex;
@@ -370,7 +340,6 @@
         }`;
         card.onclick = () => selectVideo(index, true);
 
-
         let deleteBtnHtml = '';
         if (isEditable) {
           deleteBtnHtml = `
@@ -379,7 +348,6 @@
             </button>
           `;
         }
-
 
         card.innerHTML = `
           <div class="relative w-24 aspect-video rounded-lg overflow-hidden bg-slate-900 flex-shrink-0 border border-slate-300 dark:border-slate-700">
@@ -398,7 +366,6 @@
       });
     }
 
-
     // Play Selected Video
     function selectVideo(index, userTriggered = true) {
       if(index < 0 || index >= videos.length) return;
@@ -412,7 +379,6 @@
       renderPlaylist();
     }
 
-
     // Core Playback Handler (Ad + Main Video)
     function playVideoLogic(mainVideoId, userTriggered) {
       if(!player || !player.loadVideoById) {
@@ -420,10 +386,8 @@
         return;
       }
 
-
       const isAdEnabled = document.getElementById('adEnableCheck').checked;
       const isAutoplay = document.getElementById('autoplayCheck').checked || userTriggered;
-
 
       if (isAdEnabled) {
         isPlayingAd = true;
@@ -440,7 +404,6 @@
         pendingMainVideoId = null;
         document.getElementById('adNotice').classList.add('hidden');
 
-
         if (isAutoplay) {
           player.loadVideoById(mainVideoId);
         } else {
@@ -449,13 +412,11 @@
       }
     }
 
-
     function saveSettings() {
       if (currentVideoIndex !== -1 && videos[currentVideoIndex]) {
         selectVideo(currentVideoIndex, false);
       }
     }
-
 
     // Delete Video (Only in editable mode)
     function deleteVideo(event, index) {
@@ -472,11 +433,9 @@
       renderPlaylist();
     }
 
-
     // Modal and Upload Controls
     function openModal() { document.getElementById('uploadModal').classList.remove('hidden'); document.getElementById('uploadModal').classList.add('flex'); }
     function closeModal() { document.getElementById('uploadModal').classList.add('hidden'); document.getElementById('uploadModal').classList.remove('flex'); }
-
 
     function switchTab(tab) {
       if(tab === 'single') {
@@ -492,7 +451,6 @@
       }
     }
 
-
     // Handle Single Video Add
     function handleSingleUpload(e) {
       e.preventDefault();
@@ -500,12 +458,10 @@
       const url = document.getElementById('singleUrl').value;
       const videoId = extractVideoID(url);
 
-
       if(!videoId) {
         alert("সঠিক ইউটিউব ভিডিও লিংক দিন!");
         return;
       }
-
 
       videos.push({ id: videoId, title: title, url: url });
       renderPlaylist();
@@ -516,18 +472,15 @@
       closeModal();
     }
 
-
     // Handle Bulk Upload via Excel/CSV
     function handleBulkUpload() {
       const fileInput = document.getElementById('excelFile');
       const file = fileInput.files[0];
 
-
       if(!file) {
         alert("অনুগ্রহ করে একটি এক্সেল ফাইল সিলেক্ট করুন!");
         return;
       }
-
 
       const reader = new FileReader();
       reader.onload = function(e) {
@@ -535,7 +488,6 @@
         const workbook = XLSX.read(data, {type: 'array'});
         const firstSheet = workbook.SheetNames[0];
         const rows = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet], {header: 1});
-
 
         let addedCount = 0;
         rows.forEach((row) => {
@@ -550,7 +502,6 @@
           }
         });
 
-
         renderPlaylist();
         if(videos.length > 0 && currentVideoIndex === -1) selectVideo(0, true);
         alert(`${addedCount} টি ভিডিও সফলভাবে যুক্ত করা হয়েছে!`);
@@ -560,31 +511,25 @@
       reader.readAsArrayBuffer(file);
     }
 
-
     // Download Clean HTML (Stripped of Upload / Delete Controls)
     function downloadHTML() {
       // 1. Embed latest videos array into script tag
       const scriptTag = document.getElementById('embeddedData');
       scriptTag.textContent = JSON.stringify(videos, null, 2);
 
-
       // 2. Clone current DOM to manipulate clean downloaded version
       const cloneDoc = document.documentElement.cloneNode(true);
-
 
       // Remove ENABLE_CONTROLS elements (Upload button, Download button, Upload Modal)
       // Remove elements marked between comment markers or direct classes/IDs
       const uploadBtn = cloneDoc.querySelector('button[onclick="openModal()"]');
       if (uploadBtn) uploadBtn.remove();
 
-
       const downloadBtn = cloneDoc.querySelector('button[onclick="downloadHTML()"]');
       if (downloadBtn) downloadBtn.remove();
 
-
       const modal = cloneDoc.querySelector('#uploadModal');
       if (modal) modal.remove();
-
 
       const fullHTML = "<!DOCTYPE html>\n" + cloneDoc.outerHTML;
       const blob = new Blob([fullHTML], { type: 'text/html;charset=utf-8' });
