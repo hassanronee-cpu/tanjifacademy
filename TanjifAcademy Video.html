@@ -92,7 +92,7 @@
   <!-- Main Content Area -->
   <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full space-y-6">
     <!-- Top Section: Player (2 cols) & Side Playlist (1 col) -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:items-start">
       
       <!-- Video Player Section (Left / Top - 2 Columns) -->
       <div class="lg:col-span-2 flex flex-col justify-between bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors">
@@ -119,8 +119,8 @@
         </div>
       </div>
 
-      <!-- Playlist Section (Right - 1 Column with exact matching height) -->
-      <div class="lg:col-span-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-col h-full min-h-[300px] shadow-xl transition-colors">
+      <!-- Playlist Section (Right - Fixed height to match video player with inner scroll) -->
+      <div class="lg:col-span-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-col h-[480px] sm:h-[520px] lg:h-[450px] xl:h-[525px] shadow-xl transition-colors">
         <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 mb-3 flex-shrink-0">
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-list-ul text-blue-600 dark:text-blue-400"></i>
@@ -151,8 +151,8 @@
         </span>
       </div>
 
-      <!-- Grid Container (Expands Responsively Across Page Width) -->
-      <div id="gridPlaylistContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 max-h-[650px] overflow-y-auto custom-scrollbar pr-1">
+      <!-- Grid Container (Expands Responsively Across Page Width with Parent Page Scroll) -->
+      <div id="gridPlaylistContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <!-- Dynamic Grid Items Load Here -->
       </div>
     </div>
