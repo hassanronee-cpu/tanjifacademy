@@ -26,6 +26,7 @@
     }
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
+      height: 6px;
     }
     .custom-scrollbar::-webkit-scrollbar-track {
       background: rgba(15, 23, 42, 0.1);
@@ -56,7 +57,19 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-3 flex-wrap">
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <!-- Notification Toggle Button -->
+        <button id="adToggleBtn" onclick="toggleAd()" class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-700 px-3 py-2 rounded-lg font-medium transition flex items-center gap-2 text-sm shadow-sm" title="বিজ্ঞপ্তি চালু/বন্ধ করুন">
+          <i id="adIcon" class="fa-solid fa-bell text-amber-500"></i>
+          <span id="adText" class="hidden sm:inline">বিজ্ঞপ্তি: চালু</span>
+        </button>
+
+        <!-- Autoplay Toggle Button -->
+        <button id="autoplayToggleBtn" onclick="toggleAutoplay()" class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-700 px-3 py-2 rounded-lg font-medium transition flex items-center gap-2 text-sm shadow-sm" title="অটোপ্লে চালু/বন্ধ করুন">
+          <i id="autoplayIcon" class="fa-solid fa-[#000] fa-forward text-slate-400"></i>
+          <span id="autoplayText" class="hidden sm:inline">অটোপ্লে: বন্ধ</span>
+        </button>
+
         <!-- Theme Toggle Button -->
         <button id="themeToggleBtn" onclick="toggleTheme()" class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-700 px-3 py-2 rounded-lg font-medium transition flex items-center gap-2 text-sm shadow-sm" title="লাইটিং / ডার্ক মোড পরিবর্তন">
           <i id="themeIcon" class="fa-solid fa-moon text-indigo-500 dark:text-yellow-400"></i>
@@ -65,11 +78,11 @@
 
         <!-- Dynamic Controls (Only visible in original master page) -->
         <!-- ENABLE_CONTROLS_START -->
-        <button onclick="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 text-sm shadow-md">
-          <i class="fa-solid fa-plus"></i> ভিডিও যুক্ত করুন
+        <button onclick="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 sm:px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 text-sm shadow-md">
+          <i class="fa-solid fa-plus"></i> <span class="hidden sm:inline">ভিডিও যুক্ত করুন</span><span class="sm:hidden">যুক্ত করুন</span>
         </button>
-        <button onclick="downloadHTML()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 text-sm shadow-md" title="সব ভিডিও সহ পেজটি সেভ করুন">
-          <i class="fa-solid fa-download"></i> পেজ ডাউনলোড
+        <button onclick="downloadHTML()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 sm:px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 text-sm shadow-md" title="সব ভিডিও সহ পেজটি সেভ করুন">
+          <i class="fa-solid fa-download"></i> <span class="hidden sm:inline">পেজ ডাউনলোড</span><span class="sm:hidden">ডাউনলোড</span>
         </button>
         <!-- ENABLE_CONTROLS_END -->
       </div>
@@ -100,24 +113,27 @@
             </div>
           </div>
 
-          <!-- Video Details & Player Custom Controls -->
-          <div class="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 transition-colors">
-            <h2 id="currentVideoTitle" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-3">ভিডিও গ্যালারি</h2>
-            
-            <!-- Custom Controller Bar -->
-            <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-slate-100 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700/50 text-xs sm:text-sm">
-              <span class="text-slate-600 dark:text-slate-400 font-medium">প্লেয়ার কাস্টমাইজেশন:</span>
-              <div class="flex flex-wrap items-center gap-4">
-                <label class="flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-white transition">
-                  <input type="checkbox" id="adEnableCheck" checked onchange="saveSettings()" class="rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-0">
-                  বিজ্ঞপ্তি
-                </label>
-                <label class="flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-white transition">
-                  <input type="checkbox" id="autoplayCheck" onchange="saveSettings()" class="rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-0">
-                  অটোপ্লে
-                </label>
-              </div>
+          <!-- Video Details & Title -->
+          <div class="p-4 bg-white dark:bg-slate-900 transition-colors">
+            <h2 id="currentVideoTitle" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">ভিডিও গ্যালারি</h2>
+          </div>
+        </div>
+
+        <!-- Video Grid Player Box Section (Below Video Player - Side-by-side Cards Grid) -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-xl transition-colors">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 mb-4">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-border-all text-blue-600 dark:text-blue-400"></i>
+              <h3 class="font-bold text-slate-800 dark:text-slate-200">ভিডিও বক্স গ্যালারি (প্লেলিস্ট)</h3>
             </div>
+            <span id="gridVideoCount" class="text-xs bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400 px-2.5 py-1 rounded-full font-semibold border border-slate-200 dark:border-slate-700">
+              ০ টি ভিডিও
+            </span>
+          </div>
+
+          <!-- Horizontal/Grid Box Container -->
+          <div id="gridContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-[420px] overflow-y-auto custom-scrollbar pr-1">
+            <!-- Dynamic Box Content Loads Here -->
           </div>
         </div>
       </div>
@@ -227,6 +243,10 @@
     let pendingMainVideoId = null;
     let isApiReady = false;
 
+    // Control States
+    let isAdEnabled = true;
+    let isAutoplay = false;
+
     // Mode Toggle Logic
     function initTheme() {
       if (localStorage.theme === 'light') {
@@ -256,6 +276,44 @@
       }
     }
 
+    // Toggle Ad Control
+    function toggleAd() {
+      isAdEnabled = !isAdEnabled;
+      updateAdUI();
+      saveSettings();
+    }
+
+    function updateAdUI() {
+      const icon = document.getElementById('adIcon');
+      const text = document.getElementById('adText');
+      if (isAdEnabled) {
+        icon.className = 'fa-solid fa-bell text-amber-500';
+        text.innerText = 'বিজ্ঞপ্তি: চালু';
+      } else {
+        icon.className = 'fa-solid fa-bell-slash text-slate-400';
+        text.innerText = 'বিজ্ঞপ্তি: বন্ধ';
+      }
+    }
+
+    // Toggle Autoplay Control
+    function toggleAutoplay() {
+      isAutoplay = !isAutoplay;
+      updateAutoplayUI();
+      saveSettings();
+    }
+
+    function updateAutoplayUI() {
+      const icon = document.getElementById('autoplayIcon');
+      const text = document.getElementById('autoplayText');
+      if (isAutoplay) {
+        icon.className = 'fa-solid fa-forward text-emerald-500';
+        text.innerText = 'অটোপ্লে: চালু';
+      } else {
+        icon.className = 'fa-solid fa-forward text-slate-400';
+        text.innerText = 'অটোপ্লে: বন্ধ';
+      }
+    }
+
     // YouTube API Ready Callback
     function onYouTubeIframeAPIReady() {
       isApiReady = true;
@@ -280,12 +338,13 @@
           // Smooth transition from Ad to Main Video
           isPlayingAd = false;
           document.getElementById('adNotice').classList.add('hidden');
-          const autoPlayVal = document.getElementById('autoplayCheck').checked ? 1 : 0;
           player.loadVideoById({
             videoId: pendingMainVideoId,
             startSeconds: 0
           });
           pendingMainVideoId = null;
+        } else if (isAutoplay && currentVideoIndex < videos.length - 1) {
+          selectVideo(currentVideoIndex + 1, true);
         }
       }
     }
@@ -293,6 +352,8 @@
     // Load initial data
     window.onload = function() {
       initTheme();
+      updateAdUI();
+      updateAutoplayUI();
       try {
         const rawData = document.getElementById('embeddedData').textContent;
         videos = JSON.parse(rawData);
@@ -300,6 +361,7 @@
         videos = [];
       }
       renderPlaylist();
+      renderGrid();
       if(videos.length > 0) {
         selectVideo(0, false); // select initially without force auto play
       }
@@ -343,7 +405,7 @@
         let deleteBtnHtml = '';
         if (isEditable) {
           deleteBtnHtml = `
-            <button onclick="deleteVideo(event, ${index})" class="text-slate-400 hover:text-red-500 text-xs p-2 transition" title="ডিলিট করুন">
+            <button onclick="deleteVideo(event, ${index})" class="text-slate-400 hover:text-red-500 text-xs p-2 transition flex-shrink-0" title="ডিলিট করুন">
               <i class="fa-solid fa-trash"></i>
             </button>
           `;
@@ -356,13 +418,68 @@
               <i class="fa-solid fa-play text-white text-xs"></i>
             </div>
           </div>
-          <div class="flex-grow min-w-0 pr-2">
+          <div class="flex-grow min-w-0 pr-1">
             <p class="text-xs font-medium text-slate-800 dark:text-slate-200 truncate ${isActive ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}">${video.title}</p>
             <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1"><i class="fa-brands fa-youtube"></i> YouTube Video</p>
           </div>
           ${deleteBtnHtml}
         `;
         container.appendChild(card);
+      });
+    }
+
+    // Render Box Grid below Video Player
+    function renderGrid() {
+      const container = document.getElementById('gridContainer');
+      const countLabel = document.getElementById('gridVideoCount');
+      if(!container) return;
+      container.innerHTML = '';
+      if(countLabel) countLabel.innerText = `${videos.length} টি ভিডিও`;
+
+      if(videos.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center text-slate-400 dark:text-slate-500 py-6 text-xs">
+            কোনো ভিডিও নেই।
+          </div>`;
+        return;
+      }
+
+      const isEditable = typeof openModal === "function";
+
+      videos.forEach((video, index) => {
+        const isActive = index === currentVideoIndex;
+        const box = document.createElement('div');
+        box.className = `flex flex-col rounded-xl overflow-hidden cursor-pointer transition border group ${
+          isActive 
+            ? 'bg-blue-50 dark:bg-blue-600/20 border-blue-500 ring-2 ring-blue-500/30' 
+            : 'bg-slate-50 dark:bg-slate-800/40 border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-slate-700 hover:shadow-md'
+        }`;
+        box.onclick = () => selectVideo(index, true);
+
+        let deleteBtnHtml = '';
+        if (isEditable) {
+          deleteBtnHtml = `
+            <button onclick="deleteVideo(event, ${index})" class="absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-[10px] transition z-10" title="ডিলিট করুন">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          `;
+        }
+
+        box.innerHTML = `
+          <div class="relative w-full aspect-video bg-slate-900 overflow-hidden">
+            <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" alt="Thumbnail">
+            <div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+              <div class="w-8 h-8 rounded-full bg-blue-600/90 text-white flex items-center justify-center shadow-lg">
+                <i class="fa-solid fa-play text-xs ml-0.5"></i>
+              </div>
+            </div>
+            ${deleteBtnHtml}
+          </div>
+          <div class="p-2 flex flex-col justify-between flex-grow">
+            <p class="text-xs font-medium text-slate-800 dark:text-slate-200 line-clamp-2 ${isActive ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}" title="${video.title}">${video.title}</p>
+          </div>
+        `;
+        container.appendChild(box);
       });
     }
 
@@ -377,6 +494,7 @@
       
       playVideoLogic(video.id, userTriggered);
       renderPlaylist();
+      renderGrid();
     }
 
     // Core Playback Handler (Ad + Main Video)
@@ -386,15 +504,14 @@
         return;
       }
 
-      const isAdEnabled = document.getElementById('adEnableCheck').checked;
-      const isAutoplay = document.getElementById('autoplayCheck').checked || userTriggered;
+      const shouldAutoPlay = isAutoplay || userTriggered;
 
       if (isAdEnabled) {
         isPlayingAd = true;
         pendingMainVideoId = mainVideoId;
         document.getElementById('adNotice').classList.remove('hidden');
         
-        if (isAutoplay) {
+        if (shouldAutoPlay) {
           player.loadVideoById(AD_VIDEO_ID);
         } else {
           player.cueVideoById(AD_VIDEO_ID);
@@ -404,7 +521,7 @@
         pendingMainVideoId = null;
         document.getElementById('adNotice').classList.add('hidden');
 
-        if (isAutoplay) {
+        if (shouldAutoPlay) {
           player.loadVideoById(mainVideoId);
         } else {
           player.cueVideoById(mainVideoId);
@@ -431,6 +548,7 @@
         currentVideoIndex--;
       }
       renderPlaylist();
+      renderGrid();
     }
 
     // Modal and Upload Controls
@@ -465,6 +583,7 @@
 
       videos.push({ id: videoId, title: title, url: url });
       renderPlaylist();
+      renderGrid();
       if(videos.length === 1) selectVideo(0, true);
       
       document.getElementById('singleTitle').value = '';
@@ -503,6 +622,7 @@
         });
 
         renderPlaylist();
+        renderGrid();
         if(videos.length > 0 && currentVideoIndex === -1) selectVideo(0, true);
         alert(`${addedCount} টি ভিডিও সফলভাবে যুক্ত করা হয়েছে!`);
         fileInput.value = '';
@@ -521,7 +641,6 @@
       const cloneDoc = document.documentElement.cloneNode(true);
 
       // Remove ENABLE_CONTROLS elements (Upload button, Download button, Upload Modal)
-      // Remove elements marked between comment markers or direct classes/IDs
       const uploadBtn = cloneDoc.querySelector('button[onclick="openModal()"]');
       if (uploadBtn) uploadBtn.remove();
 
@@ -531,7 +650,8 @@
       const modal = cloneDoc.querySelector('#uploadModal');
       if (modal) modal.remove();
 
-      const fullHTML = "<!DOCTYPE html>\n" + cloneDoc.outerHTML;
+      const fullHTML = "<!DOCTYPE html>
+" + cloneDoc.outerHTML;
       const blob = new Blob([fullHTML], { type: 'text/html;charset=utf-8' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
