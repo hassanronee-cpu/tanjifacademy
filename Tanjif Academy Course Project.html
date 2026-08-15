@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>তানজিফ একাডেমি</title>
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>" />
+    <link href="https://fonts.googleapis.com/css2?family=Kalpurush&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ... আপনার পুরানো CSS একই থাকবে ... */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kalpurush', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        html { scroll-behavior: smooth; min-height: 100vh; }
+        body { background: #f0f4fa; color: #1e2a3a; min-height: 100vh; display: flex; flex-direction: column; position: relative; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; flex: 1; width: 100%; }
+        header { background: linear-gradient(135deg, #0f2b4b, #1a3a5c); color: white; padding: 10px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 1000; }
+        .nav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .logo { font-size: 22px; font-weight: 700; }
+        .logo span { color: #f9c74f; }
+        .nav-links { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+        .nav-links a { color: #e0e7f0; text-decoration: none; font-weight: 500; transition: 0.3s; cursor: pointer; padding: 5px 10px; border-radius: 20px; font-size: 13px; white-space: nowrap; }
+        .nav-links a:hover { color: #f9c74f; background: rgba(249,199,79,0.1); }
+        .btn { background: #f9c74f; color: #0f2b4b; border: none; padding: 8px 20px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+        .btn:hover { background: #f5b82e; transform: scale(1.02); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-outline { background: transparent; border: 2px solid #f9c74f; color: #f9c74f; }
+        .btn-outline:hover { background: #f9c74f; color: #0f2b4b; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-success:hover { background: #219a52; }
+        .btn-sm { padding: 4px 14px; font-size: 12px; }
+        .btn-primary { background: #2980b9; color: white; }
+        .btn-primary:hover { background: #1f6da0; }
+        .float-btn { position: fixed; z-index: 999; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,0.25); text-decoration: none; }
+        .float-btn:hover { transform: scale(1.08); }
+        .whatsapp-btn { bottom: 25px; left: 25px; background: #25D366; color: white; }
+        .whatsapp-btn:hover { background: #1da851; }
+        .scroll-top-btn { bottom: 25px; right: 25px; background: #0f2b4b; color: white; display: none; }
+        .scroll-top-btn:hover { background: #1a3a5c; }
+        .scroll-top-btn.visible { display: flex; }
+        footer { background: #0f2b4b; color: #bcc9db; padding: 25px 0; text-align: center; margin-top: auto; width: 100%; }
+        .form-box { background: white; max-width: 520px; margin: 15px auto; padding: 25px 24px; border-radius: 18px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
+        .form-box h3 { text-align: center; margin-bottom: 16px; color: #0f2b4b; font-size: 20px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 3px; color: #1e2a3a; font-size: 14px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 12px; border: 2px solid #dfe6ef; border-radius: 8px; font-size: 14px; transition: 0.3s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #f9c74f; outline: none; box-shadow: 0 0 0 3px rgba(249,199,79,0.15); }
+        .form-group textarea { min-height: 50px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; overflow-y: auto; padding: 30px 16px; align-items: flex-start; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; max-width: 650px; width: 100%; border-radius: 18px; padding: 30px; position: relative; animation: slideDown 0.3s ease; margin: 10px auto; max-height: 90vh; overflow-y: auto; }
+        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-close { position: sticky; top: 0; float: right; font-size: 24px; cursor: pointer; color: #999; background: none; border: none; z-index: 10; }
+        .modal-close:hover { color: #e74c3c; }
+        .welcome-section { background: linear-gradient(135deg, #0f2b4b, #1a3a5c); color: white; padding: 16px 20px; border-radius: 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .welcome-section h2 { font-size: 20px; font-weight: 700; }
+        .welcome-section h2 span { color: #f9c74f; }
+        .welcome-section .btn { font-size: 12px; padding: 4px 14px; }
+        .student-dashboard { background: #fff; border-radius: 18px; padding: 22px; margin: 15px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); display: none; }
+        .student-dashboard.active { display: block; }
+        .dashboard-layout { display: flex; gap: 20px; align-items: flex-start; }
+        .dashboard-sidebar { width: 320px; flex-shrink: 0; position: sticky; top: 75px; }
+        .dashboard-main-content { flex: 1; min-width: 0; }
+        @media (max-width: 992px) { .dashboard-layout { flex-direction: column; } .dashboard-sidebar { width: 100%; position: static; } }
+        .dashboard-course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0; }
+        @media (max-width: 992px) { .dashboard-course-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .dashboard-course-grid { grid-template-columns: 1fr; } }
+        .dash-course-card { background: white; border-radius: 14px; padding: 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border-top: 5px solid #f9c74f; transition: 0.3s; }
+        .dash-course-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.10); }
+        .dash-course-card .course-title { font-size: 18px; font-weight: 700; color: #0f2b4b; }
+        .dash-course-card .course-meta { display: flex; gap: 8px; flex-wrap: wrap; font-size: 12px; color: #5a6b7c; margin: 6px 0; }
+        .dash-course-card .course-meta span { background: #f0f4fa; padding: 2px 10px; border-radius: 12px; }
+        .score-boxes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0; }
+        .score-box { padding: 8px 10px; border-radius: 8px; text-align: center; color: white; }
+        .score-box .number { font-size: 18px; font-weight: 700; }
+        .score-box .label { font-size: 11px; opacity: 0.9; }
+        .score-box.progress { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .score-box.score { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .score-box.rank { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .class-item { background: #f8f9fc; border-radius: 10px; margin-bottom: 10px; overflow: hidden; border: 1px solid #dfe6ef; }
+        .class-header { padding: 12px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #eef2f7; transition: 0.3s; font-weight: 600; font-size: 14px; }
+        .class-header:hover { background: #e0e6ef; }
+        .class-header .score-badge { background: #27ae60; color: white; padding: 2px 12px; border-radius: 20px; font-size: 12px; }
+        .class-body { padding: 16px; display: none; background: #fff; }
+        .class-body.open { display: block; }
+        .class-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px; }
+        .class-tabs button { padding: 4px 12px; border: 2px solid #dfe6ef; border-radius: 18px; background: white; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.3s; }
+        .class-tabs button.active { border-color: #f9c74f; background: #fef9e7; }
+        .class-tabs button:hover { border-color: #f9c74f; }
+        .class-tab-content { display: none; }
+        .class-tab-content.active { display: block; }
+        .mcq-option { display: inline-block; width: calc(50% - 8px); padding: 8px 12px; margin: 4px; border: 2px solid #dfe6ef; border-radius: 6px; cursor: pointer; transition: 0.3s; font-size: 13px; text-align: center; box-sizing: border-box; }
+        .mcq-option:hover { border-color: #f9c74f; }
+        .mcq-option.selected { border-color: #2980b9; background: #eaf2fa; }
+        .mcq-option.correct { border-color: #27ae60 !important; background: #eafaf1 !important; color: #27ae60; font-weight: bold; }
+        .mcq-option.wrong { border-color: #e74c3c !important; background: #fdedec !important; color: #e74c3c; }
+        .vocab-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .vocab-table th, .vocab-table td { padding: 8px 12px; border: 1px solid #dfe6ef; text-align: left; }
+        .vocab-table th { background: #0f2b4b; color: white; }
+        .vocab-hide { color: transparent; text-shadow: 0 0 8px rgba(0,0,0,0.5); cursor: pointer; user-select: none; }
+        .vocab-hide:hover { color: #2980b9; text-shadow: none; }
+        .vocab-word { cursor: pointer; transition: 0.3s; }
+        .course-footer-section { margin-top: 24px; padding-top: 20px; border-top: 3px solid #ecf0f1; }
+        .course-footer-section h3 { font-size: 18px; color: #0f2b4b; margin-bottom: 12px; }
+        .star-rating-select { display: flex; gap: 8px; font-size: 24px; color: #cbd5e1; cursor: pointer; margin-bottom: 10px; }
+        .star-rating-select i.selected { color: #f59e0b; }
+        .certificate { border: 10px solid #0f2b4b; border-radius: 20px; padding: 40px; text-align: center; background: linear-gradient(to bottom, #ffffff, #f8fafc); margin: 20px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; }
+        .certificate::before { content: ''; position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 2px dashed #f9c74f; pointer-events: none; border-radius: 12px; }
+        .certificate h2 { color: #0f2b4b; font-size: 32px; margin-bottom: 5px; font-family: 'Kalpurush', serif; }
+        .certificate .cert-subtitle { font-size: 16px; color: #64748b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; }
+        .certificate .cert-body-text { font-size: 15px; color: #334155; margin-bottom: 10px; }
+        .certificate .student-name { font-size: 28px; color: #0f2b4b; font-weight: bold; margin: 15px 0; border-bottom: 2px solid #f9c74f; display: inline-block; padding-bottom: 5px; }
+        .certificate .course-name { font-size: 20px; color: #1e293b; font-weight: bold; margin: 10px 0 20px 0; }
+        .certificate .score-text { font-size: 15px; color: #475569; margin: 15px 0; background: #f1f5f9; display: inline-block; padding: 6px 20px; border-radius: 20px; }
+        .certificate .cert-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding: 0 30px; }
+        .certificate .signature-box { text-align: center; border-top: 1px solid #94a3b8; padding-top: 8px; width: 180px; font-size: 13px; color: #475569; }
+        @media print { body * { visibility: hidden; } .certificate, .certificate * { visibility: visible; } .certificate { position: absolute; left: 0; top: 0; width: 100%; border: 6px solid #0f2b4b !important; box-shadow: none; margin: 0; padding: 20px; background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .certificate button { display: none !important; } }
+        .search-bar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+        .search-bar input { flex: 1; padding: 10px 14px; border: 2px solid #dfe6ef; border-radius: 8px; font-size: 14px; min-width: 200px; }
+        .search-bar input:focus { border-color: #f9c74f; outline: none; }
+        .msg-success { color: #27ae60; padding: 8px 12px; background: #eafaf1; border-radius: 6px; text-align: center; }
+        .msg-error { color: #e74c3c; padding: 8px 12px; background: #fdedec; border-radius: 6px; text-align: center; }
+        .msg-info { color: #2980b9; padding: 8px 12px; background: #eaf2fa; border-radius: 6px; text-align: center; }
+        .loader { text-align: center; padding: 20px; color: #5a6b7c; }
+        .pending-item { background: #f8f9fc; padding: 12px 16px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 8px; }
+        .review-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 14px 0; }
+        @media (max-width: 992px) { .review-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .review-grid { grid-template-columns: 1fr; } }
+        .review-card { background: white; padding: 14px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .review-card .review-text { font-size: 13px; color: #2c3e50; line-height: 1.5; max-height: 60px; overflow: hidden; }
+        .review-card .review-text.expanded { max-height: none; }
+        .review-card .read-more { color: #2980b9; cursor: pointer; font-size: 12px; font-weight: 600; }
+        .table-wrap { overflow-x: auto; }
+        .table-wrap table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .table-wrap th { background: #0f2b4b; color: white; padding: 8px 10px; text-align: left; }
+        .table-wrap td { padding: 8px 10px; border-bottom: 1px solid #ecf0f1; }
+        .admin-panel { background: #fff; border-radius: 18px; padding: 22px; margin: 15px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); display: none; }
+        .admin-panel.active { display: block; }
+        .admin-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+        .admin-tabs button { padding: 6px 14px; border: none; border-radius: 20px; background: #eef2f7; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 12px; }
+        .admin-tabs button.active { background: #0f2b4b; color: white; }
+        .admin-tabs button:hover { background: #d0d9e6; }
+        .hero { background: linear-gradient(135deg, #eef2f7, #dce3ed); padding: 40px 0; text-align: center; border-radius: 0 0 30px 30px; }
+        .hero h1 { font-size: 32px; font-weight: 800; color: #0f2b4b; }
+        .hero h1 span { color: #c97d1a; }
+        .hero p { font-size: 16px; color: #2c3e50; max-width: 600px; margin: 10px auto; }
+        .section-title { font-size: 26px; font-weight: 700; color: #0f2b4b; margin: 25px 0 16px 0; text-align: center; }
+        .section-title::after { content: ''; display: block; width: 50px; height: 3px; background: #f9c74f; margin: 4px auto 0; border-radius: 4px; }
+        .course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 16px 0; }
+        @media (max-width: 992px) { .course-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .course-grid { grid-template-columns: 1fr; } }
+        .course-card { background: white; padding: 16px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border-left: 5px solid #f9c74f; }
+        .course-card h3 { font-size: 18px; margin-bottom: 4px; }
+        .course-card .meta { color: #5a6b7c; font-size: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .course-card .summary { font-size: 13px; color: #2c3e50; margin: 6px 0; line-height: 1.4; }
+        .course-card .price-section { display: flex; align-items: center; gap: 8px; margin: 6px 0; flex-wrap: wrap; }
+        .course-card .original-price { font-size: 14px; color: #999; text-decoration: line-through; opacity: 0.6; }
+        .course-card .discount-price { font-size: 17px; font-weight: 700; color: #e74c3c; }
+        .course-card .card-actions { display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
+        .summary-content { background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid #f9c74f; font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
+        .review-status-box { background: #eaf2fa; padding: 12px; border-radius: 8px; margin-top: 8px; color: #2980b9; font-size: 14px; }
+        .review-course-select { margin: 10px 0; }
+        .review-course-select label { font-weight: 600; display: block; margin-bottom: 4px; }
+        .review-course-select select { width: 100%; padding: 10px; border: 2px solid #dfe6ef; border-radius: 8px; font-size: 14px; }
+        .review-course-info { background: #f0f4fa; padding: 10px 14px; border-radius: 8px; margin-top: 8px; font-size: 13px; color: #2c3e50; }
+        .sync-status { margin-top: 5px; font-size: 13px; }
+        @media (max-width: 600px) { .score-boxes { grid-template-columns: 1fr 1fr; } .float-btn { width: 42px; height: 42px; font-size: 18px; } .whatsapp-btn { bottom: 15px; left: 15px; } .scroll-top-btn { bottom: 15px; right: 15px; } .welcome-section h2 { font-size: 16px; } .dash-course-card .course-title { font-size: 16px; } .class-header { font-size: 13px; } .class-tabs button { font-size: 11px; padding: 3px 10px; } .mcq-option { width: 100%; margin: 3px 0; } }
+        .print-class-btn { background: #6c5ce7; color: white; border: none; padding: 4px 12px; border-radius: 18px; font-size: 11px; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 4px; }
+        .print-class-btn:hover { background: #5a4bd1; }
+        .home-content-edit { margin-top: 15px; padding: 15px; background: #f8fafc; border-radius: 10px; border: 1px solid #dfe6ef; }
+        .home-content-edit textarea { width: 100%; min-height: 100px; padding: 10px; border: 2px solid #dfe6ef; border-radius: 8px; font-size: 14px; }
+        .home-content-edit textarea:focus { border-color: #f9c74f; outline: none; }
+        /* প্রিন্ট স্টাইল - শুধু ক্লাস প্রিন্টের জন্য */
+        .print-only-tabs .class-tabs button { display: none; }
+        .print-only-tabs .class-tab-content { display: block !important; }
+        .print-only-tabs .class-tab-content#tab_video { display: none !important; }
+        .print-only-tabs .class-tab-content .mcq-option input[type="radio"] { display: none; }
+        .print-only-tabs .class-tab-content .mcq-option { border: 1px solid #ccc; background: #f9f9f9; }
+        .print-only-tabs .class-tab-content .mcq-option.correct, 
+        .print-only-tabs .class-tab-content .mcq-option.wrong,
+        .print-only-tabs .class-tab-content .mcq-option.selected { border: 1px solid #ccc; background: #f9f9f9; }
+        .print-only-tabs .class-tab-content #mcqTotalScore, 
+        .print-only-tabs .class-tab-content #mcqResult, 
+        .print-only-tabs .class-tab-content .btn-success,
+        .print-only-tabs .class-tab-content .vocab-hide,
+        .print-only-tabs .class-tab-content .vocab-hide-btn,
+        .print-only-tabs .class-tab-content .vocab-test-text { display: none !important; }
+        .print-only-tabs .class-tab-content .vocab-word { color: #000 !important; text-shadow: none !important; }
+        .print-only-tabs .class-tab-content .vocab-table td { color: #000 !important; }
+        .print-only-tabs .class-tab-content .class-tabs { display: none; }
+        .print-only-tabs .class-tab-content .btn { display: none; }
+        .print-only-tabs .class-tab-content form { display: none; }
+        .print-only-tabs .class-tab-content textarea { border: none; background: transparent; resize: none; width: 100%; }
+        .print-only-tabs .class-tab-content .summary-content { border-left: none; background: transparent; padding: 0; }
+        .print-header { text-align: center; border-bottom: 3px solid #0f2b4b; padding-bottom: 15px; margin-bottom: 25px; }
+        .print-header h1 { color: #0f2b4b; font-size: 24px; }
+        .print-header .course-name { font-size: 18px; color: #1e293b; }
+        .print-header .class-name { font-size: 16px; color: #475569; }
+        .print-section { margin: 20px 0; padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; page-break-inside: avoid; }
+        .print-section h4 { color: #0f2b4b; margin-bottom: 10px; font-size: 16px; }
+        .print-section .content { font-size: 14px; line-height: 1.6; }
+        .print-footer { text-align: center; margin-top: 40px; padding-top: 15px; border-top: 2px solid #e2e8f0; font-size: 12px; color: #94a3b8; }
+        .print-only { display: none; }
+        @media print { .print-only { display: block; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container nav">
+        <div class="logo">তানজিফ <span>একাডেমি</span></div>
+        <div class="nav-links">
+            <a onclick="showSection('home')"><i class="fas fa-home"></i> হোম</a>
+            <a onclick="showSection('courses')"><i class="fas fa-book"></i> কোর্স</a>
+            <a onclick="showSection('register')"><i class="fas fa-user-plus"></i> রেজিস্ট্রেশন</a>
+            <a onclick="showSection('reviews')"><i class="fas fa-star"></i> রিভিউ</a>
+            <a onclick="showSection('studentLogin')"><i class="fas fa-user-graduate"></i> লগইন</a>
+            <a onclick="googleSync()" id="syncBtn" style="color:#4CAF50; font-weight:bold;"><i class="fas fa-sync"></i> রিফ্রেশ</a>
+            <a onclick="showSection('admin')" style="color:#f9c74f;"><i class="fas fa-lock"></i> অ্যাডমিন</a>
+        </div>
+    </div>
+</header>
+
+<section class="hero" id="home">
+    <div class="container">
+        <h1>স্বাগতম <span>তানজিফ একাডেমি</span>-তে</h1>
+        <div id="homeContent">
+            <p>আমাদের লক্ষ্য হল জ্ঞান অর্জনকে ডিজিটাল মাধ্যমে সহজ, সুন্দর ও কার্যকরী করে তোলা।</p>
+        </div>
+        <button class="btn" onclick="showSection('courses')"><i class="fas fa-book"></i> কোর্স দেখুন</button>
+        <button class="btn btn-outline" onclick="showSection('register')"><i class="fas fa-user-plus"></i> রেজিস্টার</button>
+        <button class="btn btn-outline" onclick="showSection('studentLogin')"><i class="fas fa-user-graduate"></i> লগইন</button>
+    </div>
+</section>
+
+<div class="container" style="flex:1;">
+
+    <section id="courses">
+        <h2 class="section-title"><i class="fas fa-book-open"></i> আমাদের কোর্সসমূহ</h2>
+        <div id="courseContainer" class="course-grid">
+            <div class="loader"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</div>
+        </div>
+    </section>
+
+    <section id="register" style="display:none;">
+        <h2 class="section-title"><i class="fas fa-user-plus"></i> কোর্স রেজিস্ট্রেশন</h2>
+        <div class="form-box">
+            <h3>📋 নতুন রেজিস্ট্রেশন</h3>
+            <form id="registrationForm">
+                <div class="form-row">
+                    <div class="form-group"><label><i class="fas fa-user"></i> নাম *</label><input type="text" id="regName" required placeholder="পূর্ণ নাম" /></div>
+                    <div class="form-group"><label><i class="fas fa-envelope"></i> ইমেইল *</label><input type="email" id="regEmail" required placeholder="আপনার ইমেইল" /></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label><i class="fas fa-phone"></i> মোবাইল *</label><input type="text" id="regMobile" required placeholder="০১XXXXXXXXX" /></div>
+                    <div class="form-group"><label><i class="fas fa-credit-card"></i> ট্রানজেকশন আইডি</label><input type="text" id="regTransaction" placeholder="যদি থাকে" /></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label><i class="fas fa-book"></i> কোর্স *</label>
+                        <select id="regCourse" required onchange="loadBatches(this.value)">
+                            <option value="">-- নির্বাচন করুন --</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label><i class="fas fa-tag"></i> ব্যাচ *</label>
+                        <select id="regBatch" required>
+                            <option value="">-- প্রথমে কোর্স নির্বাচন করুন --</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn" style="width:100%;" id="regSubmitBtn"><i class="fas fa-check"></i> রেজিস্ট্রেশন করুন</button>
+            </form>
+            <div id="regMessage" style="margin-top:10px;"></div>
+        </div>
+    </section>
+
+    <section id="reviews" style="display:none;">
+        <h2 class="section-title"><i class="fas fa-star"></i> শিক্ষার্থীদের মতামত</h2>
+        <div id="reviewContainer" class="review-grid">
+            <div class="loader"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</div>
+        </div>
+        <div class="form-box" id="reviewFormBox">
+            <h3><i class="fas fa-comment"></i> আপনার মতামত দিন</h3>
+            <div id="reviewLoginPrompt" style="text-align:center;padding:15px;background:#fef9e7;border-radius:10px;margin-bottom:15px;">
+                <i class="fas fa-info-circle" style="color:#f9c74f;font-size:20px;"></i>
+                <p style="margin-top:8px;">রিভিউ দিতে প্রথমে <a href="#" onclick="showSection('studentLogin');return false;" style="color:#0f2b4b;font-weight:600;">লগইন</a> করুন।</p>
+            </div>
+            <div id="reviewFormContent" style="display:none;">
+                <div class="review-course-select">
+                    <label><i class="fas fa-book"></i> আপনার কোর্স নির্বাচন করুন</label>
+                    <select id="reviewCourseSelect" onchange="updateReviewCourseInfo()">
+                        <option value="">-- কোর্স নির্বাচন করুন --</option>
+                    </select>
+                    <div id="reviewCourseInfo" class="review-course-info" style="display:none;"></div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-star"></i> রেটিং (১-৫)</label>
+                    <div class="star-rating-select" id="reviewStarContainer">
+                        <i class="fas fa-star" onclick="setReviewStar(1)"></i>
+                        <i class="fas fa-star" onclick="setReviewStar(2)"></i>
+                        <i class="fas fa-star" onclick="setReviewStar(3)"></i>
+                        <i class="fas fa-star" onclick="setReviewStar(4)"></i>
+                        <i class="fas fa-star" onclick="setReviewStar(5)"></i>
+                    </div>
+                    <input type="hidden" id="reviewRating" value="5" />
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-comment"></i> আপনার মতামত</label>
+                    <textarea id="reviewComment" rows="4" placeholder="আপনার অভিজ্ঞতা শেয়ার করুন..." required></textarea>
+                </div>
+                <button type="button" class="btn" style="width:100%;" id="reviewSubmitBtn" onclick="submitUserReview()">
+                    <i class="fas fa-paper-plane"></i> জমা দিন
+                </button>
+                <div id="reviewSubmitMsg" style="margin-top:10px;"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="studentLogin" style="display:none;">
+        <div class="student-dashboard" id="studentDashboard">
+            <div class="welcome-section">
+                <div>
+                    <h2>👋 স্বাগতম, <span id="studentNameDisplay">শিক্ষার্থী</span>!</h2>
+                    <p style="font-size:13px;opacity:0.8;"><i class="fas fa-id-card"></i> কোর্স আইডি: <strong id="studentIdDisplay"></strong></p>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button class="btn btn-sm" onclick="goToMainDashboard()"><i class="fas fa-th-large"></i> মূল ড্যাশবোর্ড</button>
+                    <button class="btn btn-danger btn-sm" onclick="studentLogout()"><i class="fas fa-sign-out-alt"></i> লগআউট</button>
+                </div>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="studentSearch" placeholder="মোবাইল বা ইমেইল দিয়ে সার্চ করুন..." oninput="searchStudentCourses(this.value)" />
+                <button class="btn btn-sm" onclick="searchStudentCourses(document.getElementById('studentSearch').value)"><i class="fas fa-search"></i></button>
+            </div>
+            <div id="studentCourseContent">
+                <div class="loader"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</div>
+            </div>
+        </div>
+        <div class="form-box" id="studentLoginBox">
+            <h3>🔑 লগইন</h3>
+            <form id="studentLoginForm">
+                <div class="form-group">
+                    <label><i class="fas fa-id-card"></i> কোর্স আইডি *</label>
+                    <input type="text" id="studentAccessId" required placeholder="১৫ ডিজিটের কোর্স আইডি" />
+                    <small style="color:#7f8c8d;font-size:12px;">আপনার ইমেইলে পাঠানো ১৫ ডিজিটের কোর্স আইডি দিন</small>
+                </div>
+                <button type="submit" class="btn" style="width:100%;" id="studentLoginBtn"><i class="fas fa-sign-in-alt"></i> লগইন করুন</button>
+            </form>
+            <div id="studentLoginMsg" style="margin-top:10px;"></div>
+        </div>
+    </section>
+
+    <section id="admin" style="display:none;">
+        <h2 class="section-title"><i class="fas fa-lock"></i> অ্যাডমিন লগইন</h2>
+        <div class="form-box" id="adminLoginBox">
+            <h3>🛡️ অ্যাডমিন অ্যাক্সেস</h3>
+            <form id="adminLoginForm">
+                <div class="form-group"><label><i class="fas fa-envelope"></i> ইমেইল</label><input type="email" id="adminEmail" required /></div>
+                <div class="form-group"><label><i class="fas fa-key"></i> পাসওয়ার্ড</label><input type="password" id="adminPass" required /></div>
+                <button type="submit" class="btn" style="width:100%;" id="adminLoginBtn"><i class="fas fa-sign-in-alt"></i> লগইন</button>
+            </form>
+            <div id="adminLoginMsg" style="margin-top:10px;"></div>
+        </div>
+        <div class="admin-panel" id="adminDashboard">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+                <h3 style="color:#0f2b4b;"><i class="fas fa-chart-bar"></i> অ্যাডমিন ড্যাশবোর্ড</h3>
+                <button class="btn btn-danger btn-sm" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> লগআউট</button>
+            </div>
+            <div class="admin-tabs">
+                <button class="active" onclick="switchAdminTab('addCourse', this)"><i class="fas fa-plus"></i> কোর্স</button>
+                <button onclick="switchAdminTab('addClass', this)"><i class="fas fa-video"></i> ক্লাস</button>
+                <button onclick="switchAdminTab('pending', this)"><i class="fas fa-clock"></i> পেন্ডিং</button>
+                <button onclick="switchAdminTab('students', this)"><i class="fas fa-users"></i> শিক্ষার্থী</button>
+                <button onclick="switchAdminTab('reviewsAdmin', this)"><i class="fas fa-star"></i> রিভিউ</button>
+                <button onclick="switchAdminTab('homeEdit', this)"><i class="fas fa-edit"></i> হোম এডিট</button>
+            </div>
+
+            <div id="tab-addCourse" class="admin-tab-content">
+                <div class="form-box" style="max-width:100%;">
+                    <h4><i class="fas fa-plus"></i> নতুন কোর্স</h4>
+                    <form id="addCourseForm">
+                        <div class="form-row">
+                            <div class="form-group"><label>🆔 কোর্স আইডি</label><input type="text" id="acCourseId" required placeholder="C001" /></div>
+                            <div class="form-group"><label>📚 টাইটেল</label><input type="text" id="acTitle" required /></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>🏷️ ব্যাচ</label><input type="text" id="acBatch" required placeholder="ব্যাচ-১" /></div>
+                            <div class="form-group"><label>📅 শুরুর তারিখ</label><input type="date" id="acStartDate" required /></div>
+                        </div>
+                        <div class="form-group"><label>📋 সিলেবাস</label><textarea id="acSyllabus" rows="2"></textarea></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>💰 মূল টাকা</label><input type="text" id="acOriginalPrice" placeholder="১০০০" /></div>
+                            <div class="form-group"><label>🏷️ ডিসকাউন্ট</label><input type="text" id="acDiscountPrice" placeholder="৫০০" /></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>❓ কেন করবো</label><input type="text" id="acWhy" /></div>
+                            <div class="form-group"><label>🎁 কি পাবো</label><input type="text" id="acWhat" /></div>
+                        </div>
+                        <div class="form-group"><label>💳 পেমেন্ট পদ্ধতি</label><input type="text" id="acPayment" placeholder="বিকাশ/নগদ" /></div>
+                        <button type="submit" class="btn" id="addCourseBtn"><i class="fas fa-check"></i> যুক্ত করুন</button>
+                    </form>
+                    <div id="addCourseMsg" style="margin-top:10px;"></div>
+                </div>
+            </div>
+
+            <div id="tab-addClass" class="admin-tab-content" style="display:none;">
+                <div class="form-box" style="max-width:100%;">
+                    <h4><i class="fas fa-video"></i> নতুন ক্লাস</h4>
+                    <form id="addClassForm">
+                        <div class="form-row">
+                            <div class="form-group"><label>🆔 কোর্স আইডি</label><input type="text" id="acClassCourseId" required placeholder="C001" /></div>
+                            <div class="form-group"><label>🏷️ কোর্স ব্যাচ</label><input type="text" id="acClassBatch" required placeholder="ব্যাচ-১" /></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>🆔 ক্লাস আইডি</label><input type="text" id="acClassId" required placeholder="CLS01" /></div>
+                            <div class="form-group"><label>📚 শিরোনাম</label><input type="text" id="acClassTitle" required /></div>
+                        </div>
+                        <div class="form-group"><label>💬 মূল আলোচনা</label><textarea id="acClassDiscussion" rows="2"></textarea></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>🎥 ভিডিও লিংক</label><input type="url" id="acClassVideo" placeholder="https://youtube.com/embed/..." /></div>
+                            <div class="form-group"><label>📄 পিডিএফ লিংক</label><input type="url" id="acClassPdf" placeholder="https://example.com/file.pdf" /></div>
+                        </div>
+                        <div class="form-group"><label>📝 ভোকাবুলারি</label><input type="text" id="acClassVocab" placeholder="বাংলা,আরবি,ইংরেজি; ..." /></div>
+                        <div class="form-group"><label>✍️ অনুশীলন</label><textarea id="acClassPractice" rows="3" placeholder="সত্য/মিথ্যা: প্রশ্ন | সঠিক || MCQ: প্রশ্ন | অপশন১ | অপশন২ | অপশন৩ | অপশন৪ | সঠিক"></textarea></div>
+                        <div class="form-group"><label>📋 সারাংশ (Google Sheet Sheet Name/Range)</label><input type="text" id="acClassSummary" placeholder="Sheet2!A1:B10" /></div>
+                        <button type="submit" class="btn" id="addClassBtn"><i class="fas fa-check"></i> যুক্ত করুন</button>
+                    </form>
+                    <div id="addClassMsg" style="margin-top:10px;"></div>
+                </div>
+            </div>
+
+            <div id="tab-pending" class="admin-tab-content" style="display:none;">
+                <h4><i class="fas fa-clock"></i> পেন্ডিং রেজিস্ট্রেশন</h4>
+                <div id="pendingList" style="margin-top:12px;"></div>
+            </div>
+
+            <div id="tab-students" class="admin-tab-content" style="display:none;">
+                <h4><i class="fas fa-users"></i> সকল শিক্ষার্থী</h4>
+                <div id="allStudentsList" style="margin-top:12px;"></div>
+            </div>
+
+            <div id="tab-reviewsAdmin" class="admin-tab-content" style="display:none;">
+                <h4><i class="fas fa-star"></i> পেন্ডিং রিভিউ</h4>
+                <div id="pendingReviewsList" style="margin-top:12px;"></div>
+            </div>
+
+            <div id="tab-homeEdit" class="admin-tab-content" style="display:none;">
+                <h4><i class="fas fa-edit"></i> হোম পেজ কন্টেন্ট এডিট</h4>
+                <div class="form-box" style="max-width:100%;">
+                    <div class="form-group">
+                        <label>হোম পেজের কন্টেন্ট (প্রতিটি লাইন একটি প্যারাগ্রাফ হিসেবে দেখাবে)</label>
+                        <textarea id="homeEditContent" rows="8" placeholder="আপনার হোম পেজের কন্টেন্ট লিখুন..."></textarea>
+                    </div>
+                    <button class="btn" onclick="updateHomeContent()"><i class="fas fa-save"></i> সংরক্ষণ করুন</button>
+                    <div id="homeEditMsg" style="margin-top:10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<div class="modal" id="courseDetailModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <h2 id="detailTitle" style="color:#0f2b4b;margin-bottom:15px;"></h2>
+        <div id="detailContent" style="display:flex;flex-direction:column;gap:12px;font-size:14px;color:#2c3e50;"></div>
+    </div>
+</div>
+
+<a href="https://wa.me/8801700000000?text=আমি%20তানজিফ%20একাডেমি%20সম্পর্কে%20জানতে%20চাই" target="_blank" class="float-btn whatsapp-btn" title="হোয়াটসঅ্যাপে যোগাযোগ করুন">
+    <i class="fab fa-whatsapp"></i>
+</a>
+<button class="float-btn scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<footer>
+    <div class="container">
+        <p style="font-size:17px;font-weight:600;">তানজিফ একাডেমি</p>
+        <p style="margin:4px 0;">📧 tanjifacademy@gmail.com &nbsp;|&nbsp; 📞 +৮৮০ ১৭০০-০০০০০০</p>
+        <p style="font-size:13px;color:#8899b0;">© ২০২৬ তানজিফ একাডেমি</p>
+    </div>
+</footer>
+
+<script>
+// আপনার গুগোল অ্যাপ স্ক্রিপ্টের ওয়েব অ্যাপ URL এখানে বসান
+const API_BASE = 'https://script.google.com/macros/s/AKfycbyP8g4ndqM_QGPc0867L1B89-TGPmk_crhnvPvPaH38XhoJ2W0-chEmbTlmpyN0Kw/exec';
+let coursesData = [];
+let currentStudent = null;
+let currentCourseId = null;
+let isAdminLoggedIn = false;
+let selectedReviewStar = 5;
+let currentClassIdx = 0;
+
+window.addEventListener('scroll', function() {
+    document.getElementById('scrollTopBtn').classList.toggle('visible', window.scrollY > 400);
+});
+
+// ===== গুগোল সিঙ্ক =====
+async function googleSync() {
+    const btn = document.getElementById('syncBtn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> সিঙ্ক...';
+    btn.disabled = true;
+    
+    try {
+        await Promise.all([
+            loadCourses(),
+            loadReviews(),
+            loadHomeContent()
+        ]);
+        
+        if (currentStudent) {
+            await loadStudentDashboard(currentStudent);
+        }
+    } catch (e) {
+        console.error('সিঙ্ক করতে সমস্যা:', e);
+    } finally {
+        btn.innerHTML = '<i class="fas fa-sync"></i> গুগোল সিঙ্ক';
+        btn.disabled = false;
+    }
+}
+
+// ===== হোম কন্টেন্ট =====
+async function loadHomeContent() {
+    try {
+        const res = await fetch(`${API_BASE}?action=getHomeContent`);
+        const data = await res.json();
+        const container = document.getElementById('homeContent');
+        if (data && data.content) {
+            container.innerHTML = data.content;
+        }
+        if (document.getElementById('homeEditContent')) {
+            document.getElementById('homeEditContent').value = container.innerText.trim();
+        }
+    } catch (e) {
+        console.error('হোম কন্টেন্ট লোডে সমস্যা:', e);
+    }
+}
+
+async function updateHomeContent() {
+    const content = document.getElementById('homeEditContent').value;
+    const msgDiv = document.getElementById('homeEditMsg');
+    const btn = event.target;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> সংরক্ষণ হচ্ছে...';
+    
+    try {
+        const res = await fetch(API_BASE, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'updateHomeContent',
+                data: { content: content }
+            })
+        });
+        const result = await res.json();
+        if (result.success) {
+            msgDiv.innerHTML = `<div class="msg-success"><i class="fas fa-check-circle"></i> ${result.message}</div>`;
+            loadHomeContent();
+        } else {
+            msgDiv.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ${result.message}</div>`;
+        }
+    } catch (e) {
+        msgDiv.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> সার্ভার সমস্যা</div>`;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save"></i> সংরক্ষণ করুন';
+    }
+}
+
+// ===== ক্লাস প্রিন্ট ফাংশন =====
+function printClassSheet(classId) {
+    const classBody = document.getElementById(`classBody_${classId}`);
+    if (!classBody) {
+        alert('ক্লাস কন্টেন্ট পাওয়া যায়নি');
+        return;
+    }
+    
+    const classItem = classBody.closest('.class-item');
+    const title = classItem ? classItem.querySelector('.class-header span:first-child').textContent.replace('✅', '').trim() : 'ক্লাস';
+    const courseTitle = document.querySelector('.dash-course-card .course-title')?.textContent || 'কোর্স';
+    
+    // Get all tab contents except video
+    const tabs = classBody.querySelectorAll('.class-tab-content');
+    let contentHtml = '';
+    let tabOrder = ['discussion', 'vocab', 'summary', 'notes', 'practice', 'pdf'];
+    let tabLabels = {
+        'discussion': '💬 মূল আলোচনা',
+        'vocab': '📝 ভোকাবুলারি',
+        'summary': '📋 সারাংশ',
+        'notes': '📓 আমার নোট',
+        'practice': '✍️ অনুশীলনী',
+        'pdf': '📄 পিডিএফ'
+    };
+    
+    tabOrder.forEach(tabName => {
+        const tab = document.getElementById(`tab_${classId}_${tabName}`);
+        if (tab) {
+            let content = tab.innerHTML;
+            // প্রিন্টের জন্য ক্লিন আপ
+            if (tabName === 'vocab') {
+                // ভোকাবুলারি থেকে যাচাই মোড বোতাম ও টেস্ট টেক্সট বাদ
+                content = content.replace(/<div[^>]*style="[^"]*display:flex[^"]*"[^>]*>.*?<\/div>/, '');
+                content = content.replace(/<button[^>]*onclick="toggleVocabHide[^>]*>.*?<\/button>/, '');
+                // সব শব্দ দৃশ্যমান করুন
+                content = content.replace(/vocab-hide/g, '');
+            }
+            if (tabName === 'practice') {
+                // অনুশীলনী থেকে উত্তর সাবমিট বোতাম ও রেজাল্ট বাদ
+                content = content.replace(/<button[^>]*onclick="submitPracticeQuiz[^>]*>.*?<\/button>/, '');
+                content = content.replace(/<div[^>]*id="mcqTotalScore[^"]*"[^>]*>.*?<\/div>/, '');
+                content = content.replace(/<div[^>]*id="mcqResult[^"]*"[^>]*>.*?<\/div>/, '');
+                // রেডিও বাটন লুকান কিন্তু টেক্সট রাখুন
+                content = content.replace(/<input[^>]*type="radio"[^>]*>/g, '');
+                // .mcq-option থেকে selected, correct, wrong ক্লাস বাদ
+                content = content.replace(/ class="mcq-option[^"]*"/g, ' class="mcq-option"');
+            }
+            if (tabName === 'notes') {
+                // নোট থেকে ফর্ম বাদ, শুধু টেক্সট দেখান
+                const textarea = tab.querySelector('textarea');
+                if (textarea) {
+                    content = `<div style="white-space:pre-wrap;font-size:14px;">${textarea.value || ''}</div>`;
+                } else {
+                    content = '';
+                }
+            }
+            if (tabName === 'pdf') {
+                // পিডিএফ ট্যাবে শুধু প্রিন্ট অপশন থাকবে, কিন্তু প্রিন্টে আমরা পিডিএফ লিংক দেখাবো না
+                // বরং পিডিএফ ট্যাবের কন্টেন্ট খালি রাখি
+                content = '';
+            }
+            // সারাংশের জন্য লোডার বাদ
+            if (tabName === 'summary') {
+                content = content.replace(/<div[^>]*class="loader"[^>]*>.*?<\/div>/, '');
+                // Loader থাকলে সারাংশ কন্টেন্ট দেখান
+                const summaryContent = tab.querySelector('.summary-content');
+                if (summaryContent) {
+                    content = summaryContent.innerHTML;
+                }
+            }
+            if (content && content.trim()) {
+                contentHtml += `
+                    <div class="print-section">
+                        <h4>${tabLabels[tabName] || tabName}</h4>
+                        <div class="content">${content}</div>
+                    </div>
+                `;
+            }
+        }
+    });
+    
+    if (!contentHtml) {
+        alert('এই ক্লাসে প্রিন্ট করার মতো কোনো কন্টেন্ট নেই');
+        return;
+    }
+    
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>${title} - ক্লাস শিট</title>
+                <style>
+                    * { margin:0; padding:0; box-sizing:border-box; }
+                    body { font-family: 'Kalpurush', Arial, sans-serif; padding: 40px; background: white; max-width: 1000px; margin: 0 auto; }
+                    .print-header { text-align: center; border-bottom: 3px solid #0f2b4b; padding-bottom: 15px; margin-bottom: 25px; }
+                    .print-header h1 { color: #0f2b4b; font-size: 28px; }
+                    .print-header .course-name { font-size: 18px; color: #1e293b; margin-top: 5px; }
+                    .print-header .class-name { font-size: 16px; color: #475569; margin-top: 3px; }
+                    .print-section { margin: 20px 0; padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; page-break-inside: avoid; }
+                    .print-section h4 { color: #0f2b4b; margin-bottom: 10px; font-size: 16px; }
+                    .print-section .content { font-size: 14px; line-height: 1.6; }
+                    .print-section .content table { width: 100%; border-collapse: collapse; }
+                    .print-section .content table td, 
+                    .print-section .content table th { padding: 6px 10px; border: 1px solid #dfe6ef; }
+                    .print-section .content table th { background: #0f2b4b; color: white; }
+                    .print-section .content .mcq-option { display: inline-block; width: calc(50% - 8px); padding: 6px 10px; margin: 3px; border: 1px solid #ccc; border-radius: 4px; background: #f9f9f9; font-size: 13px; text-align: center; }
+                    .print-section .content .mcq-option.correct, 
+                    .print-section .content .mcq-option.wrong,
+                    .print-section .content .mcq-option.selected { border: 1px solid #ccc; background: #f9f9f9; }
+                    .print-section .content .star-rating-select { display: none; }
+                    .print-footer { text-align: center; margin-top: 40px; padding-top: 15px; border-top: 2px solid #e2e8f0; font-size: 12px; color: #94a3b8; }
+                    .vocab-hide { color: #000 !important; text-shadow: none !important; }
+                    .vocab-word { cursor: default; }
+                    .btn { display: none !important; }
+                    .class-tabs { display: none; }
+                    .score-badge { display: none; }
+                    form { display: none; }
+                    textarea { border: none; background: transparent; resize: none; width: 100%; font-family: inherit; font-size: 14px; }
+                    .review-status-box { display: none; }
+                </style>
+                <link href="https://fonts.googleapis.com/css2?family=Kalpurush&display=swap" rel="stylesheet">
+            </head>
+            <body>
+                <div class="print-header">
+                    <h1>তানজিফ একাডেমি</h1>
+                    <div class="course-name">📚 ${courseTitle}</div>
+                    <div class="class-name">${title}</div>
+                </div>
+                ${contentHtml}
+                <div class="print-footer">
+                    <p>তানজিফ একাডেমি - শিখুন, অনুশীলন করুন, উন্নত হোন</p>
+                </div>
+                <script>
+                    window.onload = function() {
+                        window.print();
+                        setTimeout(function() { window.close(); }, 1500);
+                    };
+                <\/script>
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+}
+
+function showSection(id) {
+    document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+    const target = document.getElementById(id);
+    if (target) target.style.display = 'block';
+    document.querySelector('.hero').style.display = id === 'home' ? 'block' : 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (id === 'reviews') checkReviewLoginStatus();
+}
+
+function openModal(course) {
+    const modal = document.getElementById('courseDetailModal');
+    document.getElementById('detailTitle').textContent = `📖 ${course['কোর্স টাইটেল'] || ''}`;
+    const original = course['মূল টাকা'] || '';
+    const discount = course['ডিসকাউন্ট টাকা'] || '';
+    
+    // Format date in Bengali
+    let startDate = course['শুরুর তারিখ'] || 'N/A';
+    try {
+        const d = new Date(startDate);
+        if (!isNaN(d)) {
+            const months = ['জানু', 'ফেব', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্ট', 'অক্টো', 'নভে', 'ডিসে'];
+            startDate = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+        }
+    } catch(e) {}
+    
+    let html = `
+        <div><span style="font-weight:700;">🆔 কোর্স আইডি</span><br><span>${course['কোর্স আইডি'] || 'N/A'}</span></div>
+        <div><span style="font-weight:700;">🏷️ ব্যাচ</span><br><span>${course['কোর্স ব্যাচ'] || 'N/A'}</span></div>
+        <div><span style="font-weight:700;">📅 শুরুর তারিখ</span><br><span>${startDate}</span></div>
+        <div><span style="font-weight:700;">📋 সিলেবাস</span><br><span>${course['সিলেবাস'] || 'N/A'}</span></div>
+        <div><span style="font-weight:700;">💰 মূল্য</span><br><span>${original ? `<span style="text-decoration:line-through;opacity:0.6;margin-right:10px;">${original} টাকা</span>` : ''}${discount ? `<span style="color:#e74c3c;font-weight:700;font-size:18px;">${discount} টাকা</span>` : ''}${!original && !discount ? 'ফ্রি' : ''}</span></div>
+        <div><span style="font-weight:700;">❓ কেন করবো</span><br><span>${course['কেন করবো'] || 'N/A'}</span></div>
+        <div><span style="font-weight:700;">🎁 কি পাবো</span><br><span>${course['কি পাবো'] || 'N/A'}</span></div>
+        <div><span style="font-weight:700;">💳 পেমেন্ট</span><br><span>${course['পেমেন্ট পদ্ধতি'] || 'N/A'}</span></div>
+    `;
+    document.getElementById('detailContent').innerHTML = html;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('courseDetailModal').classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+async function loadCourses() {
+    try {
+        const res = await fetch(`${API_BASE}?action=getCourses`);
+        if (!res.ok) throw new Error('Network response was not ok');
+        const data = await res.json();
+        coursesData = data;
+        const courseSelect = document.getElementById('regCourse');
+        courseSelect.innerHTML = '<option value="">-- নির্বাচন করুন --</option>';
+        const uniqueCourses = [...new Set(data.map(c => c['কোর্স আইডি']))];
+        uniqueCourses.forEach(courseId => {
+            const course = data.find(c => c['কোর্স আইডি'] === courseId);
+            const opt = document.createElement('option');
+            opt.value = courseId;
+            opt.textContent = course['কোর্স টাইটেল'] || courseId;
+            courseSelect.appendChild(opt);
+        });
+        renderCourseCards(data);
+    } catch (e) {
+        document.getElementById('courseContainer').innerHTML = `<p style="text-align:center;color:#e74c3c;"><i class="fas fa-exclamation-circle"></i> কোর্স লোড করতে সমস্যা হয়েছে</p>`;
+    }
+}
+
+function renderCourseCards(data) {
+    const container = document.getElementById('courseContainer');
+    if (!data || data.length === 0) {
+        container.innerHTML = `<p style="text-align:center;"><i class="fas fa-box-open"></i> কোনো কোর্স পাওয়া যায়নি</p>`;
+        return;
+    }
+    const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#2980b9', '#27ae60', '#8e44ad'];
+    let html = '';
+    data.forEach((course, i) => {
+        const color = colors[i % colors.length];
+        const original = course['মূল টাকা'] || '';
+        const discount = course['ডিসকাউন্ট টাকা'] || '';
+        html += `
+            <div class="course-card" style="border-left-color:${color};">
+                <h3 style="color:${color};">${course['কোর্স টাইটেল'] || 'কোর্স'}</h3>
+                <div class="meta"><span><i class="fas fa-id-card"></i> ${course['কোর্স আইডি'] || ''}</span><span><i class="fas fa-tag"></i> ${course['কোর্স ব্যাচ'] || ''}</span></div>
+                <div class="summary">${course['সিলেবাস'] ? course['সিলেবাস'].slice(0,80)+'...' : ''}</div>
+                <div class="price-section">${original ? `<span class="original-price">${original} টাকা</span>` : ''}${discount ? `<span class="discount-price">${discount} টাকা</span>` : ''}${!original && !discount ? '<span>ফ্রি</span>' : ''}</div>
+                <div class="card-actions">
+                    <button class="btn btn-sm" onclick='openModal(${JSON.stringify(course).replace(/"/g, "&quot;")})'><i class="fas fa-info-circle"></i> বিস্তারিত</button>
+                    <button class="btn btn-sm btn-success" onclick="selectCourseForRegister('${course['কোর্স আইডি']}')"><i class="fas fa-user-plus"></i> রেজিস্ট্রেশন</button>
+                    <button class="btn btn-sm btn-outline" onclick="showCourseReviews('${course['কোর্স আইডি']}')"><i class="fas fa-star"></i> রিভিউ</button>
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
+}
+
+async function showCourseReviews(courseId) {
+    showSection('reviews');
+    try {
+        const res = await fetch(`${API_BASE}?action=getReviews&courseId=${encodeURIComponent(courseId)}`);
+        const data = await res.json();
+        const container = document.getElementById('reviewContainer');
+        if (!data || data.length === 0) {
+            container.innerHTML = `<p style="text-align:center;width:100%;"><i class="fas fa-box-open"></i> এই কোর্সের এখনো কোনো রিভিউ নেই</p>`;
+            return;
+        }
+        let html = '';
+        data.forEach(r => {
+            const text = r['মতামত'] || '';
+            html += `
+                <div class="review-card">
+                    <strong><i class="fas fa-user"></i> ${r['শিক্ষার্থী নাম'] || 'শিক্ষার্থী'}</strong>
+                    <span style="color:#f9c74f;margin-left:6px;"><i class="fas fa-star"></i> ${r['রিভিউ রেটিং'] || ''}</span>
+                    <div style="font-size:12px;color:#7f8c8d;">${r['কোর্স আইডি'] || ''} | ${r['কোর্স ব্যাচ'] || ''}</div>
+                    <div class="review-text" id="reviewText_${r['শিক্ষার্থী ইমেইল'] || Math.random()}">${text}</div>
+                    ${text.length > 80 ? `<span class="read-more" onclick="toggleReviewText(this)">আরো পড়ুন</span>` : ''}
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    } catch (e) { console.error('রিভিউ লোডে সমস্যা:', e); }
+}
+
+function toggleReviewText(el) {
+    const parent = el.parentElement;
+    const text = parent.querySelector('.review-text');
+    text.classList.toggle('expanded');
+    el.textContent = text.classList.contains('expanded') ? 'সংক্ষিপ্ত' : 'আরো পড়ুন';
+}
+
+function loadBatches(courseId) {
+    const batchSelect = document.getElementById('regBatch');
+    batchSelect.innerHTML = '<option value="">-- ব্যাচ নির্বাচন করুন --</option>';
+    if (!courseId) return;
+    const batches = [...new Set(coursesData.filter(c => c['কোর্স আইডি'] === courseId).map(c => c['কোর্স ব্যাচ']).filter(b => b))];
+    if (batches.length === 0) {
+        batchSelect.innerHTML = '<option value="">-- কোনো ব্যাচ নেই --</option>';
+        return;
+    }
+    batches.forEach(batch => {
+        const opt = document.createElement('option');
+        opt.value = batch;
+        opt.textContent = batch;
+        batchSelect.appendChild(opt);
+    });
+}
+
+function selectCourseForRegister(courseId) {
+    showSection('register');
+    document.getElementById('regCourse').value = courseId;
+    loadBatches(courseId);
+}
+
+document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('regSubmitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> সাবমিট...';
+    const payload = {
+        action: 'register',
+        data: {
+            name: document.getElementById('regName').value,
+            email: document.getElementById('regEmail').value,
+            mobile: document.getElementById('regMobile').value,
+            courseId: document.getElementById('regCourse').value,
+            batch: document.getElementById('regBatch').value,
+            transaction: document.getElementById('regTransaction').value
+        }
+    };
+    try {
+        const res = await fetch(API_BASE, { method: 'POST', body: JSON.stringify(payload) });
+        const result = await res.json();
+        const msgDiv = document.getElementById('regMessage');
+        if (result.status === 'pending' || result.success) {
+            msgDiv.innerHTML = `<div class="msg-success"><i class="fas fa-check-circle"></i> ${result.message}</div>`;
+            this.reset();
+            document.getElementById('regBatch').innerHTML = '<option value="">-- প্রথমে কোর্স নির্বাচন করুন --</option>';
+        } else {
+            msgDiv.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ${result.message || 'রেজিস্ট্রেশন ব্যর্থ'}</div>`;
+        }
+    } catch (e) {
+        document.getElementById('regMessage').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> সার্ভার সমস্যা</div>`;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check"></i> রেজিস্ট্রেশন করুন';
+    }
+});
+
+async function loadReviews() {
+    try {
+        const res = await fetch(`${API_BASE}?action=getReviews`);
+        const data = await res.json();
+        const container = document.getElementById('reviewContainer');
+        if (!data || data.length === 0) {
+            container.innerHTML = `<p style="text-align:center;width:100%;"><i class="fas fa-box-open"></i> এখনো কোনো রিভিউ নেই</p>`;
+            return;
+        }
+        let html = '';
+        data.forEach(r => {
+            const text = r['মতামত'] || '';
+            html += `
+                <div class="review-card">
+                    <strong><i class="fas fa-user"></i> ${r['শিক্ষার্থী নাম'] || 'শিক্ষার্থী'}</strong>
+                    <span style="color:#f9c74f;margin-left:6px;"><i class="fas fa-star"></i> ${r['রিভিউ রেটিং'] || ''}</span>
+                    <div style="font-size:12px;color:#7f8c8d;">${r['কোর্স আইডি'] || ''} | ${r['কোর্স ব্যাচ'] || ''}</div>
+                    <div class="review-text" id="reviewText_${r['শিক্ষার্থী ইমেইল'] || Math.random()}">${text}</div>
+                    ${text.length > 80 ? `<span class="read-more" onclick="toggleReviewText(this)">আরো পড়ুন</span>` : ''}
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    } catch (e) { console.error('রিভিউ লোডে সমস্যা:', e); }
+}
+
+function checkReviewLoginStatus() {
+    const prompt = document.getElementById('reviewLoginPrompt');
+    const content = document.getElementById('reviewFormContent');
+    if (currentStudent) {
+        prompt.style.display = 'none';
+        content.style.display = 'block';
+        loadStudentCoursesForReview();
+    } else {
+        prompt.style.display = 'block';
+        content.style.display = 'none';
+    }
+}
+
+async function loadStudentCoursesForReview() {
+    try {
+        const res = await fetch(`${API_BASE}?action=getStudentCoursesForReview&email=${encodeURIComponent(currentStudent.email)}`);
+        const data = await res.json();
+        const select = document.getElementById('reviewCourseSelect');
+        select.innerHTML = '<option value="">-- কোর্স নির্বাচন করুন --</option>';
+        if (data && data.length > 0) {
+            data.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = JSON.stringify({ courseId: c.courseId, batch: c.batch, name: c.name, title: c.title });
+                opt.textContent = `${c.title || c.courseId} (${c.batch || 'N/A'})`;
+                select.appendChild(opt);
+            });
+        } else {
+            select.innerHTML = '<option value="">-- কোনো অ্যাপ্রুভড কোর্স নেই --</option>';
+        }
+    } catch (e) { console.error('কোর্স লোডে সমস্যা:', e); }
+}
+
+function updateReviewCourseInfo() {
+    const select = document.getElementById('reviewCourseSelect');
+    const infoDiv = document.getElementById('reviewCourseInfo');
+    if (select.value) {
+        try {
+            const data = JSON.parse(select.value);
+            infoDiv.innerHTML = `
+                <strong><i class="fas fa-user"></i> নাম:</strong> ${data.name || currentStudent.name}<br>
+                <strong><i class="fas fa-book"></i> কোর্স:</strong> ${data.title || data.courseId}<br>
+                <strong><i class="fas fa-tag"></i> ব্যাচ:</strong> ${data.batch || 'N/A'}
+            `;
+            infoDiv.style.display = 'block';
+        } catch (e) { infoDiv.style.display = 'none'; }
+    } else { infoDiv.style.display = 'none'; }
+}
+
+function setReviewStar(rating) {
+    selectedReviewStar = rating;
+    document.getElementById('reviewRating').value = rating;
+    const container = document.getElementById('reviewStarContainer');
+    const stars = container.querySelectorAll('i');
+    stars.forEach((s, idx) => {
+        if (idx < rating) s.classList.add('selected');
+        else s.classList.remove('selected');
+    });
+}
+
+async function submitUserReview() {
+    const select = document.getElementById('reviewCourseSelect');
+    if (!select.value) {
+        document.getElementById('reviewSubmitMsg').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> দয়া করে একটি কোর্স নির্বাচন করুন</div>`;
+        return;
+    }
+    const courseData = JSON.parse(select.value);
+    const rating = document.getElementById('reviewRating').value;
+    const comment = document.getElementById('reviewComment').value.trim();
+    if (!comment) {
+        document.getElementById('reviewSubmitMsg').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> দয়া করে আপনার মতামত লিখুন</div>`;
+        return;
+    }
+    const btn = document.getElementById('reviewSubmitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> জমা হচ্ছে...';
+    try {
+        const payload = {
+            action: 'submitCourseReview',
+            data: {
+                name: currentStudent.name,
+                courseId: courseData.courseId,
+                batch: courseData.batch || '',
+                rating: rating,
+                comment: comment,
+                email: currentStudent.email
+            }
+        };
+        const res = await fetch(API_BASE, { method: 'POST', body: JSON.stringify(payload) });
+        const result = await res.json();
+        if (result.success) {
+            document.getElementById('reviewSubmitMsg').innerHTML = `<div class="msg-success"><i class="fas fa-check-circle"></i> ${result.message}</div>`;
+            document.getElementById('reviewComment').value = '';
+            setReviewStar(5);
+            loadReviews();
+            // Reload dashboard to reflect review status
+            if (currentStudent) loadStudentDashboard(currentStudent);
+        } else {
+            document.getElementById('reviewSubmitMsg').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ${result.message || 'জমা দিতে সমস্যা হয়েছে'}</div>`;
+        }
+    } catch (e) {
+        document.getElementById('reviewSubmitMsg').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> সার্ভার সমস্যা</div>`;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> জমা দিন';
+    }
+}
+
+document.getElementById('studentLoginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('studentLoginBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> লগইন...';
+    const accessId = document.getElementById('studentAccessId').value.trim();
+    if (accessId.length !== 15) {
+        document.getElementById('studentLoginMsg').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> কোর্স আইডি ১৫ ডিজিট হতে হবে</div>`;
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> লগইন করুন';
+        return;
+    }
+    try {
+        const res = await fetch(`${API_BASE}?action=studentLogin&accessId=${encodeURIComponent(accessId)}`);
+        const result = await res.json();
+        if (result.success) {
+            currentStudent = result.student;
+            document.getElementById('studentLoginBox').style.display = 'none';
+            document.getElementById('studentDashboard').classList.add('active');
+            document.getElementById('studentLoginMsg').innerHTML = '';
+            document.getElementById('studentNameDisplay').textContent = currentStudent.name;
+            document.getElementById('studentIdDisplay').textContent = accessId;
+            loadStudentDashboard(currentStudent);
+            checkReviewLoginStatus();
+        } else {
+            document.getElementById('studentLoginMsg').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ${result.message || 'লগইন ব্যর্থ'}</div>`;
+        }
+    } catch (e) {
+        document.getElementById('studentLoginMsg').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> সার্ভার সমস্যা</div>`;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> লগইন করুন';
+    }
+});
+
+function goToMainDashboard() {
+    currentCourseId = null;
+    loadStudentDashboard(currentStudent);
+}
+
+async function loadStudentDashboard(student) {
+    const container = document.getElementById('studentCourseContent');
+    try {
+        const res = await fetch(`${API_BASE}?action=getStudentCourses&email=${encodeURIComponent(student.email)}`);
+        const data = await res.json();
+        if (!data || data.length === 0) {
+            container.innerHTML = `<p><i class="fas fa-box-open"></i> আপনার কোনো কোর্স পাওয়া যায়নি</p>`;
+            return;
+        }
+        if (!currentCourseId && data.length > 0) {
+            currentCourseId = data[0]['কোর্স আইডি'];
+        }
+        const filteredData = data.filter(c => c['কোর্স আইডি'] === currentCourseId);
+        if (filteredData.length === 0) {
+            currentCourseId = data[0]['কোর্স আইডি'];
+            loadStudentDashboard(student);
+            return;
+        }
+        if (data.length > 1 || currentCourseId) {
+            let layoutHtml = `
+                <div class="dashboard-layout">
+                    <div class="dashboard-sidebar">
+                        <div class="dash-course-card" style="border-top-color:#f9c74f;">
+                            <h4 style="color:#0f2b4b;margin-bottom:10px;"><i class="fas fa-th-large"></i> আপনার কোর্সসমূহ</h4>
+                            <div style="display:flex;flex-direction:column;gap:8px;">
+            `;
+            data.forEach(c => {
+                const isActive = c['কোর্স আইডি'] === currentCourseId ? 'background:#eef2f7;border-color:#2980b9;' : '';
+                layoutHtml += `
+                    <button class="btn btn-sm btn-outline" style="justify-content:flex-start;color:#0f2b4b;border-color:#dfe6ef;${isActive}" onclick="switchActiveDashboardCourse('${c['কোর্স আইডি']}')">
+                        <i class="fas fa-book"></i> ${c['কোর্স টাইটেল'] || c['কোর্স আইডি']}
+                    </button>
+                `;
+            });
+            layoutHtml += `
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-main-content" id="dashboardMainArea"></div>
+                </div>
+            `;
+            container.innerHTML = layoutHtml;
+            renderDashboardMainContent(filteredData[0], student);
+        } else {
+            let allHtml = `<div class="dashboard-course-grid">`;
+            for (const course of filteredData) {
+                allHtml += renderCourseOverviewCard(course);
+            }
+            allHtml += `</div>`;
+            container.innerHTML = allHtml;
+        }
+    } catch (e) {
+        container.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ড্যাশবোর্ড লোড করতে সমস্যা</div>`;
+    }
+}
+
+async function switchActiveDashboardCourse(courseId) {
+    currentCourseId = courseId;
+    const res = await fetch(`${API_BASE}?action=getStudentCourses&email=${encodeURIComponent(currentStudent.email)}`);
+    const data = await res.json();
+    const course = data.find(c => c['কোর্স আইডি'] === courseId);
+    if (course) renderDashboardMainContent(course, currentStudent);
+}
+
+function renderCourseOverviewCard(course) {
+    return `
+        <div class="dash-course-card">
+            <div class="course-title">${course['কোর্স টাইটেল'] || course['কোর্স আইডি']}</div>
+            <div class="course-meta">
+                <span><i class="fas fa-id-card"></i> ${course['কোর্স আইডি'] || ''}</span>
+                <span><i class="fas fa-tag"></i> ${course['কোর্স ব্যাচ'] || ''}</span>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="switchActiveDashboardCourse('${course['কোর্স আইডি']}')" style="margin-top:8px;">
+                <i class="fas fa-play"></i> কোর্স শুরু করুন
+            </button>
+        </div>
+    `;
+}
+
+async function renderDashboardMainContent(course, student) {
+    const mainArea = document.getElementById('dashboardMainArea');
+    if (!mainArea) {
+        loadStudentClasses(course['কোর্স আইডি'], course['কোর্স ব্যাচ']);
+        return;
+    }
+    mainArea.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-spin"></i> ক্লাস লোড হচ্ছে...</div>`;
+    try {
+        const courseId = course['কোর্স আইডি'];
+        const batch = course['কোর্স ব্যাচ'];
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
+        const clsRes = await fetch(`${API_BASE}?action=getClassContents&courseId=${encodeURIComponent(courseId)}&batch=${encodeURIComponent(batch)}`, {
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        let classes = await clsRes.json();
+        const totalClasses = classes.length || 1;
+        
+        // Get student data to calculate progress and score
+        const studentRes = await fetch(`${API_BASE}?action=getStudentCourses&email=${encodeURIComponent(student.email)}`);
+        const studentData = await studentRes.json();
+        const studentCourse = studentData.find(c => c['কোর্স আইডি'] === courseId);
+        
+        // Calculate completed classes (70%+ score) and average practice score
+        let notes = {};
+        try { notes = JSON.parse(studentCourse['আমার নোট'] || '{}'); } catch(e) { notes = {}; }
+        let completedCount = 0;
+        let totalScore = 0;
+        let practiceCount = 0;
+        for (let key in notes) {
+            if (key !== '_course_review' && notes[key].score !== undefined) {
+                practiceCount++;
+                totalScore += Number(notes[key].score);
+                if (notes[key].score >= 70) completedCount++;
+            }
+        }
+        const avgScore = practiceCount > 0 ? Math.round(totalScore / practiceCount) : 0;
+        const progressPercent = totalClasses > 0 ? Math.round((completedCount / totalClasses) * 100) : 0;
+        
+        const posRes = await fetch(`${API_BASE}?action=getLeaderboard&courseId=${encodeURIComponent(courseId)}&batch=${encodeURIComponent(batch)}`);
+        const positions = await posRes.json();
+        let rank = 'N/A';
+        if (positions && positions.length > 0) {
+            const idx = positions.findIndex(p => p.email === student.email);
+            rank = idx !== -1 ? `#${idx + 1}` : 'N/A';
+        }
+        
+        // Format start date
+        let startDate = course['শুরুর তারিখ'] || '';
+        try {
+            const d = new Date(startDate);
+            if (!isNaN(d)) {
+                const months = ['জানু', 'ফেব', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্ট', 'অক্টো', 'নভে', 'ডিসে'];
+                startDate = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+            }
+        } catch (e) {}
+        
+        let html = `
+            <div class="dash-course-card" style="margin-bottom:20px; border-top: 5px solid #f9c74f;">
+                <div class="course-title">${course['কোর্স টাইটেল'] || courseId}</div>
+                <div class="course-meta">
+                    <span><i class="fas fa-id-card"></i> ${courseId}</span>
+                    <span><i class="fas fa-tag"></i> ${batch}</span>
+                    <span><i class="fas fa-calendar"></i> ${startDate || 'N/A'}</span>
+                </div>
+                <div class="score-boxes">
+                    <div class="score-box progress"><div class="number">${completedCount}/${totalClasses} (${progressPercent}%)</div><div class="label">মোট ক্লাস করেছেন</div></div>
+                    <div class="score-box score"><div class="number">${avgScore}%</div><div class="label">গড় অনুশীলনী নম্বর</div></div>
+                    <div class="score-box rank"><div class="number">${rank}</div><div class="label">অবস্থান</div></div>
+                </div>
+            </div>
+            <div id="activeClassesContainer"></div>
+        `;
+        mainArea.innerHTML = html;
+        loadStudentClassesIntoContainer(courseId, batch, studentCourse['আমার নোট'] || '{}');
+    } catch (e) {
+        if (e.name === 'AbortError') {
+            mainArea.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ক্লাস লোড করতে সময় বেশি লাগছে। আবার চেষ্টা করুন।</div>`;
+        } else {
+            mainArea.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ক্লাস লোড করতে সমস্যা: ${e.message}</div>`;
+        }
+    }
+}
+
+async function loadStudentClassesIntoContainer(courseId, batch, existingNotesString = '{}') {
+    const container = document.getElementById('activeClassesContainer');
+    if (!container) return;
+    container.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-spin"></i> ক্লাস লোড হচ্ছে...</div>`;
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
+        const res = await fetch(`${API_BASE}?action=getClassContents&courseId=${encodeURIComponent(courseId)}&batch=${encodeURIComponent(batch)}`, {
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        let data = await res.json();
+        if (!data || data.length === 0) {
+            container.innerHTML = `<p style="color:#7f8c8d;"><i class="fas fa-box-open"></i> এখনো কোনো ক্লাস যোগ করা হয়নি</p>`;
+            return;
+        }
+        
+        let existingNotes = {};
+        try { existingNotes = JSON.parse(existingNotesString); } catch (e) { existingNotes = {}; }
+        
+        // সাজানো: ক্লাস আইডি অনুযায়ী সাজানো (যাতে ক্রম ঠিক থাকে)
+        data.sort((a,b) => (a['ক্লাস আইডი'] || '').localeCompare(b['ক্লাস আইডি'] || ''));
+        
+        let html = `<div style="display:flex;flex-direction:column;gap:10px;">`;
+        data.forEach((cls, idx) => {
+            const classId = cls['ক্লাস আইডি'] || `cls_${idx}`;
+            const noteData = existingNotes[classId] || {};
+            const score = noteData.score || 0;
+            const note = noteData.note || '';
+            const videoUrl = cls['ক্লাস ভিডিও'] || '';
+            const embedUrl = videoUrl.includes('watch?v=') ? videoUrl.replace('watch?v=', 'embed/').split('&')[0] : videoUrl;
+            const hasSummary = cls['ক্লাস সারাংশ'] && cls['ক্লাস সারাংশ'].trim();
+            const hasPdf = cls['ক্লাস পিডিএফ'] && cls['ক্লাস পিডিএফ'].trim();
+            
+            // Check if the class is "Completed" (Score >= 70)
+            const isCompleted = score >= 70;
+            
+            // ক্লাস নাম্বার ফরম্যাট: ক্লাস-০১, ক্লাস-০২ ইত্যাদি
+            const classNumber = String(idx + 1).padStart(2, '0');
+            const classTitle = cls['ক্লাস শিরোনাম'] || 'ক্লাস';
+            const displayTitle = `ক্লাস-${classNumber}ঃ ${classTitle}`;
+
+            html += `
+                <div class="class-item">
+                    <div class="class-header" onclick="toggleClass('${classId}')">
+                        <span>${displayTitle} ${isCompleted ? '✅' : ''}</span>
+                        <span class="score-badge" style="${isCompleted ? 'background:#27ae60;' : 'background:#e74c3c;'}"><i class="fas fa-star"></i> ${score}%</span>
+                    </div>
+                    <div class="class-body" id="classBody_${classId}">
+                        <div class="class-tabs">
+                            ${videoUrl ? `<button class="active" onclick="switchClassTab('${classId}','video',this)">🎥 ভিডিও</button>` : ''}
+                            ${cls['মূল আলোচনা'] ? `<button onclick="switchClassTab('${classId}','discussion',this)">💬 আলোচনা</button>` : ''}
+                            ${cls['ভোকাবুলারি'] ? `<button onclick="switchClassTab('${classId}','vocab',this)">📝 ভোকাবুলারি</button>` : ''}
+                            ${hasSummary ? `<button onclick="switchClassTab('${classId}','summary',this)">📋 সারাংশ</button>` : ''}
+                            <button onclick="switchClassTab('${classId}','notes',this)">📓 নোট</button>
+                            ${cls['অনুশীলন'] ? `<button onclick="switchClassTab('${classId}','practice',this)">✍️ অনুশীলন</button>` : ''}
+                            <button onclick="switchClassTab('${classId}','pdf',this)">📄 পিডিএফ</button>
+                        </div>
+                        ${videoUrl ? `
+                        <div class="class-tab-content active" id="tab_${classId}_video">
+                            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;">
+                                <iframe src="${embedUrl}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+                            </div>
+                        </div>` : ''}
+                        ${cls['মূল আলোচনা'] ? `
+                        <div class="class-tab-content" id="tab_${classId}_discussion">
+                            <div style="background:#fef9e7;padding:16px;border-radius:10px;border-left:4px solid #f9c74f;">${cls['মূল আলোচনা']}</div>
+                        </div>` : ''}
+                        ${cls['ভোকাবুলারি'] ? `
+                        <div class="class-tab-content" id="tab_${classId}_vocab">
+                            <div style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+                                <span style="font-size:12px;color:#64748b;" class="vocab-test-text">টেস্ট করতে যে কোনো ঘরে ক্লিক করুন:</span>
+                                <button class="btn btn-sm btn-outline vocab-hide-btn" onclick="toggleVocabHide('${classId}')"><i class="fas fa-eye-slash"></i> যাচাই মোড</button>
+                            </div>
+                            <div id="vocabContainer_${classId}" style="margin-top:8px;"></div>
+                        </div>` : ''}
+                        ${hasSummary ? `
+                        <div class="class-tab-content" id="tab_${classId}_summary">
+                            <div class="summary-content" id="summaryContent_${classId}">
+                                <div class="loader"><i class="fas fa-spinner fa-spin"></i> সারাংশ লোড হচ্ছে...</div>
+                            </div>
+                        </div>` : ''}
+                        <div class="class-tab-content" id="tab_${classId}_notes">
+                            <form onsubmit="saveNote(event,'${classId}','${courseId}')">
+                                <div class="form-group">
+                                    <textarea id="note_${classId}" rows="4" placeholder="আপনার নোট লিখুন...">${note}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-sm"><i class="fas fa-save"></i> সংরক্ষণ</button>
+                            </form>
+                            <div id="noteStatus_${classId}" style="margin-top:8px;"></div>
+                        </div>
+                        ${cls['অনুশীলন'] ? `
+                        <div class="class-tab-content" id="tab_${classId}_practice">
+                            <div id="mcqContainer_${classId}"></div>
+                        </div>` : ''}
+                        <div class="class-tab-content" id="tab_${classId}_pdf">
+                            ${hasPdf ? `<a href="${cls['ক্লাস পিডিএফ']}" target="_blank" class="btn btn-sm"><i class="fas fa-file-pdf"></i> দেখুন</a>` : '<span style="color:#7f8c8d;">কোনো PDF নেই</span>'}
+                            <button class="btn btn-sm btn-outline" onclick="printClassSheet('${classId}')"><i class="fas fa-print"></i> প্রিন্ট</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        html += `</div>`;
+        
+        // Check if review exists for this course
+        let existingReview = null;
+        let reviewStatus = '';
+        try {
+            const revRes = await fetch(`${API_BASE}?action=getStudentReview&email=${encodeURIComponent(currentStudent.email)}&courseId=${encodeURIComponent(courseId)}`);
+            const revData = await revRes.json();
+            if (revData && revData.review) {
+                existingReview = revData.review;
+                reviewStatus = revData.status || '';
+            }
+        } catch (e) {}
+        
+        html += `
+            <div class="course-footer-section">
+                <h3><i class="fas fa-star"></i> কোর্স রিভিউ</h3>
+                <div id="courseReviewSection_${courseId}" style="background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.03);">
+                    ${reviewStatus === 'approved' ? `
+                        <div class="review-status-box">
+                            <i class="fas fa-check-circle" style="color:#27ae60;"></i> আপনার রিভিউ ইতিমধ্যে জমা হয়েছে এবং প্রকাশিত হয়েছে।
+                            <br><small style="color:#64748b;">রেটিং: ${existingReview ? existingReview.rating : ''} | মন্তব্য: ${existingReview ? existingReview.comment : ''}</small>
+                        </div>
+                    ` : reviewStatus === 'pending' ? `
+                        <div class="review-status-box" style="background:#fef9e7;color:#b7950b;">
+                            <i class="fas fa-clock"></i> আপনার রিভিউ জমা হয়েছে। অ্যাডমিন অ্যাপ্রুভের অপেক্ষায় আছে।
+                            <br><small style="color:#64748b;">রেটিং: ${existingReview ? existingReview.rating : ''} | মন্তব্য: ${existingReview ? existingReview.comment : ''}</small>
+                        </div>
+                        <div style="margin-top:12px;">
+                            <p style="font-size:13px;color:#64748b;">আপনি চাইলে আপনার রিভিউ এডিট করতে পারেন:</p>
+                            <form onsubmit="updateReviewFromDashboard(event,'${courseId}')">
+                                <div class="form-group">
+                                    <label>স্টার রেটিং নির্বাচন করুন</label>
+                                    <div class="star-rating-select" id="starRatingContainer_${courseId}">
+                                        <i class="fas fa-star" onclick="setStarRating('${courseId}',1)"></i>
+                                        <i class="fas fa-star" onclick="setStarRating('${courseId}',2)"></i>
+                                        <i class="fas fa-star" onclick="setStarRating('${courseId}',3)"></i>
+                                        <i class="fas fa-star" onclick="setStarRating('${courseId}',4)"></i>
+                                        <i class="fas fa-star" onclick="setStarRating('${courseId}',5)"></i>
+                                    </div>
+                                    <input type="hidden" id="courseReviewRating_${courseId}" value="${existingReview ? existingReview.rating : 5}" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>আপনার মতামত</label>
+                                    <textarea id="courseReviewComment_${courseId}" rows="3" placeholder="এই কোর্স সম্পর্কে আপনার অভিজ্ঞতা লিখুন...">${existingReview ? existingReview.comment : ''}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-sm"><i class="fas fa-paper-plane"></i> রিভিউ আপডেট করুন</button>
+                            </form>
+                        </div>
+                    ` : `
+                        <form onsubmit="submitCourseReviewFromDashboard(event,'${courseId}')">
+                            <div class="form-group">
+                                <label>স্টার রেটিং নির্বাচন করুন</label>
+                                <div class="star-rating-select" id="starRatingContainer_${courseId}">
+                                    <i class="fas fa-star" onclick="setStarRating('${courseId}',1)"></i>
+                                    <i class="fas fa-star" onclick="setStarRating('${courseId}',2)"></i>
+                                    <i class="fas fa-star" onclick="setStarRating('${courseId}',3)"></i>
+                                    <i class="fas fa-star" onclick="setStarRating('${courseId}',4)"></i>
+                                    <i class="fas fa-star" onclick="setStarRating('${courseId}',5)"></i>
+                                </div>
+                                <input type="hidden" id="courseReviewRating_${courseId}" value="5" required />
+                            </div>
+                            <div class="form-group">
+                                <label>আপনার মতামত</label>
+                                <textarea id="courseReviewComment_${courseId}" rows="3" placeholder="এই কোর্স সম্পর্কে আপনার অভিজ্ঞতা লিখুন..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-sm"><i class="fas fa-paper-plane"></i> রিভিউ জমা দিন</button>
+                        </form>
+                    `}
+                    <div id="courseReviewStatus_${courseId}" style="margin-top:8px;"></div>
+                </div>
+            </div>
+            <div class="course-footer-section">
+                <h3><i class="fas fa-certificate"></i> কোর্স সার্টিফিকেট</h3>
+                <div id="certificateContainer_${courseId}"></div>
+            </div>
+        `;
+        container.innerHTML = html;
+        
+        // Load dynamic content for each class
+        for (const cls of data) {
+            const classId = cls['ক্লাস আইডি'];
+            if (cls['ভোকাবুলারি']) loadVocab(classId, cls['ভোকাবুলারি']);
+            if (cls['অনুশীলন']) loadMCQs(classId, cls['অনুশীলন'], courseId);
+            if (cls['ক্লাস সারাংশ'] && cls['ক্লাস সারাংশ'].trim()) loadSummary(classId, cls['ক্লাস সারাংশ']);
+        }
+        setStarRating(courseId, 5);
+        loadCertificate(courseId);
+    } catch (e) {
+        if (e.name === 'AbortError') {
+            container.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ক্লাস লোড করতে সময় বেশি লাগছে। আবার চেষ্টা করুন।</div>`;
+        } else {
+            container.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ক্লাস লোড করতে সমস্যা: ${e.message}</div>`;
+        }
+    }
+}
+
+function setStarRating(courseId, rating) {
+    const input = document.getElementById(`courseReviewRating_${courseId}`);
+    if(input) input.value = rating;
+    const container = document.getElementById(`starRatingContainer_${courseId}`);
+    if (!container) return;
+    const stars = container.querySelectorAll('i');
+    stars.forEach((s, idx) => {
+        if (idx < rating) s.classList.add('selected');
+        else s.classList.remove('selected');
+    });
+}
+
+async function loadSummary(classId, summaryRef) {
+    const container = document.getElementById(`summaryContent_${classId}`);
+    if (!container) return;
+    try {
+        const res = await fetch(`${API_BASE}?action=getSummary&summaryRef=${encodeURIComponent(summaryRef)}`);
+        const result = await res.json();
+        if (result && result.content) container.innerHTML = result.content;
+        else container.innerHTML = `<p style="color:#7f8c8d;">সারাংশ পাওয়া যায়নি</p>`;
+    } catch (e) {
+        container.innerHTML = `<p style="color:#e74c3c;">সারাংশ লোড করতে সমস্যা হয়েছে</p>`;
+    }
+}
+
+function toggleClass(classId) {
+    const body = document.getElementById(`classBody_${classId}`);
+    body.classList.toggle('open');
+}
+
+function switchClassTab(classId, tab, btn) {
+    const container = document.getElementById(`classBody_${classId}`);
+    const tabs = container.querySelectorAll('.class-tab-content');
+    tabs.forEach(t => t.classList.remove('active'));
+    const target = document.getElementById(`tab_${classId}_${tab}`);
+    if (target) target.classList.add('active');
+    const btns = container.querySelectorAll('.class-tabs button');
+    btns.forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+}
+
+function loadVocab(classId, vocabData) {
+    const container = document.getElementById(`vocabContainer_${classId}`);
+    if (!container) return;
+    try {
+        const rows = vocabData.split(';').map(r => r.trim()).filter(r => r);
+        let html = `<table class="vocab-table"><tr><th>বাংলা</th><th>আরবি</th><th>ইংরেজি</th></tr>`;
+        rows.forEach(row => {
+            const parts = row.split(',').map(p => p.trim());
+            if (parts.length >= 3) {
+                html += `<tr>
+                    <td class="vocab-word" onclick="revealVocabCell(this)">${parts[0]}</td>
+                    <td class="vocab-word vocab-hide" onclick="revealVocabCell(this)">${parts[1]}</td>
+                    <td class="vocab-word vocab-hide" onclick="revealVocabCell(this)">${parts[2]}</td>
+                </tr>`;
+            }
+        });
+        html += `</table>`;
+        container.innerHTML = html;
+    } catch (e) {
+        container.innerHTML = `<p style="color:#7f8c8d;">ভোকাবুলারি লোড করতে সমস্যা</p>`;
+    }
+}
+
+function toggleVocabHide(classId) {
+    const container = document.getElementById(`vocabContainer_${classId}`);
+    if (!container) return;
+    const cells = container.querySelectorAll('td:nth-child(2), td:nth-child(3)');
+    cells.forEach(cell => cell.classList.toggle('vocab-hide'));
+}
+
+function revealVocabCell(el) {
+    el.classList.remove('vocab-hide');
+}
+
+function loadMCQs(classId, practiceData, courseId) {
+    const container = document.getElementById(`mcqContainer_${classId}`);
+    if (!container) return;
+    try {
+        const questions = practiceData.split('||').map(q => q.trim()).filter(q => q);
+        let html = `<div style="margin:10px 0;"><h4>📝 অনুশীলনী প্রশ্ন</h4></div>`;
+        let totalQuestions = 0;
+        questions.forEach((q, idx) => {
+            const parts = q.split('|').map(p => p.trim());
+            if (parts.length < 2) return;
+            const question = parts[0];
+            const options = parts.slice(1, -1);
+            const correct = parts[parts.length - 1];
+            totalQuestions++;
+            const qId = `${classId}_${idx}`;
+            html += `
+                <div style="margin:12px 0;padding:12px;background:#f8f9fc;border-radius:8px;border:1px solid #e2e8f0;" id="questionBox_${qId}" data-correct="${correct}">
+                    <p><strong>${idx+1}. ${question}</strong></p>
+                    <div style="margin-top:8px;display:flex;flex-wrap:wrap;" id="options_${qId}">
+                        ${options.map(opt => `
+                            <label class="mcq-option" onclick="selectMCQOption(this,'${qId}','${opt}')">
+                                <input type="radio" name="mcq_${qId}" value="${opt}" style="margin-right:6px;display:none;">
+                                ${opt}
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div id="mcqResult_${qId}" style="margin-top:6px;font-size:13px;"></div>
+                </div>
+            `;
+        });
+        html += `
+            <button class="btn btn-sm btn-success" style="margin-top:10px;" onclick="submitPracticeQuiz('${classId}','${courseId}',${totalQuestions})"><i class="fas fa-check-circle"></i> উত্তর সাবমিট করুন</button>
+            <div id="mcqTotalScore_${classId}" style="margin-top:10px;font-weight:600;"></div>
+        `;
+        container.innerHTML = html;
+    } catch (e) {
+        container.innerHTML = `<p style="color:#7f8c8d;">অনুশীলন লোড করতে সমস্যা</p>`;
+    }
+}
+
+function selectMCQOption(el, qId, val) {
+    const parent = document.getElementById(`options_${qId}`);
+    parent.querySelectorAll('.mcq-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    const radio = el.querySelector('input');
+    if (radio) radio.checked = true;
+}
+
+function submitPracticeQuiz(classId, courseId, totalQuestions) {
+    let correctCount = 0;
+    for (let i = 0; i < totalQuestions; i++) {
+        const qId = `${classId}_${i}`;
+        const box = document.getElementById(`questionBox_${qId}`);
+        if (!box) continue;
+        const correctVal = box.getAttribute('data-correct').trim();
+        const selectedLabel = box.querySelector('.mcq-option.selected');
+        const resultDiv = document.getElementById(`mcqResult_${qId}`);
+        const options = box.querySelectorAll('.mcq-option');
+        options.forEach(opt => {
+            if (opt.textContent.trim() === correctVal) opt.classList.add('correct');
+        });
+        if (selectedLabel) {
+            if (selectedLabel.textContent.trim() === correctVal) {
+                correctCount++;
+                resultDiv.innerHTML = `<span style="color:#27ae60;font-weight:bold;">✅ সঠিক উত্তর!</span>`;
+            } else {
+                selectedLabel.classList.add('wrong');
+                resultDiv.innerHTML = `<span style="color:#e74c3c;font-weight:bold;">❌ ভুল উত্তর। সঠিক উত্তরটি সবুজ চিহ্নিত করা হলো।</span>`;
+            }
+        } else {
+            resultDiv.innerHTML = `<span style="color:#e74c3c;">⚠️ আপনি কোনো উত্তর নির্বাচন করেননি। সঠিক উত্তর: ${correctVal}</span>`;
+        }
+    }
+    const percent = Math.round((correctCount / totalQuestions) * 100);
+    document.getElementById(`mcqTotalScore_${classId}`).innerHTML = `<div class="msg-info">🎯 আপনি ${totalQuestions} টির মধ্যে ${correctCount} টি সঠিক উত্তর দিয়েছেন। মোট স্কোর: ${percent}%</div>`;
+    
+    // Save score and mark as Complete (>=70%)
+    saveClassScore(classId, courseId, percent);
+}
+
+async function saveClassScore(classId, courseId, score) {
+    try {
+        const res = await fetch(API_BASE, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'saveClassScore',
+                data: { classId, courseId, email: currentStudent.email, score }
+            })
+        });
+        const result = await res.json();
+        if (result.success) {
+            // Update UI header badge
+            const header = document.querySelector(`#classBody_${classId}`)?.previousElementSibling;
+            if (header) {
+                const badge = header.querySelector('.score-badge');
+                const titleSpan = header.querySelector('span:first-child');
+                
+                if (score >= 70) {
+                    badge.style.background = '#27ae60';
+                    if (titleSpan && !titleSpan.innerHTML.includes('✅')) {
+                        titleSpan.innerHTML = titleSpan.innerHTML + ' ✅';
+                    }
+                } else {
+                    badge.style.background = '#e74c3c';
+                    if (titleSpan) {
+                        titleSpan.innerHTML = titleSpan.innerHTML.replace(' ✅', '');
+                    }
+                }
+                if (badge) badge.innerHTML = `<i class="fas fa-star"></i> ${score}%`;
+            }
+            // Reload dashboard to sync scores and progress
+            setTimeout(() => loadStudentDashboard(currentStudent), 1000);
+        }
+    } catch (e) { console.error('স্কোর সংরক্ষণে সমস্যা:', e); }
+}
+
+async function loadNote(classId, courseId) {
+    try {
+        const res = await fetch(`${API_BASE}?action=getNote&classId=${encodeURIComponent(classId)}&courseId=${encodeURIComponent(courseId)}&email=${encodeURIComponent(currentStudent.email)}`);
+        const data = await res.json();
+        if (data && data.note) {
+            const textarea = document.getElementById(`note_${classId}`);
+            if (textarea) textarea.value = data.note;
+        }
+    } catch (e) { console.error('নোট লোডে সমস্যা:', e); }
+}
+
+async function saveNote(e, classId, courseId) {
+    e.preventDefault();
+    const note = document.getElementById(`note_${classId}`).value;
+    const status = document.getElementById(`noteStatus_${classId}`);
+    try {
+        const res = await fetch(API_BASE, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'saveNote',
+                data: { classId, courseId, email: currentStudent.email, note }
+            })
+        });
+        const result = await res.json();
+        status.innerHTML = result.success ? `<span style="color:#27ae60;">✅ নোট সংরক্ষিত হয়েছে</span>` : `<span style="color:#e74c3c;">❌ সংরক্ষণ ব্যর্থ</span>`;
+        if (result.success) {
+            setTimeout(() => loadStudentDashboard(currentStudent), 1000);
+        }
+    } catch (e) {
+        status.innerHTML = `<span style="color:#e74c3c;">❌ সার্ভার সমস্যা</span>`;
+    }
+}
+
+async function submitCourseReviewFromDashboard(e, courseId) {
+    e.preventDefault();
+    const rating = document.getElementById(`courseReviewRating_${courseId}`).value;
+    const comment = document.getElementById(`courseReviewComment_${courseId}`).value;
+    const status = document.getElementById(`courseReviewStatus_${courseId}`);
+    if (!comment.trim()) {
+        status.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> দয়া করে আপনার মতামত লিখুন</div>`;
+        return;
+    }
+    try {
+        const res = await fetch(API_BASE, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'submitCourseReview',
+                data: {
+                    name: currentStudent.name,
+                    courseId: courseId,
+                    batch: currentStudent.batch || '',
+                    rating: rating,
+                    comment: comment,
+                    email: currentStudent.email
+                }
+            })
+        });
+        const result = await res.json();
+        if (result.success) {
+            status.innerHTML = `<div class="msg-success"><i class="fas fa-check-circle"></i> ${result.message}</div>`;
+            setTimeout(() => loadStudentDashboard(currentStudent), 1500);
+        } else {
+            status.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ${result.message || 'জমা দিতে সমস্যা হয়েছে'}</div>`;
+        }
+    } catch (e) {
+        status.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> সার্ভার সমস্যা</div>`;
+    }
+}
+
+async function updateReviewFromDashboard(e, courseId) {
+    e.preventDefault();
+    const rating = document.getElementById(`courseReviewRating_${courseId}`).value;
+    const comment = document.getElementById(`courseReviewComment_${courseId}`).value;
+    const status = document.getElementById(`courseReviewStatus_${courseId}`);
+    if (!comment.trim()) {
+        status.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> দয়া করে আপনার মতামত লিখুন</div>`;
+        return;
+    }
+    try {
+        const res = await fetch(API_BASE, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'submitCourseReview',
+                data: {
+                    name: currentStudent.name,
+                    courseId: courseId,
+                    batch: currentStudent.batch || '',
+                    rating: rating,
+                    comment: comment,
+                    email: currentStudent.email
+                }
+            })
+        });
+        const result = await res.json();
+        if (result.success) {
+            status.innerHTML = `<div class="msg-success"><i class="fas fa-check-circle"></i> ${result.message}</div>`;
+            setTimeout(() => loadStudentDashboard(currentStudent), 1500);
+        } else {
+            status.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ${result.message || 'আপডেট করতে সমস্যা হয়েছে'}</div>`;
+        }
+    } catch (e) {
+        status.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> সার্ভার সমস্যা</div>`;
+    }
+}
+
+async function loadCertificate(courseId) {
+    const container = document.getElementById(`certificateContainer_${courseId}`);
+    if (!container) return;
+    try {
+        const res = await fetch(`${API_BASE}?action=getStudentCourses&email=${encodeURIComponent(currentStudent.email)}`);
+        const data = await res.json();
+        const course = data.find(c => c['কোর্স আইডি'] === courseId);
+        if (!course) return;
+        const clsRes = await fetch(`${API_BASE}?action=getClassContents&courseId=${encodeURIComponent(courseId)}&batch=${encodeURIComponent(course['কোর্স ব্যাচ'])}`);
+        let classes = await clsRes.json();
+        const totalClasses = classes.length || 1;
+        
+        // Calculate completed classes (70%+ score) and avg practice score
+        let notes = {};
+        try { notes = JSON.parse(course['আমার নোট'] || '{}'); } catch(e) { notes = {}; }
+        let completed = 0;
+        let totalScore = 0;
+        let practiceCount = 0;
+        for (let key in notes) {
+            if (key !== '_course_review' && notes[key].score !== undefined) {
+                practiceCount++;
+                totalScore += Number(notes[key].score);
+                if (notes[key].score >= 70) completed++;
+            }
+        }
+        const avgScore = practiceCount > 0 ? Math.round(totalScore / practiceCount) : 0;
+        const progress = totalClasses > 0 ? Math.round((completed / totalClasses) * 100) : 0;
+        
+        // শর্ত: 100% ক্লাস সম্পন্ন এবং গড় স্কোর >= 80%
+        if (progress >= 100 && avgScore >= 80) {
+            container.innerHTML = `
+                <div class="certificate" id="certificatePrint_${courseId}">
+                    <h2>তানজিফ একাডেমি</h2>
+                    <div class="cert-subtitle">Certificate of Completion</div>
+                    <div class="cert-body-text">এই সার্টিফিকেট প্রদান করা হচ্ছে সফলভাবে কোর্স সম্পন্ন করার জন্য:</div>
+                    <div class="student-name">${currentStudent.name}</div>
+                    <div class="cert-body-text">কোর্সের নাম:</div>
+                    <div class="course-name">${course['কোর্স টাইটেল'] || courseId}</div>
+                    <div class="score-text">গড় অনুশীলনী নম্বর: ${avgScore}% | সম্পন্ন ক্লাস: ${progress}%</div>
+                    <div class="cert-footer">
+                        <div class="signature-box">তারিখ: ${new Date().toLocaleDateString('bn-BD')}</div>
+                        <div style="font-size:32px;">🏆</div>
+                        <div class="signature-box">কর্তৃপক্ষ, তানজিফ একাডেমি</div>
+                    </div>
+                    <div style="margin-top:20px;">
+                        <button class="btn btn-sm" onclick="printCertificate('${courseId}')"><i class="fas fa-print"></i> সার্টিফিকেট প্রিন্ট করুন</button>
+                    </div>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `<p style="color:#5a6b7c;background:#f8fafc;padding:15px;border-radius:8px;border:1px solid #e2e8f0;">🏆 সার্টিফিকেট অর্জনের জন্য ১০০% ক্লাস সম্পন্ন করুন এবং গড় অনুশীলনী নম্বর ৮০% বা তার বেশি অর্জন করুন। (বর্তমান অগ্রগতি: ${progress}%, গড় অনুশীলনী নম্বর: ${avgScore}%)</p>`;
+        }
+    } catch (e) { console.error('সার্টিফিকেট লোডে সমস্যা:', e); }
+}
+
+function printCertificate(courseId) {
+    const cert = document.getElementById(`certificatePrint_${courseId}`);
+    if (!cert) return;
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html><head><title>সার্টিফিকেট</title>
+        <style>
+            * { margin:0; padding:0; box-sizing:border-box; }
+            body { display:flex; justify-content:center; align-items:center; min-height:100vh; background:white; font-family: 'Kalpurush', Arial, sans-serif; }
+            .certificate { border:10px solid #0f2b4b; border-radius:20px; padding:40px; text-align:center; background:linear-gradient(to bottom,#ffffff,#f8fafc); max-width:800px; width:100%; margin:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1); position:relative; }
+            .certificate::before { content:''; position:absolute; top:15px; left:15px; right:15px; bottom:15px; border:2px dashed #f9c74f; pointer-events:none; border-radius:12px; }
+            .certificate h2 { color:#0f2b4b; font-size:32px; margin-bottom:5px; }
+            .certificate .cert-subtitle { font-size:16px; color:#64748b; text-transform:uppercase; letter-spacing:2px; margin-bottom:25px; }
+            .certificate .cert-body-text { font-size:15px; color:#334155; margin-bottom:10px; }
+            .certificate .student-name { font-size:28px; color:#0f2b4b; font-weight:bold; margin:15px 0; border-bottom:2px solid #f9c74f; display:inline-block; padding-bottom:5px; }
+            .certificate .course-name { font-size:20px; color:#1e293b; font-weight:bold; margin:10px 0 20px 0; }
+            .certificate .score-text { font-size:15px; color:#475569; margin:15px 0; background:#f1f5f9; display:inline-block; padding:6px 20px; border-radius:20px; }
+            .certificate .cert-footer { display:flex; justify-content:space-between; align-items:center; margin-top:40px; padding:0 30px; }
+            .certificate .signature-box { text-align:center; border-top:1px solid #94a3b8; padding-top:8px; width:180px; font-size:13px; color:#475569; }
+            @media print { body { background:white; } .certificate { border:6px solid #0f2b4b !important; box-shadow:none; } .certificate button { display:none !important; } }
+        </style>
+        <link href="https://fonts.googleapis.com/css2?family=Kalpurush&display=swap" rel="stylesheet">
+        </head><body>
+        ${cert.outerHTML.replace(/<button[^>]*>.*?<\/button>/g, '')}
+        <script>
+            window.onload = function() { window.print(); setTimeout(function() { window.close(); }, 1500); };
+        <\/script>
+        </body></html>
+    `);
+    printWindow.document.close();
+}
+
+function searchStudentCourses(query) {
+    const container = document.getElementById('studentCourseContent');
+    const cards = container.querySelectorAll('.dash-course-card');
+    if (!query.trim()) { cards.forEach(c => c.style.display = 'block'); return; }
+    const q = query.toLowerCase();
+    cards.forEach(c => {
+        c.style.display = c.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+    });
+}
+
+function studentLogout() {
+    currentStudent = null;
+    currentCourseId = null;
+    document.getElementById('studentLoginBox').style.display = 'block';
+    document.getElementById('studentDashboard').classList.remove('active');
+    document.getElementById('studentLoginForm').reset();
+    document.getElementById('studentCourseContent').innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</div>';
+    showSection('home');
+}
+
+document.getElementById('adminLoginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('adminLoginBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> লগইন...';
+    try {
+        const res = await fetch(`${API_BASE}?action=adminLogin&email=${encodeURIComponent(document.getElementById('adminEmail').value)}&pass=${encodeURIComponent(document.getElementById('adminPass').value)}`);
+        const result = await res.json();
+        if (result.success) {
+            isAdminLoggedIn = true;
+            document.getElementById('adminLoginBox').style.display = 'none';
+            document.getElementById('adminDashboard').classList.add('active');
+            document.getElementById('adminLoginMsg').innerHTML = '';
+            loadPending();
+            loadAllStudents();
+            loadPendingReviews();
+            loadHomeContent();
+        } else {
+            document.getElementById('adminLoginMsg').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ইমেইল বা পাসওয়ার্ড ভুল</div>`;
+        }
+    } catch (e) {
+        document.getElementById('adminLoginMsg').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> সার্ভার সমস্যা</div>`;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> লগইন';
+    }
+});
+
+function adminLogout() {
+    isAdminLoggedIn = false;
+    document.getElementById('adminLoginBox').style.display = 'block';
+    document.getElementById('adminDashboard').classList.remove('active');
+    document.getElementById('adminLoginForm').reset();
+    showSection('home');
+}
+
+function switchAdminTab(tab, btn) {
+    document.querySelectorAll('.admin-tab-content').forEach(el => el.style.display = 'none');
+    const target = document.getElementById(`tab-${tab}`);
+    if (target) target.style.display = 'block';
+    document.querySelectorAll('.admin-tabs button').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    if (tab === 'pending') loadPending();
+    if (tab === 'students') loadAllStudents();
+    if (tab === 'reviewsAdmin') loadPendingReviews();
+    if (tab === 'homeEdit') loadHomeContent();
+}
+
+document.getElementById('addCourseForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('addCourseBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> যোগ হচ্ছে...';
+    try {
+        const res = await fetch(API_BASE, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'addCourse',
+                data: {
+                    courseId: document.getElementById('acCourseId').value,
+                    title: document.getElementById('acTitle').value,
+                    batch: document.getElementById('acBatch').value,
+                    startDate: document.getElementById('acStartDate').value,
+                    syllabus: document.getElementById('acSyllabus').value,
+                    originalPrice: document.getElementById('acOriginalPrice').value,
+                    discountPrice: document.getElementById('acDiscountPrice').value,
+                    why: document.getElementById('acWhy').value,
+                    what: document.getElementById('acWhat').value,
+                    payment: document.getElementById('acPayment').value
+                }
+            })
+        });
+        const result = await res.json();
+        document.getElementById('addCourseMsg').innerHTML = `<div class="msg-success"><i class="fas fa-check-circle"></i> ${result.message}</div>`;
+        this.reset();
+        loadCourses();
+    } catch (e) {
+        document.getElementById('addCourseMsg').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> সার্ভার সমস্যা</div>`;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check"></i> যুক্ত করুন';
+    }
+});
+
+document.getElementById('addClassForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('addClassBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> যোগ হচ্ছে...';
+    try {
+        const res = await fetch(API_BASE, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'addClass',
+                data: {
+                    courseId: document.getElementById('acClassCourseId').value,
+                    batch: document.getElementById('acClassBatch').value,
+                    classId: document.getElementById('acClassId').value,
+                    title: document.getElementById('acClassTitle').value,
+                    discussion: document.getElementById('acClassDiscussion').value,
+                    video: document.getElementById('acClassVideo').value,
+                    pdf: document.getElementById('acClassPdf').value,
+                    vocab: document.getElementById('acClassVocab').value,
+                    practice: document.getElementById('acClassPractice').value,
+                    summary: document.getElementById('acClassSummary').value
+                }
+            })
+        });
+        const result = await res.json();
+        document.getElementById('addClassMsg').innerHTML = `<div class="msg-success"><i class="fas fa-check-circle"></i> ${result.message}</div>`;
+        this.reset();
+    } catch (e) {
+        document.getElementById('addClassMsg').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> সার্ভার সমস্যা</div>`;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check"></i> যুক্ত করুন';
+    }
+});
+
+async function loadPending() {
+    try {
+        const res = await fetch(`${API_BASE}?action=getPending`);
+        const data = await res.json();
+        const container = document.getElementById('pendingList');
+        if (!data || data.length === 0) {
+            container.innerHTML = `<p style="color:#5a6b7c;"><i class="fas fa-check-circle" style="color:#27ae60;"></i> কোনো পেন্ডিং রিকোয়েস্ট নেই</p>`;
+            return;
+        }
+        let html = '';
+        data.forEach(s => {
+            html += `
+                <div class="pending-item">
+                    <div>
+                        <strong><i class="fas fa-user"></i> ${s['শিক্ষার্থীর নাম'] || ''}</strong><br/>
+                        <i class="fas fa-envelope"></i> ${s['শিক্ষার্থী ইমেইল'] || ''}<br/>
+                        <i class="fas fa-book"></i> ${s['কোর্স আইডি'] || ''} | <i class="fas fa-tag"></i> ${s['কোর্স ব্যাচ'] || ''}
+                    </div>
+                    <button class="btn btn-sm btn-success" onclick="approveStudent('${s['শিক্ষার্থী ইমেইল']}','${s['কোর্স আইডি']}','${s['কোর্স ব্যাচ']}','${s['শিক্ষার্থীর নাম']}','${s['শিক্ষার্থী মোবাইল']}')">
+                        <i class="fas fa-check"></i> অ্যাপ্রুভ
+                    </button>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    } catch (e) { console.error('পেন্ডিং লোডে সমস্যা:', e); }
+}
+
+async function approveStudent(email, courseId, batch, name, mobile) {
+    if (!confirm(`${name} (${email}) কে অ্যাপ্রুভ দিতে চান?`)) return;
+    const btn = event.target;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    try {
+        const res = await fetch(`${API_BASE}?action=approve&email=${encodeURIComponent(email)}&courseId=${encodeURIComponent(courseId)}&batch=${encodeURIComponent(batch)}&name=${encodeURIComponent(name)}&mobile=${encodeURIComponent(mobile)}`);
+        const result = await res.json();
+        if (result.success) {
+            alert(`✅ ${name} কে অ্যাপ্রুভ করা হয়েছে\nকোর্স আইডি: ${result.courseId}\nইমেইল পাঠানো হয়েছে`);
+            loadPending();
+        } else {
+            alert('❌ অ্যাপ্রুভ করতে সমস্যা হয়েছে');
+        }
+    } catch (e) {
+        alert('❌ সার্ভার সমস্যা');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check"></i> অ্যাপ্রুভ';
+    }
+}
+
+async function loadAllStudents() {
+    try {
+        const res = await fetch(`${API_BASE}?action=getAllStudents`);
+        const data = await res.json();
+        const container = document.getElementById('allStudentsList');
+        if (!data || data.length === 0) {
+            container.innerHTML = `<p style="color:#5a6b7c;"><i class="fas fa-box-open"></i> এখনো কোনো শিক্ষার্থী নেই</p>`;
+            return;
+        }
+        let html = `<div class="table-wrap"><table><tr><th>নাম</th><th>ইমেইল</th><th>কোর্স আইডি</th><th>ব্যাচ</th><th>স্ট্যাটাস</th></tr>`;
+        data.forEach(s => {
+            const status = s['অ্যাপ্রুভ'] ? '✅ অ্যাপ্রুভড' : '⏳ পেন্ডিং';
+            html += `<tr><td>${s['শিক্ষার্থীর নাম'] || ''}</td><td>${s['শিক্ষার্থী ইমেইল'] || ''}</td><td>${s['কোর্স আইডি'] || ''}</td><td>${s['কোর্স ব্যাচ'] || ''}</td><td>${status}</td></tr>`;
+        });
+        html += '</table></div>';
+        container.innerHTML = html;
+    } catch (e) { console.error('শিক্ষার্থী লোডে সমস্যা:', e); }
+}
+
+async function loadPendingReviews() {
+    try {
+        const res = await fetch(`${API_BASE}?action=getPendingReviews`);
+        const data = await res.json();
+        const container = document.getElementById('pendingReviewsList');
+        if (!data || data.length === 0) {
+            container.innerHTML = `<p style="color:#5a6b7c;"><i class="fas fa-check-circle" style="color:#27ae60;"></i> কোনো পেন্ডিং রিভিউ নেই</p>`;
+            return;
+        }
+        let html = '';
+        data.forEach(r => {
+            html += `
+                <div class="pending-item">
+                    <div>
+                        <strong><i class="fas fa-user"></i> ${r['শিক্ষার্থী নাম'] || ''}</strong><br/>
+                        <i class="fas fa-star"></i> রেটিং: ${r['রিভিউ রেটিং'] || ''}<br/>
+                        <i class="fas fa-comment"></i> ${r['মতামত'] || ''}<br/>
+                        <i class="fas fa-book"></i> ${r['কোর্স আইডি'] || ''} | ${r['কোর্স ব্যাচ'] || ''}
+                    </div>
+                    <button class="btn btn-sm btn-success" onclick="approveReview('${r['শিক্ষার্থী ইমেইল']}','${r['কোর্স আইডি']}')">
+                        <i class="fas fa-check"></i> অ্যাপ্রুভ
+                    </button>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    } catch (e) { console.error('পেন্ডিং রিভিউ লোডে সমস্যা:', e); }
+}
+
+async function approveReview(email, courseId) {
+    if (!confirm('এই রিভিউ অ্যাপ্রুভ করতে চান?')) return;
+    try {
+        const res = await fetch(`${API_BASE}?action=approveReview&email=${encodeURIComponent(email)}&courseId=${encodeURIComponent(courseId)}`);
+        const result = await res.json();
+        if (result.success) {
+            alert('✅ রিভিউ অ্যাপ্রুভ করা হয়েছে');
+            loadPendingReviews();
+            loadReviews();
+        } else {
+            alert('❌ অ্যাপ্রুভ করতে সমস্যা হয়েছে');
+        }
+    } catch (e) {
+        alert('❌ সার্ভার সমস্যা');
+    }
+}
+
+window.onload = function() {
+    showSection('home');
+    loadCourses();
+    loadReviews();
+    loadHomeContent();
+    setReviewStar(5);
+};
+</script>
+</body>
+</html>
