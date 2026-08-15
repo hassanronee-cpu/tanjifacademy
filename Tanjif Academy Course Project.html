@@ -744,7 +744,7 @@ function openModal(course) {
         <div><span style="font-weight:700;">🏷️ ব্যাচ</span><br><span>${course['কোর্স ব্যাচ'] || 'N/A'}</span></div>
         <div><span style="font-weight:700;">📅 শুরুর তারিখ</span><br><span>${startDate}</span></div>
         <div><span style="font-weight:700;">📋 সিলেবাস</span><br><span>${course['সিলেবাস'] || 'N/A'}</span></div>
-        <div><span style="font-weight:700;">💰 মূল্য</span><br><span>${original ? `<span style="text-decoration:line-through;opacity:0.6;margin-right:10px;">${original} টাকা</span>` : ''}${discount ? `<span style="color:#e74c3c;font-weight:700;font-size:18px;">${discount} টাকা</span>` : ''}${!original && !discount ? 'ফ্রি' : ''}</span></div>
+        <div><span style="font-weight:700;">💰 মূল্য</span><br><span>${original ? `<span style="text-decoration:line-through;opacity:0.6;margin-right:10px;">${original} টাকা</span>` : ''}${discount ? `<span style="color:#e74c3c;font-weight:700;font-size:18px;">${discount} টাকা</span>` : ''}${!original && !discount ? 'বিনামূল্যে' : ''}</span></div>
         <div><span style="font-weight:700;">❓ কেন করবো</span><br><span>${course['কেন করবো'] || 'N/A'}</span></div>
         <div><span style="font-weight:700;">🎁 কি পাবো</span><br><span>${course['কি পাবো'] || 'N/A'}</span></div>
         <div><span style="font-weight:700;">💳 পেমেন্ট</span><br><span>${course['পেমেন্ট পদ্ধতি'] || 'N/A'}</span></div>
@@ -798,7 +798,7 @@ function renderCourseCards(data) {
                 <h3 style="color:${color};">${course['কোর্স টাইটেল'] || 'কোর্স'}</h3>
                 <div class="meta"><span><i class="fas fa-id-card"></i> ${course['কোর্স আইডি'] || ''}</span><span><i class="fas fa-tag"></i> ${course['কোর্স ব্যাচ'] || ''}</span></div>
                 <div class="summary">${course['সিলেবাস'] ? course['সিলেবাস'].slice(0,80)+'...' : ''}</div>
-                <div class="price-section">${original ? `<span class="original-price">${original} টাকা</span>` : ''}${discount ? `<span class="discount-price">${discount} টাকা</span>` : ''}${!original && !discount ? '<span>ফ্রি</span>' : ''}</div>
+                <div class="price-section">${original ? `<span class="original-price">${original} টাকা</span>` : ''}${discount ? `<span class="discount-price">${discount} টাকা</span>` : ''}${!original && !discount ? '<span>বিনামূল্যে</span>' : ''}</div>
                 <div class="card-actions">
                     <button class="btn btn-sm" onclick='openModal(${JSON.stringify(course).replace(/"/g, "&quot;")})'><i class="fas fa-info-circle"></i> বিস্তারিত</button>
                     <button class="btn btn-sm btn-success" onclick="selectCourseForRegister('${course['কোর্স আইডি']}')"><i class="fas fa-user-plus"></i> রেজিস্ট্রেশন</button>
