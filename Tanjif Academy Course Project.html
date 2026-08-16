@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Kalpurush&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        /* ... আপনার পুরানো CSS একই থাকবে ... */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kalpurush', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         html { scroll-behavior: smooth; min-height: 100vh; }
         body { background: #f0f4fa; color: #1e2a3a; min-height: 100vh; display: flex; flex-direction: column; position: relative; }
@@ -98,8 +97,8 @@
         .mcq-option.correct { border-color: #27ae60 !important; background: #eafaf1 !important; color: #27ae60; font-weight: bold; }
         .mcq-option.wrong { border-color: #e74c3c !important; background: #fdedec !important; color: #e74c3c; }
         .vocab-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        .vocab-table th, .vocab-table td { padding: 8px 12px; border: 1px solid #dfe6ef; text-align: left; }
-        .vocab-table th { background: #0f2b4b; color: white; }
+        .vocab-table th, .vocab-table td { padding: 10px 15px; border: 1px solid #dfe6ef; text-align: center; vertical-align: middle; }
+        .vocab-table th { background: #0f2b4b; color: white; text-align: center; }
         .vocab-hide { color: transparent; text-shadow: 0 0 8px rgba(0,0,0,0.5); cursor: pointer; user-select: none; }
         .vocab-hide:hover { color: #2980b9; text-shadow: none; }
         .vocab-word { cursor: pointer; transition: 0.3s; }
@@ -161,6 +160,9 @@
         .course-card .discount-price { font-size: 17px; font-weight: 700; color: #e74c3c; }
         .course-card .card-actions { display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
         .summary-content { background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid #f9c74f; font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
+        .keypoints-content { background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid #3498db; font-size: 14px; line-height: 1.6; }
+        .keypoints-content ul, .keypoints-content ol { padding-left: 25px; margin: 8px 0; }
+        .keypoints-content li { margin-bottom: 4px; }
         .review-status-box { background: #eaf2fa; padding: 12px; border-radius: 8px; margin-top: 8px; color: #2980b9; font-size: 14px; }
         .review-course-select { margin: 10px 0; }
         .review-course-select label { font-weight: 600; display: block; margin-bottom: 4px; }
@@ -173,7 +175,6 @@
         .home-content-edit { margin-top: 15px; padding: 15px; background: #f8fafc; border-radius: 10px; border: 1px solid #dfe6ef; }
         .home-content-edit textarea { width: 100%; min-height: 100px; padding: 10px; border: 2px solid #dfe6ef; border-radius: 8px; font-size: 14px; }
         .home-content-edit textarea:focus { border-color: #f9c74f; outline: none; }
-        /* প্রিন্ট স্টাইল - শুধু ক্লাস প্রিন্টের জন্য */
         .print-only-tabs .class-tabs button { display: none; }
         .print-only-tabs .class-tab-content { display: block !important; }
         .print-only-tabs .class-tab-content#tab_video { display: none !important; }
@@ -205,6 +206,16 @@
         .print-footer { text-align: center; margin-top: 40px; padding-top: 15px; border-top: 2px solid #e2e8f0; font-size: 12px; color: #94a3b8; }
         .print-only { display: none; }
         @media print { .print-only { display: block; } }
+        .course-card .summary ul, .course-card .summary ol { padding-left: 20px; margin: 4px 0; }
+        .course-card .summary li { margin-bottom: 2px; }
+        .vocab-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .vocab-table th, .vocab-table td { padding: 10px 15px; border: 1px solid #dfe6ef; text-align: center; vertical-align: middle; }
+        .vocab-table th { background: #0f2b4b; color: white; text-align: center; }
+        @media print {
+            .vocab-table th, .vocab-table td { padding: 10px 15px; border: 1px solid #dfe6ef; text-align: center; vertical-align: middle; }
+            .vocab-table th { background: #0f2b4b !important; color: white !important; text-align: center; }
+            .keypoints-content { border-left: 4px solid #3498db !important; }
+        }
     </style>
 </head>
 <body>
@@ -415,16 +426,14 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group"><label>🆔 ক্লাস আইডি</label><input type="text" id="acClassId" required placeholder="CLS01" /></div>
-                            <div class="form-group"><label>📚 শিরোনাম</label><input type="text" id="acClassTitle" required /></div>
+                            <div class="form-group"><label>📚 ক্লাস শিরোনাম</label><input type="text" id="acClassTitle" required /></div>
                         </div>
                         <div class="form-group"><label>💬 মূল আলোচনা</label><textarea id="acClassDiscussion" rows="2"></textarea></div>
-                        <div class="form-row">
-                            <div class="form-group"><label>🎥 ভিডিও লিংক</label><input type="url" id="acClassVideo" placeholder="https://youtube.com/embed/..." /></div>
-                            <div class="form-group"><label>📄 পিডিএফ লিংক</label><input type="url" id="acClassPdf" placeholder="https://example.com/file.pdf" /></div>
-                        </div>
+                        <div class="form-group"><label>🎥 ভিডিও লিংক</label><input type="url" id="acClassVideo" placeholder="https://youtube.com/embed/..." /></div>
+                        <div class="form-group"><label>📄 পিডিএফ লিংক</label><input type="url" id="acClassPdf" placeholder="https://example.com/file.pdf" /></div>
                         <div class="form-group"><label>📝 ভোকাবুলারি</label><input type="text" id="acClassVocab" placeholder="বাংলা,আরবি,ইংরেজি; ..." /></div>
                         <div class="form-group"><label>✍️ অনুশীলন</label><textarea id="acClassPractice" rows="3" placeholder="সত্য/মিথ্যা: প্রশ্ন | সঠিক || MCQ: প্রশ্ন | অপশন১ | অপশন২ | অপশন৩ | অপশন৪ | সঠিক"></textarea></div>
-                        <div class="form-group"><label>📋 সারাংশ (Google Sheet Sheet Name/Range)</label><input type="text" id="acClassSummary" placeholder="Sheet2!A1:B10" /></div>
+                        <div class="form-group"><label>📋 কী-পয়েন্ট</label><textarea id="acClassKeypoints" rows="3" placeholder="প্রতি লাইনে একটি কী-পয়েন্ট বা প্যারাগ্রাফ লিখুন..."></textarea></div>
                         <button type="submit" class="btn" id="addClassBtn"><i class="fas fa-check"></i> যুক্ত করুন</button>
                     </form>
                     <div id="addClassMsg" style="margin-top:10px;"></div>
@@ -486,58 +495,38 @@
 </footer>
 
 <script>
-// আপনার গুগোল অ্যাপ স্ক্রিপ্টের ওয়েব অ্যাপ URL এখানে বসান
-const API_BASE = 'https://script.google.com/macros/s/AKfycbz6AuLL_H8tvuPMxpa6iM4MlId7JVQHPGxTsZLeI1EPgEtOKJTgxo1tPDLS0rMWkw/exec';
+const API_BASE = 'https://script.google.com/macros/s/AKfycbyTIWrTw4nVslqbXJIf1mnmNubbRtVNmqzNmXpc1TfMY4vwKJB9friQzp_qCBtO92I/exec';
 let coursesData = [];
 let currentStudent = null;
 let currentCourseId = null;
 let isAdminLoggedIn = false;
 let selectedReviewStar = 5;
-let currentClassIdx = 0;
 
 window.addEventListener('scroll', function() {
     document.getElementById('scrollTopBtn').classList.toggle('visible', window.scrollY > 400);
 });
 
-// ===== গুগোল সিঙ্ক =====
 async function googleSync() {
     const btn = document.getElementById('syncBtn');
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> সিঙ্ক...';
     btn.disabled = true;
-    
     try {
-        await Promise.all([
-            loadCourses(),
-            loadReviews(),
-            loadHomeContent()
-        ]);
-        
-        if (currentStudent) {
-            await loadStudentDashboard(currentStudent);
-        }
-    } catch (e) {
-        console.error('সিঙ্ক করতে সমস্যা:', e);
-    } finally {
-        btn.innerHTML = '<i class="fas fa-sync"></i> গুগোল সিঙ্ক';
-        btn.disabled = false;
-    }
+        await Promise.all([loadCourses(), loadReviews(), loadHomeContent()]);
+        if (currentStudent) await loadStudentDashboard(currentStudent);
+    } catch (e) { console.error('সিঙ্ক সমস্যা:', e); }
+    finally { btn.innerHTML = '<i class="fas fa-sync"></i> গুগোল সিঙ্ক'; btn.disabled = false; }
 }
 
-// ===== হোম কন্টেন্ট =====
 async function loadHomeContent() {
     try {
         const res = await fetch(`${API_BASE}?action=getHomeContent`);
         const data = await res.json();
         const container = document.getElementById('homeContent');
-        if (data && data.content) {
-            container.innerHTML = data.content;
-        }
+        if (data && data.content) container.innerHTML = data.content;
         if (document.getElementById('homeEditContent')) {
             document.getElementById('homeEditContent').value = container.innerText.trim();
         }
-    } catch (e) {
-        console.error('হোম কন্টেন্ট লোডে সমস্যা:', e);
-    }
+    } catch (e) { console.error('হোম কন্টেন্ট লোডে সমস্যা:', e); }
 }
 
 async function updateHomeContent() {
@@ -546,170 +535,102 @@ async function updateHomeContent() {
     const btn = event.target;
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> সংরক্ষণ হচ্ছে...';
-    
     try {
         const res = await fetch(API_BASE, {
             method: 'POST',
-            body: JSON.stringify({
-                action: 'updateHomeContent',
-                data: { content: content }
-            })
+            body: JSON.stringify({ action: 'updateHomeContent', data: { content: content } })
         });
         const result = await res.json();
-        if (result.success) {
-            msgDiv.innerHTML = `<div class="msg-success"><i class="fas fa-check-circle"></i> ${result.message}</div>`;
-            loadHomeContent();
-        } else {
-            msgDiv.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ${result.message}</div>`;
-        }
-    } catch (e) {
-        msgDiv.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> সার্ভার সমস্যা</div>`;
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-save"></i> সংরক্ষণ করুন';
-    }
+        msgDiv.innerHTML = result.success ? `<div class="msg-success">✅ ${result.message}</div>` : `<div class="msg-error">❌ ${result.message}</div>`;
+        if (result.success) loadHomeContent();
+    } catch (e) { msgDiv.innerHTML = `<div class="msg-error">❌ সার্ভার সমস্যা</div>`; }
+    finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> সংরক্ষণ করুন'; }
 }
 
-// ===== ক্লাস প্রিন্ট ফাংশন =====
 function printClassSheet(classId) {
     const classBody = document.getElementById(`classBody_${classId}`);
-    if (!classBody) {
-        alert('ক্লাস কন্টেন্ট পাওয়া যায়নি');
-        return;
-    }
-    
+    if (!classBody) { alert('ক্লাস কন্টেন্ট পাওয়া যায়নি'); return; }
     const classItem = classBody.closest('.class-item');
     const title = classItem ? classItem.querySelector('.class-header span:first-child').textContent.replace('✅', '').trim() : 'ক্লাস';
     const courseTitle = document.querySelector('.dash-course-card .course-title')?.textContent || 'কোর্স';
-    
-    // Get all tab contents except video
-    const tabs = classBody.querySelectorAll('.class-tab-content');
     let contentHtml = '';
-    let tabOrder = ['discussion', 'vocab', 'summary', 'notes', 'practice', 'pdf'];
-    let tabLabels = {
+    const tabOrder = ['discussion', 'vocab', 'keypoints', 'notes', 'practice', 'pdf'];
+    const tabLabels = {
         'discussion': '💬 মূল আলোচনা',
         'vocab': '📝 ভোকাবুলারি',
-        'summary': '📋 সারাংশ',
+        'keypoints': '📋 কী-পয়েন্ট',
         'notes': '📓 আমার নোট',
         'practice': '✍️ অনুশীলনী',
         'pdf': '📄 পিডিএফ'
     };
-    
     tabOrder.forEach(tabName => {
         const tab = document.getElementById(`tab_${classId}_${tabName}`);
         if (tab) {
             let content = tab.innerHTML;
-            // প্রিন্টের জন্য ক্লিন আপ
             if (tabName === 'vocab') {
-                // ভোকাবুলারি থেকে যাচাই মোড বোতাম ও টেস্ট টেক্সট বাদ
                 content = content.replace(/<div[^>]*style="[^"]*display:flex[^"]*"[^>]*>.*?<\/div>/, '');
                 content = content.replace(/<button[^>]*onclick="toggleVocabHide[^>]*>.*?<\/button>/, '');
-                // সব শব্দ দৃশ্যমান করুন
                 content = content.replace(/vocab-hide/g, '');
+                content = content.replace(/<table[^>]*>/g, '<table style="width:100%;border-collapse:collapse;font-size:13px;">');
+                content = content.replace(/<th[^>]*>/g, '<th style="padding:10px 15px;border:1px solid #dfe6ef;text-align:center;vertical-align:middle;background:#0f2b4b;color:white;">');
+                content = content.replace(/<td[^>]*>/g, '<td style="padding:10px 15px;border:1px solid #dfe6ef;text-align:center;vertical-align:middle;">');
             }
             if (tabName === 'practice') {
-                // অনুশীলনী থেকে উত্তর সাবমিট বোতাম ও রেজাল্ট বাদ
                 content = content.replace(/<button[^>]*onclick="submitPracticeQuiz[^>]*>.*?<\/button>/, '');
                 content = content.replace(/<div[^>]*id="mcqTotalScore[^"]*"[^>]*>.*?<\/div>/, '');
                 content = content.replace(/<div[^>]*id="mcqResult[^"]*"[^>]*>.*?<\/div>/, '');
-                // রেডিও বাটন লুকান কিন্তু টেক্সট রাখুন
                 content = content.replace(/<input[^>]*type="radio"[^>]*>/g, '');
-                // .mcq-option থেকে selected, correct, wrong ক্লাস বাদ
                 content = content.replace(/ class="mcq-option[^"]*"/g, ' class="mcq-option"');
             }
             if (tabName === 'notes') {
-                // নোট থেকে ফর্ম বাদ, শুধু টেক্সট দেখান
                 const textarea = tab.querySelector('textarea');
-                if (textarea) {
-                    content = `<div style="white-space:pre-wrap;font-size:14px;">${textarea.value || ''}</div>`;
-                } else {
-                    content = '';
-                }
+                content = textarea ? `<div style="white-space:pre-wrap;font-size:14px;">${textarea.value || ''}</div>` : '';
             }
-            if (tabName === 'pdf') {
-                // পিডিএফ ট্যাবে শুধু প্রিন্ট অপশন থাকবে, কিন্তু প্রিন্টে আমরা পিডিএফ লিংক দেখাবো না
-                // বরং পিডিএফ ট্যাবের কন্টেন্ট খালি রাখি
-                content = '';
-            }
-            // সারাংশের জন্য লোডার বাদ
-            if (tabName === 'summary') {
+            if (tabName === 'pdf') content = '';
+            if (tabName === 'keypoints') {
                 content = content.replace(/<div[^>]*class="loader"[^>]*>.*?<\/div>/, '');
-                // Loader থাকলে সারাংশ কন্টেন্ট দেখান
-                const summaryContent = tab.querySelector('.summary-content');
-                if (summaryContent) {
-                    content = summaryContent.innerHTML;
-                }
+                const kpContent = tab.querySelector('.keypoints-content');
+                if (kpContent) content = kpContent.innerHTML;
             }
             if (content && content.trim()) {
-                contentHtml += `
-                    <div class="print-section">
-                        <h4>${tabLabels[tabName] || tabName}</h4>
-                        <div class="content">${content}</div>
-                    </div>
-                `;
+                contentHtml += `<div class="print-section"><h4>${tabLabels[tabName] || tabName}</h4><div class="content">${content}</div></div>`;
             }
         }
     });
-    
-    if (!contentHtml) {
-        alert('এই ক্লাসে প্রিন্ট করার মতো কোনো কন্টেন্ট নেই');
-        return;
-    }
-    
+    if (!contentHtml) { alert('এই ক্লাসে প্রিন্ট করার মতো কোনো কন্টেন্ট নেই'); return; }
     const printWindow = window.open('', '_blank');
     printWindow.document.write(`
-        <html>
-            <head>
-                <title>${title} - ক্লাস শিট</title>
-                <style>
-                    * { margin:0; padding:0; box-sizing:border-box; }
-                    body { font-family: 'Kalpurush', Arial, sans-serif; padding: 40px; background: white; max-width: 1000px; margin: 0 auto; }
-                    .print-header { text-align: center; border-bottom: 3px solid #0f2b4b; padding-bottom: 15px; margin-bottom: 25px; }
-                    .print-header h1 { color: #0f2b4b; font-size: 28px; }
-                    .print-header .course-name { font-size: 18px; color: #1e293b; margin-top: 5px; }
-                    .print-header .class-name { font-size: 16px; color: #475569; margin-top: 3px; }
-                    .print-section { margin: 20px 0; padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; page-break-inside: avoid; }
-                    .print-section h4 { color: #0f2b4b; margin-bottom: 10px; font-size: 16px; }
-                    .print-section .content { font-size: 14px; line-height: 1.6; }
-                    .print-section .content table { width: 100%; border-collapse: collapse; }
-                    .print-section .content table td, 
-                    .print-section .content table th { padding: 6px 10px; border: 1px solid #dfe6ef; }
-                    .print-section .content table th { background: #0f2b4b; color: white; }
-                    .print-section .content .mcq-option { display: inline-block; width: calc(50% - 8px); padding: 6px 10px; margin: 3px; border: 1px solid #ccc; border-radius: 4px; background: #f9f9f9; font-size: 13px; text-align: center; }
-                    .print-section .content .mcq-option.correct, 
-                    .print-section .content .mcq-option.wrong,
-                    .print-section .content .mcq-option.selected { border: 1px solid #ccc; background: #f9f9f9; }
-                    .print-section .content .star-rating-select { display: none; }
-                    .print-footer { text-align: center; margin-top: 40px; padding-top: 15px; border-top: 2px solid #e2e8f0; font-size: 12px; color: #94a3b8; }
-                    .vocab-hide { color: #000 !important; text-shadow: none !important; }
-                    .vocab-word { cursor: default; }
-                    .btn { display: none !important; }
-                    .class-tabs { display: none; }
-                    .score-badge { display: none; }
-                    form { display: none; }
-                    textarea { border: none; background: transparent; resize: none; width: 100%; font-family: inherit; font-size: 14px; }
-                    .review-status-box { display: none; }
-                </style>
-                <link href="https://fonts.googleapis.com/css2?family=Kalpurush&display=swap" rel="stylesheet">
-            </head>
-            <body>
-                <div class="print-header">
-                    <h1>তানজিফ একাডেমি</h1>
-                    <div class="course-name">📚 ${courseTitle}</div>
-                    <div class="class-name">${title}</div>
-                </div>
-                ${contentHtml}
-                <div class="print-footer">
-                    <p>তানজিফ একাডেমি - শিখুন, অনুশীলন করুন, উন্নত হোন</p>
-                </div>
-                <script>
-                    window.onload = function() {
-                        window.print();
-                        setTimeout(function() { window.close(); }, 1500);
-                    };
-                <\/script>
-            </body>
-        </html>
+        <html><head><title>${title} - ক্লাস শিট</title>
+        <style>
+            * { margin:0; padding:0; box-sizing:border-box; }
+            body { font-family: 'Kalpurush', Arial, sans-serif; padding: 40px; background: white; max-width: 1000px; margin: 0 auto; }
+            .print-header { text-align: center; border-bottom: 3px solid #0f2b4b; padding-bottom: 15px; margin-bottom: 25px; }
+            .print-header h1 { color: #0f2b4b; font-size: 28px; }
+            .print-header .course-name { font-size: 18px; color: #1e293b; margin-top: 5px; }
+            .print-header .class-name { font-size: 16px; color: #475569; margin-top: 3px; }
+            .print-section { margin: 20px 0; padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; page-break-inside: avoid; }
+            .print-section h4 { color: #0f2b4b; margin-bottom: 10px; font-size: 16px; }
+            .print-section .content { font-size: 14px; line-height: 1.6; }
+            .print-section .content table { width: 100%; border-collapse: collapse; }
+            .print-section .content table td, .print-section .content table th { padding: 10px 15px; border: 1px solid #dfe6ef; text-align: center; vertical-align: middle; }
+            .print-section .content table th { background: #0f2b4b; color: white; text-align: center; }
+            .print-section .content .mcq-option { display: inline-block; width: calc(50% - 8px); padding: 6px 10px; margin: 3px; border: 1px solid #ccc; border-radius: 4px; background: #f9f9f9; font-size: 13px; text-align: center; }
+            .print-section .content .mcq-option.correct, .print-section .content .mcq-option.wrong, .print-section .content .mcq-option.selected { border: 1px solid #ccc; background: #f9f9f9; }
+            .print-section .content .keypoints-content { background: transparent; border-left: 4px solid #3498db; padding: 8px 12px; }
+            .print-footer { text-align: center; margin-top: 40px; padding-top: 15px; border-top: 2px solid #e2e8f0; font-size: 12px; color: #94a3b8; }
+            .vocab-hide { color: #000 !important; text-shadow: none !important; }
+            .btn { display: none !important; } .class-tabs { display: none; } .score-badge { display: none; } form { display: none; }
+            textarea { border: none; background: transparent; resize: none; width: 100%; font-family: inherit; font-size: 14px; }
+            .vocab-test-text { display: none !important; }
+            .vocab-hide-btn { display: none !important; }
+        </style>
+        <link href="https://fonts.googleapis.com/css2?family=Kalpurush&display=swap" rel="stylesheet">
+        </head><body>
+        <div class="print-header"><h1>তানজিফ একাডেমি</h1><div class="course-name">📚 ${courseTitle}</div><div class="class-name">${title}</div></div>
+        ${contentHtml}
+        <div class="print-footer"><p>তানজিফ একাডেমি - শিখুন, অনুশীলন করুন, উন্নত হোন</p></div>
+        <script>window.onload = function() { window.print(); setTimeout(function() { window.close(); }, 1500); };<\/script>
+        </body></html>
     `);
     printWindow.document.close();
 }
@@ -728,8 +649,6 @@ function openModal(course) {
     document.getElementById('detailTitle').textContent = `📖 ${course['কোর্স টাইটেল'] || ''}`;
     const original = course['মূল টাকা'] || '';
     const discount = course['ডিসকাউন্ট টাকা'] || '';
-    
-    // Format date in Bengali
     let startDate = course['শুরুর তারিখ'] || 'N/A';
     try {
         const d = new Date(startDate);
@@ -738,12 +657,13 @@ function openModal(course) {
             startDate = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
         }
     } catch(e) {}
-    
+    let syllabus = course['সিলেবাস'] || 'N/A';
+    syllabus = formatSyllabus(syllabus);
     let html = `
         <div><span style="font-weight:700;">🆔 কোর্স আইডি</span><br><span>${course['কোর্স আইডি'] || 'N/A'}</span></div>
         <div><span style="font-weight:700;">🏷️ ব্যাচ</span><br><span>${course['কোর্স ব্যাচ'] || 'N/A'}</span></div>
         <div><span style="font-weight:700;">📅 শুরুর তারিখ</span><br><span>${startDate}</span></div>
-        <div><span style="font-weight:700;">📋 সিলেবাস</span><br><span>${course['সিলেবাস'] || 'N/A'}</span></div>
+        <div><span style="font-weight:700;">📋 সিলেবাস</span><br><span>${syllabus}</span></div>
         <div><span style="font-weight:700;">💰 মূল্য</span><br><span>${original ? `<span style="text-decoration:line-through;opacity:0.6;margin-right:10px;">${original} টাকা</span>` : ''}${discount ? `<span style="color:#e74c3c;font-weight:700;font-size:18px;">${discount} টাকা</span>` : ''}${!original && !discount ? 'বিনামূল্যে' : ''}</span></div>
         <div><span style="font-weight:700;">❓ কেন করবো</span><br><span>${course['কেন করবো'] || 'N/A'}</span></div>
         <div><span style="font-weight:700;">🎁 কি পাবো</span><br><span>${course['কি পাবো'] || 'N/A'}</span></div>
@@ -759,10 +679,32 @@ function closeModal() {
     document.body.style.overflow = 'auto';
 }
 
+function formatSyllabus(text) {
+    if (!text || text === 'N/A') return 'N/A';
+    const lines = text.split('\n').filter(line => line.trim());
+    if (lines.length === 0) return text;
+    let html = '', inList = false, listType = '';
+    for (let line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.match(/^[\*\-]\s/)) {
+            if (!inList || listType !== 'ul') { if (inList) html += `</${listType}>`; html += '<ul>'; listType = 'ul'; inList = true; }
+            html += `<li>${trimmed.substring(2).trim()}</li>`;
+        } else if (trimmed.match(/^\d+\.\s/)) {
+            if (!inList || listType !== 'ol') { if (inList) html += `</${listType}>`; html += '<ol>'; listType = 'ol'; inList = true; }
+            html += `<li>${trimmed.replace(/^\d+\.\s/, '')}</li>`;
+        } else {
+            if (inList) { html += `</${listType}>`; inList = false; listType = ''; }
+            html += `<p style="margin:4px 0;">${trimmed}</p>`;
+        }
+    }
+    if (inList) html += `</${listType}>`;
+    return html;
+}
+
 async function loadCourses() {
     try {
         const res = await fetch(`${API_BASE}?action=getCourses`);
-        if (!res.ok) throw new Error('Network response was not ok');
+        if (!res.ok) throw new Error('Network error');
         const data = await res.json();
         coursesData = data;
         const courseSelect = document.getElementById('regCourse');
@@ -777,7 +719,7 @@ async function loadCourses() {
         });
         renderCourseCards(data);
     } catch (e) {
-        document.getElementById('courseContainer').innerHTML = `<p style="text-align:center;color:#e74c3c;"><i class="fas fa-exclamation-circle"></i> কোর্স লোড করতে সমস্যা হয়েছে</p>`;
+        document.getElementById('courseContainer').innerHTML = `<p style="text-align:center;color:#e74c3c;">❌ কোর্স লোড করতে সমস্যা হয়েছে</p>`;
     }
 }
 
@@ -793,11 +735,16 @@ function renderCourseCards(data) {
         const color = colors[i % colors.length];
         const original = course['মূল টাকা'] || '';
         const discount = course['ডিসকাউন্ট টাকা'] || '';
+        let syllabusSummary = course['সিলেবাস'] || '';
+        if (syllabusSummary) {
+            const firstLine = syllabusSummary.split('\n')[0];
+            syllabusSummary = firstLine.length > 60 ? firstLine.substring(0, 60) + '...' : firstLine;
+        }
         html += `
             <div class="course-card" style="border-left-color:${color};">
                 <h3 style="color:${color};">${course['কোর্স টাইটেল'] || 'কোর্স'}</h3>
                 <div class="meta"><span><i class="fas fa-id-card"></i> ${course['কোর্স আইডি'] || ''}</span><span><i class="fas fa-tag"></i> ${course['কোর্স ব্যাচ'] || ''}</span></div>
-                <div class="summary">${course['সিলেবাস'] ? course['সিলেবাস'].slice(0,80)+'...' : ''}</div>
+                <div class="summary">${syllabusSummary || ''}</div>
                 <div class="price-section">${original ? `<span class="original-price">${original} টাকা</span>` : ''}${discount ? `<span class="discount-price">${discount} টাকা</span>` : ''}${!original && !discount ? '<span>বিনামূল্যে</span>' : ''}</div>
                 <div class="card-actions">
                     <button class="btn btn-sm" onclick='openModal(${JSON.stringify(course).replace(/"/g, "&quot;")})'><i class="fas fa-info-circle"></i> বিস্তারিত</button>
@@ -1006,14 +953,7 @@ async function submitUserReview() {
     try {
         const payload = {
             action: 'submitCourseReview',
-            data: {
-                name: currentStudent.name,
-                courseId: courseData.courseId,
-                batch: courseData.batch || '',
-                rating: rating,
-                comment: comment,
-                email: currentStudent.email
-            }
+            data: { name: currentStudent.name, courseId: courseData.courseId, batch: courseData.batch || '', rating: rating, comment: comment, email: currentStudent.email }
         };
         const res = await fetch(API_BASE, { method: 'POST', body: JSON.stringify(payload) });
         const result = await res.json();
@@ -1022,7 +962,6 @@ async function submitUserReview() {
             document.getElementById('reviewComment').value = '';
             setReviewStar(5);
             loadReviews();
-            // Reload dashboard to reflect review status
             if (currentStudent) loadStudentDashboard(currentStudent);
         } else {
             document.getElementById('reviewSubmitMsg').innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ${result.message || 'জমা দিতে সমস্যা হয়েছে'}</div>`;
@@ -1084,15 +1023,9 @@ async function loadStudentDashboard(student) {
             container.innerHTML = `<p><i class="fas fa-box-open"></i> আপনার কোনো কোর্স পাওয়া যায়নি</p>`;
             return;
         }
-        if (!currentCourseId && data.length > 0) {
-            currentCourseId = data[0]['কোর্স আইডি'];
-        }
+        if (!currentCourseId && data.length > 0) currentCourseId = data[0]['কোর্স আইডি'];
         const filteredData = data.filter(c => c['কোর্স আইডি'] === currentCourseId);
-        if (filteredData.length === 0) {
-            currentCourseId = data[0]['কোর্স আইডি'];
-            loadStudentDashboard(student);
-            return;
-        }
+        if (filteredData.length === 0) { currentCourseId = data[0]['কোর্স আইডি']; loadStudentDashboard(student); return; }
         if (data.length > 1 || currentCourseId) {
             let layoutHtml = `
                 <div class="dashboard-layout">
@@ -1109,20 +1042,12 @@ async function loadStudentDashboard(student) {
                     </button>
                 `;
             });
-            layoutHtml += `
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dashboard-main-content" id="dashboardMainArea"></div>
-                </div>
-            `;
+            layoutHtml += `</div></div></div><div class="dashboard-main-content" id="dashboardMainArea"></div></div>`;
             container.innerHTML = layoutHtml;
             renderDashboardMainContent(filteredData[0], student);
         } else {
             let allHtml = `<div class="dashboard-course-grid">`;
-            for (const course of filteredData) {
-                allHtml += renderCourseOverviewCard(course);
-            }
+            for (const course of filteredData) allHtml += renderCourseOverviewCard(course);
             allHtml += `</div>`;
             container.innerHTML = allHtml;
         }
@@ -1156,34 +1081,25 @@ function renderCourseOverviewCard(course) {
 
 async function renderDashboardMainContent(course, student) {
     const mainArea = document.getElementById('dashboardMainArea');
-    if (!mainArea) {
-        loadStudentClasses(course['কোর্স আইডি'], course['কোর্স ব্যাচ']);
-        return;
-    }
+    if (!mainArea) { loadStudentClasses(course['কোর্স আইডি'], course['কোর্স ব্যাচ']); return; }
     mainArea.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-spin"></i> ক্লাস লোড হচ্ছে...</div>`;
     try {
         const courseId = course['কোর্স আইডি'];
         const batch = course['কোর্স ব্যাচ'];
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000);
-        const clsRes = await fetch(`${API_BASE}?action=getClassContents&courseId=${encodeURIComponent(courseId)}&batch=${encodeURIComponent(batch)}`, {
-            signal: controller.signal
-        });
+        const clsRes = await fetch(`${API_BASE}?action=getClassContents&courseId=${encodeURIComponent(courseId)}&batch=${encodeURIComponent(batch)}`, { signal: controller.signal });
         clearTimeout(timeoutId);
         let classes = await clsRes.json();
         const totalClasses = classes.length || 1;
         
-        // Get student data to calculate progress and score
         const studentRes = await fetch(`${API_BASE}?action=getStudentCourses&email=${encodeURIComponent(student.email)}`);
         const studentData = await studentRes.json();
         const studentCourse = studentData.find(c => c['কোর্স আইডি'] === courseId);
         
-        // Calculate completed classes (70%+ score) and average practice score
         let notes = {};
         try { notes = JSON.parse(studentCourse['আমার নোট'] || '{}'); } catch(e) { notes = {}; }
-        let completedCount = 0;
-        let totalScore = 0;
-        let practiceCount = 0;
+        let completedCount = 0, totalScore = 0, practiceCount = 0;
         for (let key in notes) {
             if (key !== '_course_review' && notes[key].score !== undefined) {
                 practiceCount++;
@@ -1202,7 +1118,6 @@ async function renderDashboardMainContent(course, student) {
             rank = idx !== -1 ? `#${idx + 1}` : 'N/A';
         }
         
-        // Format start date
         let startDate = course['শুরুর তারিখ'] || '';
         try {
             const d = new Date(startDate);
@@ -1246,9 +1161,7 @@ async function loadStudentClassesIntoContainer(courseId, batch, existingNotesStr
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000);
-        const res = await fetch(`${API_BASE}?action=getClassContents&courseId=${encodeURIComponent(courseId)}&batch=${encodeURIComponent(batch)}`, {
-            signal: controller.signal
-        });
+        const res = await fetch(`${API_BASE}?action=getClassContents&courseId=${encodeURIComponent(courseId)}&batch=${encodeURIComponent(batch)}`, { signal: controller.signal });
         clearTimeout(timeoutId);
         let data = await res.json();
         if (!data || data.length === 0) {
@@ -1259,27 +1172,35 @@ async function loadStudentClassesIntoContainer(courseId, batch, existingNotesStr
         let existingNotes = {};
         try { existingNotes = JSON.parse(existingNotesString); } catch (e) { existingNotes = {}; }
         
-        // সাজানো: ক্লাস আইডি অনুযায়ী সাজানো (যাতে ক্রম ঠিক থাকে)
-        data.sort((a,b) => (a['ক্লাস আইডი'] || '').localeCompare(b['ক্লাস আইডি'] || ''));
-        
         let html = `<div style="display:flex;flex-direction:column;gap:10px;">`;
         data.forEach((cls, idx) => {
-            const classId = cls['ক্লাস আইডি'] || `cls_${idx}`;
+            const classId = cls['ক্লাস আইডি'] || cls['ক্লাস আইডি'] || cls['ক্লাস আইডি'] || `cls_${idx}`;
             const noteData = existingNotes[classId] || {};
             const score = noteData.score || 0;
             const note = noteData.note || '';
             const videoUrl = cls['ক্লাস ভিডিও'] || '';
             const embedUrl = videoUrl.includes('watch?v=') ? videoUrl.replace('watch?v=', 'embed/').split('&')[0] : videoUrl;
-            const hasSummary = cls['ক্লাস সারাংশ'] && cls['ক্লাস সারাংশ'].trim();
+            const hasKeypoints = cls['কী-পয়েন্ট'] && cls['কী-পয়েন্ট'].trim();
             const hasPdf = cls['ক্লাস পিডিএফ'] && cls['ক্লাস পিডিএফ'].trim();
             
-            // Check if the class is "Completed" (Score >= 70)
             const isCompleted = score >= 70;
-            
-            // ক্লাস নাম্বার ফরম্যাট: ক্লাস-০১, ক্লাস-০২ ইত্যাদি
-            const classNumber = String(idx + 1).padStart(2, '0');
             const classTitle = cls['ক্লাস শিরোনাম'] || 'ক্লাস';
-            const displayTitle = `ক্লাস-${classNumber}ঃ ${classTitle}`;
+            
+            let displayNumber = '';
+            if (classId) {
+                const match = classId.match(/(\d+)/);
+                if (match) {
+                    const num = parseInt(match[1]);
+                    if (!isNaN(num)) {
+                        const bengaliDigits = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+                        const numStr = num.toString().padStart(2, '0');
+                        let bengaliNum = '';
+                        for (let c of numStr) bengaliNum += bengaliDigits[parseInt(c)] || c;
+                        displayNumber = bengaliNum;
+                    }
+                }
+            }
+            const displayTitle = displayNumber ? `ক্লাস-${displayNumber}ঃ ${classTitle}` : `${classId}ঃ ${classTitle}`;
 
             html += `
                 <div class="class-item">
@@ -1292,7 +1213,7 @@ async function loadStudentClassesIntoContainer(courseId, batch, existingNotesStr
                             ${videoUrl ? `<button class="active" onclick="switchClassTab('${classId}','video',this)">🎥 ভিডিও</button>` : ''}
                             ${cls['মূল আলোচনা'] ? `<button onclick="switchClassTab('${classId}','discussion',this)">💬 আলোচনা</button>` : ''}
                             ${cls['ভোকাবুলারি'] ? `<button onclick="switchClassTab('${classId}','vocab',this)">📝 ভোকাবুলারি</button>` : ''}
-                            ${hasSummary ? `<button onclick="switchClassTab('${classId}','summary',this)">📋 সারাংশ</button>` : ''}
+                            ${hasKeypoints ? `<button onclick="switchClassTab('${classId}','keypoints',this)">📋 কী-পয়েন্ট</button>` : ''}
                             <button onclick="switchClassTab('${classId}','notes',this)">📓 নোট</button>
                             ${cls['অনুশীলন'] ? `<button onclick="switchClassTab('${classId}','practice',this)">✍️ অনুশীলন</button>` : ''}
                             <button onclick="switchClassTab('${classId}','pdf',this)">📄 পিডিএফ</button>
@@ -1315,10 +1236,10 @@ async function loadStudentClassesIntoContainer(courseId, batch, existingNotesStr
                             </div>
                             <div id="vocabContainer_${classId}" style="margin-top:8px;"></div>
                         </div>` : ''}
-                        ${hasSummary ? `
-                        <div class="class-tab-content" id="tab_${classId}_summary">
-                            <div class="summary-content" id="summaryContent_${classId}">
-                                <div class="loader"><i class="fas fa-spinner fa-spin"></i> সারাংশ লোড হচ্ছে...</div>
+                        ${hasKeypoints ? `
+                        <div class="class-tab-content" id="tab_${classId}_keypoints">
+                            <div class="keypoints-content" id="keypointsContent_${classId}">
+                                <div class="loader"><i class="fas fa-spinner fa-spin"></i> কী-পয়েন্ট লোড হচ্ছে...</div>
                             </div>
                         </div>` : ''}
                         <div class="class-tab-content" id="tab_${classId}_notes">
@@ -1344,16 +1265,12 @@ async function loadStudentClassesIntoContainer(courseId, batch, existingNotesStr
         });
         html += `</div>`;
         
-        // Check if review exists for this course
         let existingReview = null;
         let reviewStatus = '';
         try {
             const revRes = await fetch(`${API_BASE}?action=getStudentReview&email=${encodeURIComponent(currentStudent.email)}&courseId=${encodeURIComponent(courseId)}`);
             const revData = await revRes.json();
-            if (revData && revData.review) {
-                existingReview = revData.review;
-                reviewStatus = revData.status || '';
-            }
+            if (revData && revData.review) { existingReview = revData.review; reviewStatus = revData.status || ''; }
         } catch (e) {}
         
         html += `
@@ -1421,12 +1338,11 @@ async function loadStudentClassesIntoContainer(courseId, batch, existingNotesStr
         `;
         container.innerHTML = html;
         
-        // Load dynamic content for each class
         for (const cls of data) {
-            const classId = cls['ক্লাস আইডি'];
+            const classId = cls['ক্লাস আইডি'] || cls['ক্লাস আইডি'] || cls['ক্লাস আইডি'];
             if (cls['ভোকাবুলারি']) loadVocab(classId, cls['ভোকাবুলারি']);
             if (cls['অনুশীলন']) loadMCQs(classId, cls['অনুশীলন'], courseId);
-            if (cls['ক্লাস সারাংশ'] && cls['ক্লাস সারাংশ'].trim()) loadSummary(classId, cls['ক্লাস সারাংশ']);
+            if (cls['কী-পয়েন্ট'] && cls['কী-পয়েন্ট'].trim()) loadKeypoints(classId, cls['কী-পয়েন্ট']);
         }
         setStarRating(courseId, 5);
         loadCertificate(courseId);
@@ -1445,32 +1361,45 @@ function setStarRating(courseId, rating) {
     const container = document.getElementById(`starRatingContainer_${courseId}`);
     if (!container) return;
     const stars = container.querySelectorAll('i');
-    stars.forEach((s, idx) => {
-        if (idx < rating) s.classList.add('selected');
-        else s.classList.remove('selected');
-    });
+    stars.forEach((s, idx) => { if (idx < rating) s.classList.add('selected'); else s.classList.remove('selected'); });
 }
 
-async function loadSummary(classId, summaryRef) {
-    const container = document.getElementById(`summaryContent_${classId}`);
+function loadKeypoints(classId, keypointsRef) {
+    const container = document.getElementById(`keypointsContent_${classId}`);
     if (!container) return;
     try {
-        const res = await fetch(`${API_BASE}?action=getSummary&summaryRef=${encodeURIComponent(summaryRef)}`);
-        const result = await res.json();
-        if (result && result.content) container.innerHTML = result.content;
-        else container.innerHTML = `<p style="color:#7f8c8d;">সারাংশ পাওয়া যায়নি</p>`;
+        const lines = keypointsRef.split('\n').filter(line => line.trim());
+        let html = '<div style="font-size:14px;line-height:1.8;color:#2c3e50;">';
+        let inList = false, listType = '';
+        for (let line of lines) {
+            const trimmed = line.trim();
+            if (trimmed.match(/^[\*\-]\s/)) {
+                if (!inList || listType !== 'ul') { if (inList) html += `</${listType}>`; html += '<ul style="margin:6px 0;padding-left:25px;">'; listType = 'ul'; inList = true; }
+                html += `<li style="margin-bottom:4px;">${trimmed.substring(2).trim()}</li>`;
+            } else if (trimmed.match(/^\d+\.\s/)) {
+                if (!inList || listType !== 'ol') { if (inList) html += `</${listType}>`; html += '<ol style="margin:6px 0;padding-left:25px;">'; listType = 'ol'; inList = true; }
+                html += `<li style="margin-bottom:4px;">${trimmed.replace(/^\d+\.\s/, '')}</li>`;
+            } else {
+                if (inList) { html += `</${listType}>`; inList = false; listType = ''; }
+                html += `<p style="margin:6px 0;">${trimmed}</p>`;
+            }
+        }
+        if (inList) html += `</${listType}>`;
+        html += '</div>';
+        container.innerHTML = html;
     } catch (e) {
-        container.innerHTML = `<p style="color:#e74c3c;">সারাংশ লোড করতে সমস্যা হয়েছে</p>`;
+        container.innerHTML = `<p style="color:#7f8c8d;">কী-পয়েন্ট লোড করতে সমস্যা</p>`;
     }
 }
 
 function toggleClass(classId) {
     const body = document.getElementById(`classBody_${classId}`);
-    body.classList.toggle('open');
+    if (body) body.classList.toggle('open');
 }
 
 function switchClassTab(classId, tab, btn) {
     const container = document.getElementById(`classBody_${classId}`);
+    if (!container) return;
     const tabs = container.querySelectorAll('.class-tab-content');
     tabs.forEach(t => t.classList.remove('active'));
     const target = document.getElementById(`tab_${classId}_${tab}`);
@@ -1556,13 +1485,14 @@ function loadMCQs(classId, practiceData, courseId) {
 
 function selectMCQOption(el, qId, val) {
     const parent = document.getElementById(`options_${qId}`);
+    if (!parent) return;
     parent.querySelectorAll('.mcq-option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
     const radio = el.querySelector('input');
     if (radio) radio.checked = true;
 }
 
-function submitPracticeQuiz(classId, courseId, totalQuestions) {
+async function submitPracticeQuiz(classId, courseId, totalQuestions) {
     let correctCount = 0;
     for (let i = 0; i < totalQuestions; i++) {
         const qId = `${classId}_${i}`;
@@ -1589,12 +1519,10 @@ function submitPracticeQuiz(classId, courseId, totalQuestions) {
     }
     const percent = Math.round((correctCount / totalQuestions) * 100);
     document.getElementById(`mcqTotalScore_${classId}`).innerHTML = `<div class="msg-info">🎯 আপনি ${totalQuestions} টির মধ্যে ${correctCount} টি সঠিক উত্তর দিয়েছেন। মোট স্কোর: ${percent}%</div>`;
-    
-    // Save score and mark as Complete (>=70%)
-    saveClassScore(classId, courseId, percent);
+    await saveClassScoreAndUpdateUI(classId, courseId, percent);
 }
 
-async function saveClassScore(classId, courseId, score) {
+async function saveClassScoreAndUpdateUI(classId, courseId, score) {
     try {
         const res = await fetch(API_BASE, {
             method: 'POST',
@@ -1605,12 +1533,10 @@ async function saveClassScore(classId, courseId, score) {
         });
         const result = await res.json();
         if (result.success) {
-            // Update UI header badge
             const header = document.querySelector(`#classBody_${classId}`)?.previousElementSibling;
             if (header) {
                 const badge = header.querySelector('.score-badge');
                 const titleSpan = header.querySelector('span:first-child');
-                
                 if (score >= 70) {
                     badge.style.background = '#27ae60';
                     if (titleSpan && !titleSpan.innerHTML.includes('✅')) {
@@ -1624,21 +1550,39 @@ async function saveClassScore(classId, courseId, score) {
                 }
                 if (badge) badge.innerHTML = `<i class="fas fa-star"></i> ${score}%`;
             }
-            // Reload dashboard to sync scores and progress
-            setTimeout(() => loadStudentDashboard(currentStudent), 1000);
+            await updateDashboardStats(courseId);
         }
     } catch (e) { console.error('স্কোর সংরক্ষণে সমস্যা:', e); }
 }
 
-async function loadNote(classId, courseId) {
+async function updateDashboardStats(courseId) {
     try {
-        const res = await fetch(`${API_BASE}?action=getNote&classId=${encodeURIComponent(classId)}&courseId=${encodeURIComponent(courseId)}&email=${encodeURIComponent(currentStudent.email)}`);
+        const res = await fetch(`${API_BASE}?action=getStudentCourses&email=${encodeURIComponent(currentStudent.email)}`);
         const data = await res.json();
-        if (data && data.note) {
-            const textarea = document.getElementById(`note_${classId}`);
-            if (textarea) textarea.value = data.note;
+        const course = data.find(c => c['কোর্স আইডি'] === courseId);
+        if (!course) return;
+        const mainArea = document.getElementById('dashboardMainArea');
+        if (!mainArea) return;
+        const dashCard = mainArea.querySelector('.dash-course-card');
+        if (!dashCard) return;
+        let notes = {};
+        try { notes = JSON.parse(course['আমার নোট'] || '{}'); } catch(e) { notes = {}; }
+        let completedCount = 0, totalScore = 0, practiceCount = 0;
+        for (let key in notes) {
+            if (key !== '_course_review' && notes[key].score !== undefined) {
+                practiceCount++;
+                totalScore += Number(notes[key].score);
+                if (notes[key].score >= 70) completedCount++;
+            }
         }
-    } catch (e) { console.error('নোট লোডে সমস্যা:', e); }
+        const avgScore = practiceCount > 0 ? Math.round(totalScore / practiceCount) : 0;
+        const totalClasses = course['মোট ক্লাস'] || 1;
+        const progressPercent = totalClasses > 0 ? Math.round((completedCount / totalClasses) * 100) : 0;
+        const progressBox = dashCard.querySelector('.score-box.progress .number');
+        const scoreBox = dashCard.querySelector('.score-box.score .number');
+        if (progressBox) progressBox.textContent = `${completedCount}/${totalClasses} (${progressPercent}%)`;
+        if (scoreBox) scoreBox.textContent = `${avgScore}%`;
+    } catch (e) { console.error('স্ট্যাট আপডেটে সমস্যা:', e); }
 }
 
 async function saveNote(e, classId, courseId) {
@@ -1655,9 +1599,7 @@ async function saveNote(e, classId, courseId) {
         });
         const result = await res.json();
         status.innerHTML = result.success ? `<span style="color:#27ae60;">✅ নোট সংরক্ষিত হয়েছে</span>` : `<span style="color:#e74c3c;">❌ সংরক্ষণ ব্যর্থ</span>`;
-        if (result.success) {
-            setTimeout(() => loadStudentDashboard(currentStudent), 1000);
-        }
+        if (result.success) await updateDashboardStats(courseId);
     } catch (e) {
         status.innerHTML = `<span style="color:#e74c3c;">❌ সার্ভার সমস্যা</span>`;
     }
@@ -1677,20 +1619,16 @@ async function submitCourseReviewFromDashboard(e, courseId) {
             method: 'POST',
             body: JSON.stringify({
                 action: 'submitCourseReview',
-                data: {
-                    name: currentStudent.name,
-                    courseId: courseId,
-                    batch: currentStudent.batch || '',
-                    rating: rating,
-                    comment: comment,
-                    email: currentStudent.email
-                }
+                data: { name: currentStudent.name, courseId: courseId, batch: currentStudent.batch || '', rating: rating, comment: comment, email: currentStudent.email }
             })
         });
         const result = await res.json();
         if (result.success) {
             status.innerHTML = `<div class="msg-success"><i class="fas fa-check-circle"></i> ${result.message}</div>`;
-            setTimeout(() => loadStudentDashboard(currentStudent), 1500);
+            const studentRes = await fetch(`${API_BASE}?action=getStudentCourses&email=${encodeURIComponent(currentStudent.email)}`);
+            const data = await studentRes.json();
+            const course = data.find(c => c['কোর্স আইডি'] === courseId);
+            if (course) await renderDashboardMainContent(course, currentStudent);
         } else {
             status.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ${result.message || 'জমা দিতে সমস্যা হয়েছে'}</div>`;
         }
@@ -1713,20 +1651,16 @@ async function updateReviewFromDashboard(e, courseId) {
             method: 'POST',
             body: JSON.stringify({
                 action: 'submitCourseReview',
-                data: {
-                    name: currentStudent.name,
-                    courseId: courseId,
-                    batch: currentStudent.batch || '',
-                    rating: rating,
-                    comment: comment,
-                    email: currentStudent.email
-                }
+                data: { name: currentStudent.name, courseId: courseId, batch: currentStudent.batch || '', rating: rating, comment: comment, email: currentStudent.email }
             })
         });
         const result = await res.json();
         if (result.success) {
             status.innerHTML = `<div class="msg-success"><i class="fas fa-check-circle"></i> ${result.message}</div>`;
-            setTimeout(() => loadStudentDashboard(currentStudent), 1500);
+            const studentRes = await fetch(`${API_BASE}?action=getStudentCourses&email=${encodeURIComponent(currentStudent.email)}`);
+            const data = await studentRes.json();
+            const course = data.find(c => c['কোর্স আইডি'] === courseId);
+            if (course) await renderDashboardMainContent(course, currentStudent);
         } else {
             status.innerHTML = `<div class="msg-error"><i class="fas fa-exclamation-circle"></i> ${result.message || 'আপডেট করতে সমস্যা হয়েছে'}</div>`;
         }
@@ -1746,13 +1680,9 @@ async function loadCertificate(courseId) {
         const clsRes = await fetch(`${API_BASE}?action=getClassContents&courseId=${encodeURIComponent(courseId)}&batch=${encodeURIComponent(course['কোর্স ব্যাচ'])}`);
         let classes = await clsRes.json();
         const totalClasses = classes.length || 1;
-        
-        // Calculate completed classes (70%+ score) and avg practice score
         let notes = {};
         try { notes = JSON.parse(course['আমার নোট'] || '{}'); } catch(e) { notes = {}; }
-        let completed = 0;
-        let totalScore = 0;
-        let practiceCount = 0;
+        let completed = 0, totalScore = 0, practiceCount = 0;
         for (let key in notes) {
             if (key !== '_course_review' && notes[key].score !== undefined) {
                 practiceCount++;
@@ -1762,8 +1692,6 @@ async function loadCertificate(courseId) {
         }
         const avgScore = practiceCount > 0 ? Math.round(totalScore / practiceCount) : 0;
         const progress = totalClasses > 0 ? Math.round((completed / totalClasses) * 100) : 0;
-        
-        // শর্ত: 100% ক্লাস সম্পন্ন এবং গড় স্কোর >= 80%
         if (progress >= 100 && avgScore >= 80) {
             container.innerHTML = `
                 <div class="certificate" id="certificatePrint_${courseId}">
@@ -1814,9 +1742,7 @@ function printCertificate(courseId) {
         <link href="https://fonts.googleapis.com/css2?family=Kalpurush&display=swap" rel="stylesheet">
         </head><body>
         ${cert.outerHTML.replace(/<button[^>]*>.*?<\/button>/g, '')}
-        <script>
-            window.onload = function() { window.print(); setTimeout(function() { window.close(); }, 1500); };
-        <\/script>
+        <script>window.onload = function() { window.print(); setTimeout(function() { window.close(); }, 1500); };<\/script>
         </body></html>
     `);
     printWindow.document.close();
@@ -1827,9 +1753,7 @@ function searchStudentCourses(query) {
     const cards = container.querySelectorAll('.dash-course-card');
     if (!query.trim()) { cards.forEach(c => c.style.display = 'block'); return; }
     const q = query.toLowerCase();
-    cards.forEach(c => {
-        c.style.display = c.textContent.toLowerCase().includes(q) ? 'block' : 'none';
-    });
+    cards.forEach(c => { c.style.display = c.textContent.toLowerCase().includes(q) ? 'block' : 'none'; });
 }
 
 function studentLogout() {
@@ -1946,7 +1870,7 @@ document.getElementById('addClassForm').addEventListener('submit', async functio
                     pdf: document.getElementById('acClassPdf').value,
                     vocab: document.getElementById('acClassVocab').value,
                     practice: document.getElementById('acClassPractice').value,
-                    summary: document.getElementById('acClassSummary').value
+                    keypoints: document.getElementById('acClassKeypoints').value
                 }
             })
         });
