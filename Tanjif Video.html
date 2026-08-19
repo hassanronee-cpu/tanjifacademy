@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Plyr Player CSS (for YouTube & general) -->
+    <!-- Plyr Player CSS -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <!-- SheetJS for Excel parsing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -176,6 +176,7 @@
             box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
         }
 
+        /* Interstitial Video Toggle Control */
         .interstitial-toggle-btn {
             background: #e2e8f0;
             color: #334155;
@@ -285,9 +286,7 @@
             flex: 1;
         }
 
-        .video-container .plyr, 
-        .video-container iframe, 
-        .video-container video {
+        .video-container video, .video-container iframe, .video-container .plyr {
             position: absolute;
             top: 0;
             left: 0;
@@ -295,6 +294,7 @@
             height: 100%;
             border: none;
             background: #000;
+            object-fit: contain;
         }
 
         .custom-player-thumbnail {
@@ -385,6 +385,7 @@
         }
         .time-lock-overlay.active { display: flex; }
 
+        /* Left side vertical controls layout */
         .player-controls-sidebar {
             display: flex;
             flex-direction: column;
@@ -424,6 +425,7 @@
         .btn-pause-action { background: #d97706; }
         .btn-pause-action:hover { background: #b45309; }
 
+        /* Enhanced Sidebar Suggestions Style */
         .sidebar-suggestions {
             background: var(--surface);
             border-radius: 18px;
@@ -657,6 +659,7 @@
             margin-bottom: 1rem;
         }
 
+        /* Mobile Adjustments for Topbar & Layout */
         @media (max-width: 768px) {
             :root { --navbar-height: 40px; }
             body { padding-top: calc(var(--navbar-height) + 6px); }
@@ -681,6 +684,42 @@
         @media (max-width: 380px) {
             .logo-text { display: none; }
         }
+
+        /* Sync button styles */
+        .sync-section {
+            text-align: center;
+            margin: 30px 0 10px;
+            padding: 18px;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-radius: 16px;
+            border: 2px dashed #0d9488;
+        }
+        .sync-btn {
+            background: #0d9488;
+            color: #fff;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(13,148,136,0.3);
+        }
+        .sync-btn:hover {
+            background: #0f766e;
+            transform: translateY(-2px);
+        }
+        .sync-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .sync-note {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 8px;
+        }
     </style>
 </head>
 <body>
@@ -700,9 +739,11 @@
             </span>
 
             <div class="nav-controls">
+                <!-- Google Sync Button (Icon only) -->
                 <button class="btn-nav" onclick="syncFromGoogleSheet()" title="গুগল শিট থেকে সিঙ্ক" style="background: #2563eb;">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                 </button>
+                <!-- Interstitial Video Toggle Switch Button -->
                 <button class="interstitial-toggle-btn active" id="interstitialToggleBtn" onclick="toggleInterstitialSetting()" title="বিরতি ভিডিও চালু/বন্ধ">
                     <i class="fa-solid fa-film"></i>
                 </button>
@@ -736,10 +777,11 @@
                         <i class="fa-solid fa-circle-play" style="color: #ef4444;"></i>
                         <span id="currentVideoTitle">প্লে শুরু করতে ক্লিক করুন</span>
                     </div>
-                    <span class="card-tag" id="currentVideoIndex" style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);"></span>
+                    <span class="card-tag" id="currentVideoIndex" style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">ভিডিও #১</span>
                 </div>
 
                 <div class="player-content-layout">
+                    <!-- Left side controls layout -->
                     <div class="player-controls-sidebar">
                         <button class="ctrl-btn" id="prevBtn" onclick="playPrevVideo()"><i class="fa-solid fa-backward-step"></i> আগের</button>
                         <button class="ctrl-btn btn-play-action" id="playBtn" onclick="togglePlay()"><i class="fa-solid fa-play"></i> প্লে</button>
@@ -765,7 +807,9 @@
                             </div>
                         </div>
 
-                        <div id="plyrContainer"></div>
+                        <!-- Responsive Player Container -->
+                        <video id="mainVideoPlayer" controls playsinline webkit-playsinline preload="auto"></video>
+                        <iframe id="iframeVideoPlayer" allow="autoplay; encrypted-media" allowfullscreen style="display:none;"></iframe>
                     </div>
                 </div>
             </div>
@@ -773,7 +817,7 @@
             <div class="sidebar-suggestions">
                 <div class="sidebar-header">
                     <span><i class="fa-solid fa-list-ul" style="color: var(--primary);"></i> পরবর্তী ভিডিওসমূহ</span>
-                    <span style="font-size: 0.75rem; font-weight: 600; color: var(--primary); background: var(--primary-light); padding: 2px 8px; border-radius: 12px;" id="sidebarCount">০ টি</span>
+                    <span style="font-size: 0.75rem; font-weight: 600; color: var(--primary); background: var(--primary-light); padding: 2px 8px; border-radius: 12px;" id="sidebarCount">২৫ টি</span>
                 </div>
                 <div class="sidebar-list" id="sidebarList">
                 </div>
@@ -789,6 +833,8 @@
             <div class="video-grid" id="videoGrid">
             </div>
         </section>
+
+        <!-- ===== গুগল শিট সিঙ্ক সেকশন (রিমুভ করা হয়েছে, বাটন টপবারে) ===== -->
     </div>
 
     <div class="modal-overlay" id="addVideoModal">
@@ -803,18 +849,20 @@
                 <button class="tab-btn" id="tabBulkBtn" onclick="switchAddTab('bulk')"><i class="fa-solid fa-file-excel"></i> বাল্ক (Excel)</button>
             </div>
 
+            <!-- Single Video Form -->
             <form id="singleVideoForm" onsubmit="handleAddVideo(event)">
                 <div class="form-group">
                     <label>ভিডিওর শিরোনাম</label>
                     <input type="text" class="form-control" id="newVideoTitle" placeholder="ভিডিওর নাম লিখুন" required>
                 </div>
                 <div class="form-group">
-                    <label>Video Link (YouTube or Google Drive)</label>
-                    <input type="url" class="form-control" id="newVideoUrl" placeholder="https://www.youtube.com/watch?v=....  বা  https://drive.google.com/file/d/..../preview" required>
+                    <label>Video Link (Google Drive or YouTube)</label>
+                    <input type="url" class="form-control" id="newVideoUrl" placeholder="https://drive.google.com/file/d/..../preview  বা  https://www.youtube.com/watch?v=...." required>
                 </div>
                 <button type="submit" class="btn-submit">ভিডিও যুক্ত করুন</button>
             </form>
 
+            <!-- Bulk Excel Upload Form -->
             <div id="bulkVideoForm" style="display: none;">
                 <div class="excel-upload-zone" onclick="document.getElementById('excelFileInput').click()">
                     <i class="fa-solid fa-file-circle-plus" style="font-size: 2rem; color: var(--primary); margin-bottom: 6px;"></i>
@@ -847,19 +895,62 @@
 
     <script>
         const SECRET_PIN = "0000";
-        let isInterstitialEnabled = true;
-        let pdfVideos = [];
 
-        let currentPlayingId = null;
-        let targetVideoId = null;
-        let nextId = 1;
+        // ===================== পরিবর্তন: নতুন বিজ্ঞপ্তি ভিডিও (YouTube) =====================
+        const INTERSTITIAL_VIDEO_URL = "https://youtu.be/gtuTn2Js9fk";
+
+        // Interstitial video active state (Default ON)
+        let isInterstitialEnabled = true;
+
+        let pdfVideos = [
+            { id: 1, title: "হ্যা মেলিন-এর বাঁশিওয়ালা (Pied Piper Of Hamelin)", url: "https://drive.google.com/file/d/1bVoW42po-_RuIDYvTSL7GqYEa5VcjbJb/preview" },
+            { id: 2, title: "আমাদের ছোট নদী (Amader Choto Nodi) - বাংলা কবিতা", url: "https://drive.google.com/file/d/1AaqddOO0TNkpsllkOQF-Wm_tvmYtBZYA/preview" },
+            { id: 3, title: "Healthy Eating for Kids - Ethan Learns Healthy Food Habits", url: "https://drive.google.com/file/d/1ihHc9IwCud54MhIWo05V5fZ5u-FlSkIk/preview" },
+            { id: 4, title: "Animal Learning - Learn Animal Names in English & Bangla", url: "https://drive.google.com/file/d/1Zr7iNYUzcEmbuebBX-n9ro5D0-_L0m-9/preview" },
+            { id: 5, title: "নতুন বনে ফরেস্ট রেঞ্জার (The New Little Forest Ranger)", url: "https://drive.google.com/file/d/11PT8CkE891Io4suvbClmEdmfSJtBFc44/preview" },
+            { id: 6, title: "বিসমিল্লাহ না বললে কি হয় - Labider Golpo", url: "https://drive.google.com/file/d/1nICb0AsLV4cVgp9FT9tm5KMvgQJfCZxe/preview" },
+            { id: 7, title: "বাথরুমে ঢোকার দোয়া - কার্টুন সিরিজ", url: "https://drive.google.com/file/d/1FEuhzzjPiw9wirTqUkMvRrS0iIx1MJaT/preview" },
+            { id: 8, title: "শিক্ষা জীবনের সবচেয়ে মূল্যবান - আব্দুল্লাহ পর্ব ৯", url: "https://drive.google.com/file/d/1sxsRjCLeduOe-sOyjokcX9VqOQ0PmdP6/preview" },
+            { id: 9, title: "সত্যবাদী বালক - Sotto Badi Balok Islamic Cartoon", url: "https://drive.google.com/file/d/1N7hLw8ov9Clscj3rVBs83H9iT3H4KCSZ/preview" },
+            { id: 10, title: "সব সময় বড়দের সম্মান করতে হয় - সাকিব পাঠশালা", url: "https://drive.google.com/file/d/1CzsBUL6jH24IHiqmJgCaa35zECA-fss4/preview" },
+            { id: 11, title: " হারিয়ে যাওয়া পাখির বাচ্চা - GPS Story", url: "https://drive.google.com/file/d/119VrB0qtE3nW3RbZeDR2y5CA1dHrSD1R/preview" },
+            { id: 12, title: "কানা বগির ছা - বাংলা ছড়া (Kana Bogir Chha)", url: "https://drive.google.com/file/d/1IpikXpdUWd5-SxTyiLIAzdSf38sVzBTy/preview" },
+            { id: 13, title: "আবার চেষ্টা করো ChaCha Try Again", url: "https://drive.google.com/file/d/1Vwmxl2WKqQmAYDk015PBLQYbHLJqULFQ/preview" },
+            { id: 14, title: "The Smart Rabbit - ChuChu TV Moral Story", url: "https://drive.google.com/file/d/1j-ARAkOofGkUCJ2CH3tHV0di7WkZbCr7/preview" },
+            { id: 15, title: "SUPER MAN SAKIB - সুপারম্যান সাকিব 3D", url: "https://drive.google.com/file/d/1tkUJL_gZ0g6G9SBzxM5xfAM_ve1CAZZm/preview" },
+            { id: 16, title: "Squeaky ইঁদুর (Squeaky Mouse) - ChuChu TV Bangla", url: "https://drive.google.com/file/d/1b8zAPlWfymjNyvDCKtCD3xC8Suxd2Gw8/preview" },
+            { id: 17, title: "Good Manners Song - Lalafun Nursery Rhymes", url: "https://drive.google.com/file/d/1_m81GxMed3Nlyp4UcVB8leTu9zl94l11/preview" },
+            { id: 18, title: "কাউকে কষ্ট দিবেন না - গোলাম রসূল বাংলা ৩ডি কার্টুন", url: "https://drive.google.com/file/d/1FjcDrN0rskYfa0a0M_23K1cxX2yuNiVT/preview" },
+            { id: 19, title: "কথা বলা ময়না পাখি - গোলাম রসূল কার্টুন", url: "https://drive.google.com/file/d/1iYlIcYkEPGcJdgJvETKXyjIyTY6m7y2D/preview" },
+            { id: 20, title: "Good Habits & Moral Stories for Kids", url: "https://drive.google.com/file/d/16bmv_vamIiSaNY-cJBaFrUkgL5EEtdlZ/preview" },
+            { id: 21, title: "ChaCha লিখতে শেখা (ChaCha Learns to Write)", url: "https://drive.google.com/file/d/1wxBxYBieyixxVP6PUoji27IbtHDRTCe8/preview" },
+            { id: 22, title: "Best Islamic Cartoon Series - সাকিব পাঠশালা", url: "https://drive.google.com/file/d/1_YJCWMkb8QCRx4x7gNQzvvzeHbSME21A/preview" },
+            { id: 23, title: "Arabic Alphabet song for Kids", url: "https://drive.google.com/file/d/1o9yxNFDwzfPoeHl7y_s7EKcJK_Yst3BQ/preview" },
+            { id: 24, title: "Adhan - 30 Days Ramadan - Omar & Hana", url: "https://drive.google.com/file/d/13Zjf_tzsKdaZwUUM_pf-gDRjPLS0oPBT/preview" },
+            { id: 25, title: "বিড়ালকে পানি খেতে বাঁচালো - Abdullah Cartoon Part 4", url: "https://drive.google.com/file/d/1yja1Gj5tuSKXaW-9HwqpsYHqBhocP8Yc/preview" }
+        ];
+
+        let currentPlayingId = 1;
+        let targetVideoId = 1;
+        let nextId = 26;
         let pendingAction = null;
         let autoNextTimer = null;
         let plyrPlayer = null;
 
+        // Hidden preloader element for instant transition
+        let nextVideoPreloader = null;
+
+        // Interstitial state handling
+        let isInterstitialPlaying = false;
+        let interstitialSafetyTimer = null;
+
         const TOTAL_TIME = 3600; 
         let remainingSeconds = TOTAL_TIME;
         let timerInterval = null;
+
+        // ============================================================
+        // গুগল শিট সিঙ্ক স্ক্রিপ্ট (Apps Script-এর সাথে সংযোগ)
+        // ============================================================
 
         const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyC4SWMfsmM1XsWc6FDPwY38vosrdqDok9fCyiyI09EiunfIT6Zw_pfrC6NiHxKW3jj/exec";
 
@@ -871,44 +962,48 @@
 
             try {
                 const response = await fetch(GOOGLE_SHEET_API_URL);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
                 
                 const data = await response.json();
-                if (data.error) throw new Error(data.error);
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
                 if (!data || data.length === 0) {
                     alert('❌ গুগল শিটে কোনো ভিডিও ডাটা পাওয়া যায়নি!');
                     return;
                 }
                 
+                // ভিডিও আপডেট করা
                 const newVideos = data.map((v, idx) => ({
                     id: idx + 1,
                     title: v.title,
                     url: v.url
                 }));
                 
+                // পুরোনো ভিডিও রিপ্লেস
                 pdfVideos.length = 0;
                 pdfVideos.push(...newVideos);
+                
+                // nextId আপডেট
                 nextId = pdfVideos.length + 1;
                 
+                // UI রিফ্রেশ
                 renderGallery();
                 renderSidebar();
                 if (pdfVideos.length > 0) {
-                    const firstVideo = pdfVideos[0];
-                    targetVideoId = firstVideo.id;
-                    currentPlayingId = firstVideo.id;
-                    document.getElementById('currentVideoTitle').innerText = firstVideo.title;
-                    document.getElementById('currentVideoIndex').innerText = `ভিডিও #১`;
-                    document.getElementById('playerThumbnail').classList.remove('hidden');
-                    if (plyrPlayer) {
-                        try { plyrPlayer.destroy(); } catch(e){}
-                        plyrPlayer = null;
-                    }
-                    document.getElementById('plyrContainer').innerHTML = '';
+                    updatePlayerTitleOnly(pdfVideos[0].id);
+                    document.getElementById('playerThumbnail').classList.add('hidden');
                 }
                 
                 alert(`✅ ${pdfVideos.length} টি ভিডিও সফলভাবে সিঙ্ক হয়েছে!`);
+                
             } catch (error) {
-                alert(`❌ সিঙ্ক করতে সমস্যা হয়েছে:\n${error.message}`);
+                alert(`❌ সিঙ্ক করতে সমস্যা হয়েছে:\n${error.message}\n\nWeb App URL ঠিক আছে কিনা চেক করুন।`);
                 console.error('Sync Error:', error);
             } finally {
                 btn.innerHTML = originalIcon;
@@ -916,7 +1011,14 @@
             }
         }
 
-        // উন্নত ইউটিউব আইডি ও থাম্বনেইল ডিটেক্টর
+        // ============================================================
+        // ইউটিউব ও গুগল ড্রাইভ লিংক শনাক্তকারী ফাংশন (থাম্বনেইল সহ)
+        // ============================================================
+
+        function isYouTubeUrl(url) {
+            return url && (url.includes('youtube.com/watch') || url.includes('youtu.be/') || url.includes('youtube.com/embed/'));
+        }
+
         function extractYouTubeId(url) {
             if (!url) return null;
             let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -924,18 +1026,15 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        function isYouTubeUrl(url) {
-            return extractYouTubeId(url) !== null;
-        }
-
         function getYouTubeEmbedUrl(url) {
             let videoId = extractYouTubeId(url);
             if (videoId) {
-                return `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1&rel=0`;
+                return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&enablejsapi=1`;
             }
             return url;
         }
 
+        // ===================== পরিবর্তন: YouTube থাম্বনেইল ফাংশন =====================
         function getYouTubeThumbnail(url) {
             let videoId = extractYouTubeId(url);
             if (videoId) {
@@ -951,6 +1050,14 @@
         function getDriveFileId(url) {
             const match = url.match(/\/d\/([^\/]+)/);
             return (match && match[1]) ? match[1] : null;
+        }
+
+        function getDriveEmbedUrl(url) {
+            const id = getDriveFileId(url);
+            if (id) {
+                return `https://drive.google.com/file/d/${id}/preview?autoplay=1`;
+            }
+            return url;
         }
 
         function getDriveThumbnail(url) {
@@ -969,6 +1076,22 @@
             return url;
         }
 
+        function getEmbedUrl(url) {
+            if (isYouTubeUrl(url)) {
+                return getYouTubeEmbedUrl(url);
+            } else if (isDriveUrl(url)) {
+                return getDriveEmbedUrl(url);
+            }
+            return url;
+        }
+
+        // ===================== পরিবর্তন: বিজ্ঞপ্তি ভিডিওর জন্য এম্বেড URL =====================
+        function getInterstitialEmbedUrl() {
+            // YouTube বিজ্ঞপ্তি ভিডিও
+            return getYouTubeEmbedUrl(INTERSTITIAL_VIDEO_URL);
+        }
+
+        // ===================== পরিবর্তন: ইউনিভার্সাল থাম্বনেইল ফাংশন =====================
         function getVideoThumbnail(url) {
             if (isYouTubeUrl(url)) {
                 return getYouTubeThumbnail(url);
@@ -1011,12 +1134,13 @@
                     const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
                     let addedCount = 0;
+
                     rows.forEach((row) => {
                         if (row && row.length >= 2) {
                             const title = String(row[0]).trim();
                             const url = String(row[1]).trim();
 
-                            if (title && url && url.startsWith('http') && !title.toLowerCase().includes('title')) {
+                            if (title && url && url.startsWith('http') && !title.toLowerCase().includes('title') && !title.toLowerCase().includes('শিরোনাম')) {
                                 pdfVideos.push({ id: nextId++, title: title, url: url });
                                 addedCount++;
                             }
@@ -1027,9 +1151,9 @@
                         closeModal('addVideoModal');
                         renderGallery();
                         renderSidebar();
-                        alert(`সফলভাবে ${addedCount} টি ভিডিও বাল্ক আপলোড করা হয়েছে!`);
+                        alert(`সফলভাবে ${addedCount} টি ভিডিও বাল্ক আপলোড করা হয়েছে!\nএখন ডাউনলোড বাটন দিয়ে ফাইলটি সেভ করে রাখতে পারেন।`);
                     } else {
-                        alert('এক্সেল ফাইল থেকে কোনো বৈধ ভিডিও ডাটা পাওয়া যায়নি।');
+                        alert('এক্সেল ফাইল থেকে কোনো বৈধ ভিডিও ডাটা পাওয়া যায়নি। অনুগ্রহ করে প্রথম কলামে ভিডিও শিরোনাম এবং দ্বিতীয় কলামে লিঙ্ক নিশ্চিত করুন।');
                     }
                 } catch (err) {
                     alert('এক্সেল ফাইল রিড করতে সমস্যা হয়েছে: ' + err.message);
@@ -1064,30 +1188,111 @@
             }
         }
 
+        function preloadNextVideo(url) {
+            if (!nextVideoPreloader) {
+                nextVideoPreloader = document.createElement('video');
+                nextVideoPreloader.style.display = 'none';
+                nextVideoPreloader.preload = 'auto';
+                document.body.appendChild(nextVideoPreloader);
+            }
+            if (isDriveUrl(url)) {
+                nextVideoPreloader.src = getDirectStreamUrl(url);
+                nextVideoPreloader.load();
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
+            if (pdfVideos && pdfVideos.length > 0) {
+                const maxId = Math.max(...pdfVideos.map(v => v.id));
+                nextId = maxId + 1;
+            }
+
             renderGallery();
             renderSidebar();
             initTimer();
-            document.getElementById('currentVideoTitle').innerText = 'ভিডিও দেখতে ওপরের গুগল সিঙ্ক বাটনে ক্লিক করুন';
+            updatePlayerTitleOnly(pdfVideos[0] ? pdfVideos[0].id : 1);
+
+            plyrPlayer = new Plyr('#mainVideoPlayer', {
+                controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+                ratio: '16:9'
+            });
+
+            const videoElement = document.getElementById('mainVideoPlayer');
+            videoElement.addEventListener('ended', handleVideoEnded);
+            videoElement.addEventListener('error', handleVideoError);
         });
+
+        function handleVideoEnded() {
+            if (interstitialSafetyTimer) {
+                clearTimeout(interstitialSafetyTimer);
+                interstitialSafetyTimer = null;
+            }
+            if (isInterstitialPlaying) {
+                isInterstitialPlaying = false;
+                playMainVideoDirect(targetVideoId);
+            }
+        }
+
+        function handleVideoError() {
+            const videoElement = document.getElementById('mainVideoPlayer');
+            const iframeElement = document.getElementById('iframeVideoPlayer');
+            const plyrContainer = videoElement.closest('.plyr');
+
+            if (isInterstitialPlaying) {
+                if (plyrContainer) plyrContainer.style.display = "none";
+                videoElement.style.display = "none";
+                iframeElement.style.display = "block";
+                iframeElement.src = getInterstitialEmbedUrl();
+
+                if (interstitialSafetyTimer) clearTimeout(interstitialSafetyTimer);
+                interstitialSafetyTimer = setTimeout(() => {
+                    if (isInterstitialPlaying) {
+                        isInterstitialPlaying = false;
+                        playMainVideoDirect(targetVideoId);
+                    }
+                }, 12000);
+                return;
+            }
+
+            if(plyrContainer) plyrContainer.style.display = "none";
+            videoElement.style.display = "none";
+            iframeElement.style.display = "block";
+
+            let currentVideo = pdfVideos.find(v => v.id === currentPlayingId);
+            if (currentVideo) {
+                iframeElement.src = getEmbedUrl(currentVideo.url);
+            }
+
+            clearNextTimeout();
+        }
+
+        function updatePlayerTitleOnly(id) {
+            const vid = pdfVideos.find(v => v.id === id);
+            if (!vid) return;
+            currentPlayingId = id;
+            targetVideoId = id;
+            document.getElementById('currentVideoTitle').innerText = vid.title;
+            const idx = pdfVideos.findIndex(v => v.id === id) + 1;
+            document.getElementById('currentVideoIndex').innerText = `ভিডিও #${idx}`;
+        }
+
+        function startPlayFromThumbnail() {
+            document.getElementById('playerThumbnail').classList.add('hidden');
+            requestPlayVideo(currentPlayingId, false);
+        }
 
         function renderGallery() {
             const grid = document.getElementById('videoGrid');
             grid.innerHTML = '';
 
-            if (pdfVideos.length === 0) {
-                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--text-muted);">
-                    <i class="fa-solid fa-cloud-arrow-up" style="font-size:3rem; display:block; margin-bottom:1rem; opacity:0.3;"></i>
-                    <p style="font-size:1.1rem;">কোন ভিডিও নেই। উপরের <strong>গুগল সিঙ্ক</strong> বাটনে ক্লিক করুন।</p>
-                </div>`;
-                return;
-            }
-
             pdfVideos.forEach((vid) => {
                 const card = document.createElement('div');
                 card.className = `video-card ${vid.id === targetVideoId ? 'active' : ''}`;
-                card.onclick = () => { requestPlayVideo(vid.id, true); };
+                card.onclick = () => {
+                    requestPlayVideo(vid.id, true);
+                };
 
+                // ===== পরিবর্তন: getVideoThumbnail ব্যবহার করা হয়েছে =====
                 const thumbUrl = getVideoThumbnail(vid.url);
 
                 card.innerHTML = `
@@ -1115,16 +1320,14 @@
             sidebar.innerHTML = '';
             document.getElementById('sidebarCount').innerText = `${pdfVideos.length} টি`;
 
-            if (pdfVideos.length === 0) {
-                sidebar.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:1rem; font-size:0.9rem;">কোন ভিডিও নেই</div>`;
-                return;
-            }
-
             pdfVideos.forEach((vid) => {
                 const sCard = document.createElement('div');
                 sCard.className = `sidebar-card ${vid.id === targetVideoId ? 'active' : ''}`;
-                sCard.onclick = () => { requestPlayVideo(vid.id, true); };
+                sCard.onclick = () => {
+                    requestPlayVideo(vid.id, true);
+                };
 
+                // ===== পরিবর্তন: getVideoThumbnail ব্যবহার করা হয়েছে =====
                 const thumbUrl = getVideoThumbnail(vid.url);
 
                 sCard.innerHTML = `
@@ -1147,6 +1350,10 @@
                 clearTimeout(autoNextTimer);
                 autoNextTimer = null;
             }
+            if (interstitialSafetyTimer) {
+                clearTimeout(interstitialSafetyTimer);
+                interstitialSafetyTimer = null;
+            }
         }
 
         function togglePlay() {
@@ -1155,27 +1362,38 @@
                 startPlayFromThumbnail();
                 return;
             }
-            if (plyrPlayer && typeof plyrPlayer.togglePlay === 'function') {
-                plyrPlayer.togglePlay();
+
+            const videoElement = document.getElementById('mainVideoPlayer');
+            const iframeElement = document.getElementById('iframeVideoPlayer');
+
+            if (videoElement.style.display !== 'none' && videoElement.src) {
+                if (plyrPlayer) {
+                    plyrPlayer.play();
+                } else {
+                    videoElement.play();
+                }
+            } else if (iframeElement.style.display !== 'none' && iframeElement.src) {
+                const src = iframeElement.src;
+                if (!src.includes('autoplay=1')) {
+                    iframeElement.src = src + (src.includes('?') ? '&' : '?') + 'autoplay=1';
+                }
             }
         }
 
         function togglePause() {
-            if (plyrPlayer && typeof plyrPlayer.pause === 'function') {
-                plyrPlayer.pause();
-            }
-        }
+            const videoElement = document.getElementById('mainVideoPlayer');
+            const iframeElement = document.getElementById('iframeVideoPlayer');
 
-        function startPlayFromThumbnail() {
-            if (pdfVideos.length === 0) {
-                alert('কোন ভিডিও নেই। গুগল সিঙ্ক করুন।');
-                return;
+            if (videoElement.style.display !== 'none' && videoElement.src) {
+                if (plyrPlayer) {
+                    plyrPlayer.pause();
+                } else {
+                    videoElement.pause();
+                }
+            } else if (iframeElement.style.display !== 'none' && iframeElement.src) {
+                let src = iframeElement.src;
+                iframeElement.src = src.replace('&autoplay=1', '').replace('?autoplay=1', '');
             }
-            document.getElementById('playerThumbnail').classList.add('hidden');
-            const firstVideo = pdfVideos[0];
-            targetVideoId = firstVideo.id;
-            currentPlayingId = firstVideo.id;
-            playVideo(firstVideo);
         }
 
         function requestPlayVideo(id, shouldScroll = true) {
@@ -1184,7 +1402,6 @@
             if (!vid) return;
 
             targetVideoId = id;
-            currentPlayingId = id;
             document.getElementById('playerThumbnail').classList.add('hidden');
 
             renderGallery();
@@ -1194,63 +1411,90 @@
                 scrollToPlayer();
             }
 
-            playVideo(vid);
+            if (isInterstitialEnabled) {
+                preloadNextVideo(vid.url);
+                playInterstitial();
+            } else {
+                playMainVideoDirect(id);
+            }
         }
 
-        function playVideo(vid) {
-            if (plyrPlayer) {
-                try { plyrPlayer.destroy(); } catch(e){}
-                plyrPlayer = null;
+        // ===================== পরিবর্তন: YouTube বিজ্ঞপ্তি ভিডিও প্লে =====================
+        function playInterstitial() {
+            clearNextTimeout();
+            isInterstitialPlaying = true;
+
+            const videoElement = document.getElementById('mainVideoPlayer');
+            const iframeElement = document.getElementById('iframeVideoPlayer');
+            const plyrContainer = videoElement.closest('.plyr');
+
+            // YouTube বিজ্ঞপ্তি ভিডিও - iframe এ চালানো হবে
+            if(plyrContainer) plyrContainer.style.display = "none";
+            videoElement.style.display = "none";
+            videoElement.src = "";
+            iframeElement.style.display = "block";
+            iframeElement.src = getInterstitialEmbedUrl();
+
+            document.getElementById('currentVideoTitle').innerText = "🎬 তানজিফের ছোট্ট বিশেষ ভিডিও!";
+            document.getElementById('currentVideoIndex').innerText = "বিরতি ভিডিও";
+
+            // সেফটি টাইমার (যদি ভিডিও লোড না হয়)
+            if (interstitialSafetyTimer) clearTimeout(interstitialSafetyTimer);
+            interstitialSafetyTimer = setTimeout(() => {
+                if (isInterstitialPlaying) {
+                    isInterstitialPlaying = false;
+                    playMainVideoDirect(targetVideoId);
+                }
+            }, 15000);
+        }
+
+        function playMainVideoDirect(id) {
+            clearNextTimeout();
+            const vid = pdfVideos.find(v => v.id === id);
+            if (!vid) return;
+
+            isInterstitialPlaying = false;
+            currentPlayingId = id;
+            targetVideoId = id;
+
+            const videoElement = document.getElementById('mainVideoPlayer');
+            const iframeElement = document.getElementById('iframeVideoPlayer');
+            const plyrContainer = videoElement.closest('.plyr');
+
+            if (isDriveUrl(vid.url)) {
+                const directUrl = getDirectStreamUrl(vid.url);
+                iframeElement.style.display = "none";
+                iframeElement.src = "";
+                if(plyrContainer) plyrContainer.style.display = "block";
+                videoElement.style.display = "block";
+                
+                videoElement.src = directUrl;
+                videoElement.load();
+                
+                const playPromise = videoElement.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        handleVideoError();
+                    });
+                }
+            } else {
+                // YouTube or other embeddable: use iframe
+                if(plyrContainer) plyrContainer.style.display = "none";
+                videoElement.style.display = "none";
+                iframeElement.style.display = "block";
+                iframeElement.src = getEmbedUrl(vid.url);
             }
 
-            const container = document.getElementById('plyrContainer');
-            container.innerHTML = '';
-
             document.getElementById('currentVideoTitle').innerText = vid.title;
-            const idx = pdfVideos.findIndex(v => v.id === vid.id) + 1;
+            const idx = pdfVideos.findIndex(v => v.id === id) + 1;
             document.getElementById('currentVideoIndex').innerText = `ভিডিও #${idx}`;
 
             document.getElementById('prevBtn').disabled = (idx === 1);
             document.getElementById('nextBtn').disabled = false;
-
-            if (isYouTubeUrl(vid.url)) {
-                const ytId = extractYouTubeId(vid.url);
-                const div = document.createElement('div');
-                div.setAttribute('data-plyr-provider', 'youtube');
-                div.setAttribute('data-plyr-embed-id', ytId);
-                container.appendChild(div);
-
-                plyrPlayer = new Plyr(div, {
-                    autoplay: true,
-                    ratio: '16:9',
-                    controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen']
-                });
-            } else {
-                const video = document.createElement('video');
-                let streamUrl = isDriveUrl(vid.url) ? getDirectStreamUrl(vid.url) : vid.url;
-                video.src = streamUrl;
-                video.controls = true;
-                video.playsInline = true;
-                video.autoplay = true;
-                container.appendChild(video);
-
-                plyrPlayer = new Plyr(video, {
-                    ratio: '16:9',
-                    controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen']
-                });
-            }
-
-            if (plyrPlayer) {
-                plyrPlayer.on('ended', () => {
-                    playNextVideo();
-                });
-            }
         }
 
         function playNextVideo() {
             clearNextTimeout();
-            if (pdfVideos.length === 0) return;
-            
             const currentIndex = pdfVideos.findIndex(v => v.id === targetVideoId);
             let nextIdx = (currentIndex + 1) % pdfVideos.length;
             requestPlayVideo(pdfVideos[nextIdx].id, true);
@@ -1258,8 +1502,6 @@
 
         function playPrevVideo() {
             clearNextTimeout();
-            if (pdfVideos.length === 0) return;
-            
             const currentIndex = pdfVideos.findIndex(v => v.id === targetVideoId);
             if (currentIndex > 0) {
                 requestPlayVideo(pdfVideos[currentIndex - 1].id, true);
@@ -1301,18 +1543,18 @@
         function lockScreen() {
             clearNextTimeout();
             document.getElementById('timeLockOverlay').classList.add('active');
-            if (plyrPlayer && typeof plyrPlayer.pause === 'function') {
-                plyrPlayer.pause();
-            }
+            const videoElement = document.getElementById('mainVideoPlayer');
+            videoElement.pause();
+            videoElement.src = '';
+            document.getElementById('iframeVideoPlayer').src = '';
+            isInterstitialPlaying = false;
         }
 
         function unlockTimer() {
             remainingSeconds = TOTAL_TIME;
             document.getElementById('timeLockOverlay').classList.remove('active');
             startTimer();
-            if (targetVideoId !== null) {
-                requestPlayVideo(targetVideoId, true);
-            }
+            requestPlayVideo(targetVideoId, true);
         }
 
         function promptPinForAction(action, videoId = null) {
@@ -1326,6 +1568,7 @@
             const pinVal = document.getElementById('inputPin').value;
             if (pinVal === SECRET_PIN) {
                 closeModal('pinModal');
+                
                 if (pendingAction.type === 'unlock_timer') {
                     unlockTimer();
                 } else if (pendingAction.type === 'add_video') {
@@ -1366,17 +1609,7 @@
                 if(confirm(`আপনি কি নিশ্চিত "${pdfVideos[index].title}" ডিলিট করতে চান?`)) {
                     pdfVideos.splice(index, 1);
                     if (targetVideoId === id) {
-                        const firstVideo = pdfVideos[0];
-                        targetVideoId = firstVideo.id;
-                        currentPlayingId = firstVideo.id;
-                        document.getElementById('playerThumbnail').classList.remove('hidden');
-                        if (plyrPlayer) {
-                            try { plyrPlayer.destroy(); } catch(e){}
-                            plyrPlayer = null;
-                        }
-                        document.getElementById('plyrContainer').innerHTML = '';
-                        document.getElementById('currentVideoTitle').innerText = firstVideo.title;
-                        document.getElementById('currentVideoIndex').innerText = `ভিডিও #১`;
+                        requestPlayVideo(pdfVideos[0].id, false);
                     } else {
                         renderGallery();
                         renderSidebar();
