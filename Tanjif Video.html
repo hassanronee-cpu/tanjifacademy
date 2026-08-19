@@ -849,6 +849,8 @@
         const SECRET_PIN = "0000";
         let isInterstitialEnabled = true;
         let pdfVideos = [];
+        let interstitialAdVideo = null; // বিজ্ঞপ্তি বা বিরতি ভিডিও রাখার জন্য
+        let isShowingAd = false; // বর্তমানে বিজ্ঞপ্তি চলছে কি না
 
         let currentPlayingId = null;
         let targetVideoId = null;
@@ -880,14 +882,24 @@
                     return;
                 }
                 
-                const newVideos = data.map((v, idx) => ({
-                    id: idx + 1,
-                    title: v.title,
-                    url: v.url
-                }));
+                const mainVideos = [];
+                interstitialAdVideo = null;
+
+                data.forEach((v, idx) => {
+                    // এখানে আপনার শিটে থাকা বিজ্ঞপ্তি ভিডিওর শিরোনাম সেট করতে পারেন (যেমন: "ভিডিও শিরোনাম")
+                    if (v.title && v.title.trim() === "ভিডিও শিরোনাম") {
+                        interstitialAdVideo = { id: 'ad_' + idx, title: v.title, url: v.url };
+                    } else {
+                        mainVideos.push({
+                            id: mainVideos.length + 1,
+                            title: v.title,
+                            url: v.url
+                        });
+                    }
+                });
                 
                 pdfVideos.length = 0;
-                pdfVideos.push(...newVideos);
+                pdfVideos.push(...mainVideos);
                 nextId = pdfVideos.length + 1;
                 
                 renderGallery();
@@ -906,7 +918,7 @@
                     document.getElementById('plyrContainer').innerHTML = '';
                 }
                 
-                alert(`✅ ${pdfVideos.length} টি ভিডিও সফলভাবে সিঙ্ক হয়েছে!`);
+                alert(`✅ সফলভাবে সিঙ্ক হয়েছে! মূল ভিডিও: ${pdfVideos.length}টি ${interstitialAdVideo ? 'ও বিজ্ঞপ্তি ভিডিও পাওয়া গেছে।' : ''}`);
             } catch (error) {
                 alert(`❌ সিঙ্ক করতে সমস্যা হয়েছে:\n${error.message}`);
                 console.error('Sync Error:', error);
@@ -1206,6 +1218,49 @@
             const container = document.getElementById('plyrContainer');
             container.innerHTML = '';
 
+            // যদি বিজ্ঞপ্তি মোড অন থাকে এবং বিজ্ঞপ্তি ভিডিওটি থেকে থাকে এবং আমরা যদি ইতিমধ্যে বিজ্ঞাপন না চালিয়ে থাকি
+            if (isInterstitialEnabled && interstitialAdVideo && !isShowingAd && vid.id !== interstitialAdVideo.id) {
+                isShowingAd = true;
+                document.getElementById('currentVideoTitle').innerText = `📢 বিজ্ঞপ্তি: ${interstitialAdVideo.title}`;
+                document.getElementById('currentVideoIndex').innerText = `বিজ্ঞপ্তি মোড`;
+
+                if (isYouTubeUrl(interstitialAdVideo.url)) {
+                    const ytId = extractYouTubeId(interstitialAdVideo.url);
+                    const div = document.createElement('div');
+                    div.setAttribute('data-plyr-provider', 'youtube');
+                    div.setAttribute('data-plyr-embed-id', ytId);
+                    container.appendChild(div);
+
+                    plyrPlayer = new Plyr(div, {
+                        autoplay: true,
+                        ratio: '16:9',
+                        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen']
+                    });
+                } else {
+                    const video = document.createElement('video');
+                    let streamUrl = isDriveUrl(interstitialAdVideo.url) ? getDirectStreamUrl(interstitialAdVideo.url) : interstitialAdVideo.url;
+                    video.src = streamUrl;
+                    video.controls = true;
+                    video.playsInline = true;
+                    video.autoplay = true;
+                    container.appendChild(video);
+
+                    plyrPlayer = new Plyr(video, {
+                        ratio: '16:9',
+                        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen']
+                    });
+                }
+
+                if (plyrPlayer) {
+                    plyrPlayer.on('ended', () => {
+                        isShowingAd = false;
+                        playVideo(vid); // বিজ্ঞাপন শেষ হলে মূল ভিডিও প্লে হবে
+                    });
+                }
+                return;
+            }
+
+            isShowingAd = false;
             document.getElementById('currentVideoTitle').innerText = vid.title;
             const idx = pdfVideos.findIndex(v => v.id === vid.id) + 1;
             document.getElementById('currentVideoIndex').innerText = `ভিডিও #${idx}`;
