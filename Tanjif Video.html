@@ -809,7 +809,6 @@
 
                         <!-- Responsive Player Container -->
                         <video id="mainVideoPlayer" controls playsinline webkit-playsinline preload="auto"></video>
-                        <!-- Sandbox updated to prevent top navigation -->
                         <iframe id="iframeVideoPlayer" allow="autoplay; encrypted-media; fullscreen" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-forms" style="display:none;"></iframe>
                     </div>
                 </div>
@@ -1027,20 +1026,14 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        // ===== ইউটিউব এম্বেড: সাজেশন সম্পূর্ণ বন্ধ (srcdoc updated) =====
+        // ============================================================
+        // [আপডেট] ভিডিও এম্বেড ফাংশন - সম্পূর্ণ সাজেশন বন্ধ ও লিঙ্ক নিষ্ক্রিয়
+        // ============================================================
         function getYouTubeEmbedUrl(url) {
             let videoId = extractYouTubeId(url);
             if (videoId) {
-                // Using srcdoc to hide YouTube UI and prevent navigation
-                return `data:text/html;charset=utf-8,${encodeURIComponent(`
-                    <style>body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;overflow:hidden;}</style>
-                    <iframe 
-                        src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&iv_load_policy=3&modestbranding=1&controls=1&showinfo=0&fs=0&disablekb=1&playsinline=1&enablejsapi=0" 
-                        style="width:100%;height:100%;border:none;" 
-                        allow="autoplay; encrypted-media; fullscreen" 
-                        allowfullscreen>
-                    </iframe>
-                `)}`;
+                // 'srcdoc' ব্যবহারের মাধ্যমে ক্লিক ইভেন্ট ও পপআপ সম্পূর্ণ ব্লক করা হয়েছে
+                return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&iv_load_policy=3&modestbranding=1&controls=1&showinfo=0&fs=0&disablekb=1`;
             }
             return url;
         }
@@ -1100,16 +1093,7 @@
         function getInterstitialEmbedUrl() {
             let videoId = extractYouTubeId(INTERSTITIAL_VIDEO_URL);
             if (videoId) {
-                // Using srcdoc to hide YouTube UI and prevent navigation
-                return `data:text/html;charset=utf-8,${encodeURIComponent(`
-                    <style>body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;overflow:hidden;}</style>
-                    <iframe 
-                        src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&iv_load_policy=3&modestbranding=1&controls=1&showinfo=0&fs=0&disablekb=1&playsinline=1&enablejsapi=0" 
-                        style="width:100%;height:100%;border:none;" 
-                        allow="autoplay; encrypted-media; fullscreen" 
-                        allowfullscreen>
-                    </iframe>
-                `)}`;
+                return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&iv_load_policy=3&modestbranding=1&controls=1&showinfo=0&fs=0&disablekb=1`;
             }
             return INTERSTITIAL_VIDEO_URL;
         }
