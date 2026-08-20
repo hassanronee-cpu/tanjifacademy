@@ -809,7 +809,7 @@
 
                         <!-- Responsive Player Container -->
                         <video id="mainVideoPlayer" controls playsinline webkit-playsinline preload="auto"></video>
-                        <iframe id="iframeVideoPlayer" allow="autoplay; encrypted-media" allowfullscreen style="display:none;"></iframe>
+                        <iframe id="iframeVideoPlayer" allow="autoplay; encrypted-media; fullscreen" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-forms" style="display:none;"></iframe>
                     </div>
                 </div>
             </div>
@@ -1026,10 +1026,15 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
+        // ===== ইউটিউব এম্বেড: সাজেশন সম্পূর্ণ বন্ধ =====
         function getYouTubeEmbedUrl(url) {
             let videoId = extractYouTubeId(url);
             if (videoId) {
-                return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&enablejsapi=1`;
+                // iv_load_policy=3 -> ইন-ভিডিও সাজেশন/কার্ড বন্ধ
+                // rel=0 -> ভিডিও শেষে সাজেশন বন্ধ
+                // modestbranding=1 -> ইউটিউব লোগো ছোট, ক্লিক করলে ইউটিউবে যায় না
+                // fs=0 -> ফুলস্ক্রিনে সাজেশন বন্ধ
+                return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&iv_load_policy=3&modestbranding=1&controls=1&showinfo=0&fs=0&disablekb=1`;
             }
             return url;
         }
@@ -1085,10 +1090,13 @@
             return url;
         }
 
-        // ===================== পরিবর্তন: বিজ্ঞপ্তি ভিডিওর জন্য এম্বেড URL =====================
+        // ===================== পরিবর্তন: বিজ্ঞপ্তি ভিডিওর জন্য এম্বেড URL (সাজেশন বন্ধ) =====================
         function getInterstitialEmbedUrl() {
-            // YouTube বিজ্ঞপ্তি ভিডিও
-            return getYouTubeEmbedUrl(INTERSTITIAL_VIDEO_URL);
+            let videoId = extractYouTubeId(INTERSTITIAL_VIDEO_URL);
+            if (videoId) {
+                return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&iv_load_policy=3&modestbranding=1&controls=1&showinfo=0&fs=0&disablekb=1`;
+            }
+            return INTERSTITIAL_VIDEO_URL;
         }
 
         // ===================== পরিবর্তন: ইউনিভার্সাল থাম্বনেইল ফাংশন =====================
@@ -1419,7 +1427,7 @@
             }
         }
 
-        // ===================== পরিবর্তন: YouTube বিজ্ঞপ্তি ভিডিও প্লে =====================
+        // ===================== পরিবর্তন: YouTube বিজ্ঞপ্তি ভিডিও প্লে (সাজেশন বন্ধ) =====================
         function playInterstitial() {
             clearNextTimeout();
             isInterstitialPlaying = true;
