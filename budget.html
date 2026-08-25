@@ -11,6 +11,7 @@
         .glass-card { background: white; border-radius: 24px; border: 1px solid #dcfce7; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
         .btn-green { background: #16a34a; color: white; transition: 0.3s; font-weight: bold; border-radius: 16px; }
         .btn-green:hover { background: #15803d; transform: translateY(-1px); }
+        .btn-green:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-blue { background: #2563eb; color: white; transition: 0.3s; font-weight: bold; border-radius: 16px; }
         .btn-blue:hover { background: #1d4ed8; transform: translateY(-1px); }
         .input-box { width: 100%; padding: 14px; border-radius: 16px; border: 1px solid #bbf7d0; outline: none; transition: 0.3s; background: white; }
@@ -72,10 +73,47 @@
         .toast-success { background: #16a34a; }
         .toast-error { background: #dc2626; }
         .toast-info { background: #2563eb; }
+        .toast-warning { background: #f59e0b; }
         @keyframes slideIn {
             from { transform: translateX(100px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+        /* Progress Bar */
+        .progress-container {
+            width: 100%; background: #e5e7eb; border-radius: 50px; overflow: hidden;
+            height: 4px; margin-top: 8px;
+        }
+        .progress-bar {
+            height: 4px; background: #16a34a; width: 0%; transition: width 0.3s;
+            border-radius: 50px;
+        }
+        .loading-text {
+            font-size: 12px; color: #6b7280; display: flex; align-items: center; gap: 8px;
+        }
+        .loading-text .spinner {
+            width: 16px; height: 16px; border: 2px solid #e5e7eb;
+            border-top: 2px solid #16a34a; border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        /* Confirmation Modal */
+        #confirmModal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px); z-index: 99998;
+            display: none; align-items: center; justify-content: center;
+        }
+        #confirmModal.active { display: flex; }
+        .confirm-box {
+            background: white; border-radius: 24px; padding: 30px; max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center;
+        }
+        .confirm-box h3 { font-size: 20px; font-weight: bold; color: #1e293b; margin-bottom: 10px; }
+        .confirm-box p { color: #64748b; margin-bottom: 20px; }
+        .confirm-box .btn-group { display: flex; gap: 10px; justify-content: center; }
+        .confirm-box .btn-group button { padding: 10px 30px; border-radius: 12px; font-weight: bold; border: none; cursor: pointer; }
+        .confirm-box .btn-yes { background: #dc2626; color: white; }
+        .confirm-box .btn-yes:hover { background: #b91c1c; }
+        .confirm-box .btn-no { background: #e2e8f0; color: #1e293b; }
+        .confirm-box .btn-no:hover { background: #cbd5e1; }
     </style>
 </head>
 <body>
@@ -132,6 +170,18 @@
                     </div>
 
                     <input type="number" id="amount" placeholder="৳ টাকার পরিমাণ" class="input-box text-2xl font-black text-emerald-900">
+                    
+                    <!-- Loading Indicator -->
+                    <div id="loadingIndicator" class="hidden">
+                        <div class="loading-text">
+                            <span class="spinner"></span>
+                            <span id="loadingMessage">পাঠানো হচ্ছে...</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                    </div>
+                    
                     <button onclick="saveData()" id="saveBtn" class="w-full btn-green py-4 text-lg shadow-xl shadow-emerald-100">শিটে সেভ করুন 💾</button>
                 </div>
 
@@ -177,11 +227,11 @@
                     <!-- Remove -->
                     <div class="grid grid-cols-2 gap-2">
                         <select id="removeMainSelect" class="input-box text-sm"><option value="">মূল ডিলিট</option></select>
-                        <button onclick="removeCategory()" class="bg-red-500 text-white py-2 rounded-xl text-sm font-bold">🗑️ ডিলিট</button>
+                        <button onclick="confirmRemove('category')" class="bg-red-500 text-white py-2 rounded-xl text-sm font-bold">🗑️ ডিলিট</button>
                     </div>
                     <div class="grid grid-cols-2 gap-2 mt-2">
                         <select id="removeSubSelect" class="input-box text-sm"><option value="">উপ-ডিলিট</option></select>
-                        <button onclick="removeSubCategory()" class="bg-red-500 text-white py-2 rounded-xl text-sm font-bold">🗑️ ডিলিট সাব</button>
+                        <button onclick="confirmRemove('subcategory')" class="bg-red-500 text-white py-2 rounded-xl text-sm font-bold">🗑️ ডিলিট সাব</button>
                     </div>
                 </div>
             </div>
@@ -237,12 +287,24 @@
     <!-- Toast Container -->
     <div id="toast-container"></div>
 
+    <!-- Confirmation Modal -->
+    <div id="confirmModal">
+        <div class="confirm-box">
+            <h3 id="confirmTitle">⚠️ নিশ্চিত করুন</h3>
+            <p id="confirmMessage">আপনি কি এই আইটেমটি ডিলিট করতে চান?</p>
+            <div class="btn-group">
+                <button class="btn-no" onclick="closeConfirm()">না</button>
+                <button class="btn-yes" id="confirmYesBtn">হ্যাঁ, ডিলিট করুন</button>
+            </div>
+        </div>
+    </div>
+
     <button onclick="fetchFromSheet()" class="sync-btn-floating">
         <span id="syncIcon" class="text-xl">🔄</span>
     </button>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5wfDDeHkKaJ8A5FCccfK14NT63f90klVCyGGNM-VBRv-ii1v--WQGPZWyE9S0UEF6eA/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxWCD7e4gcb_nW8gA0KdEFPy9Wk7_6-yvQJPrlXfY9pfZaXVgTx2X5H3hh8Z8tjpgRo5w/exec";
 
         // Default structure - will be overwritten by sheet data
         let mainBudgets = {
@@ -279,10 +341,12 @@
         let expenses = [];
         let finance = { savings: 0, liability: 0, investment: 0, currentBalance: 0 };
         let currentMode = 'expense';
+        let confirmAction = null;
+        let confirmData = null;
 
         // ================== TOAST NOTIFICATION ==================
 
-        function showToast(message, type = 'success') {
+        function showToast(message, type = 'success', duration = 3000) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
@@ -292,7 +356,79 @@
                 toast.style.opacity = '0';
                 toast.style.transition = 'opacity 0.3s';
                 setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            }, duration);
+        }
+
+        // ================== CONFIRMATION MODAL ==================
+
+        function showConfirm(title, message, onYes) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmMessage').textContent = message;
+            document.getElementById('confirmModal').classList.add('active');
+            document.getElementById('confirmYesBtn').onclick = function() {
+                closeConfirm();
+                if (onYes) onYes();
+            };
+        }
+
+        function closeConfirm() {
+            document.getElementById('confirmModal').classList.remove('active');
+        }
+
+        function confirmRemove(type) {
+            if (type === 'category') {
+                const name = document.getElementById('removeMainSelect').value;
+                if (!name) {
+                    showToast('একটি ক্যাটাগরি নির্বাচন করুন!', 'error');
+                    return;
+                }
+                showConfirm('⚠️ নিশ্চিত করুন', `"${name}" ডিলিট করবেন? এই কাজটি বাতিল করা যাবে না!`, () => removeCategory(name));
+            } else if (type === 'subcategory') {
+                const name = document.getElementById('removeSubSelect').value;
+                if (!name) {
+                    showToast('একটি উপ-ক্যাটাগরি নির্বাচন করুন!', 'error');
+                    return;
+                }
+                showConfirm('⚠️ নিশ্চিত করুন', `"${name}" ডিলিট করবেন? এই কাজটি বাতিল করা যাবে না!`, () => removeSubCategory(name));
+            }
+        }
+
+        // ================== LOADING INDICATOR ==================
+
+        function showLoading(message = 'পাঠানো হচ্ছে...') {
+            document.getElementById('loadingIndicator').classList.remove('hidden');
+            document.getElementById('loadingMessage').textContent = message;
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('saveBtn').disabled = true;
+        }
+
+        function updateProgress(percent) {
+            document.getElementById('progressBar').style.width = Math.min(percent, 100) + '%';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingIndicator').classList.add('hidden');
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('saveBtn').disabled = false;
+        }
+
+        // ================== FORMAT TIMESTAMP ==================
+
+        function formatTimestamp(timestamp) {
+            if (!timestamp) return 'N/A';
+            try {
+                const date = new Date(timestamp);
+                if (isNaN(date.getTime())) return timestamp;
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const seconds = String(date.getSeconds()).padStart(2, '0');
+                return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+            } catch (e) {
+                return timestamp;
+            }
         }
 
         // ================== CORE LOGIC ==================
@@ -319,7 +455,6 @@
             return entryDate >= startDate && entryDate <= endDate;
         }
 
-        // Calculate main budget from sub budgets
         function calculateMainBudget(mainCat) {
             if (!mainCat || !subCategories[mainCat]) return 0;
             let total = 0;
@@ -329,7 +464,6 @@
             return total;
         }
 
-        // Update all main budgets
         function updateAllMainBudgets() {
             for (let main in subCategories) {
                 mainBudgets[main] = calculateMainBudget(main);
@@ -517,12 +651,16 @@
         async function fetchFromSheet() {
             const icon = document.getElementById('syncIcon');
             icon.classList.add('sync-loader');
+            showLoading('ডেটা সিঙ্ক হচ্ছে...');
+            updateProgress(30);
             try {
                 const res = await fetch(SCRIPT_URL + '?action=getAll');
+                updateProgress(60);
                 const data = await res.json();
                 if(data.expenses) expenses = data.expenses;
                 if(data.subBudgets) subBudgets = data.subBudgets;
                 if(data.subCategories) subCategories = data.subCategories;
+                updateProgress(80);
                 updateAllMainBudgets();
                 calculateFinance();
                 refreshUI();
@@ -530,12 +668,14 @@
                 populateRemoveDropdowns();
                 updateSubCategories();
                 showUpdateLimitFields();
-                showToast('ডেটা সিঙ্ক সম্পন্ন!', 'success');
+                updateProgress(100);
+                showToast('✅ ডেটা সিঙ্ক সম্পন্ন!', 'success');
             } catch (e) { 
-                showToast('সিঙ্ক এরর: ' + e.message, 'error');
+                showToast('❌ সিঙ্ক এরর: ' + e.message, 'error');
             }
             icon.classList.remove('sync-loader');
             document.getElementById('syncTime').innerText = "Last sync: " + new Date().toLocaleTimeString();
+            hideLoading();
         }
 
         function calculateFinance() {
@@ -547,9 +687,7 @@
                 const amt = parseFloat(ex.amount) || 0;
                 if(ex.mode === 'expense') {
                     totalExpense += amt;
-                    // Savings: all entries in Savings category
                     if(ex.main === 'Savings') tempFinance.savings += amt;
-                    // Liability reduction: if main is Installment
                     if(ex.main === 'Installment') tempFinance.liability -= amt;
                 }
                 else if(ex.mode === 'adjustment') {
@@ -572,7 +710,6 @@
                 }
             });
             
-            // Balance = Total Earnings - Total Expense - Investment + Balance adjustments
             tempFinance.currentBalance = totalEarnings - totalExpense - tempFinance.investment + tempFinance.currentBalance;
             finance = tempFinance;
         }
@@ -606,7 +743,8 @@
                 return;
             }
 
-            btn.innerText = "পাঠানো হচ্ছে..."; btn.disabled = true;
+            showLoading('এন্ট্রি সেভ হচ্ছে...');
+            updateProgress(20);
 
             let finalSub = sub;
             if(sub.includes('Others')) {
@@ -620,15 +758,18 @@
             };
 
             try {
+                updateProgress(50);
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                updateProgress(80);
                 showToast('✅ সফলভাবে আপডেট হয়েছে!', 'success');
                 document.getElementById('amount').value = "";
                 document.getElementById('customNote').value = "";
+                updateProgress(100);
                 await fetchFromSheet();
             } catch(e) { 
-                showToast('কানেকশন এরর!', 'error');
+                showToast('❌ কানেকশন এরর!', 'error');
             }
-            btn.innerText = "শিটে সেভ করুন 💾"; btn.disabled = false;
+            hideLoading();
         }
 
         // ================== CATEGORY MANAGEMENT ==================
@@ -644,17 +785,26 @@
                 return;
             }
             
+            showLoading('ক্যাটাগরি যোগ হচ্ছে...');
+            updateProgress(30);
+            
             subCategories[name] = ["Others (অন্যান্য)"];
             subBudgets["Others (অন্যান্য)"] = 0;
             updateAllMainBudgets();
             
             const payload = { action: 'addCategory', name };
             try {
+                updateProgress(60);
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                updateProgress(80);
                 showToast('✅ ক্যাটাগরি যোগ হয়েছে!', 'success');
                 document.getElementById('newCatName').value = '';
+                updateProgress(100);
                 await fetchFromSheet();
-            } catch(e) { showToast('এরর!', 'error'); }
+            } catch(e) { 
+                showToast('❌ এরর!', 'error');
+            }
+            hideLoading();
         }
 
         async function addSubCategory() {
@@ -670,18 +820,27 @@
                 return;
             }
             
+            showLoading('উপ-ক্যাটাগরি যোগ হচ্ছে...');
+            updateProgress(30);
+            
             subCategories[parent].push(name);
             subBudgets[name] = limit;
             updateAllMainBudgets();
             
             const payload = { action: 'addSubCategory', parent, name, limit };
             try {
+                updateProgress(60);
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                updateProgress(80);
                 showToast('✅ উপ-ক্যাটাগরি যোগ হয়েছে!', 'success');
                 document.getElementById('newSubName').value = '';
                 document.getElementById('newSubLimit').value = '';
+                updateProgress(100);
                 await fetchFromSheet();
-            } catch(e) { showToast('এরর!', 'error'); }
+            } catch(e) { 
+                showToast('❌ এরর!', 'error');
+            }
+            hideLoading();
         }
 
         async function updateLimit() {
@@ -698,24 +857,29 @@
                 return;
             }
             
+            showLoading('লিমিট আপডেট হচ্ছে...');
+            updateProgress(30);
+            
             const category = sub || main;
             const payload = { action: 'updateLimit', category, newLimit, main, sub };
             
             try {
+                updateProgress(60);
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                updateProgress(80);
                 showToast(`✅ "${category}" এর লিমিট আপডেট হয়েছে!`, 'success');
                 document.getElementById('updateLimitValue').value = '';
+                updateProgress(100);
                 await fetchFromSheet();
-            } catch(e) { showToast('এরর! '+e.message, 'error'); }
+            } catch(e) { 
+                showToast('❌ এরর! '+e.message, 'error');
+            }
+            hideLoading();
         }
 
-        async function removeCategory() {
-            const name = document.getElementById('removeMainSelect').value;
-            if(!name) {
-                showToast('একটি ক্যাটাগরি নির্বাচন করুন!', 'error');
-                return;
-            }
-            if(!confirm(`⚠️ "${name}" ডিলিট করবেন?`)) return;
+        async function removeCategory(name) {
+            showLoading('ক্যাটাগরি ডিলিট হচ্ছে...');
+            updateProgress(30);
             
             if(subCategories[name]) {
                 subCategories[name].forEach(sub => {
@@ -727,19 +891,21 @@
             
             const payload = { action: 'removeCategory', name };
             try {
+                updateProgress(60);
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                updateProgress(80);
                 showToast('✅ ডিলিট হয়েছে!', 'success');
+                updateProgress(100);
                 await fetchFromSheet();
-            } catch(e) { showToast('এরর!', 'error'); }
+            } catch(e) { 
+                showToast('❌ এরর!', 'error');
+            }
+            hideLoading();
         }
 
-        async function removeSubCategory() {
-            const name = document.getElementById('removeSubSelect').value;
-            if(!name) {
-                showToast('একটি উপ-ক্যাটাগরি নির্বাচন করুন!', 'error');
-                return;
-            }
-            if(!confirm(`⚠️ "${name}" ডিলিট করবেন?`)) return;
+        async function removeSubCategory(name) {
+            showLoading('উপ-ক্যাটাগরি ডিলিট হচ্ছে...');
+            updateProgress(30);
             
             for (let main in subCategories) {
                 const idx = subCategories[main].indexOf(name);
@@ -753,10 +919,16 @@
             
             const payload = { action: 'removeSubCategory', name };
             try {
+                updateProgress(60);
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                updateProgress(80);
                 showToast('✅ ডিলিট হয়েছে!', 'success');
+                updateProgress(100);
                 await fetchFromSheet();
-            } catch(e) { showToast('এরর!', 'error'); }
+            } catch(e) { 
+                showToast('❌ এরর!', 'error');
+            }
+            hideLoading();
         }
 
         // ================== REPORT ==================
