@@ -29,7 +29,6 @@
             background-image: url('https://www.transparenttextures.com/patterns/islamic-art.png');
             background-color: #064e3b;
         }
-        .limit-badge { background: #f1f5f9; padding: 2px 12px; border-radius: 30px; font-size: 10px; font-weight: 700; color: #1e293b; }
         #categoryManager {
             background: #f8fafc;
             border-radius: 20px;
@@ -58,6 +57,24 @@
             padding: 8px 12px;
             margin-top: 6px;
             font-size: 12px;
+        }
+        /* Toast Notification */
+        #toast-container {
+            position: fixed; top: 20px; right: 20px; z-index: 99999;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .toast {
+            padding: 14px 24px; border-radius: 16px; color: white;
+            font-weight: bold; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: slideIn 0.4s ease;
+            min-width: 200px;
+        }
+        .toast-success { background: #16a34a; }
+        .toast-error { background: #dc2626; }
+        .toast-info { background: #2563eb; }
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
     </style>
 </head>
@@ -217,6 +234,9 @@
         </div>
     </div>
 
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
     <button onclick="fetchFromSheet()" class="sync-btn-floating">
         <span id="syncIcon" class="text-xl">🔄</span>
     </button>
@@ -259,6 +279,21 @@
         let expenses = [];
         let finance = { savings: 0, liability: 0, investment: 0, currentBalance: 0 };
         let currentMode = 'expense';
+
+        // ================== TOAST NOTIFICATION ==================
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
 
         // ================== CORE LOGIC ==================
 
@@ -361,7 +396,6 @@
             if(sub) {
                 currentLimit = subBudgets[sub] || 0;
                 categoryName = sub;
-                // Show main total
                 if(main) {
                     const mainTotal = calculateMainBudget(main);
                     mainDisplay.classList.remove('hidden');
@@ -496,7 +530,10 @@
                 populateRemoveDropdowns();
                 updateSubCategories();
                 showUpdateLimitFields();
-            } catch (e) { alert("সিঙ্ক এরর! "+e.message); }
+                showToast('ডেটা সিঙ্ক সম্পন্ন!', 'success');
+            } catch (e) { 
+                showToast('সিঙ্ক এরর: ' + e.message, 'error');
+            }
             icon.classList.remove('sync-loader');
             document.getElementById('syncTime').innerText = "Last sync: " + new Date().toLocaleTimeString();
         }
@@ -504,6 +541,7 @@
         function calculateFinance() {
             let tempFinance = { savings: 0, liability: 0, investment: 0, currentBalance: 0 };
             let totalExpense = 0;
+            let totalEarnings = 0;
             
             expenses.forEach(ex => {
                 const amt = parseFloat(ex.amount) || 0;
@@ -515,7 +553,9 @@
                     if(ex.main === 'Installment') tempFinance.liability -= amt;
                 }
                 else if(ex.mode === 'adjustment') {
-                    if(ex.main === 'Earnings') tempFinance.savings += amt;
+                    if(ex.main === 'Earnings') {
+                        totalEarnings += amt;
+                    }
                     if(ex.main === 'Investment') tempFinance.investment += amt;
                     if(ex.main === 'Liability') {
                         if(ex.sub.includes('(-)') || ex.sub.includes('Paid')) tempFinance.liability -= amt;
@@ -532,8 +572,8 @@
                 }
             });
             
-            // Balance = Total Savings - Total Expense - Investment + Balance adjustments
-            tempFinance.currentBalance = tempFinance.savings - totalExpense - tempFinance.investment + tempFinance.currentBalance;
+            // Balance = Total Earnings - Total Expense - Investment + Balance adjustments
+            tempFinance.currentBalance = totalEarnings - totalExpense - tempFinance.investment + tempFinance.currentBalance;
             finance = tempFinance;
         }
 
@@ -561,7 +601,10 @@
             const amount = document.getElementById('amount').value;
             const date = document.getElementById('date').value;
 
-            if(!date || !amount || !main || !sub) return alert("দয়া করে, সব তথ্য দিন!");
+            if(!date || !amount || !main || !sub) {
+                showToast('দয়া করে, সব তথ্য দিন!', 'error');
+                return;
+            }
 
             btn.innerText = "পাঠানো হচ্ছে..."; btn.disabled = true;
 
@@ -578,11 +621,13 @@
 
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-                alert("সফলভাবে আপডেট হয়েছে!");
+                showToast('✅ সফলভাবে আপডেট হয়েছে!', 'success');
                 document.getElementById('amount').value = "";
                 document.getElementById('customNote').value = "";
-                fetchFromSheet();
-            } catch(e) { alert("কানেকশন এরর!"); }
+                await fetchFromSheet();
+            } catch(e) { 
+                showToast('কানেকশন এরর!', 'error');
+            }
             btn.innerText = "শিটে সেভ করুন 💾"; btn.disabled = false;
         }
 
@@ -590,8 +635,14 @@
 
         async function addCategory() {
             const name = document.getElementById('newCatName').value.trim();
-            if(!name) return alert("ক্যাটাগরির নাম দিন!");
-            if(subCategories[name]) return alert("এই নামে ক্যাটাগরি ইতিমধ্যে আছে!");
+            if(!name) {
+                showToast('ক্যাটাগরির নাম দিন!', 'error');
+                return;
+            }
+            if(subCategories[name]) {
+                showToast('এই নামে ক্যাটাগরি ইতিমধ্যে আছে!', 'error');
+                return;
+            }
             
             subCategories[name] = ["Others (অন্যান্য)"];
             subBudgets["Others (অন্যান্য)"] = 0;
@@ -600,18 +651,24 @@
             const payload = { action: 'addCategory', name };
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-                alert("ক্যাটাগরি যোগ হয়েছে!");
+                showToast('✅ ক্যাটাগরি যোগ হয়েছে!', 'success');
                 document.getElementById('newCatName').value = '';
-                fetchFromSheet();
-            } catch(e) { alert("এরর!"); }
+                await fetchFromSheet();
+            } catch(e) { showToast('এরর!', 'error'); }
         }
 
         async function addSubCategory() {
             const parent = document.getElementById('parentCatSelect').value;
             const name = document.getElementById('newSubName').value.trim();
             const limit = parseFloat(document.getElementById('newSubLimit').value);
-            if(!parent || !name || isNaN(limit)) return alert("সব তথ্য দিন!");
-            if(subCategories[parent].includes(name)) return alert("এই নামে উপ-ক্যাটাগরি ইতিমধ্যে আছে!");
+            if(!parent || !name || isNaN(limit)) {
+                showToast('সব তথ্য দিন!', 'error');
+                return;
+            }
+            if(subCategories[parent].includes(name)) {
+                showToast('এই নামে উপ-ক্যাটাগরি ইতিমধ্যে আছে!', 'error');
+                return;
+            }
             
             subCategories[parent].push(name);
             subBudgets[name] = limit;
@@ -620,11 +677,11 @@
             const payload = { action: 'addSubCategory', parent, name, limit };
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-                alert("উপ-ক্যাটাগরি যোগ হয়েছে!");
+                showToast('✅ উপ-ক্যাটাগরি যোগ হয়েছে!', 'success');
                 document.getElementById('newSubName').value = '';
                 document.getElementById('newSubLimit').value = '';
-                fetchFromSheet();
-            } catch(e) { alert("এরর!"); }
+                await fetchFromSheet();
+            } catch(e) { showToast('এরর!', 'error'); }
         }
 
         async function updateLimit() {
@@ -632,26 +689,34 @@
             const sub = document.getElementById('updateSubSelect').value;
             const newLimit = parseFloat(document.getElementById('updateLimitValue').value);
             
-            if(!sub && !main) return alert("একটি ক্যাটাগরি নির্বাচন করুন!");
-            if(isNaN(newLimit) || newLimit < 0) return alert("সঠিক লিমিট দিন!");
+            if(!sub && !main) {
+                showToast('একটি ক্যাটাগরি নির্বাচন করুন!', 'error');
+                return;
+            }
+            if(isNaN(newLimit) || newLimit < 0) {
+                showToast('সঠিক লিমিট দিন!', 'error');
+                return;
+            }
             
             const category = sub || main;
             const payload = { action: 'updateLimit', category, newLimit, main, sub };
             
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-                alert(`"${category}" এর লিমিট আপডেট হয়েছে!`);
+                showToast(`✅ "${category}" এর লিমিট আপডেট হয়েছে!`, 'success');
                 document.getElementById('updateLimitValue').value = '';
-                fetchFromSheet();
-            } catch(e) { alert("এরর! "+e.message); }
+                await fetchFromSheet();
+            } catch(e) { showToast('এরর! '+e.message, 'error'); }
         }
 
         async function removeCategory() {
             const name = document.getElementById('removeMainSelect').value;
-            if(!name) return alert("একটি ক্যাটাগরি নির্বাচন করুন!");
-            if(!confirm(`"${name}" ডিলিট করবেন?`)) return;
+            if(!name) {
+                showToast('একটি ক্যাটাগরি নির্বাচন করুন!', 'error');
+                return;
+            }
+            if(!confirm(`⚠️ "${name}" ডিলিট করবেন?`)) return;
             
-            // Remove all sub categories
             if(subCategories[name]) {
                 subCategories[name].forEach(sub => {
                     delete subBudgets[sub];
@@ -663,17 +728,19 @@
             const payload = { action: 'removeCategory', name };
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-                alert("ডিলিট হয়েছে!");
-                fetchFromSheet();
-            } catch(e) { alert("এরর!"); }
+                showToast('✅ ডিলিট হয়েছে!', 'success');
+                await fetchFromSheet();
+            } catch(e) { showToast('এরর!', 'error'); }
         }
 
         async function removeSubCategory() {
             const name = document.getElementById('removeSubSelect').value;
-            if(!name) return alert("একটি উপ-ক্যাটাগরি নির্বাচন করুন!");
-            if(!confirm(`"${name}" ডিলিট করবেন?`)) return;
+            if(!name) {
+                showToast('একটি উপ-ক্যাটাগরি নির্বাচন করুন!', 'error');
+                return;
+            }
+            if(!confirm(`⚠️ "${name}" ডিলিট করবেন?`)) return;
             
-            // Remove from all categories
             for (let main in subCategories) {
                 const idx = subCategories[main].indexOf(name);
                 if (idx > -1) {
@@ -687,9 +754,9 @@
             const payload = { action: 'removeSubCategory', name };
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-                alert("ডিলিট হয়েছে!");
-                fetchFromSheet();
-            } catch(e) { alert("এরর!"); }
+                showToast('✅ ডিলিট হয়েছে!', 'success');
+                await fetchFromSheet();
+            } catch(e) { showToast('এরর!', 'error'); }
         }
 
         // ================== REPORT ==================
@@ -724,7 +791,13 @@
 
         // ================== INIT ==================
 
-        document.getElementById('date').valueAsDate = new Date();
+        // Set default date to today
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        document.getElementById('date').value = `${year}-${month}-${day}`;
+        
         fetchFromSheet();
 
         // Event listeners
