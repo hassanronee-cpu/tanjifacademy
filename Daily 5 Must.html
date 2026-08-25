@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>রনি · ৫ স্তম্ভ ট্র্যাকার · সফলতার ফুটপ্রিন্ট</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kalpurush&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kalpurush', 'Inter', sans-serif;
+    }
+
+    :root {
+      --primary: #0b3b5c;
+      --primary-light: #1b5a7a;
+      --primary-dark: #072a42;
+      --gold: #b68b40;
+      --gold-light: #d4af5e;
+      --bg: #f0f4f9;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-light: #475569;
+      --success: #2b8c5e;
+      --warning: #b45309;
+      --shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+      --radius: 24px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 20px 16px 40px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* header */
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      padding: 16px 24px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header h1 i {
+      background: var(--primary);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 50px;
+      font-size: 1rem;
+      margin-right: 10px;
+      -webkit-text-fill-color: white;
+    }
+
+    .header-date {
+      background: var(--bg);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+
+    .header-date i {
+      margin-right: 8px;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--primary-dark);
+    }
+
+    .section-title i {
+      color: var(--gold);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      border-color: #cbd5e1;
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--primary-dark);
+    }
+
+    .card-title .badge {
+      background: var(--bg);
+      padding: 2px 14px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .schedule-item {
+      display: flex;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.95rem;
+    }
+
+    .schedule-item:last-child {
+      border-bottom: none;
+    }
+
+    .schedule-time {
+      font-weight: 600;
+      color: var(--primary);
+      min-width: 80px;
+      font-size: 0.85rem;
+    }
+
+    .schedule-task {
+      flex: 1;
+      padding: 0 12px;
+    }
+
+    .schedule-pillar {
+      font-size: 0.75rem;
+      background: var(--bg);
+      padding: 2px 12px;
+      border-radius: 50px;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .strategy-box {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      border-left: 4px solid var(--gold);
+    }
+
+    .strategy-box:last-child {
+      margin-bottom: 0;
+    }
+
+    .strategy-box h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 4px;
+    }
+
+    .strategy-box p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+
+    .pillar-track {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin: 12px 0;
+    }
+
+    .pillar-item {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 14px 12px;
+      text-align: center;
+      border: 2px solid #e2e8f0;
+      transition: 0.2s;
+    }
+
+    .pillar-item.completed {
+      border-color: var(--success);
+      background: #f0faf5;
+    }
+
+    .pillar-item.partial {
+      border-color: var(--gold);
+      background: #fdf8f0;
+    }
+
+    .pillar-item .icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .pillar-item .name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .pillar-item .status {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    .revision-flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      background: #f8fafc;
+      padding: 12px 16px;
+      border-radius: 16px;
+      margin: 10px 0;
+    }
+
+    .revision-flow .step {
+      background: var(--card-bg);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+    }
+
+    .revision-flow .step.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .revision-flow .arrow {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 10px 12px;
+      background: #f8fafc;
+      font-weight: 600;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--border);
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .badge-status {
+      padding: 3px 14px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-status.done {
+      background: #d4edda;
+      color: #0f5c3a;
+    }
+
+    .badge-status.pending {
+      background: #fff3cd;
+      color: #8a6d2b;
+    }
+
+    .badge-status.missed {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .score-high {
+      background: #d4edda;
+      color: #0f5c3a;
+      padding: 2px 12px;
+      border-radius: 50px;
+      font-weight: 700;
+    }
+
+    .score-mid {
+      background: #fff3cd;
+      color: #8a6d2b;
+      padding: 2px 12px;
+      border-radius: 50px;
+      font-weight: 700;
+    }
+
+    .score-low {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 2px 12px;
+      border-radius: 50px;
+      font-weight: 700;
+    }
+
+    .btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #1f7a4a;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .golden-rule {
+      background: linear-gradient(135deg, #f8f4eb, #f0eadb);
+      border-radius: var(--radius);
+      padding: 16px 24px;
+      text-align: center;
+      border: 1px solid #e8dcc8;
+      margin-top: 20px;
+    }
+
+    .golden-rule i {
+      color: var(--gold);
+      margin-right: 10px;
+    }
+
+    .golden-rule strong {
+      color: var(--primary-dark);
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* mission countdown */
+    .mission-countdown {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border-radius: var(--radius);
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mission-countdown .label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .mission-countdown .days {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .mission-countdown .days span {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 4px 16px;
+      border-radius: 50px;
+      margin-left: 8px;
+    }
+
+    /* modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: white;
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      max-width: 560px;
+      width: 95%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal h3 {
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .form-group select,
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: white;
+    }
+
+    .form-group .hint {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    .score-preview {
+      background: #f8fafc;
+      padding: 12px 16px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .modal .btn-group {
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 16px;
+      }
+      .header h1 {
+        font-size: 1.3rem;
+      }
+      .schedule-item {
+        flex-wrap: wrap;
+      }
+      .schedule-time {
+        min-width: 60px;
+        font-size: 0.75rem;
+      }
+      .schedule-task {
+        font-size: 0.85rem;
+        padding: 0 6px;
+      }
+      .pillar-track {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .loading {
+      text-align: center;
+      padding: 30px;
+      color: var(--text-light);
+    }
+
+    .loading i {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    /* planning card */
+    .plan-preview {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 12px 16px;
+      margin-top: 8px;
+      border-left: 4px solid var(--gold);
+    }
+
+    .plan-preview .plan-item {
+      display: flex;
+      gap: 10px;
+      font-size: 0.9rem;
+      padding: 4px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .plan-preview .plan-item:last-child {
+      border-bottom: none;
+    }
+
+    .plan-preview .plan-label {
+      font-weight: 600;
+      min-width: 90px;
+      color: var(--primary-dark);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1><i class="fas fa-flag-checkered"></i> রনি · সফলতার ফুটপ্রিন্ট</h1>
+    <div class="header-date">
+      <i class="fas fa-calendar-alt"></i>
+      <span id="currentDateDisplay"></span>
+      <span style="margin:0 8px;color:var(--border);">|</span>
+      <i class="fas fa-moon"></i> দিন <span id="dayCounter">১</span>
+    </div>
+  </div>
+
+  <!-- MISSION COUNTDOWN -->
+  <div class="mission-countdown">
+    <div>
+      <div class="label"><i class="fas fa-rocket"></i> সূরা ইয়াসিন মিশন</div>
+      <div style="font-size:0.85rem;opacity:0.8;">২৬ আগস্ট – ৬ সেপ্টেম্বর ২০২৬</div>
+    </div>
+    <div class="days">
+      <i class="fas fa-calendar-check"></i> দিন <span id="missionDay">১/১২</span>
+    </div>
+  </div>
+
+  <!-- TOP ROW -->
+  <div class="grid-2">
+    <!-- Pillar Status -->
+    <div class="card">
+      <div class="card-title">
+        <i class="fas fa-layer-group" style="color:var(--primary);"></i>
+        ৫ স্তম্ভ · আজকের অবস্থা
+        <span class="badge" id="todayScoreBadge">স্কোর: —</span>
+      </div>
+      <div class="pillar-track" id="pillarTrack"></div>
+      <div class="btn-group">
+        <button class="btn btn-success" id="markTodayCompleteBtn">
+          <i class="fas fa-check-double"></i> সব সম্পন্ন
+        </button>
+        <button class="btn btn-primary" id="openEntryModalBtn">
+          <i class="fas fa-plus"></i> ডেইলি এন্ট্রি
+        </button>
+      </div>
+    </div>
+
+    <!-- Today's Mission + Plan -->
+    <div class="card">
+      <div class="card-title">
+        <i class="fas fa-bullseye" style="color:var(--gold);"></i>
+        আজকের মিশন
+        <span class="badge" id="todayDateBadge">২৬ আগস্ট ২০২৬</span>
+      </div>
+      <div id="todayMissionDisplay">
+        <!-- dynamic plan from sheet (tomorrow's plan shown as today's mission) -->
+        <div class="plan-preview" id="todayPlanPreview">
+          <div style="font-weight:600;font-size:0.95rem;margin-bottom:6px;">📋 পরিকল্পনা</div>
+          <div id="todayPlanContent">আজকের পরিকল্পনা লোড হচ্ছে...</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;font-size:0.9rem;background:#eef4fa;padding:10px 14px;border-radius:16px;">
+        <span><i class="fas fa-book-open"></i> কুরআন: আধা পৃষ্ঠা</span>
+        <span><i class="fas fa-language"></i> আরবি: ৫ শব্দ</span>
+        <span><i class="fas fa-walking"></i> ৪০ মিনিট হাঁটা</span>
+        <span><i class="fas fa-brain"></i> ১৫ মিনিট জ্ঞান</span>
+        <span><i class="fas fa-mosque"></i> ৫ ওয়াক্ত সালাত</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHEDULE + STRATEGIES -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">
+        <i class="fas fa-clock" style="color:var(--primary-light);"></i>
+        দৈনিক সময়সূচী
+        <span class="badge">৪:০০ AM – ৮:০০ AM</span>
+      </div>
+      <div id="scheduleList"></div>
+      <div style="margin-top:12px;font-size:0.85rem;color:var(--text-light);background:#f8fafc;padding:10px 14px;border-radius:12px;">
+        <i class="fas fa-lightbulb" style="color:var(--gold);"></i>
+        <strong>নীতি:</strong> “সকাল ৮টার মধ্যে দিনের সবচেয়ে গুরুত্বপূর্ণ কাজ সম্পন্ন”
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <i class="fas fa-brain" style="color:var(--gold);"></i>
+        কৌশলসমূহ
+        <span class="badge">সক্রিয়</span>
+      </div>
+      <div class="strategy-box">
+        <h4>🕌 সালাত · ৩০ মিনিট ব্লক</h4>
+        <p>আজান → কাজ বন্ধ → ওযু → মসজিদ → সুন্নত → ফরজ → যিকির/দোয়া</p>
+      </div>
+      <div class="strategy-box">
+        <h4>📖 কুরআন · ১-৫-১ রিভিশন সিস্টেম</h4>
+        <p><strong>১</strong> = নতুন আধা পৃষ্ঠা · <strong>৫</strong> = পাঁচ ওয়াক্তে টাচ · <strong>১</strong> = ঘুমের আগে পরীক্ষা</p>
+        <div class="revision-flow">
+          <span class="step active">নতুন</span><span class="arrow">→</span>
+          <span class="step">ফজর</span><span class="arrow">→</span>
+          <span class="step">যোহর</span><span class="arrow">→</span>
+          <span class="step">আসর</span><span class="arrow">→</span>
+          <span class="step">মাগরিব</span><span class="arrow">→</span>
+          <span class="step">ইশা</span><span class="arrow">→</span>
+          <span class="step">ঘুম</span>
+        </div>
+      </div>
+      <div class="strategy-box">
+        <h4>🌍 আরবি · ৩ ধাপ</h4>
+        <p>১০ মিনিট Vocabulary · ১০ মিনিট Nahw/Sarf · ১০ মিনিট Speaking</p>
+      </div>
+      <div class="strategy-box">
+        <h4>💪 শরীর · “ইবাদতের জন্য শরীর”</h4>
+        <p>৪০ মিনিট হাঁটা + ২০ মিনিট Strength/Mobility (সপ্তাহে ৩+৩ দিন)</p>
+      </div>
+      <div class="strategy-box">
+        <h4>🧠 জ্ঞান · ১৫ মিনিট</h4>
+        <p>প্রতিদিন একটি বিষয় → ৩টি গুরুত্বপূর্ণ পয়েন্ট → নিজের ভাষায় ১ মিনিট</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- QURAN REVISION TRACKER -->
+  <div class="card" style="margin-bottom:24px;">
+    <div class="card-title">
+      <i class="fas fa-book-quran" style="color:var(--gold);"></i>
+      কুরআন রিভিশন ট্র্যাকার · সূরা ইয়াসিন (পৃষ্ঠা ৪৪০–৪৪৫)
+      <span class="badge">১২ দিনের মিশন · ২৬ আগস্ট–৬ সেপ্টেম্বর</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:8px;" id="quranProgress"></div>
+    <div style="margin-top:12px;font-size:0.85rem;color:var(--text-light);background:#f8fafc;padding:10px 14px;border-radius:12px;">
+      <i class="fas fa-info-circle" style="color:var(--primary);"></i>
+      শুরু: ২৬ আগস্ট ২০২৬ · শেষ: ৬ সেপ্টেম্বর ২০২৬ (ইন শা আল্লাহ)
+    </div>
+  </div>
+
+  <!-- GOOGLE SHEET DAILY LOG -->
+  <div class="card" style="margin-bottom:24px;">
+    <div class="card-title" style="justify-content:space-between;flex-wrap:wrap;">
+      <span><i class="fas fa-table" style="color:var(--primary);"></i> গুগল শিট · ডেইলি লগ</span>
+      <span style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" id="refreshBtn"><i class="fas fa-sync-alt"></i> রিফ্রেশ</button>
+        <button class="btn btn-outline" id="openEntryModalBtn2"><i class="fas fa-pen"></i> এন্ট্রি</button>
+        <button class="btn btn-outline" id="openPlanModalBtn"><i class="fas fa-calendar-plus"></i> আগামীকালের পরিকল্পনা</button>
+      </span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>তারিখ</th><th>🕌 সালাত</th><th>📖 কুরআন</th><th>🌍 আরবি</th><th>💪 শরীর</th><th>🧠 জ্ঞান</th><th>⭐ স্কোর</th><th>স্ট্যাটাস</th></tr></thead>
+        <tbody id="tableBody"><tr><td colspan="8" class="loading"><i class="fas fa-spinner fa-pulse"></i> ডেটা লোড হচ্ছে...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GOLDEN RULE -->
+  <div class="golden-rule">
+    <i class="fas fa-fire"></i>
+    <strong>“Perfect Day নয় — Never Zero Day.”</strong>
+    কোনো দিন ১০০% হলো না? সমস্যা নেই। ৬০% হলো? চলবে। কিন্তু <strong>০% নয়।</strong>
+  </div>
+
+  <div class="footer">
+    <i class="fas fa-code"></i> আল্লাহ তোমার নিয়ত কবুল করুন, রনি। · ইস্তিকামাতের জন্য দোয়া
+  </div>
+</div>
+
+<!-- MODAL: Daily Entry -->
+<div class="modal-overlay" id="entryModal">
+  <div class="modal">
+    <h3><i class="fas fa-pen" style="color:var(--primary);"></i> ডেইলি এন্ট্রি</h3>
+    <p style="font-size:0.9rem;color:var(--text-light);margin-bottom:16px;">প্রতিটি স্তম্ভের কাজের অবস্থা সিলেক্ট করুন, স্কোর অটো ক্যালকুলেট হবে।</p>
+    <form id="entryForm">
+      <div class="form-group"><label>📅 তারিখ</label><input type="date" id="entryDate" required></div>
+      <div class="form-group"><label>🕌 সালাত (৩০ পয়েন্ট)</label>
+        <select id="entrySalat"><option value="completed">✅ সম্পন্ন (৩০)</option><option value="partial">⏳ আংশিক (১৫)</option><option value="missed">❌ বাকি (০)</option></select>
+      </div>
+      <div class="form-group"><label>📖 কুরআন (২৫ পয়েন্ট)</label>
+        <select id="entryQuran"><option value="completed">✅ সম্পন্ন (২৫)</option><option value="partial">⏳ আংশিক (১২)</option><option value="missed">❌ বাকি (০)</option></select>
+      </div>
+      <div class="form-group"><label>🌍 আরবি (১৫ পয়েন্ট)</label>
+        <select id="entryArabic"><option value="completed">✅ সম্পন্ন (১৫)</option><option value="partial">⏳ আংশিক (৮)</option><option value="missed">❌ বাকি (০)</option></select>
+      </div>
+      <div class="form-group"><label>💪 শরীর (১৫ পয়েন্ট)</label>
+        <select id="entryBody"><option value="completed">✅ সম্পন্ন (১৫)</option><option value="partial">⏳ আংশিক (৮)</option><option value="missed">❌ বাকি (০)</option></select>
+      </div>
+      <div class="form-group"><label>🧠 জ্ঞান (১৫ পয়েন্ট)</label>
+        <select id="entryKnowledge"><option value="completed">✅ সম্পন্ন (১৫)</option><option value="partial">⏳ আংশিক (৮)</option><option value="missed">❌ বাকি (০)</option></select>
+      </div>
+      <div class="form-group"><label>📖 আজকের আধা পৃষ্ঠা হিফজ হয়েছে?</label>
+        <select id="entryHifz"><option value="হ্যাঁ">✅ হ্যাঁ</option><option value="না">❌ না</option></select>
+      </div>
+      <div class="form-group"><label>⭐ অটো স্কোর</label>
+        <div class="score-preview" id="scorePreview">০ পয়েন্ট</div>
+        <div class="hint">সালাত(৩০) + কুরআন(২৫) + আরবি(১৫) + শরীর(১৫) + জ্ঞান(১৫) = সর্বোচ্চ ১০০</div>
+      </div>
+      <div class="btn-group">
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> সংরক্ষণ</button>
+        <button type="button" class="btn btn-outline" id="closeModalBtn">বন্ধ</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: Plan for tomorrow -->
+<div class="modal-overlay" id="planModal">
+  <div class="modal">
+    <h3><i class="fas fa-calendar-plus" style="color:var(--gold);"></i> আগামীকালের পরিকল্পনা</h3>
+    <p style="font-size:0.9rem;color:var(--text-light);margin-bottom:16px;">আগামীকালের ৫টি কাজের পরিকল্পনা লিখুন। প্রতিটি কাজ আলাদা লাইনে লিখুন।</p>
+    <form id="planForm">
+      <div class="form-group"><label>📅 তারিখ (আগামীকাল)</label><input type="date" id="planDate" required></div>
+      <div class="form-group"><label>📋 কাজের তালিকা (প্রতি লাইনে একটি কাজ)</label>
+        <textarea id="planTasks" rows="5" placeholder="যেমন:&#10;১. কুরআন আধা পৃষ্ঠা হিফজ&#10;২. আরবি ৫টি নতুন শব্দ&#10;৩. ৪০ মিনিট হাঁটা&#10;৪. ১৫ মিনিট জ্ঞান&#10;৫. ৫ ওয়াক্ত সালাত"></textarea>
+      </div>
+      <div class="btn-group">
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> পরিকল্পনা সংরক্ষণ</button>
+        <button type="button" class="btn btn-outline" id="closePlanModalBtn">বন্ধ</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  //  COMPLETE JAVASCRIPT - Mission start 26 Aug, unique daily row
+  // ============================================================
+
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyHeXRinKl6TG_lzG4DC5j0GDUqg0o7t_TQ2Uji00dD_JQyuFr-vuTTmbosJaxTrOHJ/exec'; // replace with your URL
+  const MISSION_START = new Date(2026, 7, 26); // 26 August 2026
+  const MISSION_END = new Date(2026, 8, 6);   // 6 September 2026
+
+  const PILLARS = [
+    { key: 'salat', icon: '🕌', label: 'সালাত', weight: 30 },
+    { key: 'quran', icon: '📖', label: 'কুরআন', weight: 25 },
+    { key: 'arabic', icon: '🌍', label: 'আরবি', weight: 15 },
+    { key: 'body', icon: '💪', label: 'শরীর', weight: 15 },
+    { key: 'knowledge', icon: '🧠', label: 'জ্ঞান', weight: 15 }
+  ];
+
+  const SCHEDULE = [
+    { time: '৪:০০–৪:১০', task: 'ঘুম থেকে ওঠা, পানি, ওযু, প্রস্তুতি', pillar: 'প্রস্তুতি' },
+    { time: '৪:১০–৪:৪০', task: 'তাহাজ্জুদ + দোয়া + ইস্তিগফার', pillar: '🕌 সালাত' },
+    { time: '৪:৪০–৫:০৫', task: 'নতুন আধা পৃষ্ঠা হিফজ', pillar: '📖 কুরআন' },
+    { time: '৫:০৫–৫:৩৫', task: 'ফজর + সুন্নত, মনোযোগসহ', pillar: '🕌 সালাত' },
+    { time: '৫:৩৫–৬:১৫', task: 'দ্রুত হাঁটা — ৪০ মিনিট', pillar: '💪 শরীর' },
+    { time: '৬:১৫–৬:২৫', task: 'পানি + কুলডাউন + ফ্রেশ', pillar: '💪 শরীর' },
+    { time: '৬:২৫–৬:৪৫', task: 'Strength/Mobility', pillar: '💪 শরীর' },
+    { time: '৬:৪৫–৭:১৫', task: 'কুরআন: অর্থ + হিফজ পরীক্ষা + রিভিশন', pillar: '📖 কুরআন' },
+    { time: '৭:১৫–৭:৪৫', task: 'আরবি: Vocabulary + Grammar + Speaking', pillar: '🌍 ভাষা' },
+    { time: '৭:৪৫–৮:০০', task: 'বিশ্ব/হাদীস/বই/কমিউনিকেশন', pillar: '🧠 জ্ঞান' }
+  ];
+
+  const QURAN_PLAN = [
+    { date: '২৬ আগস্ট', page: '৪৪০', half: 'প্রথম', verses: '১–১২' },
+    { date: '২৭ আগস্ট', page: '৪৪০', half: 'দ্বিতীয়', verses: '১৩–২৭' },
+    { date: '২৮ আগস্ট', page: '৪৪১', half: 'প্রথম', verses: '২৮–৪০' },
+    { date: '২৯ আগস্ট', page: '৪৪১', half: 'দ্বিতীয়', verses: '৪১–৫৪' },
+    { date: '৩০ আগস্ট', page: '৪৪২', half: 'প্রথম', verses: '৫৫–৭০' },
+    { date: '৩১ আগস্ট', page: '৪৪২', half: 'দ্বিতীয়', verses: '৭১–৮৩' },
+    { date: '১ সেপ্টেম্বর', page: '৪৪৩', half: 'প্রথম', verses: '১–১২' },
+    { date: '২ সেপ্টেম্বর', page: '৪৪৩', half: 'দ্বিতীয়', verses: '১৩–২৭' },
+    { date: '৩ সেপ্টেম্বর', page: '৪৪৪', half: 'প্রথম', verses: '২৮–৪০' },
+    { date: '৪ সেপ্টেম্বর', page: '৪৪৪', half: 'দ্বিতীয়', verses: '৪১–৫৪' },
+    { date: '৫ সেপ্টেম্বর', page: '৪৪৫', half: 'প্রথম', verses: '৫৫–৭০' },
+    { date: '৬ সেপ্টেম্বর', page: '৪৪৫', half: 'দ্বিতীয়', verses: '৭১–৮৩' }
+  ];
+
+  let sheetData = [];
+  let planData = [];
+
+  // DOM refs
+  const dateDisplay = document.getElementById('currentDateDisplay');
+  const dayCounter = document.getElementById('dayCounter');
+  const missionDay = document.getElementById('missionDay');
+  const todayDateBadge = document.getElementById('todayDateBadge');
+  const pillarTrack = document.getElementById('pillarTrack');
+  const scheduleList = document.getElementById('scheduleList');
+  const quranProgress = document.getElementById('quranProgress');
+  const tableBody = document.getElementById('tableBody');
+  const refreshBtn = document.getElementById('refreshBtn');
+  const todayScoreBadge = document.getElementById('todayScoreBadge');
+  const markTodayCompleteBtn = document.getElementById('markTodayCompleteBtn');
+  const openEntryModalBtn = document.getElementById('openEntryModalBtn');
+  const openEntryModalBtn2 = document.getElementById('openEntryModalBtn2');
+  const openPlanModalBtn = document.getElementById('openPlanModalBtn');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const closePlanModalBtn = document.getElementById('closePlanModalBtn');
+  const entryModal = document.getElementById('entryModal');
+  const planModal = document.getElementById('planModal');
+  const entryForm = document.getElementById('entryForm');
+  const planForm = document.getElementById('planForm');
+  const scorePreview = document.getElementById('scorePreview');
+  const todayPlanContent = document.getElementById('todayPlanContent');
+
+  // helpers
+  function formatDateShort(d) {
+    const m = ['জানু','ফেব্রু','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্ট','অক্টো','নভে','ডিসে'];
+    return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+  }
+
+  function formatDateBangla(d) {
+    const m = ['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+    return `${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  function getTodayStr() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
+  function getTomorrowStr() {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
+  function getMissionDayIndex() {
+    const now = new Date();
+    const diff = Math.floor((now - MISSION_START) / (1000*60*60*24));
+    return Math.max(0, Math.min(diff, 11));
+  }
+
+  function getScoreFromStatus(s) {
+    const map = { 'completed': 1, 'partial': 0.5, 'missed': 0 };
+    return map[s] || 0;
+  }
+
+  function calculateScore(salat, quran, arabic, body, knowledge) {
+    const w = { salat:30, quran:25, arabic:15, body:15, knowledge:15 };
+    const s = {
+      salat: getScoreFromStatus(salat),
+      quran: getScoreFromStatus(quran),
+      arabic: getScoreFromStatus(arabic),
+      body: getScoreFromStatus(body),
+      knowledge: getScoreFromStatus(knowledge)
+    };
+    return Math.round(s.salat*w.salat + s.quran*w.quran + s.arabic*w.arabic + s.body*w.body + s.knowledge*w.knowledge);
+  }
+
+  function getStatusDisplay(status) {
+    const map = { 'completed': '✅ সম্পন্ন', 'partial': '⏳ আংশিক', 'missed': '❌ বাকি' };
+    return map[status] || status;
+  }
+
+  // render schedule
+  function renderSchedule() {
+    scheduleList.innerHTML = SCHEDULE.map(item => `
+      <div class="schedule-item">
+        <span class="schedule-time">${item.time}</span>
+        <span class="schedule-task">${item.task}</span>
+        <span class="schedule-pillar">${item.pillar}</span>
+      </div>
+    `).join('');
+  }
+
+  // render quran plan
+  function renderQuranPlan() {
+    const dayIdx = getMissionDayIndex();
+    quranProgress.innerHTML = QURAN_PLAN.map((item, idx) => {
+      const isActive = idx === dayIdx;
+      const isPast = idx < dayIdx;
+      return `
+        <div style="background:${isActive?'var(--primary)':isPast?'#d4edda':'#f8fafc'};
+                    border-radius:12px;padding:8px 12px;text-align:center;
+                    border:1px solid ${isActive?'var(--primary)':'var(--border)'};
+                    color:${isActive?'white':'var(--text)'};">
+          <div style="font-weight:600;font-size:0.85rem;">${item.date}</div>
+          <div style="font-size:0.8rem;opacity:${isActive?'0.9':'0.7'};">পৃষ্ঠা ${item.page}</div>
+          <div style="font-size:0.75rem;opacity:${isActive?'0.9':'0.7'};">${item.half} অর্ধেক</div>
+          <div style="font-size:0.7rem;opacity:${isActive?'0.8':'0.6'};">আয়াত ${item.verses}</div>
+          <div style="margin-top:4px;font-size:0.75rem;">${isActive?'📍 আজকের লক্ষ্য':isPast?'✅ সম্পন্ন':'⏳ বাকি'}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // render pillars from latest row
+  function renderPillars(latestRow) {
+    if (!latestRow) {
+      pillarTrack.innerHTML = PILLARS.map(p => `
+        <div class="pillar-item" style="border-color:#e2e8f0;">
+          <span class="icon">${p.icon}</span>
+          <div class="name">${p.label}</div>
+          <div class="status">ডেটা নেই</div>
+        </div>
+      `).join('');
+      return;
+    }
+    const statusMap = {
+      salat: latestRow.salat || 'missed',
+      quran: latestRow.quran || 'missed',
+      arabic: latestRow.arabic || 'missed',
+      body: latestRow.body || 'missed',
+      knowledge: latestRow.knowledge || 'missed'
+    };
+    pillarTrack.innerHTML = PILLARS.map(p => {
+      const st = statusMap[p.key] || 'missed';
+      const cls = st==='completed' ? 'pillar-item completed' : st==='partial' ? 'pillar-item partial' : 'pillar-item';
+      return `<div class="${cls}"><span class="icon">${p.icon}</span><div class="name">${p.label}</div><div class="status">${getStatusDisplay(st)}</div></div>`;
+    }).join('');
+
+    if (latestRow.score && !isNaN(latestRow.score)) {
+      const s = parseInt(latestRow.score,10);
+      todayScoreBadge.textContent = `স্কোর: ${s}`;
+      todayScoreBadge.style.background = s>=80 ? '#d4edda' : s>=40 ? '#fff3cd' : '#f8d7da';
+      todayScoreBadge.style.color = s>=80 ? '#0f5c3a' : s>=40 ? '#8a6d2b' : '#721c24';
+    } else {
+      todayScoreBadge.textContent = 'স্কোর: —';
+      todayScoreBadge.style.background = '#eef4fa';
+      todayScoreBadge.style.color = 'var(--text-light)';
+    }
+  }
+
+  // render table (short date)
+  function renderTable(data) {
+    if (!data || data.length===0) {
+      tableBody.innerHTML = `<tr><td colspan="8" class="loading"><i class="fas fa-database"></i> কোনো ডেটা নেই</td></tr>`;
+      return;
+    }
+    let html = '';
+    data.slice(0,20).forEach(row => {
+      let shortDate = row.date || '—';
+      if (row.date && row.date.includes('-')) {
+        const parts = row.date.split('-');
+        if (parts.length===3) shortDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
+      }
+      const salat = getStatusDisplay(row.salat || 'missed');
+      const quran = getStatusDisplay(row.quran || 'missed');
+      const arabic = getStatusDisplay(row.arabic || 'missed');
+      const body = getStatusDisplay(row.body || 'missed');
+      const knowledge = getStatusDisplay(row.knowledge || 'missed');
+      const score = row.score || '—';
+      let statusClass='pending', statusText='⏳ চলমান';
+      if (score!=='—' && !isNaN(score)) {
+        const s = parseInt(score,10);
+        if (s>=80) { statusClass='done'; statusText='✅ উত্তম'; }
+        else if (s>=40) { statusClass='pending'; statusText='👍 ভালো'; }
+        else { statusClass='missed'; statusText='⚠️ কম'; }
+      }
+      let scoreBadge = '';
+      if (score!=='—' && !isNaN(score)) {
+        const s=parseInt(score,10);
+        if (s>=80) scoreBadge=`<span class="score-high">${score}</span>`;
+        else if (s>=40) scoreBadge=`<span class="score-mid">${score}</span>`;
+        else scoreBadge=`<span class="score-low">${score}</span>`;
+      } else scoreBadge=`<span style="color:var(--text-light);">${score}</span>`;
+      html += `<tr><td><strong>${shortDate}</strong></td><td>${salat}</td><td>${quran}</td><td>${arabic}</td><td>${body}</td><td>${knowledge}</td><td>${scoreBadge}</td><td><span class="badge-status ${statusClass}">${statusText}</span></td></tr>`;
+    });
+    tableBody.innerHTML = html;
+  }
+
+  // update today mission display from plan sheet (tomorrow's plan shown as today's mission)
+  function updateTodayMissionFromPlan() {
+    const today = getTodayStr();
+    // find plan for today (if any)
+    const plan = planData.find(p => p.date === today);
+    if (plan && plan.tasks) {
+      const tasks = plan.tasks.split('\n').filter(t => t.trim().length>0);
+      let html = tasks.map(t => `<div class="plan-item"><span class="plan-label">•</span><span>${t}</span></div>`).join('');
+      todayPlanContent.innerHTML = html;
+    } else {
+      // if no plan, show default
+      const dayIdx = getMissionDayIndex();
+      const q = QURAN_PLAN[dayIdx] || QURAN_PLAN[0];
+      todayPlanContent.innerHTML = `
+        <div class="plan-item"><span class="plan-label">📖 কুরআন</span><span>পৃষ্ঠা ${q.page} · ${q.half} অর্ধেক</span></div>
+        <div class="plan-item"><span class="plan-label">🌍 আরবি</span><span>৫টি শব্দ · নাহও/সরফ</span></div>
+        <div class="plan-item"><span class="plan-label">💪 শরীর</span><span>৪০ মিনিট হাঁটা + ২০ মিনিট স্ট্রেংথ</span></div>
+        <div class="plan-item"><span class="plan-label">🧠 জ্ঞান</span><span>১৫ মিনিট · একটি বিষয়</span></div>
+        <div class="plan-item"><span class="plan-label">🕌 সালাত</span><span>৫ ওয়াক্ত সালাত</span></div>
+      `;
+    }
+  }
+
+  // fetch sheet data
+  function fetchSheetData() {
+    tableBody.innerHTML = `<tr><td colspan="8" class="loading"><i class="fas fa-spinner fa-pulse"></i> ডেটা আনছে...</td></tr>`;
+    fetch(SCRIPT_URL)
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(data => {
+        console.log('Sheet data:', data);
+        let records = [];
+        if (Array.isArray(data)) records = data;
+        else if (data && Array.isArray(data.records)) records = data.records;
+        else if (data && Array.isArray(data.data)) records = data.data;
+
+        // split into daily log and plan
+        sheetData = records.filter(r => r.type !== 'plan' && r.type !== 'পরিকল্পনা');
+        planData = records.filter(r => r.type === 'plan' || r.type === 'পরিকল্পনা');
+
+        // ensure unique date for daily log (keep latest entry per date)
+        const uniqueMap = new Map();
+        sheetData.forEach(row => {
+          if (row.date) {
+            const existing = uniqueMap.get(row.date);
+            if (!existing || new Date(row._timestamp || 0) > new Date(existing._timestamp || 0)) {
+              uniqueMap.set(row.date, row);
+            }
+          }
+        });
+        sheetData = Array.from(uniqueMap.values());
+
+        if (sheetData.length===0) {
+          renderTable([]);
+          renderPillars(null);
+        } else {
+          renderTable(sheetData);
+          const latest = sheetData[0];
+          renderPillars(latest);
+        }
+
+        // update today's mission from plan
+        updateTodayMissionFromPlan();
+
+        // check today entry
+        const today = getTodayStr();
+        const todayEntry = sheetData.find(row => row.date === today);
+        if (todayEntry) {
+          markTodayCompleteBtn.textContent = '✅ আজকের এন্ট্রি আছে';
+          markTodayCompleteBtn.style.opacity = '0.7';
+        } else {
+          markTodayCompleteBtn.textContent = '📝 আজকের এন্ট্রি দিন';
+          markTodayCompleteBtn.style.opacity = '1';
+        }
+      })
+      .catch(err => {
+        console.error('Fetch error:', err);
+        tableBody.innerHTML = `<tr><td colspan="8" class="loading" style="color:#b45309;">
+          <i class="fas fa-exclamation-triangle"></i> সংযোগ সমস্যা: ${err.message}
+        </td></tr>`;
+      });
+  }
+
+  // mark today complete
+  function markTodayComplete() {
+    const today = getTodayStr();
+    if (sheetData.some(row => row.date === today)) {
+      alert('আজকের এন্ট্রি ইতিমধ্যে আছে!');
+      return;
+    }
+    document.getElementById('entryDate').value = today;
+    document.getElementById('entrySalat').value = 'completed';
+    document.getElementById('entryQuran').value = 'completed';
+    document.getElementById('entryArabic').value = 'completed';
+    document.getElementById('entryBody').value = 'completed';
+    document.getElementById('entryKnowledge').value = 'completed';
+    document.getElementById('entryHifz').value = 'হ্যাঁ';
+    updateScorePreview();
+    entryModal.classList.add('active');
+  }
+
+  // submit daily entry
+  function submitEntry(e) {
+    e.preventDefault();
+    const date = document.getElementById('entryDate').value;
+    const salat = document.getElementById('entrySalat').value;
+    const quran = document.getElementById('entryQuran').value;
+    const arabic = document.getElementById('entryArabic').value;
+    const body = document.getElementById('entryBody').value;
+    const knowledge = document.getElementById('entryKnowledge').value;
+    const hifz = document.getElementById('entryHifz').value;
+    if (!date) { alert('দয়া করে তারিখ নির্বাচন করুন'); return; }
+    const score = calculateScore(salat, quran, arabic, body, knowledge);
+    const payload = { date, salat, quran, arabic, body, knowledge, hifz, score, type: 'daily' };
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(() => {
+      alert('✅ এন্ট্রি সফলভাবে সংরক্ষিত!');
+      entryModal.classList.remove('active');
+      fetchSheetData();
+    }).catch(err => alert('⚠️ সংরক্ষণে সমস্যা: ' + err.message));
+  }
+
+  // submit plan
+  function submitPlan(e) {
+    e.preventDefault();
+    const date = document.getElementById('planDate').value;
+    const tasks = document.getElementById('planTasks').value;
+    if (!date) { alert('তারিখ নির্বাচন করুন'); return; }
+    if (!tasks.trim()) { alert('কমপক্ষে একটি কাজ লিখুন'); return; }
+    const payload = { date, tasks, type: 'plan' };
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(() => {
+      alert('✅ পরিকল্পনা সংরক্ষিত!');
+      planModal.classList.remove('active');
+      fetchSheetData();
+    }).catch(err => alert('⚠️ সংরক্ষণে সমস্যা: ' + err.message));
+  }
+
+  function updateScorePreview() {
+    const salat = document.getElementById('entrySalat').value;
+    const quran = document.getElementById('entryQuran').value;
+    const arabic = document.getElementById('entryArabic').value;
+    const body = document.getElementById('entryBody').value;
+    const knowledge = document.getElementById('entryKnowledge').value;
+    const score = calculateScore(salat, quran, arabic, body, knowledge);
+    scorePreview.textContent = `${score} পয়েন্ট`;
+    if (score>=80) { scorePreview.style.color='#0f5c3a'; scorePreview.style.background='#d4edda'; }
+    else if (score>=40) { scorePreview.style.color='#8a6d2b'; scorePreview.style.background='#fff3cd'; }
+    else { scorePreview.style.color='#721c24'; scorePreview.style.background='#f8d7da'; }
+  }
+
+  function openModal() {
+    document.getElementById('entryDate').value = getTodayStr();
+    updateScorePreview();
+    entryModal.classList.add('active');
+  }
+
+  function openPlanModal() {
+    document.getElementById('planDate').value = getTomorrowStr();
+    document.getElementById('planTasks').value = '';
+    planModal.classList.add('active');
+  }
+
+  function closeModal() { entryModal.classList.remove('active'); }
+  function closePlanModal() { planModal.classList.remove('active'); }
+
+  function updateMeta() {
+    dateDisplay.textContent = formatDateShort(new Date());
+    const dayIdx = getMissionDayIndex();
+    missionDay.textContent = `${dayIdx+1}/১২`;
+    const startDate = new Date(2026, 7, 26);
+    const now = new Date();
+    const dayDiff = Math.floor((now - startDate) / (1000*60*60*24)) + 1;
+    dayCounter.textContent = Math.max(1, dayDiff);
+    todayDateBadge.textContent = formatDateBangla(new Date());
+  }
+
+  function init() {
+    updateMeta();
+    renderSchedule();
+    renderQuranPlan();
+    fetchSheetData();
+
+    ['entrySalat','entryQuran','entryArabic','entryBody','entryKnowledge'].forEach(id => {
+      document.getElementById(id).addEventListener('change', updateScorePreview);
+    });
+
+    refreshBtn.addEventListener('click', fetchSheetData);
+    markTodayCompleteBtn.addEventListener('click', markTodayComplete);
+    openEntryModalBtn.addEventListener('click', openModal);
+    openEntryModalBtn2.addEventListener('click', openModal);
+    openPlanModalBtn.addEventListener('click', openPlanModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    closePlanModalBtn.addEventListener('click', closePlanModal);
+    entryForm.addEventListener('submit', submitEntry);
+    planForm.addEventListener('submit', submitPlan);
+
+    entryModal.addEventListener('click', function(e) { if (e.target===this) closeModal(); });
+    planModal.addEventListener('click', function(e) { if (e.target===this) closePlanModal(); });
+
+    setInterval(fetchSheetData, 300000);
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>
