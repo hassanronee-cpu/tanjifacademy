@@ -124,9 +124,12 @@
         .tab-btn { transition: 0.2s; cursor: pointer; }
         .tab-btn.active { background: #16a34a !important; color: white !important; }
         .tab-btn:not(.active) { background: #f0fdf4; color: #065f46; }
+        .tab-btn:not(.active).inactive-tab { background: #e8f5e9; color: #4a7c59; opacity: 0.7; }
         .tab-btn:hover:not(.active) { background: #dcfce7; }
-        /* Kalpurush font override for input/select */
+        .tab-btn.inactive-tab:hover { background: #c8e6c9; opacity: 1; }
         input, select, button, textarea { font-family: 'Kalpurush', 'Hind Siliguri', sans-serif; }
+        .category-tab-inactive { background: #e8f5e9 !important; color: #4a7c59 !important; opacity: 0.7; }
+        .category-tab-active { background: #16a34a !important; color: white !important; opacity: 1; }
     </style>
 </head>
 <body>
@@ -139,7 +142,7 @@
                 <div class="flex bg-emerald-50 p-1 rounded-2xl mb-6">
                     <button onclick="setMode('expense')" id="modeExp" class="tab-btn flex-1 py-3 rounded-xl font-bold text-sm active">খরচ</button>
                     <button onclick="setMode('adjustment')" id="modeAdj" class="tab-btn flex-1 py-3 rounded-xl font-bold text-sm">সংশোধন</button>
-                    <button onclick="toggleCategoryManager()" id="catTabBtn" class="tab-btn flex-1 py-3 rounded-xl font-bold text-sm">📁 ক্যাটাগরি</button>
+                    <button onclick="toggleCategoryManager()" id="catTabBtn" class="tab-btn flex-1 py-3 rounded-xl font-bold text-sm category-tab-inactive">📁 ক্যাটাগরি</button>
                 </div>
 
                 <div class="space-y-4">
@@ -305,7 +308,7 @@
     </button>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFq6VEeQaqQsBfenAsBMEeEGtDPMN4B-30KvRHkOL5PwX_dBC0Whu0nReE1KPl3HXYfw/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzOdvV0wqnPhgs4tDeMxj3tE1HscH7y8VVu56Xfy-NgfJUs5gAm6IFGZhhQVdl7qZyiQ/exec";
 
         let mainBudgets = {};
         let subBudgets = {};
@@ -313,28 +316,32 @@
         let expenses = [];
         let finance = { savings: 0, liability: 0, investment: 0, currentBalance: 0 };
         let currentMode = 'expense';
+        let isCategoryManagerOpen = false;
 
         // ================== DEFAULT DATA ==================
 
         function getDefaultSubBudgets() {
             return {
-                // Installment
+                // Installment (কিস্তি)
                 "Loan (ঋণ পরিশোধ)": 15720,
                 "Bank Interest (ব্যাংক মুনাফা)": 0,
                 "Others (অন্যান্য)": 0,
-                // Credit Card
+                // Credit Card (ক্রেডিট কার্ড)
                 "Dutch Bangla (ডাচ বাংলা ব্যাংক)": 100000,
-                // Homeland
+                "Others (অন্যান্য)": 0,
+                // Homeland (মাতৃভূমি)
                 "Parents (বাবা-মা)": 10380,
                 "Village Cost (গ্রামের খরচ)": 0,
-                // Residential
+                "Others (অন্যান্য)": 0,
+                // Residential (আবাসস্থল)
                 "House Rent (বাসা ভাড়া)": 6000,
                 "Electricity (বিদ্যুৎ বিল)": 1000,
                 "Gas (গ্যাস বিল)": 1800,
                 "Water (পানি বিল)": 100,
                 "Internet (ইন্টারনেট বিল)": 650,
                 "Mobile Bill (মোবাইল বিল)": 300,
-                // Sustenance
+                "Others (অন্যান্য)": 0,
+                // Sustenance (নিত্যপ্রয়োজনীয়)
                 "Rice (চাল)": 1100,
                 "Vegetable (শাক-সবজি)": 1500,
                 "Milk (দুধ)": 1000,
@@ -346,23 +353,30 @@
                 "Grocery (মুদি সওদা)": 2600,
                 "Stationary (স্টেশনারী)": 300,
                 "Dry Food (শুকনা খাবার)": 300,
-                // Transport
+                "Others (অন্যান্য)": 0,
+                // Transport (যাতায়াত)
                 "Workplace (অফিস যাতায়াত)": 1038,
-                // Charity
+                "Others (অন্যান্য)": 0,
+                // Charity (দাতব্য)
                 "Masjid (মসজিদ)": 500,
                 "Sadakah (সাদাকাহ)": 278,
-                // Essential
+                "Others (অন্যান্য)": 0,
+                // Essential (অপরিহার্য)
                 "Learning (শিক্ষা)": 0,
                 "Medical (চিকিৎসা)": 0,
                 "Attire (পোশাক)": 0,
-                // Emergency
+                "Others (অন্যান্য)": 0,
+                // Emergency (জরুরি)
                 "Hospital (হাসপাতাল)": 0,
-                // Refreshment
+                "Others (অন্যান্য)": 0,
+                // Refreshment (প্রশান্তি)
                 "Tour (ভ্রমণ)": 520,
                 "Restaurant (রেস্তরা)": 0,
-                // Savings
+                "Others (অন্যান্য)": 0,
+                // Savings (সঞ্চয়)
                 "DPS (ডিপিএস)": 0,
-                "FDR (এফডিআর)": 0
+                "FDR (এফডিআর)": 0,
+                "Others (অন্যান্য)": 0
             };
         }
 
@@ -381,9 +395,6 @@
                 "Savings (সঞ্চয়)": ["DPS (ডিপিএস)", "FDR (এফডিআর)", "Others (অন্যান্য)"]
             };
         }
-
-        subBudgets = getDefaultSubBudgets();
-        subCategories = getDefaultSubCategories();
 
         // ================== TOAST ==================
 
@@ -509,21 +520,21 @@
         }
 
         function mergeCategories(fromSheet) {
-            // Merge subBudgets
+            // Merge subBudgets - overwrite with sheet data
             for (let key in fromSheet.subBudgets) {
                 subBudgets[key] = fromSheet.subBudgets[key];
             }
-            // Merge subCategories without duplicates
+            
+            // Merge subCategories - completely replace with sheet data to handle deletions
+            subCategories = {};
             for (let main in fromSheet.subCategories) {
-                if (!subCategories[main]) subCategories[main] = [];
+                subCategories[main] = [];
                 fromSheet.subCategories[main].forEach(sub => {
                     if (!subCategories[main].includes(sub)) {
                         subCategories[main].push(sub);
                     }
                 });
-            }
-            // Ensure Others exists in each category
-            for (let main in subCategories) {
+                // Ensure Others exists in each category
                 if (!subCategories[main].includes('Others (অন্যান্য)')) {
                     subCategories[main].push('Others (অন্যান্য)');
                 }
@@ -539,17 +550,34 @@
             document.getElementById('modeAdj').className = `tab-btn flex-1 py-3 rounded-xl font-bold text-sm ${mode==='adjustment'?'active':''}`;
             document.getElementById('expenseFields').classList.toggle('hidden', mode!=='expense');
             document.getElementById('adjFields').classList.toggle('hidden', mode!=='adjustment');
+            
+            // Update category tab state - make it inactive when other tabs are active
+            updateCategoryTabState();
         }
 
         function toggleCategoryManager() {
             const cm = document.getElementById('categoryManager');
             const btn = document.getElementById('catTabBtn');
             cm.classList.toggle('hidden');
-            btn.classList.toggle('active');
+            isCategoryManagerOpen = !cm.classList.contains('hidden');
+            
             if(!cm.classList.contains('hidden')) {
                 populateMainDropdowns();
                 populateRemoveDropdowns();
                 showUpdateLimitFields();
+                btn.className = `tab-btn flex-1 py-3 rounded-xl font-bold text-sm category-tab-active`;
+            } else {
+                btn.className = `tab-btn flex-1 py-3 rounded-xl font-bold text-sm category-tab-inactive`;
+            }
+            updateCategoryTabState();
+        }
+
+        function updateCategoryTabState() {
+            const btn = document.getElementById('catTabBtn');
+            if (!isCategoryManagerOpen) {
+                btn.className = `tab-btn flex-1 py-3 rounded-xl font-bold text-sm category-tab-inactive`;
+            } else {
+                btn.className = `tab-btn flex-1 py-3 rounded-xl font-bold text-sm category-tab-active`;
             }
         }
 
@@ -610,22 +638,22 @@
                     mainDisplay.classList.remove('hidden');
                     mainDisplay.innerHTML = `📊 ${main} এর মোট লিমিট: ৳${mainTotal} (সব উপ-ক্যাটাগরির যোগফল)`;
                 }
-            } else if(main) {
-                currentLimit = calculateMainBudget(main);
-                categoryName = main + ' (মোট)';
-                mainDisplay.classList.remove('hidden');
-                mainDisplay.innerHTML = `📊 ${main} এর মোট লিমিট: ৳${currentLimit} (সব উপ-ক্যাটাগরির যোগফল)`;
-            } else {
-                mainDisplay.classList.add('hidden');
-                mainDisplay.innerHTML = '';
-            }
-            
-            if(categoryName) {
                 display.innerHTML = `বর্তমান লিমিট: ৳${currentLimit} (${categoryName})`;
                 document.getElementById('updateLimitValue').placeholder = `নতুন লিমিট (বর্তমান: ৳${currentLimit})`;
+                document.getElementById('updateLimitValue').disabled = false;
+                document.getElementById('updateLimitValue').classList.remove('opacity-50');
+            } else if(main) {
+                // Show warning - must select sub-category
+                display.innerHTML = `⚠️ উপ-ক্যাটাগরি নির্বাচন করুন - মূল ক্যাটাগরিতে সরাসরি লিমিট সেট করা যাবে না!`;
+                document.getElementById('updateLimitValue').disabled = true;
+                document.getElementById('updateLimitValue').classList.add('opacity-50');
+                document.getElementById('updateLimitValue').placeholder = 'প্রথমে উপ-ক্যাটাগরি নির্বাচন করুন';
+                mainDisplay.classList.add('hidden');
             } else {
                 display.innerHTML = '';
                 document.getElementById('updateLimitValue').placeholder = 'নতুন লিমিট';
+                document.getElementById('updateLimitValue').disabled = false;
+                document.getElementById('updateLimitValue').classList.remove('opacity-50');
                 mainDisplay.classList.add('hidden');
             }
         }
@@ -706,11 +734,13 @@
         function populateRemoveDropdowns() {
             const selMain = document.getElementById('removeMainSelect');
             const selSub = document.getElementById('removeSubSelect');
+            const parent = document.getElementById('parentCatSelect')?.value || '';
+            
             selMain.innerHTML = `<option value="">মূল ডিলিট</option>`;
             const sortedKeys = sortCategoriesWithOthersLast(Object.keys(subCategories));
             sortedKeys.forEach(k => selMain.innerHTML += `<option value="${k}">${k}</option>`);
+            
             selSub.innerHTML = `<option value="">উপ-ডিলিট</option>`;
-            const parent = document.getElementById('parentCatSelect').value;
             if(parent && subCategories[parent]) {
                 const sorted = sortCategoriesWithOthersLast(subCategories[parent]);
                 sorted.forEach(s => selSub.innerHTML += `<option value="${s}">${s}</option>`);
@@ -729,6 +759,9 @@
                 const data = await res.json();
                 if(data.expenses) expenses = data.expenses;
                 if(data.subBudgets || data.subCategories) {
+                    // Reset local data before merging to handle deletions
+                    subBudgets = getDefaultSubBudgets();
+                    subCategories = getDefaultSubCategories();
                     mergeCategories({ subBudgets: data.subBudgets || {}, subCategories: data.subCategories || {} });
                 }
                 updateProgress(80);
@@ -847,10 +880,6 @@
             showLoading('ক্যাটাগরি যোগ হচ্ছে...', 'গুগোল শীটে আপডেট করা হচ্ছে');
             updateProgress(30);
             
-            subCategories[name] = ["Others (অন্যান্য)"];
-            subBudgets["Others (অন্যান্য)"] = 0;
-            updateAllMainBudgets();
-            
             try {
                 updateProgress(60);
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addCategory', name }) });
@@ -875,12 +904,6 @@
             showLoading('উপ-ক্যাটাগরি যোগ হচ্ছে...', 'গুগোল শীটে আপডেট করা হচ্ছে');
             updateProgress(30);
             
-            if (!subCategories[parent]) subCategories[parent] = [];
-            subCategories[parent].push(name);
-            subCategories[parent] = sortCategoriesWithOthersLast(subCategories[parent]);
-            subBudgets[name] = limit;
-            updateAllMainBudgets();
-            
             try {
                 updateProgress(60);
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addSubCategory', parent, name, limit }) });
@@ -901,22 +924,27 @@
             const sub = document.getElementById('updateSubSelect').value;
             const newLimit = parseFloat(document.getElementById('updateLimitValue').value);
             
-            if(!sub && !main) { showToast('একটি ক্যাটাগরি নির্বাচন করুন!', 'error'); return; }
+            // CRITICAL FIX: Prevent updating limit on main category directly
+            if(!sub && main) {
+                showToast('⚠️ মূল ক্যাটাগরিতে সরাসরি লিমিট সেট করা যাবে না! দয়া করে একটি উপ-ক্যাটাগরি নির্বাচন করুন।', 'error');
+                return;
+            }
+            
+            if(!sub) { showToast('একটি উপ-ক্যাটাগরি নির্বাচন করুন!', 'error'); return; }
             if(isNaN(newLimit) || newLimit < 0) { showToast('সঠিক লিমিট দিন!', 'error'); return; }
             
             showLoading('লিমিট আপডেট হচ্ছে...', 'গুগোল শীটে আপডেট করা হচ্ছে');
             updateProgress(30);
             
-            const category = sub || main;
             try {
                 updateProgress(60);
-                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'updateLimit', category, newLimit, main, sub }) });
+                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'updateLimit', category: sub, newLimit, main, sub }) });
                 updateProgress(80);
                 document.getElementById('updateLimitValue').value = '';
                 updateProgress(100);
                 setTimeout(() => {
                     hideLoading();
-                    showToast(`✅ "${category}" এর লিমিট আপডেট হয়েছে!`, 'success');
+                    showToast(`✅ "${sub}" এর লিমিট আপডেট হয়েছে!`, 'success');
                     fetchFromSheet();
                 }, 300);
             } catch(e) { hideLoading(); showToast('❌ এরর! '+e.message, 'error'); }
@@ -925,12 +953,6 @@
         async function removeCategory(name) {
             showLoading('ক্যাটাগরি ডিলিট হচ্ছে...', 'গুগোল শীট থেকে মুছে ফেলা হচ্ছে');
             updateProgress(30);
-            
-            if(subCategories[name]) {
-                subCategories[name].forEach(sub => delete subBudgets[sub]);
-                delete subCategories[name];
-            }
-            updateAllMainBudgets();
             
             try {
                 updateProgress(60);
@@ -948,17 +970,6 @@
         async function removeSubCategory(name) {
             showLoading('উপ-ক্যাটাগরি ডিলিট হচ্ছে...', 'গুগোল শীট থেকে মুছে ফেলা হচ্ছে');
             updateProgress(30);
-            
-            for (let main in subCategories) {
-                const idx = subCategories[main].indexOf(name);
-                if (idx > -1) {
-                    subCategories[main].splice(idx, 1);
-                    subCategories[main] = sortCategoriesWithOthersLast(subCategories[main]);
-                    break;
-                }
-            }
-            delete subBudgets[name];
-            updateAllMainBudgets();
             
             try {
                 updateProgress(60);
@@ -1008,6 +1019,9 @@
 
         const today = new Date();
         document.getElementById('date').value = today.toISOString().split('T')[0];
+        
+        // Set initial category tab state
+        document.getElementById('catTabBtn').className = `tab-btn flex-1 py-3 rounded-xl font-bold text-sm category-tab-inactive`;
         
         fetchFromSheet();
 
