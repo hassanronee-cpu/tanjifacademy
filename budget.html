@@ -467,6 +467,172 @@
             font-weight: 700;
             color: #047857;
         }
+        .report-cat-clickable {
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .report-cat-clickable:hover {
+            background: #d1fae5 !important;
+        }
+        .sub-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 12px;
+            padding: 10px 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-top: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        .sub-detail-item {
+            background: white;
+            border-radius: 6px;
+            padding: 6px 10px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+        .sub-detail-item .sub-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 3px;
+        }
+        .sub-detail-item .sub-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+            font-size: 11px;
+        }
+        .sub-detail-item .sub-stats span {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .sub-detail-item .budget-label {
+            color: #2563eb;
+            font-weight: 500;
+        }
+        .sub-detail-item .spent-label {
+            color: #dc2626;
+            font-weight: 500;
+        }
+        .sub-detail-item .remain-label {
+            color: #16a34a;
+            font-weight: 500;
+        }
+        .sub-detail-item .remain-label.negative {
+            color: #dc2626;
+        }
+        .recent-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            transition: 0.2s;
+        }
+        .recent-entry:hover {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+        .recent-entry .entry-info {
+            flex: 1;
+            font-size: 12px;
+        }
+        .recent-entry .entry-amount {
+            font-weight: 700;
+            font-size: 14px;
+            color: #065f46;
+            margin: 0 12px;
+        }
+        .recent-entry .entry-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .edit-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .edit-btn:hover {
+            background: #1d4ed8;
+            transform: scale(1.02);
+        }
+        .delete-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+        .edit-mode {
+            background: #fef9c3 !important;
+            border-color: #eab308 !important;
+        }
+        .edit-mode .entry-info input {
+            border: 1px solid #eab308;
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 12px;
+            width: 100%;
+            max-width: 200px;
+        }
+        .edit-mode .entry-amount input {
+            border: 1px solid #eab308;
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 14px;
+            width: 100px;
+            text-align: right;
+        }
+        .edit-mode .entry-actions .save-edit-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .edit-mode .entry-actions .save-edit-btn:hover {
+            background: #15803d;
+        }
+        .edit-mode .entry-actions .cancel-edit-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .edit-mode .entry-actions .cancel-edit-btn:hover {
+            background: #4b5563;
+        }
+        .date-picker-hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -624,7 +790,7 @@
     </main>
 
     <div id="reportModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[999] flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-2xl rounded-[32px] p-6 md:p-8 relative shadow-2xl overflow-hidden">
+        <div class="bg-white w-full max-w-3xl rounded-[32px] p-6 md:p-8 relative shadow-2xl overflow-hidden">
             <button onclick="toggleReport()" class="absolute top-4 right-6 text-slate-400 hover:text-black text-2xl">✕</button>
             <h2 class="text-xl font-bold text-emerald-900 mb-6 flex items-center gap-2">
                 <span class="p-2 bg-emerald-100 rounded-lg text-lg">📊</span> ২৫ তারিখের সাইকেল সামারি
@@ -663,7 +829,7 @@
     </button>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyhnEt9ysMpGQItjyVyi0RvIzHqXQVkRvha2zNVo57tgWy9Vq6mPGP_52evVOob7_kw0Q/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrR2738hdmPo3EwWCTwmVdZP8NjQ9_wwy7tFaC5YmoBf4X3hEUmLH_btPtBd2Ip_pRlg/exec";
 
         let mainBudgets = {};
         let subBudgets = {};
@@ -673,6 +839,7 @@
         let currentMode = 'expense';
         let isCategoryManagerOpen = false;
         let isCategoryListOpen = false;
+        let editingEntryId = null; // entry id being edited
 
         // ================== DEFAULT DATA ==================
 
@@ -1070,7 +1237,6 @@
                         html += `<tr class="${rowClass}"><td></td><td>${sub}</td><td class="limit-cell">${formatCurrency(limit)}</td></tr>`;
                     }
                 });
-                // Add total row for main category
                 html += `<tr style="background:#ecfdf5;font-weight:600;border-top:2px solid #10b981;">
                             <td colspan="2" style="text-align:right;color:#047857;">${main} - মোট</td>
                             <td class="limit-cell main-total-cell">৳${formatCurrency(mainTotal)}</td>
@@ -1125,13 +1291,13 @@
         }
 
         function getCycleSpentByMain(main) {
-            return expenses.filter(ex => ex.mode === 'expense' && ex.main === main && isCurrentCycle(ex.date))
+            return expenses.filter(ex => ex.mode === 'expense' && ex.main === main && isCurrentCycle(ex.date) && ex.deleted !== true)
                 .reduce((sum, ex) => sum + parseFloat(ex.amount), 0);
         }
 
         function getCycleSpentBySub(main, sub) {
             return expenses.filter(ex => ex.mode === 'expense' && ex.main === main && ex.sub.startsWith(sub) && isCurrentCycle(ex
-                    .date))
+                    .date) && ex.deleted !== true)
                 .reduce((sum, ex) => sum + parseFloat(ex.amount), 0);
         }
 
@@ -1224,7 +1390,7 @@
             let totalExpense = 0,
                 totalEarnings = 0;
 
-            expenses.forEach(ex => {
+            expenses.filter(ex => ex.deleted !== true).forEach(ex => {
                 const amt = parseFloat(ex.amount) || 0;
                 if (ex.mode === 'expense') {
                     totalExpense += amt;
@@ -1252,13 +1418,264 @@
             finance = tempFinance;
         }
 
+        // ================== RECENT ENTRIES WITH EDIT ==================
+
+        function renderRecentEntries() {
+            const container = document.getElementById('recentList');
+            const activeExpenses = expenses.filter(ex => ex.deleted !== true);
+            const recent = activeExpenses.slice(-5).reverse();
+
+            if (recent.length === 0) {
+                container.innerHTML = "<p class='text-center text-slate-300 py-4'>কোন এন্ট্রি নেই</p>";
+                return;
+            }
+
+            let html = '';
+            recent.forEach((ex) => {
+                const entryId = String(ex.entryId || ex.id || ex.entryNumber || '');
+                const isEditing = (editingEntryId !== null && String(editingEntryId) === entryId);
+                const entryClass = isEditing ? 'recent-entry edit-mode' : 'recent-entry';
+
+                html += `<div class="${entryClass}" data-entry-id="${entryId}">`;
+
+                if (isEditing) {
+                    html += `
+                        <div class="entry-info">
+                            <input type="text" id="edit_sub_${entryId}" value="${ex.sub}" class="edit-input">
+                            <div style="font-size:10px;color:#6b7280;margin-top:2px;">
+                                <span style="margin-left:6px;">${ex.mode === 'expense' ? 'খরচ' : 'সংশোধন'}</span>
+                                <span style="margin-left:6px;font-size:9px;color:#94a3b8;">ID: ${entryId}</span>
+                            </div>
+                        </div>
+                        <div class="entry-amount">
+                            <input type="number" id="edit_amount_${entryId}" value="${ex.amount}" step="0.01">
+                        </div>
+                        <div class="entry-actions">
+                            <button class="save-edit-btn" onclick="saveEdit('${entryId}')">💾 সেভ</button>
+                            <button class="cancel-edit-btn" onclick="cancelEdit()">বাতিল</button>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="entry-info">
+                            <b>${ex.sub}</b>
+                            <br><span class="text-slate-400 text-[9px]">${formatTimestamp(ex.timestamp) || ex.date}</span>
+                            <span style="font-size:8px;color:#94a3b8;margin-left:4px;">#${entryId}</span>
+                        </div>
+                        <div class="entry-amount">৳ ${formatCurrency(ex.amount)}</div>
+                        <div class="entry-actions">
+                            <button class="edit-btn" onclick="startEdit('${entryId}')">✏️</button>
+                            <button class="delete-btn" onclick="deleteEntry('${entryId}')">🗑️</button>
+                        </div>
+                    `;
+                }
+
+                html += `</div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function startEdit(entryId) {
+            if (!entryId) {
+                showToast('এন্ট্রি আইডি পাওয়া যায়নি!', 'error');
+                return;
+            }
+            if (editingEntryId !== null) {
+                cancelEdit();
+            }
+            editingEntryId = String(entryId);
+            renderRecentEntries();
+        }
+
+        function cancelEdit() {
+            editingEntryId = null;
+            renderRecentEntries();
+        }
+
+        async function saveEdit(entryId) {
+            const id = String(entryId);
+            const subInput = document.getElementById(`edit_sub_${id}`);
+            const amountInput = document.getElementById(`edit_amount_${id}`);
+
+            if (!subInput || !amountInput) {
+                showToast('এডিট ফর্ম খুঁজে পাওয়া যায়নি!', 'error');
+                return;
+            }
+
+            const newSub = subInput.value.trim();
+            const newAmount = parseFloat(amountInput.value);
+
+            if (!newSub || isNaN(newAmount) || newAmount < 0) {
+                showToast('সব তথ্য সঠিকভাবে দিন!', 'error');
+                return;
+            }
+
+            // Find the original entry
+            const original = expenses.find(ex => String(ex.entryId || ex.id || ex.entryNumber) === id);
+            if (!original) {
+                showToast('এন্ট্রি খুঁজে পাওয়া যায়নি!', 'error');
+                return;
+            }
+
+            // Find main category from sub
+            let newMain = original.main;
+            for (let main in subCategories) {
+                if (subCategories[main].includes(newSub) || newSub.startsWith(main)) {
+                    newMain = main;
+                    break;
+                }
+            }
+
+            showLoading('এন্ট্রি আপডেট হচ্ছে...', 'গুগোল শীটে পরিবর্তন সংরক্ষণ করা হচ্ছে');
+            updateProgress(30);
+
+            try {
+                const payload = {
+                    action: 'updateEntry',
+                    entryId: id,
+                    newMain: newMain,
+                    newSub: newSub,
+                    newAmount: newAmount,
+                    newMode: original.mode
+                };
+
+                updateProgress(60);
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const result = await response.json();
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+                updateProgress(80);
+                editingEntryId = null;
+                updateProgress(100);
+                setTimeout(() => {
+                    hideLoading();
+                    showToast('✅ এন্ট্রি আপডেট হয়েছে!', 'success');
+                    fetchFromSheet();
+                }, 300);
+            } catch (e) {
+                hideLoading();
+                showToast('❌ আপডেট করতে সমস্যা: ' + e.message, 'error');
+            }
+        }
+
+        async function deleteEntry(entryId) {
+            const id = String(entryId);
+            const ex = expenses.find(ex => String(ex.entryId || ex.id || ex.entryNumber) === id);
+            if (!ex) return;
+
+            showConfirm('⚠️ এন্ট্রি ডিলিট করুন', `"${ex.sub}" - ৳${formatCurrency(ex.amount)} এই এন্ট্রিটি ডিলিট করবেন?`, async () => {
+                showLoading('এন্ট্রি ডিলিট হচ্ছে...', 'গুগোল শীট থেকে মুছে ফেলা হচ্ছে');
+                updateProgress(30);
+
+                try {
+                    const payload = {
+                        action: 'deleteEntry',
+                        entryId: id
+                    };
+                    updateProgress(60);
+                    const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                    const result = await response.json();
+                    if (result.error) {
+                        throw new Error(result.error);
+                    }
+                    updateProgress(80);
+                    updateProgress(100);
+                    setTimeout(() => {
+                        hideLoading();
+                        showToast('✅ এন্ট্রি ডিলিট হয়েছে!', 'success');
+                        fetchFromSheet();
+                    }, 300);
+                } catch (e) {
+                    hideLoading();
+                    showToast('❌ ডিলিট করতে সমস্যা: ' + e.message, 'error');
+                }
+            });
+        }
+
+        // ================== REPORT ==================
+
+        function toggleReport() {
+            const modal = document.getElementById('reportModal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                let totalBudget = 0,
+                    totalSpent = 0;
+                const sortedKeys = sortCategoriesWithOthersLast(Object.keys(subCategories));
+                sortedKeys.forEach(cat => {
+                    totalBudget += calculateMainBudget(cat);
+                    totalSpent += getCycleSpentByMain(cat);
+                });
+                const totalRemaining = totalBudget - totalSpent;
+                document.getElementById('reportSummary').innerHTML = `
+                        <div class="item"><div class="label">মোট বরাদ্দ</div><div class="value">৳${formatCurrency(totalBudget)}</div></div>
+                        <div class="item"><div class="label">মোট খরচ</div><div class="value">৳${formatCurrency(totalSpent)}</div></div>
+                        <div class="item"><div class="label">মোট বাকি</div><div class="value ${totalRemaining < 0 ? 'text-red-600' : 'text-emerald-700'}">৳${formatCurrency(totalRemaining)}</div></div>
+                    `;
+
+                const spentStats = {};
+                expenses.filter(ex => isCurrentCycle(ex.date) && ex.mode === "expense" && ex.deleted !== true).forEach(ex => {
+                    spentStats[ex.main] = (spentStats[ex.main] || 0) + parseFloat(ex.amount);
+                });
+                let html = "";
+                for (let cat of sortedKeys) {
+                    let spent = spentStats[cat] || 0;
+                    let budget = calculateMainBudget(cat);
+                    let p = budget > 0 ? Math.min((spent / budget) * 100, 100) : 0;
+                    html += `
+                            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 report-cat-clickable" onclick="toggleSubDetails('${cat}')">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div><p class="font-bold text-emerald-900">${cat}</p><p class="text-[10px] text-emerald-500 font-bold uppercase">বরাদ্দ: ৳${formatCurrency(budget)}</p></div>
+                                    <p class="font-black ${spent > budget ? 'text-red-600' : 'text-emerald-800'}">৳ ${formatCurrency(spent)}</p>
+                                </div>
+                                <div class="h-1.5 w-full bg-white rounded-full overflow-hidden">
+                                    <div class="h-full ${spent > budget ? 'bg-red-500' : 'bg-emerald-500'}" style="width: ${p}%"></div>
+                                </div>
+                                <div id="subdetail_${cat.replace(/[^a-zA-Z0-9]/g,'_')}" class="sub-detail-grid" style="display:none;margin-top:8px;"></div>
+                            </div>`;
+                }
+                document.getElementById('modalContent').innerHTML = html;
+            }
+        }
+
+        function toggleSubDetails(cat) {
+            const containerId = `subdetail_${cat.replace(/[^a-zA-Z0-9]/g,'_')}`;
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            if (container.style.display === 'grid') {
+                container.style.display = 'none';
+                return;
+            }
+
+            const subs = subCategories[cat] || [];
+            let html = '';
+            const sortedSubs = sortCategoriesWithOthersLast(subs);
+            sortedSubs.forEach(sub => {
+                const key = `${cat} - ${sub}`;
+                const budget = subBudgets[key] || 0;
+                const spent = getCycleSpentBySub(cat, sub);
+                const remaining = budget - spent;
+                const remainClass = remaining < 0 ? 'remain-label negative' : 'remain-label';
+                html += `
+                        <div class="sub-detail-item">
+                            <div class="sub-name">${sub}</div>
+                            <div class="sub-stats">
+                                <span class="budget-label">বরাদ্দ: ৳${formatCurrency(budget)}</span>
+                                <span class="spent-label">খরচ: ৳${formatCurrency(spent)}</span>
+                                <span class="${remainClass}">বাকি: ৳${formatCurrency(remaining)}</span>
+                            </div>
+                        </div>
+                    `;
+            });
+
+            container.innerHTML = html;
+            container.style.display = 'grid';
+        }
+
         function refreshUI() {
-            document.getElementById('recentList').innerHTML = expenses.slice(-5).reverse().map(ex => `
-                    <div class="p-3 bg-emerald-50/50 border border-emerald-100 rounded-xl text-[11px] flex justify-between shadow-sm">
-                        <div><b>${ex.sub}</b><br><span class="text-slate-400 text-[9px]">${formatTimestamp(ex.timestamp) || ex.date}</span></div>
-                        <div class="font-black text-emerald-800">৳ ${formatCurrency(ex.amount)}</div>
-                    </div>
-                `).join('') || "<p class='text-center text-slate-300 py-4'>No Entry Found</p>";
+            renderRecentEntries();
 
             document.getElementById('statSavings').innerText = `৳ ${formatCurrency(finance.savings)}`;
             document.getElementById('statLiability').innerText = `৳ ${formatCurrency(finance.liability)}`;
@@ -1267,6 +1684,8 @@
 
             if (document.getElementById('mainCat').value) updateSubCategories();
         }
+
+        // ================== SAVE DATA ==================
 
         async function saveData() {
             const main = currentMode === 'expense' ? document.getElementById('mainCat').value : document.getElementById(
@@ -1434,50 +1853,6 @@
                 }, 300);
             } catch (e) { hideLoading();
                 showToast('❌ এরর!', 'error'); }
-        }
-
-        // ================== REPORT ==================
-
-        function toggleReport() {
-            const modal = document.getElementById('reportModal');
-            modal.classList.toggle('hidden');
-            if (!modal.classList.contains('hidden')) {
-                let totalBudget = 0,
-                    totalSpent = 0;
-                const sortedKeys = sortCategoriesWithOthersLast(Object.keys(subCategories));
-                sortedKeys.forEach(cat => {
-                    totalBudget += calculateMainBudget(cat);
-                    totalSpent += getCycleSpentByMain(cat);
-                });
-                const totalRemaining = totalBudget - totalSpent;
-                document.getElementById('reportSummary').innerHTML = `
-                        <div class="item"><div class="label">মোট বরাদ্দ</div><div class="value">৳${formatCurrency(totalBudget)}</div></div>
-                        <div class="item"><div class="label">মোট খরচ</div><div class="value">৳${formatCurrency(totalSpent)}</div></div>
-                        <div class="item"><div class="label">মোট বাকি</div><div class="value ${totalRemaining < 0 ? 'text-red-600' : 'text-emerald-700'}">৳${formatCurrency(totalRemaining)}</div></div>
-                    `;
-
-                const spentStats = {};
-                expenses.filter(ex => isCurrentCycle(ex.date) && ex.mode === "expense").forEach(ex => {
-                    spentStats[ex.main] = (spentStats[ex.main] || 0) + parseFloat(ex.amount);
-                });
-                let html = "";
-                for (let cat of sortedKeys) {
-                    let spent = spentStats[cat] || 0;
-                    let budget = calculateMainBudget(cat);
-                    let p = budget > 0 ? Math.min((spent / budget) * 100, 100) : 0;
-                    html += `
-                            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
-                                <div class="flex justify-between items-center mb-2">
-                                    <div><p class="font-bold text-emerald-900">${cat}</p><p class="text-[10px] text-emerald-500 font-bold uppercase">বরাদ্দ: ৳${formatCurrency(budget)}</p></div>
-                                    <p class="font-black ${spent > budget ? 'text-red-600' : 'text-emerald-800'}">৳ ${formatCurrency(spent)}</p>
-                                </div>
-                                <div class="h-1.5 w-full bg-white rounded-full overflow-hidden">
-                                    <div class="h-full ${spent > budget ? 'bg-red-500' : 'bg-emerald-500'}" style="width: ${p}%"></div>
-                                </div>
-                            </div>`;
-                }
-                document.getElementById('modalContent').innerHTML = html;
-            }
         }
 
         // ================== INIT ==================
