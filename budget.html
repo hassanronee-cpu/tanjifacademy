@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>আলোর কাফেলা | স্মার্ট বাজেট ২০২৬</title>
+    <title>স্মার্ট বাজেট ২০২৬</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -59,7 +59,6 @@
             margin-top: 6px;
             font-size: 12px;
         }
-        /* Toast Notification */
         #toast-container {
             position: fixed; top: 20px; right: 20px; z-index: 99999;
             display: flex; flex-direction: column; gap: 10px;
@@ -78,7 +77,6 @@
             from { transform: translateX(100px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
-        /* Progress Bar */
         .progress-container {
             width: 100%; background: #e5e7eb; border-radius: 50px; overflow: hidden;
             height: 4px; margin-top: 8px;
@@ -95,7 +93,6 @@
             border-top: 2px solid #16a34a; border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-        /* Confirmation Modal */
         #confirmModal {
             position: fixed; inset: 0; background: rgba(0,0,0,0.5);
             backdrop-filter: blur(4px); z-index: 99998;
@@ -117,9 +114,9 @@
     </style>
 </head>
 <body>
-    <header class="islamic-pattern text-white py-3 text-center mb-8 shadow-inner">
+    <header class="islamic-pattern text-white py-2 text-center mb-8 shadow-inner">
         <div class="max-w-2xl mx-auto px-2">
-            <h1 class="text-3xl md:text-4xl font-black mb-4 tracking-tight">আর্থিক হিসাব</h1>
+            <h1 class="text-3xl md:text-3xl font-black mb-2 tracking-tight">আর্থিক হিসাব</h1>
         </div>
     </header>
 
@@ -171,7 +168,6 @@
 
                     <input type="number" id="amount" placeholder="৳ টাকার পরিমাণ" class="input-box text-2xl font-black text-emerald-900">
                     
-                    <!-- Loading Indicator -->
                     <div id="loadingIndicator" class="hidden">
                         <div class="loading-text">
                             <span class="spinner"></span>
@@ -185,11 +181,9 @@
                     <button onclick="saveData()" id="saveBtn" class="w-full btn-green py-4 text-lg shadow-xl shadow-emerald-100">শিটে সেভ করুন 💾</button>
                 </div>
 
-                <!-- Category Manager (Hidden by default) -->
                 <div id="categoryManager" class="hidden mt-6">
                     <h4 class="font-bold text-sm text-slate-700 mb-3">📁 ক্যাটাগরি ম্যানেজার</h4>
                     
-                    <!-- Add Category -->
                     <div class="grid grid-cols-2 gap-2">
                         <input type="text" id="newCatName" placeholder="নতুন ক্যাটাগরি" class="input-box text-sm">
                         <button onclick="addCategory()" class="btn-green py-2 text-sm col-span-2">➕ নতুন মূল ক্যাটাগরি যোগ</button>
@@ -197,7 +191,6 @@
                     <div class="text-xs text-slate-500 mt-1 text-center">মূল ক্যাটাগরির লিমিট স্বয়ংক্রিয়ভাবে গণনা হবে</div>
                     <hr class="my-3">
                     
-                    <!-- Add Sub Category -->
                     <div class="grid grid-cols-2 gap-2">
                         <select id="parentCatSelect" class="input-box text-sm"><option value="">মূল নির্বাচন</option></select>
                         <input type="text" id="newSubName" placeholder="উপ-ক্যাটাগরি" class="input-box text-sm">
@@ -206,7 +199,6 @@
                     </div>
                     <hr class="my-3">
 
-                    <!-- Update Limit -->
                     <div class="update-section">
                         <h5 class="font-bold text-sm text-blue-700 mb-2">✏️ লিমিট আপডেট করুন</h5>
                         <div class="grid grid-cols-2 gap-2">
@@ -224,7 +216,6 @@
                     </div>
                     <hr class="my-3">
 
-                    <!-- Remove -->
                     <div class="grid grid-cols-2 gap-2">
                         <select id="removeMainSelect" class="input-box text-sm"><option value="">মূল ডিলিট</option></select>
                         <button onclick="confirmRemove('category')" class="bg-red-500 text-white py-2 rounded-xl text-sm font-bold">🗑️ ডিলিট</button>
@@ -284,10 +275,8 @@
         </div>
     </div>
 
-    <!-- Toast Container -->
     <div id="toast-container"></div>
 
-    <!-- Confirmation Modal -->
     <div id="confirmModal">
         <div class="confirm-box">
             <h3 id="confirmTitle">⚠️ নিশ্চিত করুন</h3>
@@ -304,39 +293,12 @@
     </button>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxWCD7e4gcb_nW8gA0KdEFPy9Wk7_6-yvQJPrlXfY9pfZaXVgTx2X5H3hh8Z8tjpgRo5w/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5wfDDeHkKaJ8A5FCccfK14NT63f90klVCyGGNM-VBRv-ii1v--WQGPZWyE9S0UEF6eA/exec";
 
         // Default structure - will be overwritten by sheet data
-        let mainBudgets = {
-            Installment: 0, Homeland: 0, Residential: 0, Sustenance: 0, 
-            Transport: 0, Charity: 0, Essential: 0, Emergency: 0, Refreshment: 0, Savings: 0
-        };
-
-        let subBudgets = {
-            "Loan (ঋণ পরিশোধ)": 15720, "Bank Interest (ব্যাংক মুনাফা/সুদ)": 0, "Others (অন্যান্য)": 0,
-            "Parents (বাবা-মা)": 10380, "Village Cost (গ্রামের খরচ)": 0, "Others (অন্যান্য)": 0,
-            "House Rent (বাসা ভাড়া)": 6000, "Electricity (বিদ্যুৎ বিল)": 1000, "Gas (গ্যাস বিল)": 1800, "Water (পানি বিল)": 100, "Internet (ইন্টারনেট বিল)": 650, "Mobile Bill (মোবাইল বিল)": 300, "Others (অন্যান্য)": 0,
-            "Rice (চাল)": 1100, "Vegetable (শাক-সবজি)": 1500, "Milk (দুধ)": 1000, "Egg (ডিম)": 550, "Fruits (ফলমূল)": 400, "Fish (মাছ)": 3000, "Beef (গরুর মাংস)": 1000, "Chicken (মুরগির মাংস)": 500, "Grocery (মুদি সওদা)": 2600, "Stationary (ষ্টেশনারী)": 300, "Dry Food (শুকনা খাবার)": 300, "Others (অন্যান্য)": 200,
-            "Workplace (অফিস যাতায়াত)": 1038, "Others (অন্যান্য)": 0,
-            "Masjid (মসজিদ)": 500, "Sadakah (সাদাকাহ)": 278,
-            "Learning (শিক্ষা)": 0, "Medical (চিকিৎসা)": 0, "Attire (পোশাক)": 0, "Others (অন্যান্য)": 519,
-            "Hospital (হাসপাতাল)": 0, "Others (অন্যান্য)": 519,
-            "Tour (ভ্রমণ)": 520, "Restuarent (রেস্তরা)": 0, "Others (অন্যান্য)": 0,
-            "DPS (ডিপিএস)": 0, "FDR (এফডিআর)": 0, "Others (অন্যান্য)": 0
-        };
-
-        let subCategories = {
-            Installment: ["Loan (ঋণ পরিশোধ)", "Bank Interest (ব্যাংক মুনাফা/সুদ)", "Others (অন্যান্য)"],
-            Homeland: ["Parents (বাবা-মা)", "Village Cost (গ্রামের খরচ)", "Others (অন্যান্য)"],
-            Residential: ["House Rent (বাসা ভাড়া)", "Electricity (বিদ্যুৎ বিল)", "Gas (গ্যাস বিল)", "Water (পানি বিল)", "Internet (ইন্টারনেট বিল)", "Mobile Bill (মোবাইল বিল)", "Others (অন্যান্য)"],
-            Sustenance: ["Rice (চাল)", "Vegetable (শাক-সবজি)", "Milk (দুধ)", "Egg (ডিম)", "Fruits (ফলমূল)", "Fish (মাছ)", "Beef (গরুর মাংস)", "Chicken (মুরগির মাংস)", "Grocery (মুদি সওদা)", "Stationary (ষ্টেশনারী)", "Dry Food (শুকনা খাবার)", "Others (অন্যান্য)"],
-            Transport: ["Workplace (অফিস যাতায়াত)", "Others (অন্যান্য)"],
-            Charity: ["Masjid (মসজিদ)", "Sadakah (সাদাকাহ)"],
-            Essential: ["Learning (শিক্ষা)", "Medical (চিকিৎসা)", "Attire (পোশাক)", "Others (অন্যান্য)"],
-            Emergency: ["Hospital (হাসপাতাল)", "Others (অন্যান্য)"],
-            Refreshment: ["Tour (ভ্রমণ)", "Restuarent (রেস্তরা)", "Others (অন্যান্য)"],
-            Savings: ["DPS (ডিপিএস)", "FDR (এফডিআর)", "Others (অন্যান্য)"]
-        };
+        let mainBudgets = {};
+        let subBudgets = {};
+        let subCategories = {};
 
         let expenses = [];
         let finance = { savings: 0, liability: 0, investment: 0, currentBalance: 0 };
@@ -344,7 +306,43 @@
         let confirmAction = null;
         let confirmData = null;
 
-        // ================== TOAST NOTIFICATION ==================
+        // ================== DEFAULT DATA ==================
+
+        function getDefaultSubBudgets() {
+            return {
+                "Loan (ঋণ পরিশোধ)": 15720, "Bank Interest (ব্যাংক মুনাফা/সুদ)": 0, "Others (অন্যান্য)": 0,
+                "Parents (বাবা-মা)": 10380, "Village Cost (গ্রামের খরচ)": 0, "Others (অন্যান্য)": 0,
+                "House Rent (বাসা ভাড়া)": 6000, "Electricity (বিদ্যুৎ বিল)": 1000, "Gas (গ্যাস বিল)": 1800, "Water (পানি বিল)": 100, "Internet (ইন্টারনেট বিল)": 650, "Mobile Bill (মোবাইল বিল)": 300, "Others (অন্যান্য)": 0,
+                "Rice (চাল)": 1100, "Vegetable (শাক-সবজি)": 1500, "Milk (দুধ)": 1000, "Egg (ডিম)": 550, "Fruits (ফলমূল)": 400, "Fish (মাছ)": 3000, "Beef (গরুর মাংস)": 1000, "Chicken (মুরগির মাংস)": 500, "Grocery (মুদি সওদা)": 2600, "Stationary (ষ্টেশনারী)": 300, "Dry Food (শুকনা খাবার)": 300, "Others (অন্যান্য)": 200,
+                "Workplace (অফিস যাতায়াত)": 1038, "Others (অন্যান্য)": 0,
+                "Masjid (মসজিদ)": 500, "Sadakah (সাদাকাহ)": 278,
+                "Learning (শিক্ষা)": 0, "Medical (চিকিৎসা)": 0, "Attire (পোশাক)": 0, "Others (অন্যান্য)": 519,
+                "Hospital (হাসপাতাল)": 0, "Others (অন্যান্য)": 519,
+                "Tour (ভ্রমণ)": 520, "Restuarent (রেস্তরা)": 0, "Others (অন্যান্য)": 0,
+                "DPS (ডিপিএস)": 0, "FDR (এফডিআর)": 0, "Others (অন্যান্য)": 0
+            };
+        }
+
+        function getDefaultSubCategories() {
+            return {
+                Installment: ["Loan (ঋণ পরিশোধ)", "Bank Interest (ব্যাংক মুনাফা/সুদ)", "Others (অন্যান্য)"],
+                Homeland: ["Parents (বাবা-মা)", "Village Cost (গ্রামের খরচ)", "Others (অন্যান্য)"],
+                Residential: ["House Rent (বাসা ভাড়া)", "Electricity (বিদ্যুৎ বিল)", "Gas (গ্যাস বিল)", "Water (পানি বিল)", "Internet (ইন্টারনেট বিল)", "Mobile Bill (মোবাইল বিল)", "Others (অন্যান্য)"],
+                Sustenance: ["Rice (চাল)", "Vegetable (শাক-সবজি)", "Milk (দুধ)", "Egg (ডিম)", "Fruits (ফলমূল)", "Fish (মাছ)", "Beef (গরুর মাংস)", "Chicken (মুরগির মাংস)", "Grocery (মুদি সওদা)", "Stationary (ষ্টেশনারী)", "Dry Food (শুকনা খাবার)", "Others (অন্যান্য)"],
+                Transport: ["Workplace (অফিস যাতায়াত)", "Others (অন্যান্য)"],
+                Charity: ["Masjid (মসজিদ)", "Sadakah (সাদাকাহ)"],
+                Essential: ["Learning (শিক্ষা)", "Medical (চিকিৎসা)", "Attire (পোশাক)", "Others (অন্যান্য)"],
+                Emergency: ["Hospital (হাসপাতাল)", "Others (অন্যান্য)"],
+                Refreshment: ["Tour (ভ্রমণ)", "Restuarent (রেস্তরা)", "Others (অন্যান্য)"],
+                Savings: ["DPS (ডিপিএস)", "FDR (এফডিআর)", "Others (অন্যান্য)"]
+            };
+        }
+
+        // Initialize with defaults
+        subBudgets = getDefaultSubBudgets();
+        subCategories = getDefaultSubCategories();
+
+        // ================== TOAST ==================
 
         function showToast(message, type = 'success', duration = 3000) {
             const container = document.getElementById('toast-container');
@@ -359,7 +357,7 @@
             }, duration);
         }
 
-        // ================== CONFIRMATION MODAL ==================
+        // ================== CONFIRMATION ==================
 
         function showConfirm(title, message, onYes) {
             document.getElementById('confirmTitle').textContent = title;
@@ -393,7 +391,7 @@
             }
         }
 
-        // ================== LOADING INDICATOR ==================
+        // ================== LOADING ==================
 
         function showLoading(message = 'পাঠানো হচ্ছে...') {
             document.getElementById('loadingIndicator').classList.remove('hidden');
@@ -410,25 +408,6 @@
             document.getElementById('loadingIndicator').classList.add('hidden');
             document.getElementById('progressBar').style.width = '0%';
             document.getElementById('saveBtn').disabled = false;
-        }
-
-        // ================== FORMAT TIMESTAMP ==================
-
-        function formatTimestamp(timestamp) {
-            if (!timestamp) return 'N/A';
-            try {
-                const date = new Date(timestamp);
-                if (isNaN(date.getTime())) return timestamp;
-                const day = String(date.getDate()).padStart(2, '0');
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const year = date.getFullYear();
-                const hours = String(date.getHours()).padStart(2, '0');
-                const minutes = String(date.getMinutes()).padStart(2, '0');
-                const seconds = String(date.getSeconds()).padStart(2, '0');
-                return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-            } catch (e) {
-                return timestamp;
-            }
         }
 
         // ================== CORE LOGIC ==================
@@ -467,6 +446,35 @@
         function updateAllMainBudgets() {
             for (let main in subCategories) {
                 mainBudgets[main] = calculateMainBudget(main);
+            }
+        }
+
+        // ================== MERGE FUNCTION (FIX) ==================
+
+        function mergeCategories(fromSheet) {
+            // Merge subBudgets: keep existing, update from sheet
+            for (let key in fromSheet.subBudgets) {
+                subBudgets[key] = fromSheet.subBudgets[key];
+            }
+            
+            // Merge subCategories: keep existing, add new from sheet
+            for (let main in fromSheet.subCategories) {
+                if (!subCategories[main]) {
+                    subCategories[main] = [];
+                }
+                // Add new sub categories that don't exist
+                fromSheet.subCategories[main].forEach(sub => {
+                    if (!subCategories[main].includes(sub)) {
+                        subCategories[main].push(sub);
+                    }
+                });
+            }
+            
+            // Keep Others in each category if not present
+            for (let main in subCategories) {
+                if (!subCategories[main].includes('Others (অন্যান্য)')) {
+                    subCategories[main].push('Others (অন্যান্য)');
+                }
             }
         }
 
@@ -658,8 +666,16 @@
                 updateProgress(60);
                 const data = await res.json();
                 if(data.expenses) expenses = data.expenses;
-                if(data.subBudgets) subBudgets = data.subBudgets;
-                if(data.subCategories) subCategories = data.subCategories;
+                
+                // Merge categories (FIX: preserve existing + add new)
+                if(data.subBudgets || data.subCategories) {
+                    const fromSheet = {
+                        subBudgets: data.subBudgets || {},
+                        subCategories: data.subCategories || {}
+                    };
+                    mergeCategories(fromSheet);
+                }
+                
                 updateProgress(80);
                 updateAllMainBudgets();
                 calculateFinance();
@@ -815,7 +831,7 @@
                 showToast('সব তথ্য দিন!', 'error');
                 return;
             }
-            if(subCategories[parent].includes(name)) {
+            if(subCategories[parent] && subCategories[parent].includes(name)) {
                 showToast('এই নামে উপ-ক্যাটাগরি ইতিমধ্যে আছে!', 'error');
                 return;
             }
@@ -823,6 +839,7 @@
             showLoading('উপ-ক্যাটাগরি যোগ হচ্ছে...');
             updateProgress(30);
             
+            if (!subCategories[parent]) subCategories[parent] = [];
             subCategories[parent].push(name);
             subBudgets[name] = limit;
             updateAllMainBudgets();
@@ -963,7 +980,6 @@
 
         // ================== INIT ==================
 
-        // Set default date to today
         const today = new Date();
         const year = today.getFullYear();
         const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -972,7 +988,6 @@
         
         fetchFromSheet();
 
-        // Event listeners
         document.getElementById('parentCatSelect')?.addEventListener('change', populateRemoveDropdowns);
         document.getElementById('updateMainSelect')?.addEventListener('change', populateUpdateSubSelects);
         document.getElementById('updateSubSelect')?.addEventListener('change', showUpdateLimitFields);
