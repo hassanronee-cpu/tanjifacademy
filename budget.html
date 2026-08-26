@@ -654,11 +654,11 @@
             const sub = document.getElementById('adjSub');
             sub.innerHTML = `<option value="">উপ-খাত বেছে নিন</option>`;
             const adjSubCategories = {
-                Earnings: ["Salary", "Bonus", "Dividend", "Others (+)", "Others (-)"],
-                Liability: ["Personal Loan (+)", "Bank Loan (+)", "Loan Paid (-)", "Installment Paid (-)", "Others (+)", "Others (-)"],
-                Investment: ["Share Market", "Savings Certificate", "Fixed Deposit", "Others (+)", "Others (-)"],
-                Savings: ["Gift Received (+)", "Gift Given (-)", "Others (+)", "Others (-)"],
-                Balance: ["Balance Surprise (+)", "Balance Lost (-)", "Others (+)", "Others (-)"]
+                Earnings: ["Salary (বেতন)", "Bonus (বোনাস)", "Dividend (লভ্যাংশ)", "Others (+) (অন্যান্য +)", "Others (-) (অন্যান্য -)"],
+                Liability: ["Personal Loan (+) (ব্যক্তিগত ঋণ +)", "Bank Loan (+) (ব্যাংক ঋণ +)", "Loan Paid (-) (ঋণ পরিশোধ -)", "Installment Paid (-) (কিস্তি পরিশোধ -)", "Others (+) (অন্যান্য +)", "Others (-) (অন্যান্য -)"],
+                Investment: ["Share Market" (শেয়ার বাজার), "Fixed Deposit (স্থায়ী আমানত)", "Others (+) (অন্যান্য +)", "Others (-) (অন্যান্য -)"],
+                Savings: ["Gift Received (+) (উপহার প্রাপ্তি +)", "Gift Given (-) (উপহার প্রদান -)", "Others (+) (অন্যান্য +)", "Others (-) (অন্যান্য -)"],
+                Balance: ["Balance Surprise (+) (অপ্রত্যাশিত ব্যালেন্স +)", "Balance Lost (-) (ব্যালেন্স ঘাটতি -)", "Others (+) (অন্যান্য +)", "Others (-) (অন্যান্য -)"]
             };
             if (adjSubCategories[main]) {
                 const sorted = sortCategoriesWithOthersLast(adjSubCategories[main]);
