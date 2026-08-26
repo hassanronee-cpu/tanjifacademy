@@ -132,6 +132,23 @@
         .category-tab-active { background: #2563eb !important; color: white !important; opacity: 1; border: 1px solid #2563eb; }
         .report-btn { background: #4f46e5; color: white; transition: 0.3s; }
         .report-btn:hover { background: #4338ca; transform: translateY(-2px); }
+        .category-item {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #1e3a8a;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin: 2px;
+        }
+        .category-item .limit-badge {
+            background: #1e3a8a;
+            color: white;
+            border-radius: 10px;
+            padding: 0 6px;
+            font-size: 9px;
+            margin-left: 4px;
+        }
     </style>
 </head>
 <body>
@@ -198,7 +215,7 @@
                     <hr class="my-3">
                     
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="parentCatSelect" class="input-box text-sm"><option value="">মূল নির্বাচন</option></select>
+                        <select id="parentCatSelect" class="input-box text-sm" onchange="populateRemoveDropdowns()"><option value="">মূল নির্বাচন</option></select>
                         <input type="text" id="newSubName" placeholder="উপ-ক্যাটাগরি" class="input-box text-sm">
                         <input type="number" id="newSubLimit" placeholder="লিমিট" class="input-box text-sm">
                         <button onclick="addSubCategory()" class="btn-green py-2 text-sm col-span-2">➕ উপ-ক্যাটাগরি যোগ</button>
@@ -229,6 +246,11 @@
                     <div class="grid grid-cols-2 gap-2 mt-2">
                         <select id="removeSubSelect" class="input-box text-sm"><option value="">উপ-ডিলিট</option></select>
                         <button onclick="confirmRemove('subcategory')" class="bg-red-500 text-white py-2 rounded-xl text-sm font-bold">🗑️ ডিলিট সাব</button>
+                    </div>
+
+                    <div class="mt-4 p-3 bg-emerald-50 rounded-xl border border-emerald-200">
+                        <h6 class="font-bold text-xs text-emerald-700 mb-2">📋 বর্তমান ক্যাটাগরি ও লিমিট সমূহ:</h6>
+                        <div id="categoryListDisplay" class="flex flex-wrap gap-1"></div>
                     </div>
                 </div>
             </div>
@@ -310,7 +332,7 @@
     </button>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_Xq-ZayQx7iTkcbs8wjPtkszchO2hDGnhe08tpF0ou9wLkoCNmtqaGf5gbm6Rv4tX1Q/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyhnEt9ysMpGQItjyVyi0RvIzHqXQVkRvha2zNVo57tgWy9Vq6mPGP_52evVOob7_kw0Q/exec";
 
         let mainBudgets = {};
         let subBudgets = {};
@@ -543,6 +565,9 @@
                 }
                 subCategories[main] = sortCategoriesWithOthersLast(subCategories[main]);
             }
+            
+            // Update main budgets
+            updateAllMainBudgets();
         }
 
         // ================== UI FUNCTIONS ==================
@@ -568,6 +593,7 @@
                 populateMainDropdowns();
                 populateRemoveDropdowns();
                 showUpdateLimitFields();
+                displayAllCategories();
                 btn.className = `tab-btn flex-1 py-3 rounded-xl font-bold text-sm category-tab-active`;
             } else {
                 btn.className = `tab-btn flex-1 py-3 rounded-xl font-bold text-sm category-tab-inactive`;
@@ -599,6 +625,7 @@
             });
             updateSubDropdowns();
             populateUpdateSubSelects();
+            displayAllCategories();
         }
 
         function updateSubDropdowns() {
@@ -666,6 +693,25 @@
                 document.getElementById('updateLimitValue').classList.remove('opacity-50');
                 mainDisplay.classList.add('hidden');
             }
+        }
+
+        function displayAllCategories() {
+            const container = document.getElementById('categoryListDisplay');
+            let html = '';
+            const sortedMains = sortCategoriesWithOthersLast(Object.keys(subCategories));
+            sortedMains.forEach(main => {
+                const mainTotal = calculateMainBudget(main);
+                html += `<div class="w-full"><span class="font-bold text-emerald-700 text-xs">${main}</span> <span class="text-[9px] text-emerald-500">(মোট: ৳${mainTotal})</span>`;
+                html += `<div class="flex flex-wrap gap-1 mt-1">`;
+                const sortedSubs = sortCategoriesWithOthersLast(subCategories[main]);
+                sortedSubs.forEach(sub => {
+                    const key = `${main} - ${sub}`;
+                    const limit = subBudgets[key] || 0;
+                    html += `<span class="category-item">${sub} <span class="limit-badge">৳${limit}</span></span>`;
+                });
+                html += `</div></div>`;
+            });
+            container.innerHTML = html;
         }
 
         function updateSubCategories() {
@@ -783,6 +829,7 @@
                 populateRemoveDropdowns();
                 updateSubCategories();
                 showUpdateLimitFields();
+                displayAllCategories();
                 updateProgress(100);
                 setTimeout(() => { hideLoading(); showToast('✅ ডেটা সিঙ্ক সম্পন্ন!', 'success'); }, 300);
             } catch (e) { 
@@ -917,17 +964,24 @@
             
             try {
                 updateProgress(60);
-                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addSubCategory', parent, name, limit }) });
+                const response = await fetch(SCRIPT_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ action: 'addSubCategory', parent, name, limit }) 
+                });
+                const data = await response.json();
                 updateProgress(80);
                 document.getElementById('newSubName').value = '';
                 document.getElementById('newSubLimit').value = '';
                 updateProgress(100);
                 setTimeout(() => {
                     hideLoading();
-                    showToast('✅ উপ-ক্যাটাগরি যোগ হয়েছে!', 'success');
+                    showToast('✅ উপ-ক্যাটাগরি যোগ হয়েছে! লিমিট: ৳' + limit, 'success');
                     fetchFromSheet();
                 }, 300);
-            } catch(e) { hideLoading(); showToast('❌ এরর!', 'error'); }
+            } catch(e) { 
+                hideLoading(); 
+                showToast('❌ এরর: ' + e.message, 'error'); 
+            }
         }
 
         async function updateLimit() {
