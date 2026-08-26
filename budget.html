@@ -582,56 +582,243 @@
         .delete-btn:hover {
             background: #b91c1c;
         }
+        
+        /* === EDIT MODE STYLES - FIXED === */
         .edit-mode {
             background: #fef9c3 !important;
             border-color: #eab308 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            padding: 8px 14px !important;
+            flex-wrap: nowrap !important;
         }
-        .edit-mode .entry-info input {
-            border: 1px solid #eab308;
-            border-radius: 6px;
-            padding: 2px 6px;
-            font-size: 12px;
-            width: 100%;
-            max-width: 200px;
+        .edit-mode .entry-info {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 8px !important;
+            flex: 2 !important;
+            min-width: 0 !important;
+            flex-wrap: wrap !important;
+        }
+        .edit-mode .entry-info .edit-header {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 4px 8px !important;
+            font-size: 10px !important;
+            color: #6b7280 !important;
+            align-items: center !important;
+        }
+        .edit-mode .entry-info .edit-header span {
+            background: #e2e8f0;
+            padding: 0 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+        .edit-mode .entry-info .edit-header .sub-display {
+            font-weight: 600;
+            color: #1e293b;
+            background: #dbeafe;
+            padding: 0 10px;
+            border-radius: 4px;
+        }
+        .edit-mode .entry-info .edit-note-container {
+            display: flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+            flex: 1 !important;
+            min-width: 80px !important;
+        }
+        .edit-mode .entry-info .edit-note-container label {
+            font-size: 10px !important;
+            font-weight: 600 !important;
+            color: #6b7280 !important;
+            white-space: nowrap !important;
+        }
+        .edit-mode .entry-info .edit-note-container input {
+            border: 1px solid #eab308 !important;
+            border-radius: 6px !important;
+            padding: 3px 6px !important;
+            font-size: 12px !important;
+            flex: 1 !important;
+            min-width: 50px !important;
+            height: 28px !important;
+            background: white !important;
+        }
+        .edit-mode .entry-amount {
+            display: flex !important;
+            align-items: center !important;
+            margin: 0 4px !important;
+            flex: 0 0 auto !important;
         }
         .edit-mode .entry-amount input {
-            border: 1px solid #eab308;
-            border-radius: 6px;
-            padding: 2px 6px;
-            font-size: 14px;
-            width: 100px;
-            text-align: right;
+            border: 1px solid #eab308 !important;
+            border-radius: 6px !important;
+            padding: 3px 6px !important;
+            font-size: 13px !important;
+            width: 90px !important;
+            text-align: right !important;
+            height: 28px !important;
+            background: white !important;
+        }
+        .edit-mode .entry-actions {
+            display: flex !important;
+            gap: 4px !important;
+            align-items: center !important;
+            flex: 0 0 auto !important;
         }
         .edit-mode .entry-actions .save-edit-btn {
-            background: #16a34a;
-            color: white;
-            border: none;
-            padding: 4px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
+            background: #16a34a !important;
+            color: white !important;
+            border: none !important;
+            padding: 3px 12px !important;
+            border-radius: 6px !important;
+            font-size: 11px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: 0.2s !important;
+            height: 28px !important;
+            display: flex !important;
+            align-items: center !important;
+            white-space: nowrap !important;
         }
         .edit-mode .entry-actions .save-edit-btn:hover {
-            background: #15803d;
+            background: #15803d !important;
         }
         .edit-mode .entry-actions .cancel-edit-btn {
-            background: #6b7280;
-            color: white;
-            border: none;
-            padding: 4px 12px;
-            border-radius: 8px;
-            font-size: 11px;
+            background: #6b7280 !important;
+            color: white !important;
+            border: none !important;
+            padding: 3px 12px !important;
+            border-radius: 6px !important;
+            font-size: 11px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: 0.2s !important;
+            height: 28px !important;
+            display: flex !important;
+            align-items: center !important;
+            white-space: nowrap !important;
+        }
+        .edit-mode .entry-actions .cancel-edit-btn:hover {
+            background: #4b5563 !important;
+        }
+
+        /* Profile stats center alignment */
+        .profile-stat {
+            text-align: center;
+        }
+        .profile-stat p {
+            text-align: center;
+        }
+        .profile-stat .stat-value {
+            text-align: center;
+            display: block;
+        }
+
+        /* Warning modal fix - single instance */
+        #warningModal .btn-no-warning {
+            background: #e2e8f0;
+            color: #1e293b;
+            padding: 8px 24px;
+            border-radius: 12px;
             font-weight: 600;
+            border: none;
             cursor: pointer;
             transition: 0.2s;
         }
-        .edit-mode .entry-actions .cancel-edit-btn:hover {
-            background: #4b5563;
+        #warningModal .btn-no-warning:hover {
+            background: #cbd5e1;
         }
-        .date-picker-hidden {
-            display: none !important;
+        #warningModal .btn-yes-warning {
+            background: #dc2626;
+            color: white;
+            padding: 8px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        #warningModal .btn-yes-warning:hover {
+            background: #b91c1c;
+        }
+        #warningModal .btn-yes-warning.save-yes {
+            background: #16a34a;
+        }
+        #warningModal .btn-yes-warning.save-yes:hover {
+            background: #15803d;
+        }
+        .warning-modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 24px 28px;
+            max-width: 380px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .warning-modal-content h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .warning-modal-content p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .warning-modal-content .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        /* Report Modal Close Button */
+        .report-close-btn {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #4f46e5;
+            color: white;
+            padding: 12px;
+            border-radius: 0 0 32px 32px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 15px;
+            text-align: center;
+            margin-top: 16px;
+        }
+        .report-close-btn:hover {
+            background: #4338ca;
+        }
+
+        .report-modal-content {
+            max-height: 65vh;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 0;
+        }
+        
+        /* Responsive fix for edit mode on small screens */
+        @media (max-width: 640px) {
+            .edit-mode {
+                flex-wrap: wrap !important;
+            }
+            .edit-mode .entry-info {
+                flex: 1 1 100% !important;
+            }
+            .edit-mode .entry-amount {
+                flex: 1 0 auto !important;
+            }
+            .edit-mode .entry-actions {
+                flex: 0 0 auto !important;
+            }
         }
     </style>
 </head>
@@ -644,7 +831,7 @@
                 <h2 class="text-xl font-bold text-emerald-900 mb-4 text-center">আর্থিক হিসাব এন্ট্রি করুন ✍️</h2>
                 <div class="flex bg-emerald-50 p-1 rounded-2xl mb-6">
                     <button onclick="setMode('expense')" id="modeExp" class="tab-btn flex-1 py-3 rounded-xl font-bold text-sm active">খরচ</button>
-                    <button onclick="setMode('adjustment')" id="modeAdj" class="tab-btn flex-1 py-3 rounded-xl font-bold text-sm">সংশোধন</button>
+                    <button onclick="setMode('adjustment')" id="modeAdj" class="tab-btn flex-1 py-3 rounded-xl font-bold text-sm">উপার্জন</button>
                     <button onclick="toggleCategoryManager()" id="catTabBtn" class="tab-btn flex-1 py-3 rounded-xl font-bold text-sm category-tab-inactive">অ্যাডমিন</button>
                 </div>
 
@@ -669,7 +856,7 @@
 
                     <div id="adjFields" class="hidden space-y-4">
                         <select id="adjMain" onchange="updateAdjSub()" class="input-box">
-                            <option value="">সংশোধন খাত বেছে নিন</option>
+                            <option value="">মূল খাত বেছে নিন</option>
                             <option value="Earnings">Earnings (আয়)</option>
                             <option value="Liability">Liability (ঋণ)</option>
                             <option value="Investment">Investment (বিনিয়োগ)</option>
@@ -759,21 +946,21 @@
                 </h3>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div class="p-3 bg-amber-50 rounded-2xl border border-amber-100">
+                    <div class="p-3 bg-amber-50 rounded-2xl border border-amber-100 profile-stat">
                         <p class="text-[9px] font-bold text-amber-600 uppercase">Balance</p>
-                        <p id="statBalance" class="font-black text-amber-800 text-sm md:text-base">৳ ০.০০</p>
+                        <p id="statBalance" class="font-black text-amber-800 text-sm md:text-base stat-value">৳ ০.০০</p>
                     </div>
-                    <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-100">
+                    <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-100 profile-stat">
                         <p class="text-[9px] font-bold text-emerald-600 uppercase">Savings</p>
-                        <p id="statSavings" class="font-black text-emerald-700 text-sm md:text-base">৳ ০.০০</p>
+                        <p id="statSavings" class="font-black text-emerald-700 text-sm md:text-base stat-value">৳ ০.০০</p>
                     </div>
-                    <div class="p-3 bg-red-50 rounded-2xl border border-red-100">
+                    <div class="p-3 bg-red-50 rounded-2xl border border-red-100 profile-stat">
                         <p class="text-[9px] font-bold text-red-600 uppercase">Liability</p>
-                        <p id="statLiability" class="font-black text-red-700 text-sm md:text-base">৳ ০.০০</p>
+                        <p id="statLiability" class="font-black text-red-700 text-sm md:text-base stat-value">৳ ০.০০</p>
                     </div>
-                    <div class="p-3 bg-blue-50 rounded-2xl border border-blue-100">
+                    <div class="p-3 bg-blue-50 rounded-2xl border border-blue-100 profile-stat">
                         <p class="text-[9px] font-bold text-blue-600 uppercase">Investment</p>
-                        <p id="statInvestment" class="font-black text-blue-700 text-sm md:text-base">৳ ০.০০</p>
+                        <p id="statInvestment" class="font-black text-blue-700 text-sm md:text-base stat-value">৳ ০.০০</p>
                     </div>
                 </div>
             </div>
@@ -790,13 +977,14 @@
     </main>
 
     <div id="reportModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[999] flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-3xl rounded-[32px] p-6 md:p-8 relative shadow-2xl overflow-hidden">
-            <button onclick="toggleReport()" class="absolute top-4 right-6 text-slate-400 hover:text-black text-2xl">✕</button>
-            <h2 class="text-xl font-bold text-emerald-900 mb-6 flex items-center gap-2">
+        <div class="bg-white w-full max-w-3xl rounded-[32px] p-6 md:p-8 relative shadow-2xl overflow-hidden flex flex-col" style="max-height:90vh;">
+            <button onclick="toggleReport()" class="absolute top-4 right-6 text-slate-400 hover:text-black text-2xl z-10">✕</button>
+            <h2 class="text-xl font-bold text-emerald-900 mb-6 flex items-center gap-2 pr-8">
                 <span class="p-2 bg-emerald-100 rounded-lg text-lg">📊</span> ২৫ তারিখের সাইকেল সামারি
             </h2>
             <div id="reportSummary" class="report-summary-grid"></div>
-            <div id="modalContent" class="space-y-3 max-h-[70vh] overflow-y-auto pr-2"></div>
+            <div id="modalContent" class="space-y-3 report-modal-content"></div>
+            <button onclick="toggleReport()" class="report-close-btn">✕ বন্ধ করুন</button>
         </div>
     </div>
 
@@ -824,6 +1012,18 @@
         </div>
     </div>
 
+    <!-- Warning Modal - Single instance -->
+    <div id="warningModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[99997] flex items-center justify-center p-4">
+        <div class="warning-modal-content">
+            <h3 id="warningTitle">⚠️ নিশ্চিত করুন</h3>
+            <p id="warningMessage">আপনি কি এই পরিবর্তন সংরক্ষণ করতে চান?</p>
+            <div class="btn-group">
+                <button id="warningNoBtn" class="btn-no-warning">না</button>
+                <button id="warningYesBtn" class="btn-yes-warning">হ্যাঁ</button>
+            </div>
+        </div>
+    </div>
+
     <button onclick="fetchFromSheet()" class="sync-btn-floating">
         <span id="syncIcon" class="text-xl">🔄</span>
     </button>
@@ -839,7 +1039,9 @@
         let currentMode = 'expense';
         let isCategoryManagerOpen = false;
         let isCategoryListOpen = false;
-        let editingEntryId = null; // entry id being edited
+        let editingEntryId = null;
+        let warningResolve = null;
+        let warningAction = null;
 
         // ================== DEFAULT DATA ==================
 
@@ -952,6 +1154,46 @@
         function hideLoading() {
             document.getElementById('loadingModal').classList.remove('active');
             document.getElementById('progressBar').style.width = '0%';
+        }
+
+        // ================== WARNING MODAL ==================
+
+        function showWarning(title, message, isSave = true) {
+            return new Promise((resolve) => {
+                document.getElementById('warningTitle').textContent = title;
+                document.getElementById('warningMessage').textContent = message;
+                const yesBtn = document.getElementById('warningYesBtn');
+                if (isSave) {
+                    yesBtn.className = 'btn-yes-warning save-yes';
+                    yesBtn.textContent = 'হ্যাঁ, সেভ করুন';
+                } else {
+                    yesBtn.className = 'btn-yes-warning';
+                    yesBtn.textContent = 'হ্যাঁ, ডিলিট করুন';
+                }
+                document.getElementById('warningModal').classList.remove('hidden');
+                
+                const newYesBtn = yesBtn.cloneNode(true);
+                yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
+                
+                const noBtn = document.getElementById('warningNoBtn');
+                const newNoBtn = noBtn.cloneNode(true);
+                noBtn.parentNode.replaceChild(newNoBtn, noBtn);
+                
+                document.getElementById('warningYesBtn').onclick = function() {
+                    document.getElementById('warningModal').classList.add('hidden');
+                    resolve(true);
+                };
+                document.getElementById('warningNoBtn').onclick = function() {
+                    document.getElementById('warningModal').classList.add('hidden');
+                    resolve(false);
+                };
+                document.getElementById('warningModal').onclick = function(e) {
+                    if (e.target === this) {
+                        document.getElementById('warningModal').classList.add('hidden');
+                        resolve(false);
+                    }
+                };
+            });
         }
 
         // ================== CONFIRMATION ==================
@@ -1076,6 +1318,8 @@
             document.getElementById('expenseFields').classList.toggle('hidden', mode !== 'expense');
             document.getElementById('adjFields').classList.toggle('hidden', mode !== 'adjustment');
             updateCategoryTabState();
+            const subVal = document.getElementById('subCat').value;
+            if (subVal) checkOthers(subVal);
         }
 
         function toggleCategoryManager() {
@@ -1267,6 +1511,8 @@
             } else { infoDiv.innerHTML = ""; }
             document.getElementById('subCatInfo').innerHTML = "";
             updateSubDropdowns();
+            const subVal = sub.value;
+            if (subVal) checkOthers(subVal);
         }
 
         function updateSubDetailedInfo(subVal) {
@@ -1302,7 +1548,12 @@
         }
 
         function checkOthers(val) {
-            document.getElementById('noteContainer').classList.toggle('hidden', val !== 'Others' && !val.includes('Others'));
+            const noteContainer = document.getElementById('noteContainer');
+            if (val && val !== '') {
+                noteContainer.classList.remove('hidden');
+            } else {
+                noteContainer.classList.add('hidden');
+            }
         }
 
         function updateAdjSub() {
@@ -1331,6 +1582,8 @@
                 const sorted = sortCategoriesWithOthersLast(adjSubCategories[main]);
                 sorted.forEach(s => sub.innerHTML += `<option value="${s}">${s}</option>`);
             }
+            const subVal = sub.value;
+            if (subVal) checkOthers(subVal);
         }
 
         function populateRemoveDropdowns() {
@@ -1439,19 +1692,28 @@
                 html += `<div class="${entryClass}" data-entry-id="${entryId}">`;
 
                 if (isEditing) {
+                    const fullSub = ex.sub;
+                    const noteMatch = fullSub.match(/\(([^)]+)\)$/);
+                    const noteText = noteMatch ? noteMatch[1] : '';
+                    const displaySub = noteMatch ? fullSub.replace(/\([^)]+\)$/, '').trim() : fullSub;
+
                     html += `
                         <div class="entry-info">
-                            <input type="text" id="edit_sub_${entryId}" value="${ex.sub}" class="edit-input">
-                            <div style="font-size:10px;color:#6b7280;margin-top:2px;">
-                                <span style="margin-left:6px;">${ex.mode === 'expense' ? 'খরচ' : 'সংশোধন'}</span>
-                                <span style="margin-left:6px;font-size:9px;color:#94a3b8;">ID: ${entryId}</span>
+                            <div class="edit-header">
+                                <span class="sub-display">${displaySub}</span>
+                                <span>${ex.mode === 'expense' ? 'খরচ' : 'উপার্জন'}</span>
+                                <span>ID: ${entryId}</span>
+                            </div>
+                            <div class="edit-note-container">
+                                <label>নোট:</label>
+                                <input type="text" id="edit_note_${entryId}" value="${noteText}" placeholder="নোট লিখুন...">
                             </div>
                         </div>
                         <div class="entry-amount">
                             <input type="number" id="edit_amount_${entryId}" value="${ex.amount}" step="0.01">
                         </div>
                         <div class="entry-actions">
-                            <button class="save-edit-btn" onclick="saveEdit('${entryId}')">💾 সেভ</button>
+                            <button class="save-edit-btn" onclick="confirmSaveEdit('${entryId}')">💾 সেভ</button>
                             <button class="cancel-edit-btn" onclick="cancelEdit()">বাতিল</button>
                         </div>
                     `;
@@ -1465,7 +1727,7 @@
                         <div class="entry-amount">৳ ${formatCurrency(ex.amount)}</div>
                         <div class="entry-actions">
                             <button class="edit-btn" onclick="startEdit('${entryId}')">✏️</button>
-                            <button class="delete-btn" onclick="deleteEntry('${entryId}')">🗑️</button>
+                            <button class="delete-btn" onclick="confirmDelete('${entryId}')">🗑️</button>
                         </div>
                     `;
                 }
@@ -1493,38 +1755,55 @@
             renderRecentEntries();
         }
 
+        function confirmSaveEdit(entryId) {
+            showWarning('⚠️ নিশ্চিত করুন', 'আপনি কি এই পরিবর্তন সংরক্ষণ করতে চান?', true).then((confirmed) => {
+                if (confirmed) {
+                    saveEdit(entryId);
+                }
+            });
+        }
+
+        function confirmDelete(entryId) {
+            const id = String(entryId);
+            const ex = expenses.find(ex => String(ex.entryId || ex.id || ex.entryNumber) === id);
+            if (!ex) return;
+            showWarning('⚠️ নিশ্চিত করুন', `"${ex.sub}" - ৳${formatCurrency(ex.amount)} এই এন্ট্রিটি ডিলিট করবেন?`, false).then((confirmed) => {
+                if (confirmed) {
+                    deleteEntry(entryId);
+                }
+            });
+        }
+
         async function saveEdit(entryId) {
             const id = String(entryId);
-            const subInput = document.getElementById(`edit_sub_${id}`);
             const amountInput = document.getElementById(`edit_amount_${id}`);
+            const noteInput = document.getElementById(`edit_note_${id}`);
 
-            if (!subInput || !amountInput) {
+            if (!amountInput) {
                 showToast('এডিট ফর্ম খুঁজে পাওয়া যায়নি!', 'error');
                 return;
             }
 
-            const newSub = subInput.value.trim();
             const newAmount = parseFloat(amountInput.value);
+            const newNote = noteInput ? noteInput.value.trim() : '';
 
-            if (!newSub || isNaN(newAmount) || newAmount < 0) {
-                showToast('সব তথ্য সঠিকভাবে দিন!', 'error');
+            if (isNaN(newAmount) || newAmount < 0) {
+                showToast('সঠিক টাকার পরিমাণ দিন!', 'error');
                 return;
             }
 
-            // Find the original entry
             const original = expenses.find(ex => String(ex.entryId || ex.id || ex.entryNumber) === id);
             if (!original) {
                 showToast('এন্ট্রি খুঁজে পাওয়া যায়নি!', 'error');
                 return;
             }
 
-            // Find main category from sub
-            let newMain = original.main;
-            for (let main in subCategories) {
-                if (subCategories[main].includes(newSub) || newSub.startsWith(main)) {
-                    newMain = main;
-                    break;
-                }
+            let newSub = original.sub;
+            const baseSub = newSub.replace(/\([^)]*\)$/, '').trim();
+            if (newNote) {
+                newSub = `${baseSub} (${newNote})`;
+            } else {
+                newSub = baseSub;
             }
 
             showLoading('এন্ট্রি আপডেট হচ্ছে...', 'গুগোল শীটে পরিবর্তন সংরক্ষণ করা হচ্ছে');
@@ -1534,7 +1813,7 @@
                 const payload = {
                     action: 'updateEntry',
                     entryId: id,
-                    newMain: newMain,
+                    newMain: original.main,
                     newSub: newSub,
                     newAmount: newAmount,
                     newMode: original.mode
@@ -1565,33 +1844,31 @@
             const ex = expenses.find(ex => String(ex.entryId || ex.id || ex.entryNumber) === id);
             if (!ex) return;
 
-            showConfirm('⚠️ এন্ট্রি ডিলিট করুন', `"${ex.sub}" - ৳${formatCurrency(ex.amount)} এই এন্ট্রিটি ডিলিট করবেন?`, async () => {
-                showLoading('এন্ট্রি ডিলিট হচ্ছে...', 'গুগোল শীট থেকে মুছে ফেলা হচ্ছে');
-                updateProgress(30);
+            showLoading('এন্ট্রি ডিলিট হচ্ছে...', 'গুগোল শীট থেকে মুছে ফেলা হচ্ছে');
+            updateProgress(30);
 
-                try {
-                    const payload = {
-                        action: 'deleteEntry',
-                        entryId: id
-                    };
-                    updateProgress(60);
-                    const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-                    const result = await response.json();
-                    if (result.error) {
-                        throw new Error(result.error);
-                    }
-                    updateProgress(80);
-                    updateProgress(100);
-                    setTimeout(() => {
-                        hideLoading();
-                        showToast('✅ এন্ট্রি ডিলিট হয়েছে!', 'success');
-                        fetchFromSheet();
-                    }, 300);
-                } catch (e) {
-                    hideLoading();
-                    showToast('❌ ডিলিট করতে সমস্যা: ' + e.message, 'error');
+            try {
+                const payload = {
+                    action: 'deleteEntry',
+                    entryId: id
+                };
+                updateProgress(60);
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const result = await response.json();
+                if (result.error) {
+                    throw new Error(result.error);
                 }
-            });
+                updateProgress(80);
+                updateProgress(100);
+                setTimeout(() => {
+                    hideLoading();
+                    showToast('✅ এন্ট্রি ডিলিট হয়েছে!', 'success');
+                    fetchFromSheet();
+                }, 300);
+            } catch (e) {
+                hideLoading();
+                showToast('❌ ডিলিট করতে সমস্যা: ' + e.message, 'error');
+            }
         }
 
         // ================== REPORT ==================
@@ -1622,12 +1899,16 @@
                 for (let cat of sortedKeys) {
                     let spent = spentStats[cat] || 0;
                     let budget = calculateMainBudget(cat);
+                    let remaining = budget - spent;
                     let p = budget > 0 ? Math.min((spent / budget) * 100, 100) : 0;
                     html += `
                             <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 report-cat-clickable" onclick="toggleSubDetails('${cat}')">
                                 <div class="flex justify-between items-center mb-2">
                                     <div><p class="font-bold text-emerald-900">${cat}</p><p class="text-[10px] text-emerald-500 font-bold uppercase">বরাদ্দ: ৳${formatCurrency(budget)}</p></div>
-                                    <p class="font-black ${spent > budget ? 'text-red-600' : 'text-emerald-800'}">৳ ${formatCurrency(spent)}</p>
+                                    <div class="text-right">
+                                        <p class="font-black ${spent > budget ? 'text-red-600' : 'text-emerald-800'}">খরচ: ৳${formatCurrency(spent)}</p>
+                                        <p class="font-bold text-xs ${remaining < 0 ? 'text-red-500' : 'text-emerald-600'}">বাকি: ৳${formatCurrency(remaining)}</p>
+                                    </div>
                                 </div>
                                 <div class="h-1.5 w-full bg-white rounded-full overflow-hidden">
                                     <div class="h-full ${spent > budget ? 'bg-red-500' : 'bg-emerald-500'}" style="width: ${p}%"></div>
@@ -1705,8 +1986,8 @@
             updateProgress(20);
 
             let finalSub = sub;
-            if (sub.includes('Others')) {
-                finalSub = note ? `${sub} (${note})` : sub;
+            if (note) {
+                finalSub = `${sub} (${note})`;
             }
 
             const payload = { date, amount, main, sub: finalSub, mode: currentMode, action: 'addEntry' };
@@ -1868,6 +2149,13 @@
         document.getElementById('parentCatSelect')?.addEventListener('change', populateRemoveDropdowns);
         document.getElementById('updateMainSelect')?.addEventListener('change', populateUpdateSubSelects);
         document.getElementById('updateSubSelect')?.addEventListener('change', showUpdateLimitFields);
+
+        document.getElementById('subCat')?.addEventListener('change', function() {
+            checkOthers(this.value);
+        });
+        document.getElementById('adjSub')?.addEventListener('change', function() {
+            checkOthers(this.value);
+        });
     </script>
 </body>
 </html>
