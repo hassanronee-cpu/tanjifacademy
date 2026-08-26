@@ -128,8 +128,10 @@
         .tab-btn:hover:not(.active) { background: #dcfce7; }
         .tab-btn.inactive-tab:hover { background: #c8e6c9; opacity: 1; }
         input, select, button, textarea { font-family: 'Kalpurush', 'Hind Siliguri', sans-serif; }
-        .category-tab-inactive { background: #e8f5e9 !important; color: #4a7c59 !important; opacity: 0.7; }
-        .category-tab-active { background: #16a34a !important; color: white !important; opacity: 1; }
+        .category-tab-inactive { background: #dbeafe !important; color: #1e3a8a !important; opacity: 0.8; border: 1px solid #bfdbfe; }
+        .category-tab-active { background: #2563eb !important; color: white !important; opacity: 1; border: 1px solid #2563eb; }
+        .report-btn { background: #4f46e5; color: white; transition: 0.3s; }
+        .report-btn:hover { background: #4338ca; transform: translateY(-2px); }
     </style>
 </head>
 <body>
@@ -258,7 +260,7 @@
                 </div>
             </div>
 
-            <button onclick="toggleReport()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-sm shadow-lg hover:bg-black transition-all flex items-center justify-center gap-2">
+            <button onclick="toggleReport()" class="w-full report-btn py-4 rounded-2xl font-bold text-sm shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
                 📊 বিস্তারিত মাসিক রিপোর্ট (২৫-২৪ তারিখ)
             </button>
 
@@ -308,7 +310,7 @@
     </button>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzOdvV0wqnPhgs4tDeMxj3tE1HscH7y8VVu56Xfy-NgfJUs5gAm6IFGZhhQVdl7qZyiQ/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_Xq-ZayQx7iTkcbs8wjPtkszchO2hDGnhe08tpF0ou9wLkoCNmtqaGf5gbm6Rv4tX1Q/exec";
 
         let mainBudgets = {};
         let subBudgets = {};
@@ -323,60 +325,60 @@
         function getDefaultSubBudgets() {
             return {
                 // Installment (কিস্তি)
-                "Loan (ঋণ পরিশোধ)": 15720,
-                "Bank Interest (ব্যাংক মুনাফা)": 0,
-                "Others (অন্যান্য)": 0,
+                "Installment (কিস্তি) - Loan (ঋণ পরিশোধ)": 15720,
+                "Installment (কিস্তি) - Bank Interest (ব্যাংক মুনাফা)": 0,
+                "Installment (কিস্তি) - Others (অন্যান্য)": 0,
                 // Credit Card (ক্রেডিট কার্ড)
-                "Dutch Bangla (ডাচ বাংলা ব্যাংক)": 100000,
-                "Others (অন্যান্য)": 0,
+                "Credit Card (ক্রেডিট কার্ড) - Dutch Bangla (ডাচ বাংলা ব্যাংক)": 100000,
+                "Credit Card (ক্রেডিট কার্ড) - Others (অন্যান্য)": 0,
                 // Homeland (মাতৃভূমি)
-                "Parents (বাবা-মা)": 10380,
-                "Village Cost (গ্রামের খরচ)": 0,
-                "Others (অন্যান্য)": 0,
+                "Homeland (মাতৃভূমি) - Parents (বাবা-মা)": 10380,
+                "Homeland (মাতৃভূমি) - Village Cost (গ্রামের খরচ)": 0,
+                "Homeland (মাতৃভূমি) - Others (অন্যান্য)": 0,
                 // Residential (আবাসস্থল)
-                "House Rent (বাসা ভাড়া)": 6000,
-                "Electricity (বিদ্যুৎ বিল)": 1000,
-                "Gas (গ্যাস বিল)": 1800,
-                "Water (পানি বিল)": 100,
-                "Internet (ইন্টারনেট বিল)": 650,
-                "Mobile Bill (মোবাইল বিল)": 300,
-                "Others (অন্যান্য)": 0,
+                "Residential (আবাসস্থল) - House Rent (বাসা ভাড়া)": 6000,
+                "Residential (আবাসস্থল) - Electricity (বিদ্যুৎ বিল)": 1000,
+                "Residential (আবাসস্থল) - Gas (গ্যাস বিল)": 1800,
+                "Residential (আবাসস্থল) - Water (পানি বিল)": 100,
+                "Residential (আবাসস্থল) - Internet (ইন্টারনেট বিল)": 650,
+                "Residential (আবাসস্থল) - Mobile Bill (মোবাইল বিল)": 300,
+                "Residential (আবাসস্থল) - Others (অন্যান্য)": 0,
                 // Sustenance (নিত্যপ্রয়োজনীয়)
-                "Rice (চাল)": 1100,
-                "Vegetable (শাক-সবজি)": 1500,
-                "Milk (দুধ)": 1000,
-                "Egg (ডিম)": 550,
-                "Fruits (ফলমূল)": 400,
-                "Fish (মাছ)": 3000,
-                "Beef (গরুর মাংস)": 1000,
-                "Chicken (মুরগির মাংস)": 500,
-                "Grocery (মুদি সওদা)": 2600,
-                "Stationary (স্টেশনারী)": 300,
-                "Dry Food (শুকনা খাবার)": 300,
-                "Others (অন্যান্য)": 0,
+                "Sustenance (নিত্যপ্রয়োজনীয়) - Rice (চাল)": 1100,
+                "Sustenance (নিত্যপ্রয়োজনীয়) - Vegetable (শাক-সবজি)": 1500,
+                "Sustenance (নিত্যপ্রয়োজনীয়) - Milk (দুধ)": 1000,
+                "Sustenance (নিত্যপ্রয়োজনীয়) - Egg (ডিম)": 550,
+                "Sustenance (নিত্যপ্রয়োজনীয়) - Fruits (ফলমূল)": 400,
+                "Sustenance (নিত্যপ্রয়োজনীয়) - Fish (মাছ)": 3000,
+                "Sustenance (নিত্যপ্রয়োজনীয়) - Beef (গরুর মাংস)": 1000,
+                "Sustenance (নিত্যপ্রয়োজনীয়) - Chicken (মুরগির মাংস)": 500,
+                "Sustenance (নিত্যপ্রয়োজনীয়) - Grocery (মুদি সওদা)": 2600,
+                "Sustenance (নিত্যপ্রয়োজনীয়) - Stationary (স্টেশনারী)": 300,
+                "Sustenance (নিত্যপ্রয়োজনীয়) - Dry Food (শুকনা খাবার)": 300,
+                "Sustenance (নিত্যপ্রয়োজনীয়) - Others (অন্যান্য)": 0,
                 // Transport (যাতায়াত)
-                "Workplace (অফিস যাতায়াত)": 1038,
-                "Others (অন্যান্য)": 0,
+                "Transport (যাতায়াত) - Workplace (অফিস যাতায়াত)": 1038,
+                "Transport (যাতায়াত) - Others (অন্যান্য)": 0,
                 // Charity (দাতব্য)
-                "Masjid (মসজিদ)": 500,
-                "Sadakah (সাদাকাহ)": 278,
-                "Others (অন্যান্য)": 0,
+                "Charity (দাতব্য) - Masjid (মসজিদ)": 500,
+                "Charity (দাতব্য) - Sadakah (সাদাকাহ)": 278,
+                "Charity (দাতব্য) - Others (অন্যান্য)": 0,
                 // Essential (অপরিহার্য)
-                "Learning (শিক্ষা)": 0,
-                "Medical (চিকিৎসা)": 0,
-                "Attire (পোশাক)": 0,
-                "Others (অন্যান্য)": 0,
+                "Essential (অপরিহার্য) - Learning (শিক্ষা)": 0,
+                "Essential (অপরিহার্য) - Medical (চিকিৎসা)": 0,
+                "Essential (অপরিহার্য) - Attire (পোশাক)": 0,
+                "Essential (অপরিহার্য) - Others (অন্যান্য)": 0,
                 // Emergency (জরুরি)
-                "Hospital (হাসপাতাল)": 0,
-                "Others (অন্যান্য)": 0,
+                "Emergency (জরুরি) - Hospital (হাসপাতাল)": 0,
+                "Emergency (জরুরি) - Others (অন্যান্য)": 0,
                 // Refreshment (প্রশান্তি)
-                "Tour (ভ্রমণ)": 520,
-                "Restaurant (রেস্তরা)": 0,
-                "Others (অন্যান্য)": 0,
+                "Refreshment (প্রশান্তি) - Tour (ভ্রমণ)": 520,
+                "Refreshment (প্রশান্তি) - Restaurant (রেস্তরা)": 0,
+                "Refreshment (প্রশান্তি) - Others (অন্যান্য)": 0,
                 // Savings (সঞ্চয়)
-                "DPS (ডিপিএস)": 0,
-                "FDR (এফডিআর)": 0,
-                "Others (অন্যান্য)": 0
+                "Savings (সঞ্চয়) - DPS (ডিপিএস)": 0,
+                "Savings (সঞ্চয়) - FDR (এফডিআর)": 0,
+                "Savings (সঞ্চয়) - Others (অন্যান্য)": 0
             };
         }
 
@@ -508,7 +510,8 @@
             if (!mainCat || !subCategories[mainCat]) return 0;
             let total = 0;
             subCategories[mainCat].forEach(sub => {
-                total += subBudgets[sub] || 0;
+                const key = `${mainCat} - ${sub}`;
+                total += subBudgets[key] || 0;
             });
             return total;
         }
@@ -631,24 +634,31 @@
             let currentLimit = 0, categoryName = '';
             
             if(sub) {
-                currentLimit = subBudgets[sub] || 0;
+                const key = `${main} - ${sub}`;
+                currentLimit = subBudgets[key] || 0;
                 categoryName = sub;
-                if(main) {
-                    const mainTotal = calculateMainBudget(main);
-                    mainDisplay.classList.remove('hidden');
-                    mainDisplay.innerHTML = `📊 ${main} এর মোট লিমিট: ৳${mainTotal} (সব উপ-ক্যাটাগরির যোগফল)`;
-                }
                 display.innerHTML = `বর্তমান লিমিট: ৳${currentLimit} (${categoryName})`;
                 document.getElementById('updateLimitValue').placeholder = `নতুন লিমিট (বর্তমান: ৳${currentLimit})`;
                 document.getElementById('updateLimitValue').disabled = false;
                 document.getElementById('updateLimitValue').classList.remove('opacity-50');
+                
+                // Show main category total
+                if(main) {
+                    const mainTotal = calculateMainBudget(main);
+                    mainDisplay.classList.remove('hidden');
+                    mainDisplay.innerHTML = `📊 ${main} এর মোট লিমিট: ৳${mainTotal} (সব উপ-ক্যাটাগরির যোগফল)`;
+                } else {
+                    mainDisplay.classList.add('hidden');
+                }
             } else if(main) {
-                // Show warning - must select sub-category
+                // Show only main category total when only main is selected
+                const mainTotal = calculateMainBudget(main);
+                mainDisplay.classList.remove('hidden');
+                mainDisplay.innerHTML = `📊 ${main} এর মোট লিমিট: ৳${mainTotal} (সব উপ-ক্যাটাগরির যোগফল)`;
                 display.innerHTML = `⚠️ উপ-ক্যাটাগরি নির্বাচন করুন - মূল ক্যাটাগরিতে সরাসরি লিমিট সেট করা যাবে না!`;
                 document.getElementById('updateLimitValue').disabled = true;
                 document.getElementById('updateLimitValue').classList.add('opacity-50');
                 document.getElementById('updateLimitValue').placeholder = 'প্রথমে উপ-ক্যাটাগরি নির্বাচন করুন';
-                mainDisplay.classList.add('hidden');
             } else {
                 display.innerHTML = '';
                 document.getElementById('updateLimitValue').placeholder = 'নতুন লিমিট';
@@ -685,7 +695,8 @@
             const main = document.getElementById('mainCat').value;
             if (subVal && main) {
                 const spent = getCycleSpentBySub(main, subVal);
-                const budget = subBudgets[subVal] || 0;
+                const key = `${main} - ${subVal}`;
+                const budget = subBudgets[key] || 0;
                 const remaining = budget - spent;
                 let html = `<span class="budget-info-tag bg-slate-100 text-slate-600">খরচ: ৳${spent}</span>`;
                 if (budget > 0) {
@@ -933,12 +944,13 @@
             if(!sub) { showToast('একটি উপ-ক্যাটাগরি নির্বাচন করুন!', 'error'); return; }
             if(isNaN(newLimit) || newLimit < 0) { showToast('সঠিক লিমিট দিন!', 'error'); return; }
             
+            const key = `${main} - ${sub}`;
             showLoading('লিমিট আপডেট হচ্ছে...', 'গুগোল শীটে আপডেট করা হচ্ছে');
             updateProgress(30);
             
             try {
                 updateProgress(60);
-                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'updateLimit', category: sub, newLimit, main, sub }) });
+                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'updateLimit', category: key, newLimit, main, sub }) });
                 updateProgress(80);
                 document.getElementById('updateLimitValue').value = '';
                 updateProgress(100);
