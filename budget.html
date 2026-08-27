@@ -1718,11 +1718,26 @@
                         </div>
                     `;
                 } else {
+                    // Extract note from sub field if present
+                    let noteDisplay = '';
+                    let subDisplay = ex.sub;
+                    const noteMatch = ex.sub.match(/\(([^)]+)\)$/);
+                    if (noteMatch) {
+                        noteDisplay = noteMatch[1];
+                        subDisplay = ex.sub.replace(/\([^)]+\)$/, '').trim();
+                    }
+
+                    // Show note if exists else show "কোন নোট নেই"
+                    const noteHtml = noteDisplay ? 
+                        `<span style="font-size:9px;color:#6b7280;background:#e5e7eb;padding:0 6px;border-radius:4px;">📝 ${noteDisplay}</span>` :
+                        `<span style="font-size:9px;color:#9ca3af;background:#f3f4f6;padding:0 6px;border-radius:4px;">কোন নোট নেই</span>`;
+
                     html += `
                         <div class="entry-info">
-                            <b>${ex.sub}</b>
+                            <b>${subDisplay}</b>
                             <br><span class="text-slate-400 text-[9px]">${formatTimestamp(ex.timestamp) || ex.date}</span>
                             <span style="font-size:8px;color:#94a3b8;margin-left:4px;">#${entryId}</span>
+                            ${noteHtml}
                         </div>
                         <div class="entry-amount">৳ ${formatCurrency(ex.amount)}</div>
                         <div class="entry-actions">
@@ -1803,7 +1818,8 @@
             if (newNote) {
                 newSub = `${baseSub} (${newNote})`;
             } else {
-                newSub = baseSub;
+                // If note is empty, add "কোন নোট নেই" as default note
+                newSub = `${baseSub} (কোন নোট নেই)`;
             }
 
             showLoading('এন্ট্রি আপডেট হচ্ছে...', 'গুগোল শীটে পরিবর্তন সংরক্ষণ করা হচ্ছে');
@@ -1973,7 +1989,7 @@
                 'adjMain').value;
             const sub = currentMode === 'expense' ? document.getElementById('subCat').value : document.getElementById(
                 'adjSub').value;
-            const note = document.getElementById('customNote').value;
+            let note = document.getElementById('customNote').value.trim();
             const amount = document.getElementById('amount').value;
             const date = document.getElementById('date').value;
 
@@ -1982,13 +1998,15 @@
                 return;
             }
 
+            // If note is empty, set default note "কোন নোট নেই"
+            if (!note) {
+                note = 'কোন নোট নেই';
+            }
+
             showLoading('এন্ট্রি সেভ হচ্ছে...', 'গুগোল শীটে ডেটা লেখা হচ্ছে');
             updateProgress(20);
 
-            let finalSub = sub;
-            if (note) {
-                finalSub = `${sub} (${note})`;
-            }
+            let finalSub = `${sub} (${note})`;
 
             const payload = { date, amount, main, sub: finalSub, mode: currentMode, action: 'addEntry' };
 
