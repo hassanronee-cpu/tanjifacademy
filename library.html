@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>দৈনিক চেকলিস্ট</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Hind Siliguri', sans-serif; 
+            background-color: #f0fdf4; 
+            min-height: 100vh;
+            display: flex; 
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+        .main-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+            gap: 15px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+        .section-column {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+            border: 1px solid #dcfce7; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .section-column:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08);
+        }
+        .task-list {
+            overflow-y: auto; 
+            flex-grow: 1;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 12px;
+            margin-bottom: 2px;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 600; 
+            color: #1e293b;
+            cursor: pointer;
+            transition: 0.2s;
+            border-bottom: 1px solid #f8fafc;
+        }
+        .checkbox-item:hover {
+            background: #f0fdf4;
+        }
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #10b981;
+            cursor: pointer;
+            flex-shrink: 0;
+            order: 2;
+        }
+        .task-text {
+            order: 1;
+        }
+        input[type="checkbox"]:checked + .task-text {
+            color: #94a3b8;
+            text-decoration: line-through;
+        }
+        /* তারিখ ইনপুট স্টাইল */
+        .date-picker {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 12px;
+            border-radius: 10px;
+            outline: none;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .date-picker:focus {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: #ffffff;
+        }
+        /* চেকলিস্ট হেডিং */
+        .checklist-heading {
+            font-size: 2.2rem; /* আরও বড় করা হয়েছে */
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header-title {
+            font-size: 16px;
+            font-weight: 800;
+            text-align: center;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+            border-bottom: 2px solid;
+        }
+        .task-list::-webkit-scrollbar { width: 4px; }
+        .task-list::-webkit-scrollbar-thumb { background: #d1fae5; border-radius: 10px; }
+    </style>
+</head>
+<script src="security.js"></script>
+<body>
+
+    <header class="bg-emerald-900 py-6 px-8 flex flex-col items-center justify-center sticky top-0 z-50 shadow-lg border-b border-emerald-800 gap-2">
+        <h2 class="checklist-heading">চেকলিস্ট</h2>
+        <input type="date" id="selectedDate" class="date-picker">
+    </header>
+
+    <main class="main-container">
+        <section class="section-column">
+            <h3 class="header-title text-emerald-700 border-emerald-100">📖 কুরআননিক</h3>
+            <div class="task-list" id="group-quranic">
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">১. লেভেল-১ ক্রিয়া পড়া</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">২. লেভেল-১ যাচাই</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৩. লেভেল-২ ক্রিয়া পড়া</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৪. লেভেল-২ যাচাই</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৫. বাকারার তাফসীর</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৬. ১৫০ শব্দ যাচাই</span></label>
+            </div>
+        </section>
+
+        <section class="section-column">
+            <h3 class="header-title text-blue-700 border-blue-100">🗣️ লুগাতুল</h3>
+            <div class="task-list" id="group-lughatul">
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">১. লুগাতুল ক্লাস</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">২. লুগাতুল শব্দ</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৩. লুগাতুল ব্যাকরণ</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৪. ৩ মিনিট বলা</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৫. শেখা শব্দ লেখা</span></label>
+            </div>
+        </section>
+
+        <section class="section-column">
+            <h3 class="header-title text-rose-700 border-rose-100">🕌 হিফজুল</h3>
+            <div class="task-list" id="group-hifzul">
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">১. আধা পৃষ্ঠা মুখস্ত</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">২. সুন্নতে রিভিশন</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৩. ৩ পৃষ্ঠা দেখা</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৪. ৩ পৃষ্ঠা শোনা</span></label>
+            </div>
+        </section>
+
+        <section class="section-column">
+            <h3 class="header-title text-orange-700 border-orange-100">☀️ জাগ্রত সকাল</h3>
+            <div class="task-list" id="group-sokal">
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">১. সকালে হাঁটা</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">২. ব্যায়াম করা</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৩. সজাগ থাকা</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৪. পাওয়ার ন্যাপ</span></label>
+            </div>
+        </section>
+
+        <section class="section-column">
+            <h3 class="header-title text-cyan-700 border-cyan-100">🕋 সালাত</h3>
+            <div class="task-list" id="group-salat">
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">১. ফজর (মসজিদ)</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">২. জোহর (মসজিদ)</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৩. আসর (মসজিদ)</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৪. মাগরিব (মসজিদ)</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৫. এশা (মসজিদ)</span></label>
+            </div>
+        </section>
+
+        <section class="section-column">
+            <h3 class="header-title text-purple-700 border-purple-100">📋 বিবিধ</h3>
+            <div class="task-list" id="group-bibidho">
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">১. খরচের হিসাব</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">২. যেকোনো ধৈর্য</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৩. বই লেখা</span></label>
+                <label class="checkbox-item"><input type="checkbox"><span class="task-text">৪. বাবা-মা খোঁজ</span></label>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white/90 backdrop-blur-md py-5 flex justify-center items-center border-t border-emerald-100">
+        <button onclick="submitData()" id="saveBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-12 py-3 rounded-xl font-bold transition-all transform active:scale-95 shadow-lg flex items-center gap-2">
+            <span>তথ্য সেভ করুন</span> 💾
+        </button>
+    </footer>
+
+    <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwdBzUHNyRZEhd42SBwzG387M-TiX-vy4ZUNHWGZkwSeFPfip89_AIO_C0Sk3IZwaCz/exec';
+
+    window.onload = function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('selectedDate').value = today;
+    };
+
+    function getTasks(groupId) {
+        const checks = document.querySelectorAll(`#${groupId} input[type="checkbox"]:checked`);
+        return Array.from(checks).map(c => c.nextElementSibling.textContent.trim()).join(", ") || "X";
+    }
+
+    async function submitData() {
+        const date = document.getElementById('selectedDate').value;
+        const btn = document.getElementById('saveBtn');
+        btn.disabled = true;
+        btn.innerHTML = "সেভ হচ্ছে...";
+
+        const payload = {
+            date: date,
+            quranic: getTasks('group-quranic'),
+            lughatul: getTasks('group-lughatul'),
+            hifzul: getTasks('group-hifzul'),
+            sokal: getTasks('group-sokal'),
+            salat: getTasks('group-salat'),
+            bibidho: getTasks('group-bibidho')
+        };
+
+        try {
+            await fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
+            alert("সফলভাবে সেভ হয়েছে, রনি ভাই!");
+        } catch (e) {
+            alert("ত্রুটি হয়েছে!");
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = "তথ্য সেভ করুন 💾";
+        }
+    }
+</script>
+</body>
+</html>

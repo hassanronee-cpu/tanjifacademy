@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সাফল্যের রোডম্যাপ | মিশন ২০২৬</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .islamic-pattern {
+            background-image: url('https://www.transparenttextures.com/patterns/islamic-art.png');
+            background-color: #064e3b;
+        }
+
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f1f5f9;
+    background-image: url("https://www.transparenttextures.com/patterns/islamic-art.png");
+    background-attachment: fixed; /* স্ক্রল করার সময় ব্যাকগ্রাউন্ড স্থির থাকবে */ }
+        .score-box-floating {
+            position: fixed; bottom: 10px; left: 20px; z-index: 9999;
+            background: linear-gradient(135deg, #064e3b 0%, #166534 100%);
+            color: white; padding: 12px 20px; border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center;
+        }
+        .card-sm { 
+            background: #f0fdf4; border-radius: 12px; padding: 1rem; 
+            border: 1px solid #bbf7d0; transition: 0.2s;
+        }
+        .task-item { 
+            display: flex; align-items: center; justify-content: space-between; 
+            margin-bottom: 0.4rem; font-size: 0.95rem; background: #ffffff; 
+            padding: 6px 10px; border-radius: 6px; border: 1px solid #f1f5f9;
+        }
+        .point-tag { font-size: 0.75rem; color: #059669; font-weight: bold; }
+        input[type="checkbox"] { width: 1.1rem; height: 1.1rem; accent-color: #059669; cursor: pointer; }
+/* সেভ বাটন বাম পাশে ফ্রিজ করার জন্য */
+.save-btn-floating {
+    position: fixed; 
+    bottom: 35px; 
+    right: 20px; 
+    z-index: 9999;
+
+    /* 👉 এই অংশটা score-box থেকে কপি */
+    background: linear-gradient(135deg, #064e3b 0%, #166534 100%);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+    font-weight: bold;
+    transition: 0.3s;
+}
+.save-btn-floating:hover { background: #166534; transform: scale(1.05); }
+.save-btn-floating:active { transform: scale(0.95); }
+
+/* বডির নিচে প্যাডিং যাতে বাটন কন্টেন্ট ঢেকে না ফেলে */
+body { padding-bottom: 100px; }
+/* রিপোর্ট বাটনকে সেভ বাটনের উপরে ফিক্স করার জন্য */
+.report-btn-floating {
+    position: fixed; 
+    bottom: 95px; /* সেভ বাটন ২৫ পিক্সেল আর প্যাডিং মিলিয়ে এটা ৯৫-এ দিলে ঠিক উপরে বসবে */
+    right: 20px; 
+    z-index: 9999;
+    background: #1d4ed8; /* ব্লু কালার */
+    color: white;
+    padding: 9px 29px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    font-weight: bold;
+    transition: 0.3s;
+}
+.report-btn-floating:hover { background: #1e40af; transform: scale(1.05); }
+.save-btn-floating {
+    /* নিচের বার থেকে নিরাপদ দূরত্ব + আপনার কাস্টম গ্যাপ */
+    bottom: calc(10px + env(safe-area-inset-bottom)); 
+}
+
+.report-btn-floating {
+    /* সেভ বাটন যদি নিচে থাকে, তবে তার থেকে ৮০px উপরে */
+    bottom: calc(80px + env(safe-area-inset-bottom));
+}
+.floating-btn-common {
+    position: fixed;
+    right: 20px; /* ডান পাশ থেকে গ্যাপ */
+    width: 60px; /* মোবাইলের জন্য পারফেক্ট সাইজ */
+    height: 60px;
+    border-radius: 20px;
+    z-index: 10000; /* যেন আইফ্রেমের অন্য সবকিছুর উপরে থাকে */
+}
+body {
+    /* মোবাইল ব্রাউজারের ভিউপোর্ট হাইট ফিক্স */
+    min-height: -webkit-fill-available; 
+    padding-bottom: 0px; /* বাটনগুলোর জন্য নিচের দিকে বাড়তি জায়গা রাখা */
+}
+/* লোডিং স্পিনার অ্যানিমেশন */
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 8px;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+.hidden-spinner { display: none; }
+    </style>
+</head>
+<script src="security.js"></script>
+
+<body>
+    <div class="score-box-floating">
+        <span class="block text-xs opacity-80">অর্জিত পয়েন্ট</span>
+        <span id="total-points" class="text-2xl font-bold">০</span>
+    </div>
+    <header class="islamic-pattern text-white py-6 text-center mb-10 shadow-inner">
+        <div class="max-w-2xl mx-auto px-6">
+            <h1 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">আমার আজকের কাজ</h1>
+            <p class="text-lg opacity-80 italic font-light">✨ “টানা ৬ মাস ব্যবহারিক প্রয়োগে ফলাফল দৃশ্যমান হয়” ✨</p>
+        </div>
+    </header>
+<main class="max-w-6xl mx-auto p-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+<div class="card-sm">
+            <h2 class="font-bold text-green-800 mb-3 border-b border-green-200 pb-1">জাগ্রত সকাল</h2>
+            <div class="task-item"><a href="quran.html"  class="hover:text-green-700 ">মুখস্ত ২ পৃষ্ঠা কুরআন দিয়ে তাহাজ্জুদ</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="তাহাজ্জুদ" onchange="calc()"></div></div>
+            <div class="task-item"><a href="habit-2026.html"  class="hover:text-green-700 ">প্রতিজ্ঞা পড়া সকাল ও রাতে</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="প্রতিজ্ঞা পাঠ" onchange="calc()"></div></div>
+            <div class="task-item"><a href="https://quran.com/36"  class="hover:text-green-700 ">সূরা ইয়াসিন পড়তে হবে</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="সূরা ইয়াসিন" onchange="calc()"></div></div>
+            <div class="task-item"><a href="daily_exercise_routine_v2.html"  class="hover:text-green-700 ">শারীরিক ব্যায়াম</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="সকালবেলা ব্যায়াম" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-blue-800 mb-3 border-b border-blue-200 pb-1">চর্চা</h2>
+            <div class="task-item"><a href="habit-01.html"  class="hover:text-blue-700 ">সকল সালাত মসজিদে জামায়াতে</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="জামায়াতে সালাত" onchange="calc()"></div></div>
+            <div class="task-item"><a href="quran.html"  class="hover:text-blue-700 ">সুন্নত সালাতে কুরআন রিভিশন</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="সুন্নতে কুরআন রিভিশন" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#"  class="hover:text-blue-700 ">অল্প হলেও শরীর চর্চা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="শরীর চর্চা" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#"  class="hover:text-blue-700 ">অল্প হলেও ভাষা চর্চা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="ভাষা চর্চা" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-amber-800 mb-3 border-b border-amber-200 pb-1">জ্ঞানার্জন</h2>
+            <div class="task-item"><a href="https://www.youtube.com/playlist?list=PLQ6dqMJASsjQhn1jddaSEzkbOfZIJp3Jp" target="_blank" class="hover:text-amber-700 ">ইসলামিক লেকচার শোনা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="ইসলামিক লেকচার" onchange="calc()"></div></div>
+            <div class="task-item"><a href="https://www.hadithbd.com/quran/"  class="hover:text-amber-700 ">তাফসীর ও ফিকহ পড়া</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="তাফসীর ও ফিকহ" onchange="calc()"></div></div>
+            <div class="task-item"><a href="https://www.hadithbd.com/books/"  class="hover:text-amber-700 ">সাধারণ বই পড়া</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="সাধারণ বই" onchange="calc()"></div></div>
+            <div class="task-item"><a href="https://www.hadithbd.com/hadith/"  class="hover:text-amber-700 ">হাদিস পড়া</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="হাদিস পড়া" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-indigo-800 mb-3 border-b border-indigo-200 pb-1">লুগাতুল অ্যারাবিক</h2>
+            <div class="task-item"><a href="https://www.youtube.com/playlist?list=PLYrMOTGcv-ZuLhUhU06eeVzspN2QDVh2S" target="_blank" class="hover:text-indigo-700 ">প্রতিদিন আরবি কথোপকথন ১০ মি.</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="আরবি কথোপকথন" onchange="calc()"></div></div>
+            <div class="task-item"><a href="recorder.html"  class="hover:text-indigo-700 ">কমপক্ষে ৩ মিনিট আরবি বলা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="আরবি স্পিকিং" onchange="calc()"></div></div>
+            <div class="task-item"><a href="https://www.youtube.com/@arabic15minutes/playlists" target="_blank" class="hover:text-indigo-700 ">লুগাতুল ক্লাস একটা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="লুগাতুল ক্লাস" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#"  class="hover:text-indigo-700 ">বাংলা থেকে আরবি অনুবাদ লেখা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="আরবি অনুবাদ" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-rose-800 mb-3 border-b border-rose-200 pb-1">কুরআনিক অ্যারাবিক</h2>
+            <div class="task-item"><a href="https://www.youtube.com/@qarabic/playlists" target="_blank" class="hover:text-rose-700 ">ক্রিয়াপদ এবং অক্রিয়াপদ শোনা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="ক্রিয়াপদ শোনা" onchange="calc()"></div></div>
+            <div class="task-item"><a href="https://qarabic.net/quranic-word/"  class="hover:text-rose-700 ">নিজে নিজে যাচাই করা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="নিজ যাচাই" onchange="calc()"></div></div>
+            <div class="task-item"><a href="arabic.html"  class="hover:text-rose-700 ">আরাবিক কুরআন ক্লাস ও শব্দ পড়া</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="কুরআন শব্দার্থ" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#"  class="hover:text-rose-700 ">মুখস্ত শব্দগুলো অর্থসহ লেখা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="শব্দার্থ লেখা" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-purple-800 mb-3 border-b border-purple-200 pb-1">হিফজুল কুরআন</h2>
+            <div class="task-item"><a href="https://www.hadithbd.com/quran/hifz/"  class="hover:text-purple-700 ">প্রতিদিন অন্তত এক পৃষ্ঠা শোনা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="কুরআন তিলাওয়াত শোনা" onchange="calc()"></div></div>
+            <div class="task-item"><a href="recorder.html"  class="hover:text-purple-700 ">অন্তত এক পৃষ্ঠা রেকর্ড করা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="তিলাওয়াত রেকর্ড" onchange="calc()"></div></div>
+            <div class="task-item"><a href="quran.html"  class="hover:text-purple-700 ">৫ লাইন মুখস্থ করা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="৫ লাইন হিফজ" onchange="calc()"></div></div>
+            <div class="task-item"><a href="https://www.hadithbd.com/quran/hifz/"  class="hover:text-purple-700 ">প্রতিদিন অন্তত ৫ লাইন লেখা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="আয়াত লেখা" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-cyan-800 mb-3 border-b border-cyan-200 pb-1">দায়িত্ব</h2>
+            <div class="task-item"><a href="budget.html"  class="hover:text-cyan-700 ">খরচ ও সদাকাহ রেকর্ড</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="খরচ ও সদাকাহ" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#"  class="hover:text-cyan-700 ">দৈনন্দিন সুন্নাহ পালন</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="সুন্নাহ পালন" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#"  class="hover:text-cyan-700 ">পরিবারে ভূমিকা ও আত্মীয়ের খোঁজ</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="পরিবার ও আত্মীয়" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#"  class="hover:text-cyan-700 ">সামাজিক কাজ</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="সামাজিক কাজ" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-orange-800 mb-3 border-b border-orange-200 pb-1">সতর্কতা</h2>
+            <div class="task-item"><a href="habit-03.html"  class="hover:text-orange-700 ">সর্বদা মুখে হাসি ও শান্ত থাকা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="হাসি ও শান্ত" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#"  class="hover:text-orange-700 ">অশ্লীলতা ও গীবত থেকে দূরে থাকা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="গীবত থেকে দূরে" onchange="calc()"></div></div>
+            <div class="task-item"><a href="habit-03.html"  class="hover:text-orange-700 ">ধৈর্যশীল থাকা ও আল্লাহর ওপর ভরসা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="ধৈর্য ও ভরসা" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#"  class="hover:text-orange-700 ">প্রফেশনাল কাজে মনোযোগী ও সৎ থাকা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="প্রফেশনাল সততা" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-green-800 mb-3 border-b border-green-200 pb-1">প্রশান্তি</h2>
+            <div class="task-item"><a href="habit-03.html"  class="hover:text-orange-700 ">অপ্রত্যাশিত কষ্টে খুশি থাকা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="অপ্রত্যাশিত কষ্টে" onchange="calc()"></div></div>
+            <div class="task-item"><a href="habit-03.html"  class="hover:text-orange-700 ">অপরের জন্য দোয়া ও কল্যান কামনা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="অপরের জন্য দোয়া" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#"  class="hover:text-orange-700 ">মন্দ কাজে বাধা দেওয়া</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="মন্দ কাজে বাধা" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#"  class="hover:text-orange-700 ">মন ভালো রাখতে বই লেখা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="বই লেখা" onchange="calc()"></div></div>
+        </div>
+
+      </div>
+</main>
+    <footer class="bg-gray-900 text-white py-16 text-center">
+        <p class="opacity-80">&copy; ২০২৬ | আলোর কাফেলা</p>
+    </footer>
+
+  
+    <script>
+let confettiShown = false;
+
+// পেজ লোড হওয়ার সময় চেক করবে আজ কোনো কাজ করা হয়েছে কি না
+window.onload = function() {
+    checkAndResetDay();
+    hideCompletedTasks();
+    calc();
+};
+
+function checkAndResetDay() {
+    const lastDate = localStorage.getItem('lastSavedDate');
+    const today = new Date().toDateString();
+
+    // যদি দিন পরিবর্তন হয়, তবে সেভ করা ডাটা মুছে ফেলবে (নতুন দিন শুরু)
+    if (lastDate !== today) {
+        localStorage.removeItem('completedTasks');
+        localStorage.setItem('lastSavedDate', today);
+    }
+}
+
+function calc() {
+    let score = 0;
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(i => score += parseInt(i.dataset.points));
+    document.getElementById('total-points').innerText = score;
+
+    if (score >= 100 && !confettiShown) {
+        triggerConfetti();
+        confettiShown = true;
+    } else if (score < 100) {
+        confettiShown = false;
+    }
+}
+
+// ১. সম্পন্ন কাজগুলো হাইড করার আপডেট ফাংশন
+function hideCompletedTasks() {
+    const completedTasks = JSON.parse(localStorage.getItem('completedTasks') || "[]");
+    
+    document.querySelectorAll('.task-item').forEach(item => {
+        const checkbox = item.querySelector('input');
+        // যদি কাজটির নাম (data-task) লোকাল স্টোরেজে থাকে, তবে সেটি হাইড হবে
+        if (checkbox && completedTasks.includes(checkbox.dataset.task)) {
+            item.style.display = 'none'; 
+        }
+    });
+
+    // কোনো কার্ডের সব কাজ শেষ হয়ে গেলে পুরো কার্ডটি হাইড হবে
+    document.querySelectorAll('.card-sm').forEach(card => {
+        const visibleTasks = Array.from(card.querySelectorAll('.task-item'))
+                                  .filter(t => t.style.display !== 'none');
+        if (visibleTasks.length === 0) {
+            card.style.display = 'none';
+        }
+    });
+}
+
+// কনফার্মেশন ডায়লগ বক্স ফাংশন
+function confirmAndSave() {
+    const checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+    
+    if (checkedCount === 0) {
+        alert("অনুগ্রহ করে অন্তত একটি কাজে টিক দিন!");
+        return;
+    }
+    
+    // কনফার্মেশন বক্স
+    const isConfirmed = confirm("আপনি কি নিশ্চিত যে ডেটাগুলো সেভ করতে চান?");
+    if (isConfirmed) {
+        sendData(); // যদি 'হ্যাঁ' ক্লিক করেন তবেই ডাটা সেভ হবে
+    }
+}
+function sendData() {
+    const score = document.getElementById('total-points').innerText;
+    const btnSpinner = document.getElementById('btnSpinner');
+    const btnText = document.getElementById('btnText');
+    const saveBtn = document.getElementById('saveBtn');
+
+    // এনিমেশন শুরু: বাটন ডিজেবল করা এবং স্পিনার দেখানো
+    btnSpinner.classList.remove('hidden-spinner');
+    btnText.style.opacity = "0.5";
+    saveBtn.disabled = true;
+
+    let selectedTasks = [];
+    let taskDetails = []; 
+
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(i => {
+        selectedTasks.push(i.dataset.task);
+        taskDetails.push(`${i.dataset.task} (${i.dataset.points})`);
+    });
+
+    const url = 'https://script.google.com/macros/s/AKfycbz_u34W4fSprxFLnlpe8eIiJdqu_HGDpy79phwWZSArS4m71z3HkqNT4pOdACSac3ip/exec'; 
+
+    fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify({ 
+            points: score, 
+            date: new Date().toLocaleDateString('bn-BD'),
+            details: taskDetails.join(', ')
+        })
+    }).then(() => {
+        // ডাটা সেভ হওয়ার পর কাজ
+        const alreadyDone = JSON.parse(localStorage.getItem('completedTasks') || "[]");
+        localStorage.setItem('completedTasks', JSON.stringify([...new Set([...alreadyDone, ...selectedTasks])]));
+
+        // এনিমেশন বন্ধ
+        btnSpinner.classList.add('hidden-spinner');
+        btnText.style.opacity = "1";
+        saveBtn.disabled = false;
+
+        alert("আলহামদুলিল্লাহ! ডাটা সফলভাবে সেভ হয়েছে।");
+        
+        hideCompletedTasks(); 
+        document.querySelectorAll('input[type="checkbox"]').forEach(i => i.checked = false);
+        calc();
+
+    }).catch(e => {
+        btnSpinner.classList.add('hidden-spinner');
+        btnText.style.opacity = "1";
+        saveBtn.disabled = false;
+        alert("ত্রুটি হয়েছে! ইন্টারনাল কানেকশন চেক করুন।");
+    });
+}
+// Confetti ফাংশন আগের মতোই থাকবে
+function triggerConfetti() {
+    var duration = 3 * 1000;
+    var end = Date.now() + duration;
+    (function frame() {
+      confetti({
+        particleCount: 5, angle: 60, spread: 55, origin: { x: 0 },
+        colors: ['#10b981', '#facc15', '#065f46']
+      });
+      confetti({
+        particleCount: 5, angle: 120, spread: 55, origin: { x: 1 },
+        colors: ['#10b981', '#facc15', '#065f46']
+      });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    }());
+}
+// পপ-আপ খোলার ফাংশন
+async function openReport() {
+    const modal = document.getElementById('reportModal');
+    const tableBody = document.getElementById('modalTableBody');
+    const loading = document.getElementById('reportLoading');
+    
+    modal.classList.remove('hidden');
+    tableBody.innerHTML = ''; // আগের ডাটা পরিষ্কার করা
+    loading.style.display = 'block';
+
+    const url = 'https://script.google.com/macros/s/AKfycbxWTU-J1UfCSZJTsX6FPXtSdnMvA8ZeRq6-jJcN6ShPCobiJYAb_-brxZcEgRmcRiei/exec'; 
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        loading.style.display = 'none';
+        
+        // ডাটা রিভার্স করে দেখানো (নতুন গুলো আগে)
+        data.reverse().forEach(row => {
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-green-50 transition";
+            tr.innerHTML = `
+                <td class="p-3 text-sm font-semibold">${row.date || '-'}</td>
+                <td class="p-3 text-center">
+                    <span class="bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold text-xs">${row.points}</span>
+                </td>
+                <td class="p-3 text-[11px] text-gray-500 max-w-[150px] truncate" title="${row.details}">${row.details || '-'}</td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    } catch (error) {
+        loading.innerText = "ডাটা আনতে সমস্যা হয়েছে! দয়া করে ইন্টারনেট কানেকশন চেক করুন।";
+        console.error(error);
+    }
+}
+
+// পপ-আপ বন্ধ করার ফাংশন
+function closeReport() {
+    document.getElementById('reportModal').classList.add('hidden');
+}
+
+// মোডালের বাইরে ক্লিক করলে বন্ধ হবে
+window.onclick = function(event) {
+    const modal = document.getElementById('reportModal');
+    if (event.target == modal) {
+        closeReport();
+    }
+}
+
+            </script>
+<button onclick="openReport()" class="report-btn-floating">
+    <span class="block text-[10px] opacity-80 font-normal">রেকর্ড</span>
+    <span class="text-lg">📊</span>
+</button>
+
+<button id="saveBtn" onclick="confirmAndSave()" class="save-btn-floating flex items-center justify-center">
+    <div id="btnSpinner" class="spinner hidden-spinner"></div>
+    <div id="btnText">
+        <span class="block text-xs opacity-80 font-normal">ডেটা সেভ</span>
+        <span class="text-lg font-bold">💾</span>
+    </div>
+</button>
+<div id="reportModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000] hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+        <div class="bg-green-800 p-4 text-white flex justify-between items-center">
+            <h3 class="text-xl font-bold flex items-center gap-2">📊 বিগত দিনের রেকর্ড</h3>
+            <button onclick="closeReport()" class="text-2xl font-bold hover:text-red-300 transition">&times;</button>
+        </div>
+        
+        <div class="p-4 max-h-[70vh] overflow-y-auto">
+            <div id="reportLoading" class="text-center py-10 text-gray-500 font-semibold">গুগল শিট থেকে তথ্য আনা হচ্ছে...</div>
+            <table class="w-full text-left border-collapse">
+                <thead class="sticky top-0 bg-white shadow-sm">
+                    <tr class="text-green-900 border-b">
+                        <th class="p-3 text-sm">তারিখ</th>
+                        <th class="p-3 text-sm text-center">পয়েন্ট</th>
+                        <th class="p-3 text-sm">বিস্তারিত</th>
+                    </tr>
+                </thead>
+                <tbody id="modalTableBody" class="text-gray-700 divide-y">
+                    </tbody>
+            </table>
+        </div>
+        
+        <div class="bg-gray-50 p-3 text-center">
+            <button onclick="closeReport()" class="bg-gray-800 text-white px-6 py-2 rounded-xl text-sm font-bold">বন্ধ করুন</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

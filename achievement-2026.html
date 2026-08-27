@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অর্জন ট্র্যাকার | আলোর কাফেলা</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background: #f8fafc; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 1000; }
+        .modal-content { background: white; margin: 5% auto; border-radius: 24px; width: 95%; max-width: 480px; max-height: 85vh; overflow-y: auto; }
+        input[type="checkbox"] { width: 24px; height: 24px; accent-color: #15803d; cursor: pointer; }
+        
+        /* ব্লগ কার্ড ডিজাইন */
+        .blog-card {
+            background: white;
+            border-left: 8px solid #15803d;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+    /* ... আগের স্টাইলগুলো ... */
+    main {
+        padding-top: 0px; /* আপনার পছন্দমতো কমিয়ে বাড়িয়ে নিতে পারেন */
+    }
+
+    </style>
+</head>
+<script src="security.js"></script>
+
+<body class="pb-0">
+    <main class="max-w-lg mx-auto px-4 space-y-6 mt-6"">
+        
+        <div class="blog-card p-6 rounded-3xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800">আমার অর্জন</h2>
+                <div class="bg-green-100 p-2 rounded-xl text-green-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="flex gap-4 mb-4">
+                <div class="flex-1 bg-slate-50 p-4 rounded-2xl text-center border border-slate-100">
+                    <span class="block text-xs text-slate-400 font-bold uppercase mb-1">আজকের পয়েন্ট</span>
+                    <span id="currentPoints" class="text-3xl font-black text-green-700">০</span>
+                </div>
+                <div class="flex-1 bg-slate-50 p-4 rounded-2xl text-center border border-slate-100">
+                    <span class="block text-xs text-slate-400 font-bold uppercase mb-1">স্ট্যাটাস</span>
+                    <span id="currentStatus" class="text-sm font-bold text-slate-600">শুরু করুন</span>
+                </div>
+            </div>
+            <p class="text-[12px] text-slate-400 text-center italic font-semibold italic">"চেষ্টা চালিয়ে যান, ইনশাআল্লাহ সাফল্য আসবেই।"</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+            <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center">
+                <span class="mr-2">✔️</span> আজকের আমলসমূহ
+            </h3>
+
+            <div class="space-y-3 mb-8">
+                <label class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-slate-100 transition">
+                    <span class="font-bold text-slate-700">🕌 অবিচল সালাত</span>
+                    <input type="checkbox" class="task" data-name="সালাত" onchange="updateLiveScore()">
+                </label>
+                <label class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-slate-100 transition">
+                    <span class="font-bold text-slate-700">🌅 জাগ্রত সকাল</span>
+                    <input type="checkbox" class="task" data-name="জাগ্রত" onchange="updateLiveScore()">
+                </label>
+                <label class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-slate-100 transition">
+                    <span class="font-bold text-slate-700">🗣️ লুগাতুল অ্যারাবিক</span>
+                    <input type="checkbox" class="task" data-name="লুগাতুল" onchange="updateLiveScore()">
+                </label>
+                <label class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-slate-100 transition">
+                    <span class="font-bold text-slate-700">📖 কুরআনিক অ্যারাবিক</span>
+                    <input type="checkbox" class="task" data-name="আরাবিক" onchange="updateLiveScore()">
+                </label>
+                <label class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-slate-100 transition">
+                    <span class="font-bold text-slate-700">💎 হিফজুল কুরআন</span>
+                    <input type="checkbox" class="task" data-name="হিফজুল" onchange="updateLiveScore()">
+                </label>
+            </div>
+
+            <button onclick="submitData()" id="saveBtn" class="w-full bg-green-700 text-white py-4 rounded-2xl text-lg font-bold shadow-lg active:scale-95 transition-all mb-4">সেভ করুন</button>
+            <button onclick="fetchReport()" class="w-full bg-slate-800 text-white py-3 rounded-2xl font-bold">রিপোর্ট দেখুন</button>
+            <p id="statusMsg" class="text-center mt-4 text-sm font-bold text-blue-600"></p>
+        </div>
+    </main>
+
+    <div id="modal" class="modal">
+    <div class="modal-content flex flex-col">
+        <div class="p-5 border-b sticky top-0 bg-white flex justify-between items-center z-10">
+            <h2 class="font-bold text-slate-800 text-lg">📊 অর্জনের খতিয়ান</h2>
+            <button onclick="closeModal()" class="text-3xl text-slate-400 hover:text-red-500 transition">&times;</button>
+        </div>
+        
+        <div id="reportList" class="p-5 space-y-4 overflow-y-auto"></div>
+
+        <div class="p-4 border-t sticky bottom-0 bg-white">
+            <button onclick="closeModal()" class="w-full bg-slate-100 text-slate-700 py-3 rounded-2xl font-bold hover:bg-slate-200 active:scale-95 transition-all">
+                উইন্ডো বন্ধ করুন
+            </button>
+        </div>
+    </div>
+</div>    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEMJ7Xr2p_i0le676YElzj-Xa59y3ABvDXTzy2rFRBx8Ie7RfcrEfUkojtDNvQiksqIQ/exec";
+
+        // ব্লগ কার্ডের লাইভ স্কোর আপডেট
+        function updateLiveScore() {
+            const score = document.querySelectorAll('.task:checked').length * 10;
+            document.getElementById('currentPoints').innerText = score;
+            const statusText = document.getElementById('currentStatus');
+            if(score === 50) { statusText.innerText = "অসাধারণ!"; statusText.style.color = "#15803d"; }
+            else if(score >= 30) { statusText.innerText = "বেশ ভালো"; statusText.style.color = "#2563eb"; }
+            else { statusText.innerText = "চলমান..."; statusText.style.color = "#64748b"; }
+        }
+
+        function submitData() {
+            const btn = document.getElementById('saveBtn');
+            const score = document.querySelectorAll('.task:checked').length * 10;
+            const date = new Date().toLocaleDateString('bn-BD', { day:'numeric', month:'long', year:'numeric' });
+            let details = {};
+            document.querySelectorAll('.task').forEach(item => {
+                details[item.getAttribute('data-name')] = item.checked ? "১০" : "০";
+            });
+            btn.disabled = true;
+            document.getElementById('statusMsg').innerText = "সেভ হচ্ছে...";
+            fetch(SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                body: JSON.stringify({ date: date, points: score, details: details })
+            }).then(() => {
+                if(score === 50) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                document.getElementById('statusMsg').innerText = "✅ সফলভাবে আপডেট হয়েছে!";
+                setTimeout(() => location.reload(), 1500);
+            });
+        }
+
+        
+function fetchReport() {
+    document.getElementById('modal').style.display = "block";
+    const list = document.getElementById('reportList');
+    list.innerHTML = "<p class='text-center py-10'>লোড হচ্ছে...</p>";
+    
+    fetch(SCRIPT_URL).then(res => res.json()).then(data => {
+        list.innerHTML = "";
+        data.reverse().forEach(row => {
+            // ০ হলে লাল আর ১০ হলে সবুজ রঙ নির্ধারণের ফাংশন
+            const getColorClass = (val) => (val == "0" || val == 0) ? "text-red-600" : "text-green-600";
+
+            const div = document.createElement('div');
+            div.className = "bg-slate-50 p-5 rounded-3xl border border-slate-100 shadow-sm";
+            div.innerHTML = `
+                <div class="flex justify-between items-center mb-3 border-b pb-2">
+                    <span class="text-xs font-bold text-slate-500 italic">${row.date}</span>
+                    <span class="bg-green-700 text-white px-3 py-1 rounded-full text-xs font-black">স্কোর: ${row.points}</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-[14px] font-bold text-slate-600">
+                    <div class="flex justify-between bg-white p-2 rounded-xl">
+                        <span>🕌 অবিচল সালাত</span> 
+                        <span class="${getColorClass(row.salat)}">${row.salat || 0}</span>
+                    </div>
+                    <div class="flex justify-between bg-white p-2 rounded-xl">
+                        <span>🌅 জাগ্রত সকাল</span> 
+                        <span class="${getColorClass(row.jagrito)}">${row.jagrito || 0}</span>
+                    </div>
+                    <div class="flex justify-between bg-white p-2 rounded-xl">
+                        <span>🗣️ লুগাতুল অ্যারাবিক</span> 
+                        <span class="${getColorClass(row.lugatul)}">${row.lugatul || 0}</span>
+                    </div>
+                    <div class="flex justify-between bg-white p-2 rounded-xl">
+                        <span>📖 কুরআনিক অ্যারাবিক</span> 
+                        <span class="${getColorClass(row.arabic)}">${row.arabic || 0}</span>
+                    </div>
+                    <div class="flex justify-between bg-white p-2 rounded-xl">
+                        <span>💎 হিফজুল কুরআন</span> 
+                        <span class="${getColorClass(row.hifzul)}">${row.hifzul || 0}</span>
+                    </div>
+                </div>
+            `;
+            list.appendChild(div);
+        });
+    });
+}        function closeModal() { document.getElementById('modal').style.display = "none"; }
+    </script>
+    <footer class="bg-gray-900 text-white py-10 text-center">
+        <p class="opacity-80">&copy; ২০২৬ | আলোর কাফেলা</p>
+    </footer>
+
+</body>
+</html>

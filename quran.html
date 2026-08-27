@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পবিত্র কুরআন | গ্রিন ড্যাশবোর্ড</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f0fdf4; margin: 0; }
+        
+        /* পিওর গ্রিন কার্ড ডিজাইন */
+        .para-card { 
+            background: white; border-radius: 30px; padding: 45px 20px;
+            border: 3px solid #bdfbdc; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; cursor: pointer; text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+        }
+        .para-card:hover { 
+            transform: translateY(-10px); 
+            border-color: #059669; 
+            background: #ffffff;
+            box-shadow: 0 25px 50px -12px rgba(5, 150, 105, 0.25); 
+        }
+        
+        /* পিওর গ্রিন নাম্বার বক্স */
+        .para-num {
+            background: #059669; color: white; 
+            width: 75px; height: 75px; display: flex; align-items: center; justify-content: center;
+            border-radius: 22px; font-weight: 900; margin: 0 auto 15px; font-size: 28px;
+            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
+            transition: 0.3s;
+        }
+        .para-card:hover .para-num {
+            background: #10b981;
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        /* রিডার মডাল */
+        #quranModal { 
+            display: none; position: fixed; inset: 0; 
+            background: rgba(6, 78, 59, 0.85); backdrop-filter: blur(12px); 
+            z-index: 1000; 
+        }
+        .modal-content { 
+            background: white; width: 95%; max-width: 1250px; height: 92vh; 
+            margin: 4vh auto; border-radius: 40px; overflow: hidden; position: relative; 
+            border: 6px solid #059669; box-shadow: 0 0 60px rgba(0,0,0,0.4);
+        }
+        
+        /* ক্লোজ বাটন - টপ রাইট */
+        .close-btn { 
+            position: absolute; top: 5px; right: 5px; 
+            background: #ef4444; color: white; width: 60px; height: 60px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 22px; font-weight: bold; cursor: pointer; z-index: 1010; 
+            border: 6px solid white; transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .close-btn:hover { transform: scale(1.1) rotate(90deg); background: #000; }
+
+        iframe { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<script src="security.js"></script>
+<body class="pb-24">
+    <main class="max-w-7xl mx-auto px-6 mt-16 text-center">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10" id="paraGrid"></div>
+    </main>
+
+    <div id="quranModal">
+        <div class="modal-content">
+            <div class="close-btn" onclick="closeQuran()">✕</div>
+            <iframe id="quranFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // রনি ভাই, আপনার সর্বশেষ সিরিয়াল অনুযায়ী লিঙ্ক আইডি
+        const quranIDs = [
+            "1X2cpAJD_k8evPP2p5-BJcjKgVFgn-ZSm", "1vXs7Xrm_pEhTOJXxc3Wbxx1Lny1qsepY", 
+            "1Lx0OP9Y4YphfFhomRY8QxQKB326axw-g", "1EK6ieXEBwAqar_aNTT-Os9KUBruvNlYZ", 
+            "1l8hL7lkFzDdmBm3_0PdOysUJv565Prxx", "175OZnXFDdpPIEXqgGKfG1PmPZOptZUTC", 
+            "1QJApifrteHq9nCxKF1vppVvVJ982drCx", "1vb8TFy-L8Ct5m31s9kTMligHMA24f8D5", 
+            "1SMjSCt68ZbmMl0btY9mDdnGIQYSJdtXO", "1FEQ6dliKw_F6Zt-UQzQ9ZjkIs9hOp6HZ", 
+            "1TBsQvbgdGIMCkf9l6unAR7RLUjkg1OHV", "1rajR_3Wlw2kRFxDQeCwWXfG6MiTXk51y", 
+            "19_jul7BTrYe5VAj3wDxhNWbyNPoQkl1", "1vizGWdJO9BdxGvQH4oOGnCVU865F4XO7", 
+            "1OVdr_FOsQRr2WIBwb9Ni_cl27evNh_gO", "1kD9IjiTwvhjbVAgdRY6tNgCNfsXMRM1a", 
+            "1e1mvAiPbxyd5wKmOkIF7cL9H8lxajVgh", "10rb778gYAmEmT_X8llRiKdmc8VZ7zrli", 
+            "1erTDFkrqUPtUq8ipallrjmf_9n2hvUk1", "15GBjnAd2680NAFmgJC5RIAVEYmwUMFtz", 
+            "1gKOCrLSYiXbdYMRRmeVitV9eqOon3WUJ", "1S2mvBzaEVUb1_RMAznVz3B1bSyr6-xxN", 
+            "1G51jbrTK_oHmt14sR5aFoJG9OZByF7RA", "1Z7Xxo3Gbs2BvDlxEjh7_ty3dPeAmf5lm", 
+            "1e2wEBzdf2IBuMujW2nldBRilC73VFTrf", "1y5DPXZoX1sMmni4_YyWY8cRdFsFazfGn", 
+            "1SylPypLERhiP8Ioxg5xbhe4eKm7MlK7K", "1YPalPmlzcGZKuIoUrWoE6tZPDYo2gRnb", 
+            "1DssLn3qFNducZOpo1AukmUTkMlO1v16X", "1EsfEyJCuU0w0gYxr-2u8nbp931hrJyf2"
+        ];
+
+        function renderParas() {
+            const grid = document.getElementById('paraGrid');
+            grid.innerHTML = quranIDs.map((id, index) => {
+                const num = (index + 1).toString().padStart(2, '0');
+                return `
+                    <div class="para-card" onclick="openQuran('${id}')">
+                        <div class="para-num">${num}</div>
+                        <h3 class="font-black text-emerald-950 text-2xl tracking-tighter">পারা ${num}</h3>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openQuran(id) {
+            document.getElementById('quranFrame').src = `https://drive.google.com/file/d/${id}/preview`;
+            document.getElementById('quranModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeQuran() {
+            document.getElementById('quranFrame').src = "";
+            document.getElementById('quranModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        renderParas();
+    </script>
+</body>
+</html>

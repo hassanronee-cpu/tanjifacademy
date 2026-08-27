@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আলোর কাফেলা | আরবিক ক্লাস ২০২৬</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f8fafc; }
+        .glass-card { background: white; border-radius: 28px; border: 1px solid #e2e8f0; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(16, 185, 129, 0.1); border-color: #10b981; }
+        
+        /* বড় করা ট্যাব/বাটন স্টাইল */
+        .link-btn { 
+            padding: 14px 20px; 
+            border-radius: 16px; 
+            font-size: 14px; 
+            font-weight: 700; 
+            transition: 0.3s; 
+            text-align: center; 
+            display: block; 
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+        
+        .btn-card { background: #ecfdf5; color: #059669; border: 1px solid #d1fae5; }
+        .btn-summary { background: #f0f9ff; color: #0284c7; border: 1px solid #e0f2fe; }
+        .btn-video { background: #fff1f2; color: #e11d48; border: 1px solid #ffe4e6; }
+        
+        .btn-card:hover { background: #059669; color: white; border-color: #059669; }
+        .btn-summary:hover { background: #0284c7; color: white; border-color: #0284c7; }
+        .btn-video:hover { background: #e11d48; color: white; border-color: #e11d48; }
+    </style>
+</head>
+<body class="pb-0">
+    <main class="max-w-7xl mx-auto px-6 mt-12">
+        <div class="mb-10 border-l-8 border-emerald-500 pl-6 py-2">
+            <h2 class="text-3xl font-black text-slate-800 mb-2">কুরআনিক অ্যারাবিক লার্নিং ২০২৬</h2>
+            <p class="text-slate-500 font-medium">আপনার ২০টি ক্লাসের বিস্তারিত রিসোর্স ও ভিডিও গাইড</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="classGrid">
+            </div>
+    </main>
+
+    <script>
+        const arabicClasses = [
+            { id: "০১", date: "১১/০৪/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "০২", date: "১১/০৮/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "০৩", date: "১১/১১/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "০৪", date: "১১/১৫/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "০৫", date: "১১/১৮/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "০৬", date: "১১/২১/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "০৭", date: "১২/০৯/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "০৮", date: "১২/১৩/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "০৯", date: "১২/১৬/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "১০", date: "১২/২০/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "১১", date: "১২/২৩/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "১২", date: "১২/২৭/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "১৩", date: "১২/৩০/২০২৫", card: "#", summary: "#", video: "#" },
+            { id: "১৪", date: "০১/০৩/২০২৬", card: "#", summary: "#", video: "#" },
+            { id: "১৫", date: "০১/০৬/২০২৬", card: "#", summary: "#", video: "#" },
+            { id: "১৬", date: "০১/১০/২০২৬", card: "#", summary: "#", video: "#" },
+            { id: "১৭", date: "০১/১৩/২০২৬", card: "#", summary: "#", video: "#" },
+            { id: "১৮", date: "০১/১৭/২০২৬", card: "#", summary: "#", video: "#" },
+            { id: "১৯", date: "০১/২০/২০২৬", card: "#", summary: "#", video: "#" },
+            { id: "২০", date: "০১/২৭/২০২৬", card: "#", summary: "#", video: "#" }
+        ];
+
+        function renderClasses() {
+            const grid = document.getElementById('classGrid');
+            grid.innerHTML = arabicClasses.map(cls => `
+                <div class="glass-card p-8 flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="bg-emerald-600 text-white text-[12px] font-black px-4 py-1.5 rounded-full shadow-sm">ক্লাস - ${cls.id}</span>
+                            <span class="text-slate-400 text-sm font-bold tracking-tight">${cls.date}</span>
+                        </div>
+                        <h3 class="text-xl font-black text-slate-800 mb-8">আরবি ভাষা শিক্ষা - লেসন ${cls.id}</h3>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <a href="${cls.card}" target="_blank" class="link-btn btn-card shadow-sm shadow-emerald-50">🗂️ ফ্ল্যাশ কার্ড ওপেন করুন</a>
+                        <a href="${cls.summary}" target="_blank" class="link-btn btn-summary shadow-sm shadow-blue-50">📝 ক্লাস সারাংশ পড়ুন</a>
+                        <a href="${cls.video}" target="_blank" class="link-btn btn-video shadow-sm shadow-red-50">🎬 ফুল ভিডিও ক্লাস দেখুন</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        renderClasses();
+    </script>
+    <footer class="bg-gray-900 text-white py-10 text-center">
+        <p class="opacity-80">&copy; ২০২৬ | আলোর কাফেলা</p>
+    </footer>
+</body>
+</html>

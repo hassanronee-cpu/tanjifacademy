@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কাজের তালিকা | মিশন ২০২৬</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f1f5f9; }
+        .score-box-floating {
+            position: fixed; bottom: 25px; left: 20px; z-index: 9999;
+            background: linear-gradient(135deg, #064e3b 0%, #166534 100%);
+            color: white; padding: 12px 20px; border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center;
+        }
+        .card-sm { 
+            background: #f0fdf4; border-radius: 12px; padding: 1rem; 
+            border: 1px solid #bbf7d0; transition: 0.2s;
+        }
+        .task-item { 
+            display: flex; align-items: center; justify-content: space-between; 
+            margin-bottom: 0.4rem; font-size: 0.95rem; background: #ffffff; 
+            padding: 6px 10px; border-radius: 6px; border: 1px solid #f1f5f9;
+        }
+        .point-tag { font-size: 0.75rem; color: #059669; font-weight: bold; }
+        input[type="checkbox"] { width: 1.1rem; height: 1.1rem; accent-color: #059669; cursor: pointer; }
+/* সেভ বাটন বাম পাশে ফ্রিজ করার জন্য */
+.save-btn-floating {
+    position: fixed; 
+    bottom: 25px; 
+    right: 20px; 
+    z-index: 9999;
+
+    /* 👉 এই অংশটা score-box থেকে কপি */
+    background: linear-gradient(135deg, #064e3b 0%, #166534 100%);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+    font-weight: bold;
+    transition: 0.3s;
+}
+.save-btn-floating:hover { background: #166534; transform: scale(1.05); }
+.save-btn-floating:active { transform: scale(0.95); }
+
+/* বডির নিচে প্যাডিং যাতে বাটন কন্টেন্ট ঢেকে না ফেলে */
+body { padding-bottom: 100px; }
+    </style>
+</head>
+<script src="security.js"></script>
+
+<body>
+    <header class="py-10 text-center">
+        <h1 class="text-white text-3xl font-bold text-slate-800 inline-block px-8 py-2 rounded-xl border-2 border-green-700 shadow-sm bg-green-800">
+            কাজের তালিকা        </h1>
+    </header>
+
+
+
+
+<main class="max-w-6xl mx-auto p-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+<div class="card-sm">
+            <h2 class="font-bold text-green-800 mb-3 border-b border-green-200 pb-1">জাগ্রত সকাল</h2>
+            <div class="task-item"><a href="#" class="hover:text-green-700 ">মুখস্ত ২ পৃষ্ঠা কুরআন দিয়ে তাহাজ্জুদ</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="তাহাজ্জুদ" onchange="calc()"></div></div>
+            <div class="task-item"><a href="promis.html" class="hover:text-green-700 ">প্রতিজ্ঞা পড়া সকাল ও রাতে</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="প্রতিজ্ঞা পাঠ" onchange="calc()"></div></div>
+            <div class="task-item"><a href="https://quran.com/36" target="_blank" class="hover:text-green-700 ">সূরা ইয়াসিন পড়তে হবে</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="সূরা ইয়াসিন" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-green-700 ">বাহিরে হাঁটা কিংবা দৌড়াতে হবে</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="সকালবেলা ব্যায়াম" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-blue-800 mb-3 border-b border-blue-200 pb-1">চর্চা</h2>
+            <div class="task-item"><a href="#" class="hover:text-blue-700 ">সকল সালাত মসজিদে জামায়াতে</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="জামায়াতে সালাত" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-blue-700 ">সুন্নত সালাতে কুরআন রিভিশন</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="সুন্নতে কুরআন রিভিশন" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-blue-700 ">অল্প হলেও শরীর চর্চা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="শরীর চর্চা" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-blue-700 ">অল্প হলেও ভাষা চর্চা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="ভাষা চর্চা" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-amber-800 mb-3 border-b border-amber-200 pb-1">জ্ঞানার্জন</h2>
+            <div class="task-item"><a href="https://www.youtube.com/@IslamicLecture" target="_blank" class="hover:text-amber-700 ">ইসলামিক লেকচার শোনা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="ইসলামিক লেকচার" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-amber-700 ">তাফসীর ও ফিকহ পড়া</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="তাফসীর ও ফিকহ" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-amber-700 ">সাধারণ বই পড়া</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="সাধারণ বই" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-amber-700 ">হাদিস পড়া</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="হাদিস পড়া" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-indigo-800 mb-3 border-b border-indigo-200 pb-1">লুগাতুল অ্যারাবিক</h2>
+            <div class="task-item"><a href="#" class="hover:text-indigo-700 ">প্রতিদিন আরবি কথোপকথন ১০ মি.</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="আরবি কথোপকথন" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-indigo-700 ">কমপক্ষে ৩ মিনিট আরবি বলা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="আরবি স্পিকিং" onchange="calc()"></div></div>
+            <div class="task-item"><a href="https://www.youtube.com/playlist?list=YOUR_PLAYLIST" target="_blank" class="hover:text-indigo-700 ">লুগাতুল ক্লাস একটা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="লুগাতুল ক্লাস" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-indigo-700 ">বাংলা থেকে আরবি অনুবাদ লেখা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="আরবি অনুবাদ" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-rose-800 mb-3 border-b border-rose-200 pb-1">কুরআনিক অ্যারাবিক</h2>
+            <div class="task-item"><a href="#" class="hover:text-rose-700 ">ক্রিয়াপদ এবং অক্রিয়াপদ শোনা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="ক্রিয়াপদ শোনা" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-rose-700 ">নিজে নিজে যাচাই করা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="নিজ যাচাই" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-rose-700 ">আরাবিক কুরআন ক্লাস ও শব্দ পড়া</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="কুরআন শব্দার্থ" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-rose-700 ">মুখস্ত শব্দগুলো অর্থসহ লেখা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="শব্দার্থ লেখা" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-purple-800 mb-3 border-b border-purple-200 pb-1">হিফজুল কুরআন</h2>
+            <div class="task-item"><a href="#" class="hover:text-purple-700 ">প্রতিদিন অন্তত এক পৃষ্ঠা শোনা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="কুরআন তিলাওয়াত শোনা" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-purple-700 ">অন্তত এক পৃষ্ঠা রেকর্ড করা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="তিলাওয়াত রেকর্ড" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-purple-700 ">৫ লাইন মুখস্থ করা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="৫ লাইন হিফজ" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-purple-700 ">প্রতিদিন অন্তত ৫ লাইন লেখা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="আয়াত লেখা" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-cyan-800 mb-3 border-b border-cyan-200 pb-1">দায়িত্ব</h2>
+            <div class="task-item"><a href="#" class="hover:text-cyan-700 ">খরচ ও সদাকাহ রেকর্ড</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="খরচ ও সদাকাহ" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-cyan-700 ">দৈনন্দিন সুন্নাহ পালন</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="সুন্নাহ পালন" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-cyan-700 ">পরিবারে ভূমিকা ও আত্মীয়ের খোঁজ</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="পরিবার ও আত্মীয়" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-cyan-700 ">সামাজিক কাজ</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="সামাজিক কাজ" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-orange-800 mb-3 border-b border-orange-200 pb-1">সতর্কতা</h2>
+            <div class="task-item"><a href="#" class="hover:text-orange-700 ">সর্বদা মুখে হাসি ও শান্ত থাকা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="হাসি ও শান্ত" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-orange-700 ">অশ্লীলতা ও গীবত থেকে দূরে থাকা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="গীবত থেকে দূরে" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-orange-700 ">ধৈর্যশীল থাকা ও আল্লাহর ওপর ভরসা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="ধৈর্য ও ভরসা" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-orange-700 ">প্রফেশনাল কাজে মনোযোগী ও সৎ থাকা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="প্রফেশনাল সততা" onchange="calc()"></div></div>
+        </div>
+
+        <div class="card-sm">
+            <h2 class="font-bold text-green-800 mb-3 border-b border-green-200 pb-1">প্রশান্তি</h2>
+            <div class="task-item"><a href="#" class="hover:text-orange-700 ">অপ্রত্যাশিত কষ্টে খুশি থাকা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="অপ্রত্যাশিত কষ্টে" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-orange-700 ">অপরের জন্য দোয়া ও কল্যান কামনা</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="অপরের জন্য দোয়া" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-orange-700 ">মন্দ কাজে বাধা দেওয়া</a><div class="flex items-center gap-2"><span class="point-tag">৫</span><input type="checkbox" data-points="5" data-task="মন্দ কাজে বাধা" onchange="calc()"></div></div>
+            <div class="task-item"><a href="#" class="hover:text-orange-700 ">মন ভালো রাখতে বই লেখা</a><div class="flex items-center gap-2"><span class="point-tag">১০</span><input type="checkbox" data-points="10" data-task="বই লেখা" onchange="calc()"></div></div>
+        </div>
+
+      </div>
+</main>
+    <footer class="bg-gray-900 text-white py-10 text-center">
+        <p class="opacity-80">&copy; ২০২৬ | আলোর কাফেলা</p>
+    </footer>
+
+</body>
+</html>

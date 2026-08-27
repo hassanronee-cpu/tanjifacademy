@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রতিদিনের পাঠ | আলোর কাফেলা</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Hind Siliguri', sans-serif; 
+            background-color: #f0fdf4; 
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 16px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .lesson-card {
+            background: white;
+            border: 1px solid #bbf7d0;
+            border-radius: 16px;
+            padding: 20px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .lesson-card:hover {
+            transform: translateY(-5px);
+            background-color: #065f46;
+            color: white;
+            border-color: #065f46;
+            box-shadow: 0 10px 15px -3px rgba(6, 95, 70, 0.3);
+        }
+        .modal {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <div class="max-w-4xl mx-auto mb-8 text-center mt-6">
+        <h1 class="text-3xl font-extrabold text-green-900 mb-2">📚 প্রতিদিনের পাঠ</h1>
+        <p class="text-slate-600 font-semibold">নিয়মিত চর্চা ও আত্মউন্নয়নের ধারাবাহিক গাইড</p>
+    </div>
+
+    <!-- দিনসমূহের গ্রিড লেআউট -->
+    <div class="lesson-grid px-2">
+        <div class="lesson-card group" onclick="openLesson(1)">
+            <span class="block text-2xl mb-1 group-hover:scale-110 transition">🌱</span>
+            <span class="font-bold text-lg block text-emerald-800 group-hover:text-white">দিন - ১</span>
+            <span class="text-xs text-slate-400 group-hover:text-emerald-200">শুরু করুন</span>
+        </div>
+        <div class="lesson-card group" onclick="openLesson(2)">
+            <span class="block text-2xl mb-1 group-hover:scale-110 transition">📖</span>
+            <span class="font-bold text-lg block text-emerald-800 group-hover:text-white">দিন - ২</span>
+            <span class="text-xs text-slate-400 group-hover:text-emerald-200">চলমান</span>
+        </div>
+        <div class="lesson-card group" onclick="openLesson(3)">
+            <span class="block text-2xl mb-1 group-hover:scale-110 transition">🕌</span>
+            <span class="font-bold text-lg block text-emerald-800 group-hover:text-white">দিন - ৩</span>
+            <span class="text-xs text-slate-400 group-hover:text-emerald-200">চলমান</span>
+        </div>
+        <div class="lesson-card group" onclick="openLesson(4)">
+            <span class="block text-2xl mb-1 group-hover:scale-110 transition">📝</span>
+            <span class="font-bold text-lg block text-emerald-800 group-hover:text-white">দিন - ৪</span>
+            <span class="text-xs text-slate-400 group-hover:text-emerald-200">চলমান</span>
+        </div>
+        <div class="lesson-card group" onclick="openLesson(5)">
+            <span class="block text-2xl mb-1 group-hover:scale-110 transition">💡</span>
+            <span class="font-bold text-lg block text-emerald-800 group-hover:text-white">দিন - ৫</span>
+            <span class="text-xs text-slate-400 group-hover:text-emerald-200">চলমান</span>
+        </div>
+        <div class="lesson-card group" onclick="openLesson(6)">
+            <span class="block text-2xl mb-1 group-hover:scale-110 transition">⏳</span>
+            <span class="font-bold text-lg block text-emerald-800 group-hover:text-white">দিন - ৬</span>
+            <span class="text-xs text-slate-400 group-hover:text-emerald-200">চলমান</span>
+        </div>
+        <div class="lesson-card group" onclick="openLesson(7)">
+            <span class="block text-2xl mb-1 group-hover:scale-110 transition">🎯</span>
+            <span class="font-bold text-lg block text-emerald-800 group-hover:text-white">দিন - ۷</span>
+            <span class="text-xs text-slate-400 group-hover:text-emerald-200">রিভিউ দিন</span>
+        </div>
+    </div>
+
+    <!-- লেসন দেখানোর পপ-আপ মডাল -->
+    <div id="lessonModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden justify-center items-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl transform scale-95 transition-all">
+            <!-- মডাল হেডার -->
+            <div class="bg-green-800 text-white p-5 flex justify-between items-center">
+                <h3 id="modalTitle" class="text-xl font-bold">পাঠের শিরোনাম</h3>
+                <button onclick="closeModal()" class="text-2xl font-bold hover:text-emerald-300 transition">&times;</button>
+            </div>
+            <!-- মডাল বডি (কন্টেন্ট ও লিঙ্ক) -->
+            <div id="modalContent" class="p-6 max-h-[60vh] overflow-y-auto text-slate-700 leading-relaxed font-medium">
+                <!-- এখানে পড়া আসবে -->
+            </div>
+            <!-- মডাল ফুটার -->
+            <div class="bg-slate-50 p-4 flex justify-between items-center border-t">
+                <!-- লিংক বাটন (ডায়নামিক) -->
+                <div id="modalLinkContainer"></div>
+                <button onclick="closeModal()" class="bg-green-700 text-white px-5 py-2 rounded-xl font-bold hover:bg-green-800 transition text-sm">পড়া শেষ করেছি</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // রনি ভাই, এখানে 'link' অপশনে আপনার পেজের নাম বা যেকোনো ইউআরএল (URL) বসিয়ে দিতে পারবেন। 
+        // যদি কোনো দিনে লিঙ্ক না রাখতে চান, তবে link: "" অথবা লাইনে link অপশনটি বাদ দিলেই হবে।
+        const lessonsData = {
+            1: {
+                title: "দিন - ১: ঈমান ও নিয়ত শুদ্ধি",
+                content: `<p class='mb-3 font-bold text-green-700'>আজকের লক্ষ্য:</p>
+                          <ul class='list-disc pl-5 space-y-2'>
+                             <li>সব কাজের শুরুতে নিয়ত আল্লাহর সন্তুষ্টির জন্য কি না তা নিশ্চিত করা।</li>
+                             <li>লুগাতুল আরাবিয়া লেভেলের প্রথম অধ্যায়ের শব্দার্থগুলো রিভিশন দেওয়া।</li>
+                          </ul>`,
+                link: "day-1.html", // আপনার নিয়ত পেজের লিঙ্ক
+                linkLabel: "🔗 নিয়ত পেজে যান"
+            },
+            2: {
+                title: "দিন - ২: আরবি ভাষা ও আল-কুরআন",
+                content: `<p class='mb-3 font-bold text-green-700'>আজকের লক্ষ্য:</p>
+                          <ul class='list-disc pl-5 space-y-2'>
+                             <li>কুরআননিক আরাবিক লেভেলের শব্দে শব্দে অর্থ শেখা।</li>
+                             <li>আজকের ৫ বছরের লক্ষ্যমাত্রার চার্টটি একবার দেখে নেওয়া।</li>
+                          </ul>`,
+                link: "goal.html", // আপনার ৫ বছরের লক্ষ্যের পেজের লিঙ্ক
+                linkLabel: "🎯 ভিশন ২০২৬ দেখুন"
+            },
+            3: {
+                title: "দিন - ৩: কর্মপরিকল্পনা ও ডাটা স্কিল",
+                content: `<p class='mb-3 font-bold text-green-700'>আজকের লক্ষ্য:</p>
+                          <ul class='list-disc pl-5 space-y-2'>
+                             <li>অ্যাডভান্সড এক্সেলের নতুন একটি ভিবিএ (VBA) ম্যাক্রো স্ক্রিপ্ট প্র্যাকটিস করা।</li>
+                          </ul>`,
+                link: "routine-2026.html",
+                linkLabel: "📅 রুটিন চেক করুন"
+            }
+        };
+
+        function openLesson(day) {
+            const modal = document.getElementById('lessonModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
+            const linkContainer = document.getElementById('modalLinkContainer');
+            
+            const lesson = lessonsData[day] || { title: `দিন - ${day}`, content: "এই দিনের কোনো পাঠ এখনো যুক্ত করা হয়নি। 🌙", link: "" };
+            
+            title.innerText = lesson.title;
+            content.innerHTML = lesson.content;
+            
+            // লিঙ্ক বোতাম যুক্ত করার লজিক
+            if (lesson.link) {
+                // রনি ভাই, যদি এটি ড্যাশবোর্ডের ভেতরের আইফ্রেমে থাকে, তবে parent.loadPage ব্যবহার করলে মেইন ফ্রেমেই পেজ চেঞ্জ হবে
+                const label = lesson.linkLabel || "🔗 বিস্তারিত দেখুন";
+                linkContainer.innerHTML = `
+                    <button onclick="handleLessonLink('${lesson.link}')" class="bg-blue-50 text-blue-700 border border-blue-200 px-4 py-2 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition text-sm">
+                        ${label}
+                    </button>
+                `;
+            } else {
+                linkContainer.innerHTML = ""; // লিঙ্ক না থাকলে খালি থাকবে
+            }
+            
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.firstElementChild.classList.remove('scale-95');
+                modal.firstElementChild.classList.add('scale-100');
+            }, 10);
+        }
+
+        function handleLessonLink(url) {
+            closeModal();
+            // ড্যাশবোর্ডের আইফ্রেমের মাধ্যমে মেইন পেজ লোড করার নিরাপদ উপায়
+            if (window.parent && typeof window.parent.loadPage === 'function') {
+                window.parent.loadPage(url);
+            } else {
+                window.location.href = url; // সিঙ্গেল পেজ হিসেবে ওপেন করলে
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('lessonModal');
+            modal.firstElementChild.classList.remove('scale-100');
+            modal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 150);
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('lessonModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

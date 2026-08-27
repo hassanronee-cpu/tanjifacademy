@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পথচলা ২০২৬</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #064e3b;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .cover-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* বাম পাশের লেখা */
+        .text-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #064e3b;
+            z-index: 10;
+        }
+
+        .cover-text {
+            color: #ffffff;
+            font-size: clamp(3rem, 8vw, 5rem); /* স্ক্রিন অনুযায়ী সাইজ অ্যাডজাস্ট হবে */
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            user-select: none;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .cover-text:hover {
+            transform: scale(1.05);
+            color: #6ee7b7;
+        }
+
+        /* ডান পাশের ছবির সেকশন */
+        .image-section {
+            flex: 1.2;
+            position: relative;
+            /* একটি সুন্দর ন্যাচারাল গ্রেডিয়েন্ট যা পথচলার প্রতীক */
+            background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* ছবির সোর্স - এটি একটি হাই-কোয়ালিটি ল্যান্ডস্কেপ ইমেজ */
+        .main-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(70%) contrast(110%);
+            transition: transform 1s ease;
+        }
+
+        .image-section:hover .main-bg-image {
+            transform: scale(1.1);
+        }
+
+        /* ছবির উপরে একটি হালকা ওভারলে */
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, #064e3b, transparent);
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            .cover-container {
+                flex-direction: column-reverse;
+            }
+            .overlay {
+                background: linear-gradient(to top, #064e3b, transparent);
+            }
+        }
+    </style>
+</head>
+  <script src="security.js"></script>
+<body>
+
+    <div class="cover-container" onclick="location.href='2026.html'" style="cursor: pointer;">
+        
+        <div class="text-section">
+            <div class="cover-text">
+                পথচলা ২০২৬
+            </div>
+        </div>
+
+        <div class="image-section">
+            <div class="overlay"></div>
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" 
+                 alt="Landscape" class="main-bg-image" 
+                 onerror="this.style.display='none'"> 
+            
+            <span class="text-white/20 text-9xl z-1">⛰️</span>
+        </div>
+
+    </div>
+
+</body>
+</html>

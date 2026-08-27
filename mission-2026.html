@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মিশন ২০২৬ | আলোর কাফেলা</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f0f4f1; }
+        .islamic-header {
+            background: linear-gradient(rgba(6, 78, 59, 0.9), rgba(6, 78, 59, 0.9)), 
+                        url('https://www.transparenttextures.com/patterns/islamic-art.png');
+            background-color: #064e3b;
+        }
+        .flip {
+            display: inline-block;
+            background: #043a2b;
+            color: #fff;
+            padding: 5px 8px;
+            border-radius: 6px;
+            min-width: 45px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-family: monospace;
+            transition: transform 0.6s;
+        }
+        .flip-animate { transform: rotateX(360deg); }
+        .compact-card {
+            transition: all 0.2s ease;
+        }
+        .compact-card:hover { transform: scale(1.03); background: #fff; }
+    </style>
+</head>
+<script src="security.js"></script>
+<body class="pb-0">
+    <header class="islamic-header text-white pt-8 pb-6 text-center shadow-lg">
+        <h1 class="text-2xl font-bold mb-4">লক্ষ্য ২০২৬ ড্যাশবোর্ড</h1>
+        
+        <div class="flex justify-center gap-2 items-center">
+            <div class="text-center">
+                <span class="flip" id="days">00</span>
+                <p class="text-[10px] uppercase mt-1 opacity-70">দিন</p>
+            </div>
+            <div class="text-center">
+                <span class="flip" id="hours">00</span>
+                <p class="text-[10px] uppercase mt-1 opacity-70">ঘন্টা</p>
+            </div>
+            <div class="text-center">
+                <span class="flip" id="minutes">00</span>
+                <p class="text-[10px] uppercase mt-1 opacity-70">মিনিট</p>
+            </div>
+            <div class="text-center">
+                <span class="flip" id="seconds">00</span>
+                <p class="text-[10px] uppercase mt-1 opacity-70">সেকেন্ড</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto max-w-lg px-4 -mt-4">
+        <div class="grid grid-cols-2 gap-3">
+            
+            <a href="salat.pdf" class="compact-card bg-white/80 backdrop-blur p-4 rounded-xl shadow-sm flex flex-col items-center text-center border border-green-100">
+                <div class="text-emerald-700 mb-2">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12h-15A2.25 2.25 0 013 18.75V9m18 9.75V9m-4.5 9.75H12m-4.5 0H3.75"></path></svg>
+                </div>
+                <span class="text-sm font-bold text-gray-800">মসজিদে সালাত</span>
+           <p class="text-sm text-gray-500">৫ ওয়াক্ত জামাতে আদায় নিশ্চিত করা।</p>
+ </a>
+
+            <a href="morning.pdf" class="compact-card bg-white/80 backdrop-blur p-4 rounded-xl shadow-sm flex flex-col items-center text-center border border-green-100">
+                <div class="text-amber-600 mb-2">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591 1.591M12 18.75a6.75 6.75 0 100-13.5 6.75 6.75 0 000 13.5z"></path></svg>
+                </div>
+                <span class="text-sm font-bold text-gray-800">জাগ্রত সকাল</span>
+            <p class="text-sm text-gray-500">ভোর ৪টায় ওঠা এবং দিন শুরু করা।</p>
+</a>
+
+            <a href="arabic.pdf" class="compact-card bg-white/80 backdrop-blur p-4 rounded-xl shadow-sm flex flex-col items-center text-center border border-green-100">
+                <div class="text-red-600 mb-2">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"></path></svg>
+                </div>
+                <span class="text-sm font-bold text-gray-800">লুগাতুল আরবি</span>
+            <p class="text-sm text-gray-500">কুরআনের ভাষা শেখার প্রচেষ্টা।</p>
+</a>
+
+            <a href="quran.pdf" class="compact-card bg-white/80 backdrop-blur p-4 rounded-xl shadow-sm flex flex-col items-center text-center border border-green-100">
+                <div class="text-blue-600 mb-2">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                </div>
+                <span class="text-sm font-bold text-gray-800">আরাবিক কুরআন</span>
+          <p class="text-sm text-gray-500">কুরআন তিলাওয়াত ও অর্থ অনুধাবন।</p>
+   </a>
+
+            <a href="hifz.html" class="compact-card col-span-2 bg-white/80 backdrop-blur p-4 rounded-xl shadow-sm flex items-center justify-center gap-4 border border-green-100">
+                <div class="text-purple-600">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                </div>
+                <span class="text-sm font-bold text-gray-800">হিফজুল কুরআন</span>
+ <p class="text-sm text-gray-500">কুরআনের সূরাগুলো হৃদয়ে ধারণ করা।</p>
+
+            </a>
+
+        </div>
+
+    </main>
+
+    <script>
+        function updateCountdown() {
+            const now = new Date();
+            const end2026 = new Date('2026-12-31T23:59:59');
+            let diff = Math.floor((end2026 - now) / 1000);
+            if(diff < 0) diff = 0;
+            const timeParts = {
+                days: Math.floor(diff / (3600*24)),
+                hours: Math.floor((diff % (3600*24)) / 3600),
+                minutes: Math.floor((diff % 3600) / 60),
+                seconds: diff % 60
+            };
+            for(const part in timeParts){
+                const el = document.getElementById(part);
+                const val = String(timeParts[part]).padStart(2,'0');
+                if(el.textContent !== val){
+                    el.textContent = val;
+                    el.classList.add('flip-animate');
+                    setTimeout(() => el.classList.remove('flip-animate'), 1000);
+                }
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+<div class="py-10"></div>
+
+    <footer class="bg-gray-900 text-white py-10 text-center">
+        <p class="opacity-80">&copy; ২০২৬ | আলোর কাফেলা</p>
+    </footer>
+
+</body>
+</html>

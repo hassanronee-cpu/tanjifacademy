@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alor Kafela - Quran & Lugatul Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #1a5f7a;
+            --secondary-color: #57c5b6;
+            --dark-color: #2c3e50;
+            --light-bg: #f8fafc;
+            --border-color: #cbd5e1;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'SolaimanLipi', Tahoma, sans-serif;
+            background-color: #f1f5f9;
+            color: #334155;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        /* স্টিকি ভয়েস কন্ট্রোল প্যানেল */
+        #audio-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ffffff;
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-width: 320px;
+            font-size: 14px;
+        }
+        #audio-panel h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+        .panel-row {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .panel-row input, .panel-row select {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            width: 80px;
+        }
+        .btn-play {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+        .btn-play:hover { background: #13465a; }
+        .btn-stop {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* বুক লেআউট কন্টেইনার */
+        .book-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 32px;
+            margin-bottom: 30px;
+            border-bottom: 3px double var(--primary-color);
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: var(--primary-color);
+            background: #f0f7f9;
+            padding: 10px 15px;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 4px;
+            margin-top: 40px;
+        }
+        h3 {
+            color: var(--dark-color);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }
+
+        /* সুন্দর টেবিল ফরম্যাট */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8fafc;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+        tr {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+        .selected-row {
+            background-color: #e2f1f6 !important;
+            border: 2px solid var(--primary-color);
+        }
+
+        /* ফন্ট ও ভাষা সেটিংস */
+        .arabic, [lang="ar"] {
+            font-family: 'Traditional Arabic', 'Amiri', 'Scheherazade New', serif;
+            font-size: 24px;
+            color: #1e3a8a;
+            direction: rtl;
+            text-align: right;
+            font-weight: bold;
+        }
+        .english {
+            font-family: 'Segoe UI', sans-serif;
+            color: #475569;
+        }
+        .bengali {
+            color: #334155;
+        }
+
+        /* ব্লক উপাদানসমূহ */
+        .verse-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid var(--secondary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+        .note-box {
+            background-color: #fefce8;
+            border-left: 4px solid #eab308;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+        .chart-box {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            border-radius: 8px;
+            line-height: 1.5;
+            margin: 20px 0;
+        }
+        
+        .clickable-text {
+            cursor: pointer;
+            border-radius: 3px;
+            padding: 0 2px;
+        }
+        .clickable-text:hover {
+            background-color: #fef08a;
+        }
+    </style>
+</head>
+<body>
+
+<!-- স্মার্ট ভয়েস অ্যাসিস্ট্যান্ট কন্ট্রোল প্যানেল -->
+<div id="audio-panel">
+    <h4>🤖 স্মার্ট লুপ প্লেয়ার</h4>
+    <div class="panel-row">
+        <span>রিপিট সংখ্যা:</span>
+        <input type="number" id="repeat-count" value="3" min="1" max="20">
+    </div>
+    <div class="panel-row">
+        <span>মোড নির্বাচন:</span>
+        <select id="loop-mode">
+            <option value="single">শুধু ক্লিক করা শব্দ</option>
+            <option value="row-ar">শুধু আরবি (টেবিল লাইন)</option>
+            <option value="row-both">আরবি + ইংরেজি অর্থ</option>
+        </select>
+    </div>
+    <div style="font-size:11px; color:#64748b; margin-bottom:10px;">
+        * নিচে যেকোনো টেবিল রো (Row) বা টেক্সট সিলেক্ট করে প্লে করুন।
+    </div>
+    <button class="btn-play" id="btn-start-loop">নির্বাচিত অংশ লুপে শুনুন</button>
+    <button class="btn-stop" id="btn-stop-audio">থামুন (Stop)</button>
+</div>
+
+<div class="book-container">
+    <h1>কুরআন ও লুগাতুল শিক্ষণ ড্যাশবোর্ড</h1>
+
+    <div class="note-box">
+        <strong>💡 পড়ার গাইডলাইন:</strong> পেজের যেকোনো সাধারণ টেক্সট বা শব্দের ওপরে ক্লিক করলে সরাসরি উচ্চারণ শুনতে পাবেন। টেবিলের কোনো নির্দিষ্ট সারি মুখস্থ করার জন্য সেটির ওপর ক্লিক করে সিলেক্ট করুন এবং ডানের <strong>"স্মার্ট লুপ প্লেয়ার"</strong> ব্যবহার করে একটানা শুনুন।
+    </div>
+
+    <!-- পাঠ ০১ -->
+    <h2>পাঠ ০১: কুরআনের সালাতে তিলাওয়াত</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>সালাত</th>
+                <th>তাহাজ্জুদ</th>
+                <th>ফজর</th>
+                <th>জোহর</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>পড়ার পরিমান</strong></td>
+                <td>০১ পৃঃ</td>
+                <td>০১ পৃঃ</td>
+                <td>০৩ পৃঃ</td>
+            </tr>
+            <tr>
+                <td><strong>পড়তে হবে</strong></td>
+                <td>পারা-৩০-পৃষ্ঠা-০১</td>
+                <td>পারা-৩০-পৃষ্ঠা-০২</td>
+                <td>পারা-৩০-পৃষ্ঠা-০৩-০৫</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th>সালাত</th>
+                <th>আসর</th>
+                <th>মাগরিব</th>
+                <th>ইশা</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>পড়ার পরিমান</strong></td>
+                <td>০২ পৃঃ</td>
+                <td>০১ পৃঃ</td>
+                <td>০২ পৃঃ</td>
+            </tr>
+            <tr>
+                <td><strong>পড়তে হবে</strong></td>
+                <td>পারা-৩০-পৃষ্ঠা-০৬-০৭</td>
+                <td>পারা-৩০-পৃষ্ঠা-০৮</td>
+                <td>পারা-৩০-পৃষ্ঠা-০৯-১০</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- পাঠ ০২ -->
+    <h2>পাঠ ০২: কুরআনের আয়াতের শব্দভাণ্ডার</h2>
+    
+    <h3>আयात ১৮১ (Surah Baqarah - Verse 181)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>আরби শব্দ (Arabic)</th>
+                <th>বাংলা শব্দার্থ (Bengali Meaning)</th>
+                <th>ইংরেজি শব্দার্থ (English Meaning)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="arabic">فَمَن</td><td class="bengali">অতএব যে ব্যক্তি</td><td class="english">Then whoever</td></tr>
+            <tr><td class="arabic">بَدَّلَهُ</td><td class="bengali">তা পরিবর্তন করবে</td><td class="english">Alters it</td></tr>
+            <tr><td class="arabic">بَعْدَمَا</td><td class="bengali">শোনার পর</td><td class="english">After</td></tr>
+            <tr><td class="arabic">سَمِعَهُ</td><td class="bengali">সে তা শুনেছে</td><td class="english">He has heard it</td></tr>
+            <tr><td class="arabic">فَإِنَّمَا</td><td class="bengali">তবে কেবল</td><td class="english">Then only</td></tr>
+            <tr><td class="arabic">إِثْمُهُ</td><td class="bengali">তার পাপ</td><td class="english">Its sin</td></tr>
+            <tr><td class="arabic">عَلَى الَّذِينَ</td><td class="bengali">তাদের উপর যারা</td><td class="english">Is upon those who</td></tr>
+            <tr><td class="arabic">يُبَدِّلُونَهُ</td><td class="bengali">তা পরিবর্তন করে</td><td class="english">Alter it</td></tr>
+            <tr><td class="arabic">إِنَّ اللَّهَ</td><td class="bengali">নিশ্চয়ই আল্লাহ</td><td class="english">Indeed, Allah</td></tr>
+            <tr><td class="arabic">سَمِيعٌ</td><td class="bengali">সর্বশ্রোতা</td><td class="english">All-Hearing</td></tr>
+            <tr><td class="arabic">عَلِيمٌ</td><td class="bengali">সর্বজ্ঞ</td><td class="english">All-Knowing</td></tr>
+        </tbody>
+    </table>
+
+    <h3>আয়াত ১৮২ (Surah Baqarah - Verse 182)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>আরби শব্দ (Arabic)</th>
+                <th>বাংলা শব্দার্থ (Bengali Meaning)</th>
+                <th>ইংরেজি শব্দার্থ (English Meaning)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="arabic">فَمَنْ</td><td class="bengali">অতএব যে ব্যক্তি</td><td class="english">But whoever</td></tr>
+            <tr><td class="arabic">خَافَ</td><td class="bengali">আশঙ্কা করে</td><td class="english">Fears</td></tr>
+            <tr><td class="arabic">مِن مُّوصٍ</td><td class="bengali">অসিয়তকারীর পক্ষ থেকে</td><td class="english">From a testator</td></tr>
+            <tr><td class="arabic">جَنَفًا</td><td class="bengali">কোনো পক্ষপাতিত্বের</td><td class="english">Injustice</td></tr>
+            <tr><td class="arabic">أَوْ إِثْمًا</td><td class="bengali">অথবা কোনো পাপের</td><td class="english">Or sin</td></tr>
+            <tr><td class="arabic">فَأَصْلَحَ</td><td class="bengali">অতএব সে আপোষ-নিষ্পত্তি করে দেয়</td><td class="english">And amends / settles</td></tr>
+            <tr><td class="arabic">بَيْنَهُمْ</td><td class="bengali">তাদের মধ্যে</td><td class="english">Between them</td></tr>
+            <tr><td class="arabic">فَلَا إِثْمَ</td><td class="bengali">তবে কোনো পাপ নেই</td><td class="english">Then no sin</td></tr>
+            <tr><td class="arabic">عَلَيْهِ</td><td class="bengali">তার উপর</td><td class="english">Upon him</td></tr>
+            <tr><td class="arabic">إِنَّ اللَّهَ</td><td class="bengali">নিশ্চয়ই আল্লাহ</td><td class="english">Indeed, Allah</td></tr>
+            <tr><td class="arabic">غَفُورٌ</td><td class="bengali">পরম ক্ষমাশীল</td><td class="english">Oft-Forgiving</td></tr>
+            <tr><td class="arabic">رَّحِيمٌ</td><td class="bengali">পরম دয়ালু</td><td class="english">Most Merciful</td></tr>
+        </tbody>
+    </table>
+
+    <h3>আয়াত ১৮৩ (Surah Baqarah - Verse 183)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>আরби শব্দ (Arabic)</th>
+                <th>বাংলা শব্দার্থ (Bengali Meaning)</th>
+                <th>ইংরেজি শব্দার্থ (English Meaning)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="arabic">يَا أَيُّهَا الَّذِينَ</td><td class="bengali">হে ঈমানدارগণ! / হে যারা</td><td class="english">O you who</td></tr>
+            <tr><td class="arabic">آمَنُوا</td><td class="bengali">ঈমান এনেছ</td><td class="english">Have believed</td></tr>
+            <tr><td class="arabic">كُتِبَ</td><td class="bengali">ফরজ করা হয়েছে / লিপিবদ্ধ করা হয়েছে</td><td class="english">Is decreed / prescribed</td></tr>
+            <tr><td class="arabic">عَلَيْكُمُ</td><td class="bengali">তোমাদের উপর</td><td class="english">Upon you</td></tr>
+            <tr><td class="arabic">الصِّيَامُ</td><td class="bengali">রোজা / সিয়াম</td><td class="english">Fasting</td></tr>
+            <tr><td class="arabic">كَمَا</td><td class="bengali">যেমন</td><td class="english">As</td></tr>
+            <tr><td class="arabic">كُتِبَ</td><td class="bengali">ফরজ করা হয়েছিল</td><td class="english">It was decreed</td></tr>
+            <tr><td class="arabic">عَلَى الَّذِينَ</td><td class="bengali">তাদের উপর যারা</td><td class="english">Upon those who</td></tr>
+            <tr><td class="arabic">مِن قَبْلِكُمْ</td><td class="bengali">তোমাদের পূর্বে ছিল</td><td class="english">Before you</td></tr>
+            <tr><td class="arabic">لَعَلَّكُمْ</td><td class="bengali">যেন তোমরা</td><td class="english">So that you may</td></tr>
+            <tr><td class="arabic">تَتَّقُونَ</td><td class="bengali">তাকওয়া অবলম্বন করতে পারো / পরহেযগার হতে পারো</td><td class="english">Become righteous</td></tr>
+        </tbody>
+    </table>
+
+    <h3>আয়াত ১৮৪ (Surah Baqarah - Verse 184)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>আরби শব্দ (Arabic)</th>
+                <th>বাংলা শব্দার্থ (Bengali Meaning)</th>
+                <th>ইংরেজি শব্দার্থ (English Meaning)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="arabic">أَيَّامًا</td><td class="bengali">নির্দিষ্ট কয়েকটি দিন</td><td class="english">Days</td></tr>
+            <tr><td class="arabic">مَّعْدُودَاتٍ</td><td class="bengali">গণনা করা / সীমিত সংখ্যক</td><td class="english">Numbered</td></tr>
+            <tr><td class="arabic">فَمَن كَانَ</td><td class="bengali">অতএব তোমাদের মধ্যে যে হবে</td><td class="english">So whoever is</td></tr>
+            <tr><td class="arabic">مِنكُم</td><td class="bengali">তোমাদের মধ্য থেকে</td><td class="english">Among you</td></tr>
+            <tr><td class="arabic">مَّرِيضًا</td><td class="bengali">অসুস্থ</td><td class="english">Ill</td></tr>
+            <tr><td class="arabic">أَوْ عَلَىٰ سَفَرٍ</td><td class="bengali">অথবা সফরে / ভ্রমণে</td><td class="english">Or on a journey</td></tr>
+            <tr><td class="arabic">فَعِدَّةٌ</td><td class="bengali">তবে সংখ্যা পূরণ করতে হবে</td><td class="english">Then a number</td></tr>
+            <tr><td class="arabic">مِنْ أَيَّامٍ أُخَرَ</td><td class="bengali">অন্য দিনগুলো থেকে</td><td class="english">Of other days</td></tr>
+            <tr><td class="arabic">وَعَلَى الَّذِينَ</td><td class="bengali">এবং তাদের উপর যাদের</td><td class="english">And upon those who</td></tr>
+            <tr><td class="arabic">يُطِيقُونَهُ</td><td class="bengali">তা পালনে অত্যন্ত কষ্ট হয় / সামর্থ্য রাখে</td><td class="english">Can afford it (with hardship)</td></tr>
+            <tr><td class="arabic">فِدْيَةٌ</td><td class="bengali">ফিদিয়া (বিনিময়) দিতে হবে</td><td class="english">A ransom</td></tr>
+            <tr><td class="arabic">طَعَامُ مِسْكِينٍ</td><td class="bengali">একজন মিসকিনের খাদ্য</td><td class="english">Feeding of a poor person</td></tr>
+            <tr><td class="arabic">فَمَن تَطَوَّعَ</td><td class="bengali">অতএব যে ব্যক্তি স্বেচ্ছায় করে</td><td class="english">And whoever volunteers</td></tr>
+            <tr><td class="arabic">خَيْرًا</td><td class="bengali">উত্তম কাজ / সৎকাজ</td><td class="english">Good</td></tr>
+            <tr><td class="arabic">فَهُوَ خَيْرٌ لَّهُ</td><td class="bengali">তবে তা তার জন্য কল্যাণকর</td><td class="english">It is better for him</td></tr>
+            <tr><td class="arabic">وَأن تَصُومُوا</td><td class="bengali">এবং তোমাদের রোজা রাখা</td><td class="english">And to fast</td></tr>
+            <tr><td class="arabic">خَيْرٌ لَّكُمْ</td><td class="bengali">তোমাদের জন্য অধিকতর কল্যাণকর</td><td class="english">Is better for you</td></tr>
+            <tr><td class="arabic">إِن كُنتُمْ</td><td class="bengali">যদি তোমরা</td><td class="english">If you</td></tr>
+            <tr><td class="arabic">تَعْلَمُونَ</td><td class="bengali">জানতে / বুঝতে</td><td class="english">Only knew</td></tr>
+        </tbody>
+    </table>
+
+    <h3>আয়াত ১৮৫ (Surah Baqarah - Verse 185)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>আরби শব্দ (Arabic)</th>
+                <th>বাংলা শব্দার্থ (Bengali Meaning)</th>
+                <th>ইংরেজি শব্দার্থ (English Meaning)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="arabic">شَهْرُ رَمَضَانَ</td><td class="bengali">রমজান মাস</td><td class="english">The month of Ramadhan</td></tr>
+            <tr><td class="arabic">الَّذِي</td><td class="bengali">যাতে / যে মাসে</td><td class="english">In which</td></tr>
+            <tr><td class="arabic">أُنزِلَ فِيهِ</td><td class="bengali">নাজিল করা হয়েছে এতে</td><td class="english">Was sent down in it</td></tr>
+            <tr><td class="arabic">الْقُرْآنُ</td><td class="bengali">আল-কুরআন</td><td class="english">The Quran</td></tr>
+            <tr><td class="arabic">هُدًى لِّلنَّاسِ</td><td class="bengali">মানুষের জন্য হেদায়েতস্বরূপ</td><td class="english">A guidance for the people</td></tr>
+            <tr><td class="arabic">وَبَيِّنَاتٍ</td><td class="bengali">এবং স্পষ্ট নিদর্শনসমূহ</td><td class="english">And clear proofs</td></tr>
+            <tr><td class="arabic">مِّنَ الْهُدَىٰ</td><td class="bengali">হেদায়েতের মধ্য থেকে</td><td class="english">Of guidance</td></tr>
+            <tr><td class="arabic">وَالْفُرْقَانِ</td><td class="bengali">এবং সত্য-মিথ্যার পার্থক্যকারী</td><td class="english">And the criterion</td></tr>
+            <tr><td class="arabic">فَمَن شَهِدَ</td><td class="bengali">অতএব যে ব্যক্তি উপস্থিত পাবে (উপলব্ধি করবে)</td><td class="english">So whoever sights</td></tr>
+            <tr><td class="arabic">مِنكُمُ</td><td class="bengali">তোমাদের মধ্য থেকে</td><td class="english">Among you</td></tr>
+            <tr><td class="arabic">الشَّهْرَ</td><td class="bengali">এই মাসটি</td><td class="english">The month</td></tr>
+            <tr><td class="arabic">فَلْيَصُمْهُ</td><td class="bengali">সে যেন তাতে রোজা রাখে</td><td class="english">He should fast it</td></tr>
+            <tr><td class="arabic">وَمَن كَانَ</td><td class="bengali">এবং যে ব্যক্তি হবে</td><td class="english">And whoever is</td></tr>
+            <tr><td class="arabic">مَرِيضًا</td><td class="bengali">অসুস্থ</td><td class="english">Ill</td></tr>
+            <tr><td class="arabic">أَوْ عَلَىٰ سَفَرٍ</td><td class="bengali">অথবা সফরে</td><td class="english">Or on a journey</td></tr>
+            <tr><td class="arabic">فَعِدَّةٌ</td><td class="bengali">তবে সংখ্যা পূরণ করবে</td><td class="english">Then a number</td></tr>
+            <tr><td class="arabic">مِنْ أَيَّامٍ أُخَرَ</td><td class="bengali">অন্য দিনগুলো থেকে</td><td class="english">Of other days</td></tr>
+            <tr><td class="arabic">يُرِيدُ اللَّهُ</td><td class="bengali">আল্লাহ চান</td><td class="english">Allah intends</td></tr>
+            <tr><td class="arabic">بِكُمُ الْيُسْرَ</td><td class="bengali">তোমাদের জন্য সহজ করতে</td><td class="english">For you ease</td></tr>
+            <tr><td class="arabic">وَلَا يُرِيدُ</td><td class="bengali">এবং তিনি চান না</td><td class="english">And does not intend</td></tr>
+            <tr><td class="arabic">بِكُمُ الْعُسْرَ</td><td class="bengali">তোমাদের জন্য কঠিন করতে</td><td class="english">For you hardship</td></tr>
+            <tr><td class="arabic">وَلِتُكْمِلُوا</td><td class="bengali">এবং যেন তোমরা পূরণ করতে পারো</td><td class="english">And for you to complete</td></tr>
+            <tr><td class="arabic">الْعِدَّةَ</td><td class="bengali">সংখ্যাটি (নির্ধারিত দিনগুলো)</td><td class="english">The period</td></tr>
+            <tr><td class="arabic">وَلِتُكَبِّرُوا اللَّهَ</td><td class="bengali">এবং যেন তোমরা আল্লাহর মহিমা ঘোষণা করো</td><td class="english">And to magnify Allah</td></tr>
+            <tr><td class="arabic">عَلَىٰ مَا هَدَاكُمْ</td><td class="bengali">এজন্য যে তিনি তোমাদের হেদায়েত দিয়েছেন</td><td class="english">For that He has guided you</td></tr>
+            <tr><td class="arabic">وَلَعَلَّكُمْ</td><td class="bengali">এবং যেন তোমরা</td><td class="english">And perhaps you will</td></tr>
+            <tr><td class="arabic">تَشْكُرُونَ</td><td class="bengali">কৃতজ্ঞতা প্রকাশ করো</td><td class="english">Be grateful</td></tr>
+        </tbody>
+    </table>
+
+    <!-- পাঠ ০৩ -->
+    <h2>পাঠ ০৩: কুরআনের আয়াতের अनुवाद পড়া</h2>
+    
+    <div class="verse-box">
+        <h3>আয়াত ১৮১</h3>
+        <p class="arabic">فَمَنۢ بَدَّلَهُۥ بَعْدَمَا سَمِعَهُۥ فَإِنَّمَآ إِثْمُهُۥ عَلَى ٱلَّذِينَ يُبَدِّلُونَهُۥٓ ۚ إِنَّ ٱللَّهَ سَمِيعٌ عَلِيمٌ</p>
+        <p class="bengali"><strong>বাংলা অনুবাদ:</strong> অতঃপর যে ব্যক্তি ওসিয়ত শোনার পর তাতে কোনো পরিবর্তন করবে, তার গুনাহ শুধু তাদের ওপরই বর্তাবে যারা তা পরিবর্তন করবে। নিশ্চয়ই আল্লাহ সবকিছু শোনেন ও জানেন।</p>
+        <p class="english"><strong>English Translation:</strong> Then whoever alters it [i.e., the bequest] after he has heard it - the sin is only upon those who alter it. Indeed, Allah is Hearing and Knowing.</p>
+    </div>
+
+    <div class="verse-box">
+        <h3>আয়াত ১৮২</h3>
+        <p class="arabic">فَمَنْ خَافَ مِن مُّوصٍ جَنَفًا أَوْ إِثْمًا فَأَصْلَحَ بَيْنَهُمْ فَلَآ إِثْمَ عَلَيْهِ ۚ إِنَّ ٱللَّهَ غَفُورٌ رَّحِيمٌ</p>
+        <p class="bengali"><strong>বাংলা অনুবাদ:</strong> তবে যদি কেউ ওসিয়তকারীর পক্ষ থেকে কোনো পক্ষপাতিত্ব বা অন্যায়ের আশঙ্কা করে এবং তাদের (উত্তরাধিকারীদের) মধ্যে আপস-নিষ্পত্তি করে দেয়, তবে তার কোনো গুনাহ নেই। নিশ্চয়ই আল্লাহ পরম ক্ষমাশীল, পরম دয়ালু।</p>
+        <p class="english"><strong>English Translation:</strong> But if one fears from the testator [some] error or wrong and makes peace between them [i.e., the heirs], there is no sin upon him. Indeed, Allah is Forgiving and Merciful.</p>
+    </div>
+
+    <div class="verse-box">
+        <h3>আয়াত ১৮৩</h3>
+        <p class="arabic">يَـٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ كُتِبَ عَلَيْكُمُ ٱلصِّيَامُ كَمَا كُتِبَ عَلَى ٱلَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ</p>
+        <p class="bengali"><strong>বাংলা অনুবাদ:</strong> হে মুমিনগণ! তোমাদের ওপর রোজা ফরয করা হয়েছে, যেমন ফরয করা হয়েছিল তোমাদের পূর্ববর্তীদের ওপর, যেন তোমরা তাকওয়া (আল্লাহভীতি) অর্জন করতে পারো।</p>
+        <p class="english"><strong>English Translation:</strong> O you who have believed, decreed upon you is fasting as it was decreed upon those before you that you may become righteous.</p>
+    </div>
+
+    <div class="verse-box">
+        <h3>আয়াত ১৮৪</h3>
+        <p class="arabic">أَيَّامًا مَّعْدُودَٰতٍ ۚ فَمَن كَانَ مِنكُم مَّرِيضًا أَوْ عَلَىٰ سَفَرٍ فَعِدَّةٌ مِّنْ أَيَّامٍ أُخَرَ ۚ وَعَلَى ٱلَّذِينَ يُطِيقُونَهُۥ فِدْيَةٌ طَعَامُ مِسْكِينٍ ۖ فَمَن تَطَوَّعَ خَيْرًا فَهو خَيْرٌ لَّهُۥ ۚ وَأَن تَصُومُوا۟ خَيْرٌ لَّكُمْ ۖ إِن كُنتُمْ تَعْلَمُونَ</p>
+        <p class="bengali"><strong>বাংলা অনুবাদ:</strong> নির্দিষ্ট কয়েক দিনের জন্য। তবে তোমাদের মধ্যে যে অসুস্থ থাকবে কিংবা সফরে থাকবে, সে অন্য দিনগুলোতে এই সংখ্যা পূরণ করে নেবে। আর যাদের জন্য তা অত্যন্ত কষ্টকর, তাদের कर्तव्य এর পরিবর্তে ফিদিয়া—একজন মিসকিনকে খাদ্য দান করা। আর যে ব্যক্তি স্বেচ্ছায় অতিরিক্ত সৎকাজ করবে, তা তার জন্য কল্যাণকর। আর যদি তোমরা রোজা রাখো তবে তা তোমাদের জন্য আরও উত্তম, যদি তোমরা জানতে!</p>
+        <p class="english"><strong>English Translation:</strong> [Fasting for] a limited number of days. So whoever among you is ill or on a journey [during them] - then an equal number of other days [are to be fasted]. And upon those who are able [to fast, but with hardship] - a ransom [as substitute] of feeding a poor person [each day]. And whoever volunteers excess good - it is better for him. But to fast is best for you, if you only knew.</p>
+    </div>
+
+    <div class="verse-box">
+        <h3>আয়াত ১৮৫</h3>
+        <p class="arabic">شَهْرُ رَمَضَانَ ٱلَّذِىٓ أُنزِلَ فِيهِ ٱلْقُرْءَانُ هُدًى لِّلنَّاسِ وَبَيِّنَـٰتٍ مِّنَ ٱلْهُدَىٰ وَٱلْفُرْقَانِ ۚ فَمَن شَهِدَ مِنكُمُ ٱلشَّهْرَ فَلْيَصُمْهُ ۖ وَمَن كَانَ مَرِيضًا أَوْ عَلَىٰ سَفَرٍ فَعِدَّةٌ مِّنْ أَيَّامٍ أُخَرَ ۗ يُرِيدُ ٱللَّهُ بِكُمُ ٱلْيُسْرَ وَلَا يُرِيدُ بِكُمُ ٱلْعُسْرَ وَلِتُكْمِلُوا۟ ٱلْعِدَّةَ وَلِتُكَبِّرُوا۟ ٱللَّهَ عَلَىٰ مَا هَدَىٰكُمْ وَلَعَلَّكُمْ تَشْكُرُونَ</p>
+        <p class="bengali"><strong>বাংলা অনুবাদ:</strong> রমজান মাস, এতে মানুষের দিশারি এবং সৎপথের স্পষ্ট নিদর্শন ও সত্য-মিথ্যার পার্থক্যকারীরূপে কোরআন অবতীর্ণ হয়েছে। সুতরাং তোমাদের মধ্যে যে কেউ এই মাস পাবে, সে যেন অবশ্যই রোজা রাখে। আর যে অসুস্থ থাকবে কিংবা সফরে থাকবে, সে অন্য দিনগুলোতে এই সংখ্যা পূরণ করে নেবে। আল্লাহ তোমাদের জন্য সহজ করতে চান, তোমাদের জন্য কঠিন করতে চান না। আর যেন তোমরা এই সংখ্যা পূরণ করতে পারো এবং তোমাদের সৎপথে পরিচালিত করার কারণে তোমরা আল্লাহর মহিমা ঘোষণা করো (তাকবির ধ্বনি দাও) আর যেন তোমরা কৃতজ্ঞতা প্রকাশ করো।</p>
+        <p class="english"><strong>English Translation:</strong> The month of Ramadhan [is that] in which was revealed the Qur'an, a guidance for the people and clear proofs of guidance and criterion. So whoever sights [the crescent of] the month, let him fast it; and whoever is ill or on a journey - then an equal number of other days. Allah intends for you ease and does not intend for you hardship and [wants] for you to complete the period and to glorify Allah for that [to] which He has guided you; and perhaps you will be grateful.</p>
+    </div>
+
+    <!-- পাঠ ০৪ -->
+    <h2>পাঠ ০৪: কুরআনের উচ্চস্বরে পড়া ও শোনা</h2>
+    <table>
+        <tbody>
+            <tr><td><strong>পড়ার পরিমান</strong></td><td>০৫ পৃষ্ঠা</td></tr>
+            <tr><td><strong>পড়তে হবে</strong></td><td>পারা-৩০-পৃষ্ঠা-০১-০৫</td></tr>
+        </tbody>
+    </table>
+
+    <!-- পাঠ ০৫ -->
+    <h2>পাঠ ০৫: কুরআনের অনুবাদ শিক্ষা ব্যাকরণ</h2>
+    <h3>📚 ক্লাসের মূল শিক্ষা (সংক্ষেপে)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>বিষয়</th>
+                <th>মূল কথা</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>১</td><td>ফোকাস ও সময় ব্যবস্থাপনা</td><td>ফোকাস ধরে রাখতে দৈনিক রুটিন ও চার্ট তৈরি করতে হবে।</td></tr>
+            <tr><td>২</td><td>ক্রিয়া ও অক্রিয়াপদ</td><td>ক্রিয়াপদ = কালবোধক (যেমন: খাওয়া), অক্রিয়াপদ = কালবোধক নয় (যেমন: ভাত)।</td></tr>
+            <tr><td>৩</td><td>শব্দ শেখার পদ্ধতি</td><td>তিনবার পড়ে একবার নিজেকে যাচাই করতে হবে। মুখস্থ নয়, বারবার পড়া ও যাচাই গুরুত্বপূর্ণ।</td></tr>
+            <tr><td>৪</td><td>আয়াতের মাধ্যমে শব্দ শেখা</td><td>প্রতিটি শব্দের সাথে আয়াত যুক্ত করলে শব্দ সহজে মনে থাকে।</td></tr>
+            <tr><td>৫</td><td>ক্রিয়াপদের রূপান্তর</td><td>ক্রিয়াপদের ১৪টি রূপান্তর মুখস্থ না করে, দেখে দেখে পড়তে হবে ও অর্থ বুঝতে হবে।</td></tr>
+            <tr><td>৬</td><td>পড়ার রুটিন</td><td>প্রতিদিন কী পড়েছেন ও কত সময় দিয়েছেন, তা লিখে রাখতে হবে।</td></tr>
+        </tbody>
+    </table>
+
+    <h3>১. ফোকাস ও সময় ব্যবস্থাপনা</h3>
+    <p><strong>মূল কথা:</strong> আগের যুগের মানুষ কম কাজ শুরু করতেন, কিন্তু বেশি সফল হতেন। আমরা অনেক কাজ শুরু করি, কিন্তু ফোকাসের অভাবে কম সফল হই। তাই ফোকাস ধরে রাখতে একটি চার্ট তৈরি করতে হবে।</p>
+    
+    <h4>চার্টের উদাহরণ:</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>তারিখ</th>
+                <th>অক্রিয়াপদ পড়েছি?</th>
+                <th>যাচাই করেছি?</th>
+                <th>আয়ত পড়েছি?</th>
+                <th>সময় (ঘণ্টা)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>৮ নভে</td><td>✔</td><td>✔</td><td>✘</td><td>১.৫</td></tr>
+            <tr><td>৯ নভে</td><td>✔</td><td>✘</td><td>✔</td><td>১</td></tr>
+        </tbody>
+    </table>
+    <p><i>* এই চার্ট প্রতিদিন পূরণ করতে হবে এবং প্রতি ক্লাসের শুরুতে জমা দিতে হবে।</i></p>
+
+    <h3>২. ক্রিয়া ও অক্রিয়াপদ</h3>
+    <p><strong>সংজ্ঞা:</strong><br>
+    <strong>ক্রিয়াপদ (Verb):</strong> যে শব্দ অতীত, বর্তমান বা ভবিষ্যৎ বোঝায়। যেমন: খেয়েছি, খাই, খাবো<br>
+    <strong>অক্রিয়াপদ (Noun/Non-verb):</strong> যে শব্দ কাল বোঝায় না। যেমন: ভাত, বই, মানুষ</p>
+    <p><strong>ক্লাসে যা শেখানো হয়েছে:</strong> প্রতি ক্লাসে ১০টি ক্রিয়াপদ ও ২০টি অক্রিয়াপদ শেখানো হবে। ২০ ক্লাসে মোট ২০০টি ক্রিয়াপদ ও ৪০০টি অক্রিয়াপদ শেখা হবে। প্রতিদিন প্রায় ১০টি শব্দ শিখতে হবে।</p>
+
+    <h3>৩. শব্দ শেখার পদ্ধতি (৩+১ ফর্মুলা)</h3>
+    <p><strong>নিয়ম:</strong> তিনবার পড়বে, একবার নিজেকে যাচাই করবে।<br>
+    <strong>পদ্ধতি:</strong> ১. একটি শব্দ তিনবার পড়ো (উচ্চারণ ও অর্থ দেখে)। ২. তারপর একটি কাগজ দিয়ে শব্দটি ঢেকে দাও। ৩. এখন শব্দটির অর্থ মনে করার চেষ্টা করো। ৪. পারলে টিক দাও, না পারলে আবার পড়ো। ৫. যে শব্দগুলো টিক পেয়েছে, সেগুলো বাদ দিয়ে শুধু বাকিগুলো নিয়ে আবার প্র্যাকটিস করো।</p>
+    <p><strong>উদাহরণ:</strong> <span class="arabic">مِنْ</span> (মিন) = থেকে। তিনবার পড়লে, কাগজ ঢেকে দিয়ে জিজ্ঞেস করো—"এটার অর্থ কী?" যদি 'থেকে' উত্তর দিতে পারো, তাহলে টিক দাও।</p>
+
+    <h3>৪. আয়াতের মাধ্যমে শব্দ শেখা</h3>
+    <p><strong>মূল কথা:</strong> শুধু শব্দের অর্থ মুখস্থ করলে তা দ্রুত ভুলে যাই। তাই প্রতিটি শব্দের সাথে একটি আয়াত যুক্ত করে শিখতে হবে।</p>
+    <p><strong>উদাহরণ:</strong> <span class="arabic">مِنْ</span> (মিন) – অর্থ: থেকে। আয়াত: <span class="arabic">"مِنَ الْجِنَّةِ وَالنَّاسِ"</span> (সূরা নাস)। এখানে مِنْ = থেকে (জিন ও মানুষের থেকে)।</p>
+
+    <h3>৫. ক্রিয়াপদের রূপান্তর</h3>
+    <p><strong>মূল কথা:</strong> ক্রিয়াপদের ১৪টি রূপান্তর আছে। এগুলো মুখস্থ না করে, দেখে দেখে পড়তে হবে এবং অর্থ বুঝতে হবে।</p>
+    <table>
+        <thead>
+            <tr>
+                <th>আরби শব্দ</th>
+                <th>অর্থ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="arabic">قَالَ</td><td>সে বলেছে</td></tr>
+            <tr><td class="arabic">قَالُوا</td><td>তারা বলেছে</td></tr>
+            <tr><td class="arabic">قُلْتَ</td><td>তুমি বলেছ</td></tr>
+            <tr><td class="arabic">قُلْتُمْ</td><td>তোমরা বলেছ</td></tr>
+            <tr><td class="arabic">قُلْتُ</td><td>আমি বলেছি</td></tr>
+            <tr><td class="arabic">قُلْنَا</td><td>আমরা বলেছি</td></tr>
+        </tbody>
+    </table>
+    <p><strong>নিয়ম:</strong> আরবি দেখে বাংলা অর্থ বের করতে হবে, উল্টো নয়.</p>
+
+    <h3>৬. পড়ার রুটিন ও প্রশ্নপত্র</h3>
+    <p>প্রতি ক্লাসের শুরুতে যে প্রশ্নগুলো জমা দিতে হবে: ১. অক্রিয়াপদ পড়েছ ও যাচাই করেছ? ২. অক্রিয়াপদের সাথে আয়াত পড়েছ? ৩. ক্রিয়াপদ পড়েছ ও যাচাই করেছ? ৪. ক্রিয়াপদের সাথে আয়াত পড়েছ? ۵. কুইজের উত্তর দিয়েছ? ৬. গত ক্লাস থেকে আজকের ক্লাস পর্যন্ত কত ঘণ্টা সময় দিয়েছ?</p>
+
+    <h3>✅ শেষ কথা (স্মারক)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>বিষয়</th>
+                <th>মূল নিয়ম</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>ফোকাস</td><td>দৈনিক রুটিন চার্ট তৈরি করো</td></tr>
+            <tr><td>শব্দ শেখা</td><td>৩ বার পড় + ১ বার যাচাই</td></tr>
+            <tr><td>মুখস্থ নয়</td><td>দেখে দেখে পড়, অর্থ বুঝ</td></tr>
+            <tr><td>আয়াতের ব্যবহার</td><td>প্রতিটি শব্দের সাথে আয়াত যুক্ত করো</td></tr>
+            <tr><td>সময়</td><td>প্রতিদিন কমপক্ষে ১ ঘণ্টা দাও</td></tr>
+            <tr><td>প্রশ্নপত্র</td><td>প্রতি ক্লাসের শুরুতে জমা দিতে হবে</td></tr>
+        </tbody>
+    </table>
+
+    <!-- পাঠ ০৬ -->
+    <h2>পাঠ ০৬: কুরআনের প্রাথমিক শব্দাবলী</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ক্রমিক নং</th>
+                <th>আরби শব্দ (Arabic Word)</th>
+                <th>বাংলা অর্থ (Bengali Meaning)</th>
+                <th>ইংরেজি অর্থ (English Meaning)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>১</td><td class="arabic">أَ</td><td>কি?</td><td class="english">what</td></tr>
+            <tr><td>২</td><td class="arabic">بِ</td><td>সাথে, দ্বারা</td><td class="english">with</td></tr>
+            <tr><td>৩</td><td class="arabic">لِ / لَ</td><td>জন্যে</td><td class="english">for</td></tr>
+            <tr><td>৪</td><td class="arabic">فَ</td><td>এরপর</td><td class="english">then</td></tr>
+            <tr><td>৫</td><td class="arabic">كَ</td><td>মতো</td><td class="english">like</td></tr>
+            <tr><td>৬</td><td class="arabic">وَ</td><td>এবং</td><td class="english">and</td></tr>
+            <tr><td>৭</td><td class="arabic">سَ</td><td>শীঘ্রই</td><td class="english">soon</td></tr>
+            <tr><td>৮</td><td class="arabic">كَ</td><td>তোমার, তোমাকে</td><td class="english">your</td></tr>
+            <tr><td>৯</td><td class="arabic">هُ / هِ</td><td>তার, তাকে</td><td class="english">his</td></tr>
+            <tr><td>১০</td><td class="arabic">يِ</td><td>আমার, আমাকে</td><td class="english">my</td></tr>
+        </tbody>
+    </table>
+
+    <!-- পাঠ ০৭ -->
+    <h2>পাঠ ০৭: কুরআনের অক্রিয়াপদ শব্দাবলী</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ক্রমিক নং</th>
+                <th>আরби শব্দ (Arabic Word)</th>
+                <th>বাংলা অর্থ (Bengali Meaning)</th>
+                <th>ইংরেজি অর্থ (English Meaning)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>১</td><td class="arabic">مَنْ / مِنْ</td><td>থেকে, অন্তর্ভুক্ত, এর / যে, কে</td><td class="english">From, of / Who</td></tr>
+            <tr><td>২</td><td class="arabic">الله</td><td>আল্লাহ</td><td class="english">Allah (God)</td></tr>
+            <tr><td>৩</td><td class="arabic">فِي</td><td>মধ্যে</td><td class="english">In, inside</td></tr>
+            <tr><td>৪</td><td class="arabic">إِنْ / إِنَّ</td><td>যদি / নিশ্চয়, কেবল</td><td class="english">If / Indeed, surely</td></tr>
+            <tr><td>৫</td><td class="arabic">عَلَى</td><td>উপরে</td><td class="english">On, upon</td></tr>
+            <tr><td>৬</td><td class="arabic">الَّذِينَ</td><td>যারা</td><td class="english">Those who</td></tr>
+            <tr><td>৭</td><td class="arabic">لَا</td><td>না</td><td class="english">No, not</td></tr>
+            <tr><td>৮</td><td class="arabic">مَا</td><td>যা, না, কি, পার্থক্যকারী মা</td><td class="english">What, that which, not</td></tr>
+            <tr><td>৯</td><td class="arabic">رَبّ</td><td>প্রভু</td><td class="english">Lord, Sustainer</td></tr>
+            <tr><td>১০</td><td class="arabic">إِلَى</td><td>দিকে</td><td class="english">To, towards</td></tr>
+        </tbody>
+    </table>
+
+    <!-- পাঠ ০৮ -->
+    <h2>পাঠ ০৮: কুরআনের ক্রিয়াপদ শব্দাবলী</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ক্রমিক নং</th>
+                <th>আরби শব্দ (Arabic Word)</th>
+                <th>বাংলা অর্থ (Bengali Meaning)</th>
+                <th>ইংরেজি অর্থ (English Meaning)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>১</td><td class="arabic">قَالَ</td><td>বলা</td><td class="english">To say</td></tr>
+            <tr><td>২</td><td class="arabic">كَانَ</td><td>হওয়া</td><td class="english">To be / was</td></tr>
+            <tr><td>৩</td><td class="arabic">ءامَنَ</td><td>বিশ্বাস করা</td><td class="english">To believe</td></tr>
+            <tr><td>৪</td><td class="arabic">عَلِمَ</td><td>জানা</td><td class="english">To know</td></tr>
+            <tr><td>৫</td><td class="arabic">جَعَلَ</td><td>করা, বানানো, তৈরি করা</td><td class="english">To make / to set</td></tr>
+            <tr><td>৬</td><td class="arabic">كَفَرَ</td><td>অস্বীকার করা</td><td class="english">To disbelieve / deny</td></tr>
+            <tr><td>৭</td><td class="arabic">جَاءَ</td><td>আসা</td><td class="english">To come</td></tr>
+            <tr><td>৮</td><td class="arabic">عَمِلَ</td><td>কাজ করা</td><td class="english">To work / do deeds</td></tr>
+            <tr><td>৯</td><td class="arabic">أَتَى</td><td>দেওয়া</td><td class="english">To give</td></tr>
+            <tr><td>১০</td><td class="arabic">رَأَى</td><td>দেখা</td><td class="english">To see</td></tr>
+        </tbody>
+    </table>
+
+    <!-- পাঠ ০৯ -->
+    <h2>পাঠ ০৯: কুরআনের ক্রিয়াপদের রূপান্তর</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ক্রম</th>
+                <th>মাদি (مَاضِي)</th>
+                <th>মুদারে (مُضَارِع)</th>
+                <th>বাবের নাম (بَاب)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>১</td><td class="arabic">قَالَ</td><td class="arabic">يَقُولُ</td><td>نَصَرَ - يَنْصُرُ</td></tr>
+            <tr><td>২</td><td class="arabic">كَانَ</td><td class="arabic">يَكُونُ</td><td>نَصَرَ - يَنْصُرُ</td></tr>
+            <tr><td>৩</td><td class="arabic">ءامَنَ</td><td class="arabic">يُؤْمِنُ</td><td>إِفْعَال</td></tr>
+            <tr><td>৪</td><td class="arabic">عَلِمَ</td><td class="arabic">يَعْلَمُ</td><td>سَمِعَ - يَسْمَعُ</td></tr>
+            <tr><td>৫</td><td class="arabic">جَعَلَ</td><td class="arabic">يَجْعَلُ</td><td>فَتَحَ - يَفْتَحُ</td></tr>
+            <tr><td>৬</td><td class="arabic">كَفَرَ</td><td class="arabic">يَكْفُرُ</td><td>نَصَرَ - يَنْصُرُ</td></tr>
+            <tr><td>৭</td><td class="arabic">جَاءَ</td><td class="arabic">يَجِيءُ</td><td>ضَرَبَ - يَضْرِبُ</td></tr>
+            <tr><td>৮</td><td class="arabic">عَمِلَ</td><td class="arabic">يَعْمَلُ</td><td>سَمِعَ - يَسْمَعُ</td></tr>
+            <tr><td>৯</td><td class="arabic">أَتَى</td><td class="arabic">يَأْتِي</td><td>ضَرَبَ - يَضْرِبُ</td></tr>
+            <tr><td>১০</td><td class="arabic">رَأَى</td><td class="arabic">يَرَى</td><td>فَتَحَ - يَفْتَحُ</td></tr>
+        </tbody>
+    </table>
+
+    <!-- পাঠ ১০ -->
+    <h2>পাঠ ১০: কুরআনের আয়াতের অনুবাদ অনুশীলন</h2>
+    <div class="verse-box">
+        <p><strong>আয়াত ১৮১:</strong></p>
+        <p class="arabic">فَمَنۢ بَدَّلَهُۥ بَعْدَمَا سَمِعَهُۥ فَإِنَّمَآ إِثْمُهُۥ عَلَى ٱلَّذِينَ يُبَدِّلُونَهُۥٓ ۚ إِنَّ ٱللَّهَ سَمِيعٌ عَلِيمٌ</p>
+    </div>
+    <div class="verse-box">
+        <p><strong>আয়াত ১৮২:</strong></p>
+        <p class="arabic">فَمَنْ خَافَ مِن مُّوصٍ جَنَفًا أَوْ إِثْمًا فَأَصْلَحَ بَيْنَهُمْ فَلَآ إِثْمَ عَلَيْهِ ۚ إِنَّ ٱللَّهَ غَفُورٌ رَّحِيمٌ</p>
+    </div>
+    <div class="verse-box">
+        <p><strong>আয়াত ১৮৩:</strong></p>
+        <p class="arabic">يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ كُتِبَ عَلَيْكُمُ ٱلصِّيَامُ كَمَا كُتِبَ عَلَى ٱلَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ</p>
+    </div>
+    <div class="verse-box">
+        <p><strong>আয়াত ۱৮৪:</strong></p>
+        <p class="arabic">أَيَّامًا مَّعْدُودَٰতٍ ۚ فَمَن كَانَ مِنكُم مَّرِيضًا أَوْ عَلَىٰ سَفَرٍ فَعِدَّةٌ مِّنْ أَيَّامٍ أُخَرَ ۚ وَعَلَى ٱلَّذِينَ يُطِيقُونَهُۥ فِدْيَةٌ طَعَامُ مِسْكِينٍ ۖ فَمَن تَطَوَّعَ خَيْرًا فَهُوَ خَيْرٌ لَّهُۥ ۚ وَأَن تَصُومُوا۟ خَيْرٌ لَّكُمْ ۖ إِن كُنتُمْ تَعْلَمُونَ</p>
+    </div>
+
+    <!-- পাঠ ১১ -->
+    <h2>পাঠ ১১: লুগাতুল ব্যবহারিক ব্যাকরণ</h2>
+    <div class="note-box">
+        * এই অংশটি পাঠ ০৫ এর অনুরূপ রিভিশন ক্লাস। তাই পূর্বের পাঠের ব্যাকরণ ও চার্টটি ভালোভাবে ঝালিয়ে নিন।
+    </div>
+
+    <!-- পাঠ ১২ -->
+    <h2>পাঠ ১২: লুগাতুল হাতেখড়ি বই পড়া</h2>
+    <table>
+        <tbody>
+            <tr><td><strong>অনুশীলনের পরিমান</strong></td><td>০৫ পৃষ্ঠা</td></tr>
+            <tr><td><strong>অনুশীলন করতে হবে</strong></td><td>পৃষ্ঠা-০১-০৫</td></tr>
+        </tbody>
+    </table>
+
+    <!-- পাঠ ১৩ -->
+    <h2>পাঠ ১৩: লুগাতুল ৫০০ পৃষ্ঠার শব্দ</h2>
+    <h3>৩. প্রয়োজনীয় আরবি বাক্য-০১ [পৃষ্ঠা: ১৭ - ১৮]</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>আরবি (Arabic)</th>
+                <th>বাংলা অর্থ (Bengali Meaning)</th>
+                <th>ইংরেজি অর্থ (English Meaning)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="arabic">أَنَا سَعِيدٌ</td><td class="bengali">আমি খুশি</td><td class="english">I am happy</td></tr>
+            <tr><td class="arabic">أَنَا مُتْعَبٌ</td><td class="bengali">আমি ক্লান্ত</td><td class="english">I am tired</td></tr>
+            <tr><td class="arabic">أَنَا مَشْغُولٌ</td><td class="bengali">আমি ব্যস্ত</td><td class="english">I am busy</td></tr>
+            <tr><td class="arabic">أَنَا مَرِيضٌ</td><td class="bengali">আমি অসুস্থ</td><td class="english">I am sick</td></tr>
+            <tr><td class="arabic">أَنَا مُتَحَمِّسٌ</td><td class="bengali">আমি উত্তেজিত / আমি উৎসাহী</td><td class="english">I am excited / I am enthusiastic</td></tr>
+            <tr><td class="arabic">أَنَا حَزِيْنٌ</td><td class="bengali">আমি দুঃখিত / মন খারাপ</td><td class="english">I am sad</td></tr>
+            <tr><td class="arabic">أَنَا فُضُوْلِيٌّ</td><td class="bengali">আমি কৌতূহলী</td><td class="english">I am curious</td></tr>
+            <tr><td class="arabic">أَنَا جَائِعٌ</td><td class="bengali">আমি ক্ষুধার্ত</td><td class="english">I am hungry</td></tr>
+            <tr><td class="arabic">أَنَا خَائِفٌ</td><td class="bengali">আমি ভীত</td><td class="english">I am scared</td></tr>
+            <tr><td class="arabic">أَنَا جَاهِرٌ</td><td class="bengali">আমি প্রস্তুত</td><td class="english">I am ready</td></tr>
+            <tr><td class="arabic">أَنَا قَلِقٌ</td><td class="bengali">আমি উদ্বিগ্ন</td><td class="english">I am worried</td></tr>
+            <tr><td class="arabic">أَنَا نَشِيْطٌ</td><td class="bengali">আমি উদ্যমী</td><td class="english">I am active</td></tr>
+            <tr><td class="arabic">أَنَا مُنْهَكُ</td><td class="bengali">আমি অতিশয় ক্লান্ত</td><td class="english">I am exhausted</td></tr>
+            <tr><td class="arabic">أَنَا مُنْدَهِسٌ</td><td class="bengali">আমি বিস্মিত</td><td class="english">I am surprised</td></tr>
+            <tr><td class="arabic">أَنَا مُنْزَعِجٌ</td><td class="bengali">আমি বিরক্ত</td><td class="english">I am annoyed</td></tr>
+            <tr><td class="arabic">أَنَا وَاثِقٌ بِنَفْسِي</td><td class="bengali">আমি আত্মবিশ্বাসী</td><td class="english">I am confident</td></tr>
+            <tr><td class="arabic">أَنَا عَطْشَانُ</td><td class="bengali">আমি তৃষ্ণার্ত</td><td class="english">I am thirsty</td></tr>
+            <tr><td class="arabic">أَنَا مُتَفَائِلٌ</td><td class="bengali">আমি আশাবাদী</td><td class="english">I am optimistic</td></tr>
+            <tr><td class="arabic">أَنَا مُرْتَبِكْ</td><td class="bengali">আমি দিশেহারা</td><td class="english">I am confused</td></tr>
+        </tbody>
+    </table>
+
+    <!-- পাঠ ১৪ -->
+    <h2>পাঠ ১৪: লুগাতুল শিশুদের আরবি</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ক্রমিক নং</th>
+                <th>আরবি শব্দ / বাক্য</th>
+                <th>বাংলা অর্থ</th>
+                <th>ইংরেজি অর্থ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>১</td><td class="arabic">رِحْلَةُ الْعَرَبِيَّةِ</td><td class="bengali">আরবি ভাষা শেখার জার্নি / সফর</td><td class="english">The Journey of Arabic</td></tr>
+            <tr><td>২</td><td class="arabic">أَسْرَتِي</td><td class="bengali">আমার পরিবার</td><td class="english">My Family</td></tr>
+            <tr><td>৩</td><td class="arabic">أَعْضَاءُ الْجِسْمِ</td><td class="bengali">শরীরের অঙ্গ</td><td class="english">Parts of the Body</td></tr>
+            <tr><td>৪</td><td class="arabic">المَلَابِسُ</td><td class="bengali">পোশাক-আশাক</td><td class="english">Clothing & Accessories</td></tr>
+            <tr><td>৫</td><td class="arabic">الطَّعَامُ وَالشَّرَابُ</td><td class="bengali">খাবারের নাম (খাবার ও পানীয়)</td><td class="english">Names of Foods & Drinks</td></tr>
+            <tr><td>৬</td><td class="arabic">الأَلْوَانُ</td><td class="bengali">রঙের নাম</td><td class="english">Colors</td></tr>
+            <tr><td>৭</td><td class="arabic">الطُّيُورُ</td><td class="bengali">পাখির নাম</td><td class="english">Birds’ Names</td></tr>
+            <tr><td>৮</td><td class="arabic">الفَوَاكِةُ</td><td class="bengali">সুস্বাদু ফল</td><td class="english">Fruits</td></tr>
+            <tr><td>৯</td><td class="arabic">أَدَوَاتُ المَطْبَخِ</td><td class="bengali">রান্নাঘরের জিনিসপত্র</td><td class="english">Kitchen Items</td></tr>
+            <tr><td>১০</td><td class="arabic">أَدَوَاتُ الفَصْلِ</td><td class="bengali">আমাদের ক্লাসরুম (ক্লাসরুমের জিনিসপত্র)</td><td class="english">Classroom Items</td></tr>
+        </tbody>
+    </table>
+
+    <!-- পাঠ ১৫ -->
+    <h2>পাঠ ১৫: লুগাতুল বই থেকে পড়া</h2>
+    <p>এই অংশটি আরবি ভাষার প্রাথমিক পাঠ (বোধশক্তি ও পরিচিতি) থেকে নেওয়া। এখানে শিক্ষার্থীকে নিকটবর্তী বস্তু বা পরিচিত স্থান চিহ্নিত করতে শেখানো হয়েছে। পাঠে প্রশ্ন-উত্তর (এটা কী? / এটি কে?) ও নেতিবাচক ও ইতিবাচক উত্তর দেওয়ার পদ্ধতি শেখানো হয়েছে। এছাড়া পেশা, স্থান, প্রাণী ও বস্তুর নাম এবং সঠিক উচ্চারণ ও লেখার অনুশীলন করানো হয়েছে।</p>
+    
+    <h3>📖 প্রধান নিয়ম-কানুন (ব্যাকরণিক ও শিক্ষণীয় দিক)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ক্রম</th>
+                <th>নিয়ম/বিষয়</th>
+                <th>বর্ণনা</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>১</td><td>ইশারা বাক্য</td><td>هَذَا (এই) দিয়ে নিকটবর্তী একবচন পুংলিঙ্গ বস্তু/ব্যক্তি বোঝায়।</td></tr>
+            <tr><td>২</td><td>প্রশ্ন তৈরি</td><td>مَا هَذَا؟ = এটা কী? مَنْ هَذَا؟ = ইনি কে? أَهَذَا...؟ = কি এটি...?</td></tr>
+            <tr><td>৩</td><td>ইতিবাচক উত্তর</td><td>শুধু বস্তুর নাম বলা হয় (যেমন: هَذَا مَسْجِدٌ)</td></tr>
+            <tr><td>৪</td><td>নেতিবাচক উত্তর</td><td>لَا (না) দিয়ে শুরু করে সঠিক নাম বলা হয় (যেমন: لَا، هَذَا قَطٌّ)</td></tr>
+            <tr><td>৫</td><td>লিখন অনুশীলন</td><td>প্রদত্ত শব্দগুলো দেখে দেখে লেখার অভ্যাস করানো হয়েছে।</td></tr>
+            <tr><td>৬</td><td>পাঠक्रमের ধারা</td><td>বস্তু → স্থান → পেশა → প্রাণী → বৈশিষ্ট্য — ধাপে ধাপে শব্দভাণ্ডার বাড়ানো।</td></tr>
+        </tbody>
+    </table>
+
+    <h3>📚 শব্দতালিকা (আরবি → বাংলা → ইংরেজি)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>আরби (Arabic)</th>
+                <th>বাংলা (Bengali)</th>
+                <th>ইংরেজি (English)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="arabic">مَكْتَبٌ</td><td class="bengali">ডেস্ক / লেখার টেবিল</td><td class="english">Desk / Office table</td></tr>
+            <tr><td class="arabic">مَسْجِدٌ</td><td class="bengali">মসজিদ</td><td class="english">Mosque</td></tr>
+            <tr><td class="arabic">قَائِمٌ</td><td class="bengali">দাঁড়ানো (ব্যক্তি)</td><td class="english">Standing (man)</td></tr>
+            <tr><td class="arabic">سَرِيرٌ</td><td class="bengali">বিছানা</td><td class="english">Bed</td></tr>
+            <tr><td class="arabic">كُرْسِيٌّ</td><td class="bengali">চেয়ার</td><td class="english">Chair</td></tr>
+            <tr><td class="arabic">بَيْتٌ</td><td class="bengali">ঘর / বাড়ি</td><td class="english">House / Home</td></tr>
+            <tr><td class="arabic">تَاجِرٌ</td><td class="bengali">ব্যবসায়ী</td><td class="english">Merchant / Trader</td></tr>
+            <tr><td class="arabic">كَلْبٌ</td><td class="bengali">কুকুর</td><td class="english">Dog</td></tr>
+            <tr><td class="arabic">قِطٌّ</td><td class="bengali">বিড়াল</td><td class="english">Cat</td></tr>
+            <tr><td class="arabic">حِمَارٌ</td><td class="bengali">গাধা</td><td class="english">Donkey</td></tr>
+            <tr><td class="arabic">حِصَانٌ</td><td class="bengali">ঘোড়া</td><td class="english">Horse</td></tr>
+            <tr><td class="arabic">جَمَلٌ</td><td class="bengali">উট</td><td class="english">Camel</td></tr>
+            <tr><td class="arabic">حَارٌّ</td><td class="bengali">গরম (তাপমাত্রা)</td><td class="english">Hot</td></tr>
+            <tr><td class="arabic">هَذَا</td><td class="bengali">এই (একবচন পুংলিঙ্গ)</td><td class="english">This (masculine)</td></tr>
+            <tr><td class="arabic">مَا</td><td class="bengali">কী</td><td class="english">What</td></tr>
+            <tr><td class="arabic">مَنْ</td><td class="bengali">কে</td><td class="english">Who</td></tr>
+            <tr><td class="arabic">لَا</td><td class="bengali">না</td><td class="english">No</td></tr>
+            <tr><td class="arabic">أَ</td><td class="bengali">প্রশ্নবোধক চিহ্ন (কি?)</td><td class="english">Interrogative particle</td></tr>
+            <tr><td class="arabic">وَ</td><td class="bengali">এবং / আর</td><td class="english">And</td></tr>
+        </tbody>
+    </table>
+
+    <h3>✅ সংক্ষিপ্ত ক্লাস-সার (মূল পয়েন্টসমূহ)</h3>
+    <ul>
+        <li><span class="arabic">هَذَا</span> দিয়ে সব একবচন পুংলিঙ্গ বস্তু/ব্যক্তিকে নির্দেশ করা যায়।</li>
+        <li>প্রশ্ন করতে <span class="arabic">مَا هَذَا؟</span> (বস্তুর জন্য) এবং <span class="arabic">مَنْ هَذَا؟</span> (ব্যক্তির জন্য) ব্যবহার করো।</li>
+        <li>হ্যাঁ/না-বোধক প্রশ্ন করতে <span class="arabic">أَ</span> যোগ করো (যেমন: <span class="arabic">أَهَذَا بَيْتٌ؟</span>)।</li>
+        <li>না-সূচক উত্তরে <span class="arabic">لَا</span> দিয়ে শুরু করে সঠিক উত্তর দাও।</li>
+    </ul>
+
+    <!-- পাঠ ১৬ -->
+    <h2>পাঠ ১৬: লুগাতুল সাধারণ ব্যাকরণ</h2>
+    <p>আরবি ব্যাকরণে ‘লাফজ’ (<span class="arabic">اللَّفْظ</span>) একটি অত্যন্ত মৌলিক ও গুরুত্বপূর্ণ বিষয়। মানুষের মুখ থেকে উচ্চারিত যেকোনো ধ্বনি বা শব্দকেই মূলত 'লাফজ' বলা হয়।</p>
+    
+    <h3>লাফজ (<span class="arabic">اللفظ</span>)-এর সংজ্ঞা</h3>
+    <p>মানুষের মুখ থেকে যে ধ্বনি বা আওয়াজ বের হয়, তাকে লাফজ বলে। এটি মূলত দুই প্রকার: ১. মাওদ্বূ' (<span class="arabic">المَوْضُوْع</span>): অর্থবোধক শব্দ। ২. মুহমাল (<span class="arabic">المُهْمَل</span>): অর্থহীন শব্দ।</p>
+    
+    <h3>১. মাওদ্বূ' (<span class="arabic">الموضوع</span>) বা অর্থবোধক শব্দ</h3>
+    <p>মাওদ্বূ' বা অর্থবোধক শব্দ আবার দুই প্রকার: ক. মুফরাদ (<span class="arabic">المُفْرَد</span>) বা একক শব্দ (কালিমা) এবং খ. মুরাক্কাব (<span class="arabic">المُرَكَّب</span>) বা যৌগিক শব্দ।</p>
+    <ul>
+        <li><strong>ইসম (<span class="arabic">الإِسْم</span>):</strong> নাম বা বিশেষ্য। যেমন: <span class="arabic">كِتَابٌ</span> (বই)।</li>
+        <li><strong>ফি'ল (<span class="arabic">الفِعْل</span>):</strong> ক্রিয়া। যেমন: <span class="arabic">كَتَبَ</span> (সে লিখেছে)।</li>
+        <li><strong>হারফ (<span class="arabic">الحَرْف</span>):</strong> অব্যয়। যেমন: <span class="arabic">فِيْ</span> (মধ্যে)।</li>
+    </ul>
+
+    <h3>একনজরে লাফজের সংক্ষিপ্ত ছক (Summary Chart)</h3>
+    <div class="chart-box">
+                     [ লাফজ (اللفظ) ]
+                            │
+         ┌──────────────────┴──────────────────┐
+         ▼                                     ▼
+   ماوদ্বূ' (الموضوع)                     মুহমাল (المهمل)
+   (অর্থবোধক শব্দ)                        (অর্থহীন শব্দ)
+         │                                 *উদাহরণ: دَيْزٌ (দাইজুন্)
+   ┌─────┴──────────────────┐
+   ▼                        ▼
+মুফরাদ / কালিما (المفرد)   মুরাক্কাব (المركب)
+(একক শব্দ)               (যৌগিক শব্দ)
+   │                        │
+   ├─ ইসম (الإسم)           ├─ মুফীদ / জুমলা (المفيد) -> পূর্ণাঙ্গ বাক্য
+   ├─ ফি'ল (الفعل)           └─ গায়রে মুফীদ (غير المفيد) -> অসম্পূর্ণ বাক্য
+   └─ হারফ (الحرف)
+    </div>
+
+    <!-- পাঠ ১৭ ও ১৮ -->
+    <h2>পাঠ ১৭: লুগাতুল বিষয়ভিত্তিক অডিও শোনা</h2>
+    <p><i>(এই অধ্যায়টি অডিও লিসেনিং সেশনের জন্য নির্ধারিত)</i></p>
+    <h2>পাঠ ১৮: লুগাতুল আজকের হাতের লেখা</h2>
+    <p><i>(এই অধ্যায়টি হাতের লেখা অনুশীলনের জন্য নির্ধারিত)</i></p>
+
+    <!-- পাঠ ১৯ -->
+    <h2>পাঠ ১৯: লুগাতুল দৈনন্দিন শব্দাবলী</h2>
+    <p>একেবারে সহজ এবং সাবলীল শব্দ দিয়ে লেভেল-১ (Beginner Level) স্ট্যান্ডার্ডে স্ক্রিপ্টটি তৈরি করা হয়েছে।</p>
+    
+    <div class="verse-box">
+        <h3>المقدمة (Introduction / সূচনা)</h3>
+        <p class="arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ. صَبَاحُ الْخَيْرِ يَا أَصْدِقَائِي. أَنَا سَعِيدٌ جِدًّا لِلِقَائِكُمْ الْيَوْمَ.</p>
+        <p class="bengali"><strong>বাংলা অনুবাদ:</strong> আপনাদের সবার ওপর আল্লাহর শান্তি, রহমত ও বরকত বর্ষিত হোক। শুভ সকাল আমার বন্ধুরা। আজ আপনাদের সাথে দেখা হওয়ায় আমি খুব আনন্দিত।</p>
+        <p class="english"><strong>English:</strong> Peace, mercy, and blessings of Allah be upon you. Good morning, my friends. I am very happy to meet you today.</p>
+    </div>
+
+    <div class="verse-box">
+        <h3>الشخصية والعائلة (Personal & Family)</h3>
+        <p class="arabic">اِسْمِي كَامْرُل حَسَن رُونِي. أَنَا مِنْ بَنْغْلَادِيش، وَأَعِيشُ فِي مَدِينَةِ بَارِيشَال. عُمْرِي أَرْبَعٌ وَثَلَاثُونَ سَنَةً.</p>
+        <p class="arabic">أَنَا مُتَزَوِّجٌ. عِنْدِي ابْنٌ صَغِيرٌ وَجَمِيلٌ. اِسْمُهُ "تَنْجِيف عَبْدُ الله". أَنَا أُحِبُّ عَائِلَتِي كَثِيرًا.</p>
+        <p class="bengali"><strong>বাংলা অনুবাদ:</strong> আমার নাম কামরুল হাসান রনি। আমি বাংলাদেশের মানুষ এবং বরিশাল শহরে বাস করি। আমার বয়স চৌত্রিশ বছর। আমি বিবাহিত। আমার একটি ছোট ও সুন্দর ছেলে আছে। তার নাম "তানজীফ আবদুল্লাহ"। আমি আমার পরিবারকে খুব ভালোবাসি।</p>
+        <p class="english"><strong>English:</strong> My name is Kamrul Hassan Rony. I am from Bangladesh, and I live in Barishal city. I am 34 years old. I am married. I have a small and beautiful son. His name is "Tanjif Abdullah". I love my family very much.</p>
+    </div>
+
+    <div class="verse-box">
+        <h3>العمل والمهنة (Work & Profession)</h3>
+        <p class="arabic">أَنَا أَعْمَلُ فِي بَنْكٍ. أَنَا مَوْظَّفٌ فِي قِسْمِ الـ VIP. عَمَلِي مُهِمٌّ جِدًّا وَأَنَا أُحِبُّ عَمَلِي. أَنَا أَتَعَلَّمُ كُلَّ يَوْمٍ أَشْيَاءَ جَدِيدَةً فِي الْعَمَلِ. أُرِيدُ أَنْ أَكُونَ مُدِيرًا نَاجِحًا فِي الْمُسْتَقْبَلِ.</p>
+        <p class="bengali"><strong>বাংলা অনুবাদ:</strong> আমি একটি ব্যাংকে কাজ করি। আমি ভিআইপি বিভাগের একজন কর্মকর্তা। আমার কাজটি খুব গুরুত্বপূর্ণ এবং আমি আমার কাজ পছন্দ করি। আমি প্রতিদিন কাজের মধ্যে নতুন নতুন জিনিস শিখি। আমি ভবিষ্যতে একজন সফল ম্যানেজার হতে চাই।</p>
+        <p class="english"><strong>English:</strong> I work in a bank. I am an employee in the VIP department. My job is very important and I love my job. I learn new things at work every day. I want to be a successful manager in the future.</p>
+    </div>
+
+    <h3>২. লেভেল-১ ভোকাবুলারি শিট (Vocabulary Sheet)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>আরবি (Arabic)</th>
+                <th>বাংলা (Bengali)</th>
+                <th>ইংরেজি (English)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="arabic">أَصْدِقَائِي</td><td class="bengali">আমার বন্ধুরা</td><td class="english">My friends</td></tr>
+            <tr><td class="arabic">سَعِيدٌ</td><td class="bengali">আনন্দিত / সুখী</td><td class="english">Happy</td></tr>
+            <tr><td class="arabic">لِلِقَائِكُمْ</td><td class="bengali">আপনাদের সাথে সাক্ষাৎ হওয়ায়</td><td class="english">To meet you</td></tr>
+            <tr><td class="arabic">الْيَوْمَ</td><td class="bengali">আজ</td><td class="english">Today</td></tr>
+            <tr><td class="arabic">مَدِينَةِ</td><td class="bengali">শহর</td><td class="english">City</td></tr>
+            <tr><td class="arabic">عُمْرِي</td><td class="bengali">আমার বয়স</td><td class="english">My age</td></tr>
+            <tr><td class="arabic">سَنَةً</td><td class="bengali">বছর</td><td class="english">Year</td></tr>
+            <tr><td class="arabic">مُتَزَوِّجٌ</td><td class="bengali">বিবাহিত</td><td class="english">Married</td></tr>
+            <tr><td class="arabic">عِنْدِي</td><td class="bengali">আমার আছে</td><td class="english">I have</td></tr>
+            <tr><td class="arabic">ابْنٌ</td><td class="bengali">পুত্র / ছেলে</td><td class="english">Son</td></tr>
+            <tr><td class="arabic">صَغِيرٌ</td><td class="bengali">ছোট</td><td class="english">Small / Little</td></tr>
+            <tr><td class="arabic">جَمِيلٌ</td><td class="bengali">সুন্দর</td><td class="english">Beautiful</td></tr>
+            <tr><td class="arabic">أُحِبُّ</td><td class="bengali">আমি ভালোবাসি / পছন্দ করি</td><td class="english">I love / I like</td></tr>
+            <tr><td class="arabic">عَائِلَتِي</td><td class="bengali">আমার পরিবার</td><td class="english">My family</td></tr>
+            <tr><td class="arabic">كَثِيرًا</td><td class="bengali">অনেক / খুব</td><td class="english">Much / A lot</td></tr>
+            <tr><td class="arabic">أَعْمَلُ</td><td class="bengali">আমি কাজ করি</td><td class="english">I work</td></tr>
+            <tr><td class="arabic">بَنْكٍ</td><td class="bengali">ব্যাংক</td><td class="english">Bank</td></tr>
+            <tr><td class="arabic">مَوْظَّفٌ</td><td class="bengali">কর্মী / কর্মকর্তা</td><td class="english">Employee</td></tr>
+            <tr><td class="arabic">قِسْمِ</td><td class="bengali">বিভাগ</td><td class="english">Department</td></tr>
+            <tr><td class="arabic">عَمَلِي</td><td class="bengali">আমার কাজ</td><td class="english">My job / My work</td></tr>
+            <tr><td class="arabic">مُهِمٌّ</td><td class="bengali">গুরুত্বপূর্ণ</td><td class="english">Important</td></tr>
+            <tr><td class="arabic">أَتَعَلَّمُ</td><td class="bengali">আমি শিখি</td><td class="english">I learn</td></tr>
+            <tr><td class="arabic">كُلَّ يَوْمٍ</td><td class="bengali">প্রতিদিন</td><td class="english">Every day</td></tr>
+            <tr><td class="arabic">أَشْيَاءَ</td><td class="bengali">জিনিসপত্র</td><td class="english">Things</td></tr>
+            <tr><td class="arabic">جَدِيدَةً</td><td class="bengali">নতুন</td><td class="english">New</td></tr>
+            <tr><td class="arabic">أُرِيدُ</td><td class="bengali">আমি চাই</td><td class="english">I want</td></tr>
+            <tr><td class="arabic">أكُونَ</td><td class="bengali">হতে / হওয়া</td><td class="english">To be</td></tr>
+            <tr><td class="arabic">مُدِيرًا</td><td class="bengali">ম্যানেজার / ব্যবস্থাপক</td><td class="english">Manager</td></tr>
+            <tr><td class="arabic">نَاجِحًا</td><td class="bengali">সফল</td><td class="english">Successful</td></tr>
+            <tr><td class="arabic">الْمُسْتَقْبَلِ</td><td class="bengali">ভবিষ্যৎ</td><td class="english">Future</td></tr>
+            <tr><td class="arabic">وَقْتِ الْفَرَاغِ</td><td class="bengali">অবসর সময়</td><td class="english">Free time</td></tr>
+            <tr><td class="arabic">الرِّيَاضَةَ</td><td class="bengali">খেলাধুলা / ব্যায়াম</td><td class="english">Sports / Exercise</td></tr>
+            <tr><td class="arabic">الْجَرْيَ</td><td class="bengali">দৌড়ানো</td><td class="english">Running</td></tr>
+            <tr><td class="arabic">كُلَّ صَبَاحٍ</td><td class="bengali">প্রতিদিন সকাল</td><td class="english">Every morning</td></tr>
+            <tr><td class="arabic">الصِّحَّةُ</td><td class="bengali">স্বাস্থ্য</td><td class="english">Health</td></tr>
+            <tr><td class="arabic">جَيِّدَةٌ</td><td class="bengali">ভালো</td><td class="english">Good</td></tr>
+            <tr><td class="arabic">لِلْإِنْسَانِ</td><td class="bengali">মানুষের জন্য</td><td class="english">For humans</td></tr>
+            <tr><td class="arabic">أَيْضًا</td><td class="bengali">ও / ওপরেও (এছাড়াও)</td><td class="english">Also / Too</td></tr>
+            <tr><td class="arabic">أَدْرُسُ</td><td class="bengali">আমি পড়ি / অধ্যায়ন করি</td><td class="english">I study</td></tr>
+            <tr><td class="arabic">بَعْضَ</td><td class="bengali">কিছু</td><td class="english">Some</td></tr>
+            <tr><td class="arabic">لُغَاتِ</td><td class="bengali">ভাষাসমূহ</td><td class="english">Languages</td></tr>
+            <tr><td class="arabic">الْبَرْمَجَةِ</td><td class="bengali">প্রোগ্রামিং</td><td class="english">Programming</td></tr>
+            <tr><td class="arabic">قِرَاءَةَ</td><td class="bengali">পড়া (পাঠ করা)</td><td class="english">Reading</td></tr>
+            <tr><td class="arabic">الْكُتُبِ</td><td class="bengali">বই খাতা / বইসমূহ</td><td class="english">Books</td></tr>
+            <tr><td class="arabic">النِّهَايَةِ</td><td class="bengali">শেষ / পরিশেষে</td><td class="english">End / In the end</td></tr>
+            <tr><td class="arabic">اسْتِمَاعِكُمْ</td><td class="bengali">আপনাদের শোনা / মনোযোগ</td><td class="english">Your listening</td></tr>
+            <tr><td class="arabic">أَتَمَنَّى</td><td class="bengali">আমি আশা করি / কামনা করি</td><td class="english">I wish / I hope</td></tr>
+            <tr><td class="arabic">يَوْمًا سَعِيدًا</td><td class="bengali">একটি শুভ দিন</td><td class="english">A happy day</td></tr>
+        </tbody>
+    </table>
+    <h1 style="text-align: center; margin-top: 50px;">সমাপ্ত</h1>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let selectedRow = null;
+    let loopTimeout = null;
+
+    // ১. সাধারণ টেক্সট ক্লিক হ্যান্ডলার (ইনলাইন শব্দ বা বাক্য পড়ার জন্য)
+    document.body.addEventListener("click", function(e) {
+        if(e.target.tagName !== 'TD' && e.target.tagName !== 'TH' && (e.target.classList.contains('arabic') || e.target.classList.contains('english') || e.target.classList.contains('bengali'))) {
+            speakText(e.target.textContent, detectLang(e.target));
+        }
+    });
+
+    // ২. টেবিল সারি (Row) সিলেকশন লজিক
+    const rows = document.querySelectorAll("tbody tr");
+    rows.forEach(row => {
+        row.addEventListener("click", function (e) {
+            if (selectedRow) selectedRow.classList.remove("selected-row");
+            selectedRow = this;
+            selectedRow.classList.add("selected-row");
+        });
+    });
+
+    // ৩. লুপ স্টার্ট বাটন
+    document.getElementById("btn-start-loop").addEventListener("click", function () {
+        if (!selectedRow) {
+            alert("অনুগ্রহ করে প্রথমে যেকোনো টেবিল লাইনের (Row) ওপর ক্লিক করে সিলেক্ট করুন!");
+            return;
+        }
+        stopAudio();
+        
+        const repeatCount = parseInt(document.getElementById("repeat-count").value) || 3;
+        const mode = document.getElementById("loop-mode").value;
+        
+        const arCell = selectedRow.querySelector(".arabic");
+        const enCell = selectedRow.querySelector(".english");
+        const bnCell = selectedRow.querySelector(".bengali");
+
+        let playlist = [];
+
+        for (let i = 0; i < repeatCount; i++) {
+            if (mode === "single") {
+                if (arCell) playlist.push({ text: arCell.textContent, lang: 'ar-SA' });
+                else if (enCell) playlist.push({ text: enCell.textContent, lang: 'en-US' });
+                else if (bnCell) playlist.push({ text: bnCell.textContent, lang: 'bn-BD' });
+            } else if (mode === "row-ar") {
+                if (arCell) playlist.push({ text: arCell.textContent, lang: 'ar-SA' });
+            } else if (mode === "row-both") {
+                if (arCell) playlist.push({ text: arCell.textContent, lang: 'ar-SA' });
+                if (enCell) playlist.push({ text: enCell.textContent, lang: 'en-US' });
+            }
+        }
+
+        playPlaylist(playlist, 0);
+    });
+
+    // ৪. স্টপ বাটন
+    document.getElementById("btn-stop-audio").addEventListener("click", stopAudio);
+
+    function playPlaylist(list, index) {
+        if (index >= list.length) return;
+        
+        window.speechSynthesis.cancel();
+        const item = list[index];
+        const utterance = new SpeechSynthesisUtterance(cleanText(item.text));
+        utterance.lang = item.lang;
+        utterance.rate = item.lang === 'ar-SA' ? 0.75 : 0.85;
+
+        utterance.onend = function() {
+            loopTimeout = setTimeout(() => {
+                playPlaylist(list, index + 1);
+            }, 600); // প্রতিটি শব্দের মাঝে বিরতি কাল
+        };
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function speakText(text, lang) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(cleanText(text));
+        utterance.lang = lang;
+        utterance.rate = lang === 'ar-SA' ? 0.75 : 0.85;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function detectLang(element) {
+        if (element.classList.contains('arabic') || element.getAttribute('lang') === 'ar') return 'ar-SA';
+        if (element.classList.contains('english')) return 'en-US';
+        return 'bn-BD';
+    }
+
+    function cleanText(text) {
+        return text.replace(/[✔✘()।?؟:—\/]/g, "").trim();
+    }
+
+    function stopAudio() {
+        window.speechSynthesis.cancel();
+        clearTimeout(loopTimeout);
+    }
+});
+</script>
+
+</body>
+</html>

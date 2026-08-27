@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ভিডিও রেকর্ডার | মিশন ২০২৬</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+.islamic-pattern {
+    background-image: url('https://www.transparenttextures.com/patterns/islamic-art.png');
+    background-color: #064e3b;
+    background-position: center; /* প্যাটার্নটি মাঝখান থেকে শুরু হবে */
+}
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f1f5f9; }
+        #preview { 
+            width: 100%; 
+            max-width: 800px; /* স্ক্রিন বড় করা হয়েছে */
+            height: auto;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+        .btn-record { transition: all 0.3s ease; }
+        .btn-record:active { transform: scale(0.9); }
+/* ... আগের স্টাইল ঠিক থাকবে ... */
+
+    /* টাইমারকে ভিডিওর ওপরে ভাসমান করার জন্য স্টাইল */
+    .video-controls-overlay {
+        position: absolute;
+        top: 1rem; /* উপর থেকে ১ রেম নিচে */
+        left: 1rem; /* বাম থেকে ১ রেম ডানে */
+        right: 1rem; /* ডান থেকে ১ রেম বামে */
+        display: flex;
+        justify-content: space-between; /* টাইমার বামে, REC ব্যাজ ডানে থাকবে */
+        align-items: center;
+        z-index: 10; /* ভিডিওর ওপরে দেখানোর জন্য */
+    }
+
+    #timer {
+        background: rgba(0, 0, 0, 0.6); /* হালকা কালো স্বচ্ছ ব্যাকগ্রাউন্ড */
+        color: #ef4444; /* লাল রঙের লেখা (Tailwind red-500) */
+        padding: 4px 12px;
+        border-radius: 99px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.875rem; /* text-sm */
+        font-weight: 700; /* font-bold */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    </style>
+</head>
+<body class="pb-10">
+<header class="islamic-pattern text-white min-h-[90px] flex items-center justify-center shadow-inner mb-10">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight">রেকর্ড প্যানেল</h1>
+    </div>
+</header>
+    <main class="max-w-3xl mx-auto px-4 text-center">
+    <div class="bg-white p-4 md:p-6 rounded-[32px] shadow-sm relative"> <div class="relative inline-block w-full">
+            <video id="preview" autoplay muted playsinline class="bg-black"></video>
+            
+            <div class="video-controls-overlay">
+                <div id="timer" class="hidden">00:00:00</div>
+                
+                <div id="recordingBadge" class="hidden bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse">
+                    ● REC
+                </div>
+            </div>
+        </div>
+
+        </div>
+            <div id="status" class="mt-4 text-gray-500 font-medium">ক্যামেরা লোড হচ্ছে...</div>
+
+            <div class="mt-8 flex flex-wrap justify-center gap-4">
+                <button id="startBtn" onclick="startRecording()" class="btn-record bg-red-600 text-white px-8 py-3 rounded-2xl font-bold hover:bg-red-700 shadow-lg shadow-red-200">
+                    রেকর্ড শুরু করুন
+                </button>
+                <button id="stopBtn" onclick="stopRecording()" disabled class="btn-record bg-gray-300 text-white px-8 py-3 rounded-2xl font-bold cursor-not-allowed">
+                    রেকর্ড বন্ধ করুন
+                </button>
+            </div>
+
+            <div id="downloadSection" class="hidden mt-10 p-6 bg-green-50 rounded-2xl border border-green-100 animate-in fade-in zoom-in duration-300">
+                <h3 class="text-green-800 font-bold mb-4">অভিনন্দন! ভিডিও তৈরি হয়েছে।</h3>
+                <div class="flex flex-col md:flex-row justify-center gap-3">
+                    <a id="downloadLink" class="bg-green-700 text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2">
+                        💾 গ্যালারিতে সেভ করুন
+                    </a>
+                    <a href="https://drive.google.com/drive/u/0/my-drive" target="_blank" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2">
+                        ☁️ গুগল ড্রাইভে আপলোড দিন
+                    </a>
+                </div>
+                <p class="text-[11px] text-gray-400 mt-3">* প্রথমে সেভ করুন, তারপর ড্রাইভ লিঙ্কে গিয়ে আপলোড দিন।</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+let timerDisplay = document.getElementById('timer');
+let startTime;
+let timerInterval;
+
+function updateTimer() {
+    let now = new Date().getTime();
+    let difference = now - startTime;
+    let hours = Math.floor(difference / (1000 * 60 * 60));
+    let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+    hours = (hours < 10) ? "0" + hours : hours;
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
+    timerDisplay.innerText = hours + ":" + minutes + ":" + seconds;
+}
+        let preview = document.getElementById('preview');
+        let recorder;
+        let chunks = [];
+        let recordingBadge = document.getElementById('recordingBadge');
+
+        // ক্যামেরা এক্সেস
+        navigator.mediaDevices.getUserMedia({ 
+            video: { width: { ideal: 1280 }, height: { ideal: 720 } }, 
+            audio: true 
+        })
+        .then(stream => {
+            preview.srcObject = stream;
+            document.getElementById('status').innerText = "ক্যামেরা প্রস্তুত (HD)";
+        })
+        .catch(err => {
+            document.getElementById('status').innerText = "ক্যামেরা এক্সেস পাওয়া যায়নি!";
+        });
+
+        function startRecording() {
+            chunks = [];
+            let stream = preview.srcObject;
+            recorder = new MediaRecorder(stream);
+            
+            recorder.ondataavailable = e => chunks.push(e.data);
+            recorder.onstop = e => {
+                let blob = new Blob(chunks, { type: 'video/webm' });
+                let url = URL.createObjectURL(blob);
+                let downloadLink = document.getElementById('downloadLink');
+                downloadLink.href = url;
+                downloadLink.download = `AlorKafela_Rec_${new Date().getTime()}.webm`;
+                document.getElementById('downloadSection').classList.remove('hidden');
+            };
+
+            recorder.start();
+            recordingBadge.classList.remove('hidden');
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('startBtn').classList.replace('bg-red-600', 'bg-gray-300');
+            document.getElementById('stopBtn').disabled = false;
+            document.getElementById('stopBtn').classList.replace('bg-gray-300', 'bg-black');
+            document.getElementById('stopBtn').classList.remove('cursor-not-allowed');
+            document.getElementById('status').innerText = "রেকর্ডিং চলছে...";
+// রেকর্ড শুরু হওয়ার লাইনের নিচে এটি দিন
+startTime = new Date().getTime();
+timerInterval = setInterval(updateTimer, 1000);
+timerDisplay.classList.remove('hidden');
+        }
+
+        function stopRecording() {
+            recorder.stop();
+            recordingBadge.classList.add('hidden');
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('startBtn').classList.replace('bg-gray-300', 'bg-red-600');
+            document.getElementById('stopBtn').disabled = true;
+            document.getElementById('stopBtn').classList.replace('bg-black', 'bg-gray-300');
+            document.getElementById('status').innerText = "রেকর্ডিং সেভ করার জন্য প্রস্তুত।";
+// রেকর্ড বন্ধ হওয়ার লাইনের নিচে এটি দিন
+clearInterval(timerInterval);
+timerDisplay.classList.add('hidden');
+timerDisplay.innerText = "00:00:00";
+        }
+
+    </script>
+
+</body>
+</html>
