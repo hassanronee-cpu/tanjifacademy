@@ -820,6 +820,199 @@
                 flex: 0 0 auto !important;
             }
         }
+
+        /* Cycle report styles */
+        .cycle-selector-box {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        .cycle-selector-box select {
+            flex: 1;
+            min-width: 160px;
+            padding: 8px 14px;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            font-size: 13px;
+        }
+        .cycle-selector-box button {
+            padding: 8px 22px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #2563eb;
+            color: white;
+        }
+        .cycle-selector-box button:hover {
+            background: #1d4ed8;
+            transform: scale(1.02);
+        }
+        .cycle-report-container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            margin-top: 12px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .cycle-report-container .report-header {
+            border-bottom: 2px solid #10b981;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .cycle-report-container .report-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #065f46;
+        }
+        .cycle-report-container .report-header .cycle-badge {
+            background: #d1fae5;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 12px;
+            color: #065f46;
+        }
+        .cycle-report-container .section-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e293b;
+            background: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 8px;
+            margin: 12px 0 8px 0;
+            display: inline-block;
+        }
+        .cycle-report-container .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-top: 8px;
+        }
+        .cycle-report-container .profile-grid .pitem {
+            background: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .cycle-report-container .profile-grid .pitem .plabel {
+            font-size: 9px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+        .cycle-report-container .profile-grid .pitem .pvalue {
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .cycle-report-container .cat-table-wrap-sm {
+            max-height: 250px;
+            overflow-y: auto;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            font-size: 12px;
+        }
+        .cycle-report-container .cat-table-wrap-sm table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .cycle-report-container .cat-table-wrap-sm thead {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+        .cycle-report-container .cat-table-wrap-sm th {
+            background: #e2e8f0;
+            padding: 5px 8px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .cycle-report-container .cat-table-wrap-sm td {
+            padding: 4px 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .cycle-report-container .cat-table-wrap-sm tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        .cycle-report-container .cat-table-wrap-sm .main-row td {
+            background: #d1fae5 !important;
+            font-weight: 600;
+        }
+        .cycle-report-container .cat-table-wrap-sm .total-row td {
+            background: #f0fdf4 !important;
+            font-weight: 700;
+            border-top: 2px solid #10b981;
+        }
+        .cycle-report-container .report-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .cycle-report-container .report-actions button {
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cycle-report-container .report-actions .btn-pdf {
+            background: #dc2626;
+            color: white;
+        }
+        .cycle-report-container .report-actions .btn-pdf:hover {
+            background: #b91c1c;
+            transform: translateY(-1px);
+        }
+        .cycle-report-container .report-actions .btn-print {
+            background: #2563eb;
+            color: white;
+        }
+        .cycle-report-container .report-actions .btn-print:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+        .cycle-report-container .report-actions .btn-close-cycle {
+            background: #6b7280;
+            color: white;
+        }
+        .cycle-report-container .report-actions .btn-close-cycle:hover {
+            background: #4b5563;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 30px 10px;
+            color: #94a3b8;
+        }
+        .empty-state .big-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -969,6 +1162,11 @@
                 📊 বিস্তারিত মাসিক রিপোর্ট (২৫-২৪ তারিখ)
             </button>
 
+            <!-- NEW: Cycle Report Button -->
+            <button onclick="openCycleReport()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold text-sm shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
+                📆 সাইকেল ভিত্তিক রিপোর্ট দেখুন
+            </button>
+
             <div class="glass-card p-6">
                 <h4 class="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-4">সাম্প্রতিক ৫টি এন্ট্রি</h4>
                 <div id="recentList" class="space-y-3"></div>
@@ -985,6 +1183,36 @@
             <div id="reportSummary" class="report-summary-grid"></div>
             <div id="modalContent" class="space-y-3 report-modal-content"></div>
             <button onclick="toggleReport()" class="report-close-btn">✕ বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <!-- Cycle Report Modal -->
+    <div id="cycleReportModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[999] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl rounded-[32px] p-6 md:p-8 relative shadow-2xl overflow-hidden flex flex-col" style="max-height:92vh;">
+            <button onclick="closeCycleReport()" class="absolute top-4 right-6 text-slate-400 hover:text-black text-2xl z-10">✕</button>
+            <h2 class="text-xl font-bold text-indigo-900 mb-4 flex items-center gap-2 pr-8">
+                <span class="p-2 bg-indigo-100 rounded-lg text-lg">📆</span> সাইকেল ভিত্তিক রিপোর্ট
+            </h2>
+
+            <div class="cycle-selector-box">
+                <select id="cycleSelect" class="flex-1">
+                    <option value="">-- সাইকেল নির্বাচন করুন --</option>
+                </select>
+                <button onclick="generateCycleReport()">📄 রিপোর্ট দেখুন</button>
+            </div>
+
+            <div id="cycleReportContainer" class="cycle-report-container">
+                <div class="empty-state">
+                    <div class="big-icon">📋</div>
+                    <p>একটি সাইকেল নির্বাচন করে রিপোর্ট দেখুন</p>
+                </div>
+            </div>
+
+            <div id="cycleReportActions" class="report-actions" style="display:none; margin-top:12px;">
+                <button class="btn-pdf" onclick="downloadCyclePDF()">📄 PDF ডাউনলোড</button>
+                <button class="btn-print" onclick="printCycleReport()">🖨️ প্রিন্ট</button>
+                <button class="btn-close-cycle" onclick="closeCycleReport()">✕ বন্ধ</button>
+            </div>
         </div>
     </div>
 
@@ -1980,6 +2208,259 @@
             document.getElementById('statBalance').innerText = `৳ ${formatCurrency(finance.currentBalance)}`;
 
             if (document.getElementById('mainCat').value) updateSubCategories();
+        }
+
+        // ================== CYCLE REPORT ==================
+
+        function getAllCycles() {
+            const cycles = new Set();
+            expenses.filter(ex => ex.deleted !== true).forEach(ex => {
+                if (!ex.date) return;
+                const d = new Date(ex.date);
+                if (isNaN(d.getTime())) return;
+                let month = d.getMonth();
+                let year = d.getFullYear();
+                // cycle starts on 25th
+                if (d.getDate() < 25) {
+                    month = (month - 1 + 12) % 12;
+                    if (month === 11) year--;
+                }
+                const label = `${year}-${String(month+1).padStart(2,'0')}`;
+                cycles.add(label);
+            });
+            return Array.from(cycles).sort();
+        }
+
+        function getCycleLabel(cycleKey) {
+            const [year, month] = cycleKey.split('-').map(Number);
+            const monthName = ["জানু", "ফেব্রু", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্ট", "অক্টো", "নভে", "ডিসে"][month-1];
+            return `${monthName} ${year} (২৫-২৪)`;
+        }
+
+        function getCycleData(cycleKey) {
+            const [year, month] = cycleKey.split('-').map(Number);
+            const startDate = new Date(year, month-1, 25);
+            const endDate = new Date(year, month, 24);
+            endDate.setHours(23,59,59);
+
+            const filtered = expenses.filter(ex => {
+                if (ex.deleted === true) return false;
+                if (!ex.date) return false;
+                const d = new Date(ex.date);
+                return d >= startDate && d <= endDate;
+            });
+
+            return filtered;
+        }
+
+        function openCycleReport() {
+            document.getElementById('cycleReportModal').classList.remove('hidden');
+            const select = document.getElementById('cycleSelect');
+            const cycles = getAllCycles();
+            select.innerHTML = `<option value="">-- সাইকেল নির্বাচন করুন --</option>`;
+            cycles.forEach(c => {
+                select.innerHTML += `<option value="${c}">${getCycleLabel(c)}</option>`;
+            });
+            // reset container
+            document.getElementById('cycleReportContainer').innerHTML = `<div class="empty-state"><div class="big-icon">📋</div><p>একটি সাইকেল নির্বাচন করে রিপোর্ট দেখুন</p></div>`;
+            document.getElementById('cycleReportActions').style.display = 'none';
+        }
+
+        function closeCycleReport() {
+            document.getElementById('cycleReportModal').classList.add('hidden');
+        }
+
+        let currentCycleData = [];
+
+        function generateCycleReport() {
+            const cycleKey = document.getElementById('cycleSelect').value;
+            if (!cycleKey) {
+                showToast('দয়া করে একটি সাইকেল নির্বাচন করুন!', 'error');
+                return;
+            }
+
+            const data = getCycleData(cycleKey);
+            currentCycleData = data;
+            const container = document.getElementById('cycleReportContainer');
+
+            if (data.length === 0) {
+                container.innerHTML = `<div class="empty-state"><div class="big-icon">📭</div><p>এই সাইকেলে কোনো এন্ট্রি নেই</p></div>`;
+                document.getElementById('cycleReportActions').style.display = 'none';
+                return;
+            }
+
+            // Separate expense and adjustment
+            const expensesCycle = data.filter(ex => ex.mode === 'expense');
+            const adjustmentsCycle = data.filter(ex => ex.mode === 'adjustment');
+
+            // Calculate finance for this cycle
+            let cycleFinance = { savings: 0, liability: 0, investment: 0, currentBalance: 0 };
+            let totalExpense = 0, totalEarnings = 0;
+            data.forEach(ex => {
+                const amt = parseFloat(ex.amount) || 0;
+                if (ex.mode === 'expense') {
+                    totalExpense += amt;
+                    if (ex.main === 'Savings (সঞ্চয়)') cycleFinance.savings += amt;
+                    if (ex.main === 'Installment (কিস্তি)') cycleFinance.liability -= amt;
+                } else {
+                    if (ex.main === 'Earnings') totalEarnings += amt;
+                    if (ex.main === 'Investment') cycleFinance.investment += amt;
+                    if (ex.main === 'Liability') {
+                        if (ex.sub.includes('(-)') || ex.sub.includes('Paid')) cycleFinance.liability -= amt;
+                        else cycleFinance.liability += amt;
+                    }
+                    if (ex.main === 'Savings') {
+                        if (ex.sub.includes('(-)')) cycleFinance.savings -= amt;
+                        else cycleFinance.savings += amt;
+                    }
+                    if (ex.main === 'Balance') {
+                        if (ex.sub.includes('(-)')) cycleFinance.currentBalance -= amt;
+                        else cycleFinance.currentBalance += amt;
+                    }
+                }
+            });
+            cycleFinance.currentBalance = totalEarnings - totalExpense - cycleFinance.investment + cycleFinance.currentBalance;
+
+            // Build HTML
+            let html = `<div class="report-header">
+                <h3>${getCycleLabel(cycleKey)}</h3>
+                <span class="cycle-badge">${cycleKey} | মোট এন্ট্রি: ${data.length}</span>
+            </div>`;
+
+            // Profile section
+            html += `<div class="section-title">📊 আর্থিক প্রোফাইল (সাইকেল শেষে)</div>`;
+            html += `<div class="profile-grid">
+                <div class="pitem"><div class="plabel">Balance</div><div class="pvalue">৳${formatCurrency(cycleFinance.currentBalance)}</div></div>
+                <div class="pitem"><div class="plabel">Savings</div><div class="pvalue">৳${formatCurrency(cycleFinance.savings)}</div></div>
+                <div class="pitem"><div class="plabel">Liability</div><div class="pvalue">৳${formatCurrency(cycleFinance.liability)}</div></div>
+                <div class="pitem"><div class="plabel">Investment</div><div class="pvalue">৳${formatCurrency(cycleFinance.investment)}</div></div>
+            </div>`;
+
+            // Earnings (Adjustments) section
+            if (adjustmentsCycle.length > 0) {
+                html += `<div class="section-title">💰 উপার্জন ও সমন্বয় (Adjustments)</div>`;
+                html += `<div class="cat-table-wrap-sm"><table><thead><tr><th>মূল খাত</th><th>উপ-খাত</th><th style="text-align:right;">পরিমাণ (৳)</th></tr></thead><tbody>`;
+                const adjGroups = {};
+                adjustmentsCycle.forEach(ex => {
+                    const key = ex.main;
+                    if (!adjGroups[key]) adjGroups[key] = [];
+                    adjGroups[key].push(ex);
+                });
+                let adjTotal = 0;
+                const sortedAdjMains = sortCategoriesWithOthersLast(Object.keys(adjGroups));
+                sortedAdjMains.forEach(main => {
+                    const items = adjGroups[main];
+                    let mainTotal = 0;
+                    items.forEach(ex => {
+                        const amt = parseFloat(ex.amount) || 0;
+                        mainTotal += amt;
+                        adjTotal += amt;
+                        html += `<tr><td>${ex.main}</td><td>${ex.sub}</td><td style="text-align:right;">${formatCurrency(amt)}</td></tr>`;
+                    });
+                    html += `<tr class="main-row"><td colspan="2"><b>${main} - মোট</b></td><td style="text-align:right;font-weight:700;">${formatCurrency(mainTotal)}</td></tr>`;
+                });
+                html += `<tr class="total-row"><td colspan="2"><b>সর্বমোট উপার্জন/সমন্বয়</b></td><td style="text-align:right;">${formatCurrency(adjTotal)}</td></tr>`;
+                html += `</tbody></table></div>`;
+            }
+
+            // Expenses section
+            if (expensesCycle.length > 0) {
+                html += `<div class="section-title">💸 খরচের বিবরণ (Expenses)</div>`;
+                html += `<div class="cat-table-wrap-sm"><table><thead><tr><th>মূল খাত</th><th>উপ-খাত</th><th style="text-align:right;">পরিমাণ (৳)</th></tr></thead><tbody>`;
+                const expGroups = {};
+                expensesCycle.forEach(ex => {
+                    const key = ex.main;
+                    if (!expGroups[key]) expGroups[key] = [];
+                    expGroups[key].push(ex);
+                });
+                let expTotal = 0;
+                const sortedExpMains = sortCategoriesWithOthersLast(Object.keys(expGroups));
+                sortedExpMains.forEach(main => {
+                    const items = expGroups[main];
+                    let mainTotal = 0;
+                    items.forEach(ex => {
+                        const amt = parseFloat(ex.amount) || 0;
+                        mainTotal += amt;
+                        expTotal += amt;
+                        html += `<tr><td>${ex.main}</td><td>${ex.sub}</td><td style="text-align:right;">${formatCurrency(amt)}</td></tr>`;
+                    });
+                    html += `<tr class="main-row"><td colspan="2"><b>${main} - মোট</b></td><td style="text-align:right;font-weight:700;">${formatCurrency(mainTotal)}</td></tr>`;
+                });
+                html += `<tr class="total-row"><td colspan="2"><b>সর্বমোট খরচ</b></td><td style="text-align:right;">${formatCurrency(expTotal)}</td></tr>`;
+                html += `</tbody></table></div>`;
+            }
+
+            if (expensesCycle.length === 0 && adjustmentsCycle.length === 0) {
+                html += `<div class="empty-state"><div class="big-icon">📭</div><p>এই সাইকেলে কোনো ডেটা নেই</p></div>`;
+            }
+
+            container.innerHTML = html;
+            document.getElementById('cycleReportActions').style.display = 'flex';
+            showToast('✅ রিপোর্ট তৈরি হয়েছে!', 'success');
+        }
+
+        function downloadCyclePDF() {
+            const container = document.getElementById('cycleReportContainer');
+            const content = container.innerHTML;
+            if (!content || content.includes('empty-state')) {
+                showToast('প্রথমে একটি রিপোর্ড তৈরি করুন!', 'error');
+                return;
+            }
+
+            const win = window.open('', '_blank');
+            const style = document.querySelector('style').innerHTML;
+            const title = document.getElementById('cycleSelect').value ? getCycleLabel(document.getElementById('cycleSelect').value) : 'সাইকেল রিপোর্ট';
+            win.document.write(`
+                <html>
+                <head>
+                    <title>${title}</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+                    <style>
+                        body { font-family: 'Hind Siliguri', sans-serif; padding: 30px; background: white; }
+                        .report-header { border-bottom: 2px solid #10b981; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; }
+                        .report-header h3 { font-size: 20px; font-weight: 700; color: #065f46; }
+                        .cycle-badge { background: #d1fae5; padding: 4px 16px; border-radius: 30px; font-weight: 600; font-size: 12px; }
+                        .section-title { font-weight: 700; font-size: 16px; color: #1e293b; background: #f1f5f9; padding: 6px 12px; border-radius: 8px; margin: 16px 0 8px 0; display: inline-block; }
+                        .profile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; background: #f8fafc; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 8px; }
+                        .profile-grid .pitem { background: white; padding: 6px 12px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: center; }
+                        .profile-grid .pitem .plabel { font-size: 9px; font-weight: 600; color: #6b7280; text-transform: uppercase; }
+                        .profile-grid .pitem .pvalue { font-weight: 700; font-size: 14px; }
+                        .cat-table-wrap-sm { max-height: 400px; overflow-y: auto; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; margin-top: 6px; }
+                        .cat-table-wrap-sm table { width: 100%; border-collapse: collapse; }
+                        .cat-table-wrap-sm th { background: #e2e8f0; padding: 5px 8px; text-align: left; font-weight: 600; }
+                        .cat-table-wrap-sm td { padding: 4px 8px; border-bottom: 1px solid #e2e8f0; }
+                        .cat-table-wrap-sm tr:nth-child(even) { background: #f8fafc; }
+                        .cat-table-wrap-sm .main-row td { background: #d1fae5 !important; font-weight: 600; }
+                        .cat-table-wrap-sm .total-row td { background: #f0fdf4 !important; font-weight: 700; border-top: 2px solid #10b981; }
+                        .empty-state { text-align: center; padding: 30px 10px; color: #94a3b8; }
+                        .empty-state .big-icon { font-size: 40px; margin-bottom: 10px; }
+                        .report-actions { display: none; }
+                        @media print {
+                            .report-actions { display: none !important; }
+                            .cat-table-wrap-sm { max-height: none !important; overflow: visible !important; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${content}
+                    <p style="margin-top:30px; font-size:10px; color:#9ca3af; text-align:center;">জেনারেটেড: ${new Date().toLocaleString()}</p>
+                    <script>
+                        window.print();
+                    <\/script>
+                </body>
+                </html>
+            `);
+            win.document.close();
+        }
+
+        function printCycleReport() {
+            const container = document.getElementById('cycleReportContainer');
+            const content = container.innerHTML;
+            if (!content || content.includes('empty-state')) {
+                showToast('প্রথমে একটি রিপোর্ট তৈরি করুন!', 'error');
+                return;
+            }
+            downloadCyclePDF();
         }
 
         // ================== SAVE DATA ==================
