@@ -1013,6 +1013,499 @@
             font-size: 40px;
             margin-bottom: 10px;
         }
+
+        /* New styles for enhanced cycle report */
+        .cycle-report-container .allocation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .cycle-report-container .allocation-item {
+            background: #f8fafc;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
+            font-size: 12px;
+        }
+        .cycle-report-container .allocation-item .main-name {
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .cycle-report-container .allocation-item .sub-detail {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #475569;
+            padding: 2px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .cycle-report-container .allocation-item .sub-detail:last-child {
+            border-bottom: none;
+        }
+        .cycle-report-container .allocation-item .sub-detail .sub-budget {
+            font-weight: 600;
+            color: #2563eb;
+        }
+        .cycle-report-container .allocation-item .sub-detail .sub-spent {
+            font-weight: 600;
+            color: #dc2626;
+        }
+        .cycle-report-container .allocation-item .sub-detail .sub-remain {
+            font-weight: 600;
+            color: #16a34a;
+        }
+        .cycle-report-container .allocation-item .sub-detail .sub-remain.negative {
+            color: #dc2626;
+        }
+        .cycle-report-container .analysis-box {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .cycle-report-container .analysis-box h4 {
+            font-weight: 700;
+            color: #0369a1;
+            margin-bottom: 8px;
+        }
+        .cycle-report-container .analysis-box .insight {
+            padding: 6px 0;
+            font-size: 13px;
+            border-bottom: 1px solid #e0f2fe;
+        }
+        .cycle-report-container .analysis-box .insight:last-child {
+            border-bottom: none;
+        }
+        .cycle-report-container .analysis-box .insight .highlight {
+            font-weight: 700;
+        }
+        .cycle-report-container .analysis-box .insight .over {
+            color: #dc2626;
+        }
+        .cycle-report-container .analysis-box .insight .under {
+            color: #16a34a;
+        }
+        .comment-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px solid #e2e8f0;
+        }
+        .comment-section .comment-header {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+        
+        /* --- NEW STYLES FOR PROFESSIONAL PDF REPORT --- */
+        .pdf-report-container {
+            font-family: 'Hind Siliguri', 'Kalpurush', sans-serif;
+            padding: 20px;
+            background: white;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+        .pdf-report-container .pdf-header {
+            text-align: center;
+            border-bottom: 3px solid #10b981;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        .pdf-report-container .pdf-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #065f46;
+            margin: 0;
+        }
+        .pdf-report-container .pdf-header .sub-title {
+            font-size: 14px;
+            color: #475569;
+            margin-top: 4px;
+        }
+        .pdf-report-container .pdf-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .pdf-report-container .pdf-summary-grid .item {
+            background: #f8fafc;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .pdf-report-container .pdf-summary-grid .item .label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #6b7280;
+        }
+        .pdf-report-container .pdf-summary-grid .item .value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .pdf-report-container .pdf-section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            background: #f1f5f9;
+            padding: 6px 14px;
+            border-radius: 8px;
+            margin: 16px 0 10px 0;
+            display: inline-block;
+        }
+        .pdf-report-container .pdf-table-wrap {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin: 6px 0 12px 0;
+        }
+        .pdf-report-container .pdf-table-wrap table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .pdf-report-container .pdf-table-wrap th {
+            background: #e2e8f0;
+            padding: 6px 10px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #cbd5e1;
+        }
+        .pdf-report-container .pdf-table-wrap td {
+            padding: 5px 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .pdf-report-container .pdf-table-wrap tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        .pdf-report-container .pdf-table-wrap .main-row td {
+            background: #d1fae5 !important;
+            font-weight: 600;
+            border-bottom: 2px solid #10b981;
+        }
+        .pdf-report-container .pdf-table-wrap .total-row td {
+            background: #f0fdf4 !important;
+            font-weight: 700;
+            border-top: 2px solid #10b981;
+        }
+        .pdf-report-container .pdf-allocation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 10px;
+            margin: 8px 0 12px 0;
+        }
+        .pdf-report-container .pdf-allocation-item {
+            background: #f8fafc;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
+            font-size: 12px;
+        }
+        .pdf-report-container .pdf-allocation-item .main-name {
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .pdf-report-container .pdf-allocation-item .sub-detail {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            padding: 2px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .pdf-report-container .pdf-allocation-item .sub-detail:last-child {
+            border-bottom: none;
+        }
+        .pdf-report-container .pdf-allocation-item .sub-detail .sub-budget {
+            font-weight: 600;
+            color: #2563eb;
+        }
+        .pdf-report-container .pdf-allocation-item .sub-detail .sub-spent {
+            font-weight: 600;
+            color: #dc2626;
+        }
+        .pdf-report-container .pdf-allocation-item .sub-detail .sub-remain {
+            font-weight: 600;
+            color: #16a34a;
+        }
+        .pdf-report-container .pdf-allocation-item .sub-detail .sub-remain.negative {
+            color: #dc2626;
+        }
+        .pdf-report-container .pdf-analysis-box {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 12px 0 16px 0;
+        }
+        .pdf-report-container .pdf-analysis-box h4 {
+            font-weight: 700;
+            color: #0369a1;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .pdf-report-container .pdf-analysis-box .insight {
+            padding: 4px 0;
+            font-size: 13px;
+            border-bottom: 1px solid #e0f2fe;
+        }
+        .pdf-report-container .pdf-analysis-box .insight:last-child {
+            border-bottom: none;
+        }
+        .pdf-report-container .pdf-analysis-box .insight .highlight {
+            font-weight: 700;
+        }
+        .pdf-report-container .pdf-analysis-box .insight .over {
+            color: #dc2626;
+        }
+        .pdf-report-container .pdf-analysis-box .insight .under {
+            color: #16a34a;
+        }
+        .pdf-report-container .pdf-totals-bar {
+            background: #f0fdf4;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid #bbf7d0;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            font-size: 13px;
+            margin: 10px 0 12px 0;
+        }
+        .pdf-report-container .pdf-totals-bar strong {
+            font-weight: 700;
+        }
+        .pdf-report-container .pdf-totals-bar .positive {
+            color: #16a34a;
+        }
+        .pdf-report-container .pdf-totals-bar .negative {
+            color: #dc2626;
+        }
+        .pdf-report-container .pdf-comment-box {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px solid #e2e8f0;
+        }
+        .pdf-report-container .pdf-comment-box h4 {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        .pdf-report-container .pdf-comment-box .comment-text {
+            background: #f8fafc;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            font-size: 13px;
+            min-height: 60px;
+            white-space: pre-wrap;
+        }
+        .pdf-report-container .pdf-footer {
+            margin-top: 20px;
+            font-size: 10px;
+            color: #94a3b8;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+        }
+
+        /* NEW: Table-based allocation display for PDF */
+        .pdf-report-container .pdf-allocation-table-wrap {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin: 6px 0 12px 0;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap th {
+            background: #e2e8f0;
+            padding: 6px 10px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #cbd5e1;
+            position: sticky;
+            top: 0;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap td {
+            padding: 4px 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap .main-row td {
+            background: #d1fae5 !important;
+            font-weight: 600;
+            border-bottom: 2px solid #10b981;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap .total-row td {
+            background: #f0fdf4 !important;
+            font-weight: 700;
+            border-top: 2px solid #10b981;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap .sub-row-alt {
+            background: #f8fafc;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap .sub-row {
+            background: white;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap .text-right {
+            text-align: right;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap .text-center {
+            text-align: center;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap .budget-col {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap .spent-col {
+            color: #dc2626;
+            font-weight: 600;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap .remain-col {
+            color: #16a34a;
+            font-weight: 600;
+        }
+        .pdf-report-container .pdf-allocation-table-wrap .remain-col.negative {
+            color: #dc2626;
+        }
+
+        @media print {
+            .pdf-report-container .pdf-summary-grid {
+                break-inside: avoid;
+            }
+            .pdf-report-container .pdf-allocation-table-wrap {
+                break-inside: auto;
+            }
+            .pdf-report-container .pdf-analysis-box {
+                break-inside: avoid;
+            }
+            .pdf-report-container .pdf-comment-box {
+                break-inside: avoid;
+            }
+            .pdf-report-container .pdf-header {
+                break-inside: avoid;
+            }
+        }
+
+        /* New Report Button Styles */
+        .report-btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .report-btn-group .report-btn {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .report-btn-group .report-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+        .report-btn-group .btn-monthly {
+            background: #4f46e5;
+            color: white;
+        }
+        .report-btn-group .btn-monthly:hover {
+            background: #4338ca;
+        }
+        .report-btn-group .btn-cycle {
+            background: #7c3aed;
+            color: white;
+        }
+        .report-btn-group .btn-cycle:hover {
+            background: #6d28d9;
+        }
+        .report-btn-group .btn-cycle:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Action buttons in cycle report */
+        .cycle-report-container .report-actions button {
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+        .cycle-report-container .report-actions .btn-pdf {
+            background: #dc2626;
+            color: white;
+        }
+        .cycle-report-container .report-actions .btn-pdf:hover {
+            background: #b91c1c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220,38,38,0.3);
+        }
+        .cycle-report-container .report-actions .btn-print {
+            background: #2563eb;
+            color: white;
+        }
+        .cycle-report-container .report-actions .btn-print:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+        }
+        .cycle-report-container .report-actions .btn-close-cycle {
+            background: #6b7280;
+            color: white;
+        }
+        .cycle-report-container .report-actions .btn-close-cycle:hover {
+            background: #4b5563;
+            transform: translateY(-1px);
+        }
+
+        /* Fix for main category name alignment in report tables */
+        .pdf-allocation-table-wrap .main-name-cell {
+            font-weight: 600;
+            color: #065f46;
+        }
+        .pdf-allocation-table-wrap .sub-name-cell {
+            padding-left: 20px !important;
+            color: #334155;
+        }
+        .pdf-allocation-table-wrap .main-total-row td {
+            background: #d1fae5 !important;
+            font-weight: 700;
+        }
+        .pdf-allocation-table-wrap .main-total-row .main-name-cell {
+            font-weight: 700;
+            color: #047857;
+        }
+        .pdf-allocation-table-wrap .grand-total-row td {
+            background: #f0fdf4 !important;
+            font-weight: 700;
+            border-top: 2px solid #10b981;
+        }
     </style>
 </head>
 <body>
@@ -1158,14 +1651,15 @@
                 </div>
             </div>
 
-            <button onclick="toggleReport()" class="w-full report-btn py-4 rounded-2xl font-bold text-sm shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
-                📊 বিস্তারিত মাসিক রিপোর্ট (২৫-২৪ তারিখ)
-            </button>
-
-            <!-- NEW: Cycle Report Button -->
-            <button onclick="openCycleReport()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold text-sm shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
-                📆 সাইকেল ভিত্তিক রিপোর্ট দেখুন
-            </button>
+            <!-- Report Buttons Group -->
+            <div class="report-btn-group">
+                <button onclick="toggleReport()" class="report-btn btn-monthly">
+                    📊 বিস্তারিত মাসিক রিপোর্ট
+                </button>
+                <button onclick="openCycleReport()" class="report-btn btn-cycle">
+                    📆 সাইকেল ভিত্তিক রিপোর্ট
+                </button>
+            </div>
 
             <div class="glass-card p-6">
                 <h4 class="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-4">সাম্প্রতিক ৫টি এন্ট্রি</h4>
@@ -2272,6 +2766,8 @@
 
         let currentCycleData = [];
 
+        // ================== GENERATE PROFESSIONAL PDF REPORT ==================
+
         function generateCycleReport() {
             const cycleKey = document.getElementById('cycleSelect').value;
             if (!cycleKey) {
@@ -2321,25 +2817,180 @@
             });
             cycleFinance.currentBalance = totalEarnings - totalExpense - cycleFinance.investment + cycleFinance.currentBalance;
 
-            // Build HTML
-            let html = `<div class="report-header">
-                <h3>${getCycleLabel(cycleKey)}</h3>
-                <span class="cycle-badge">${cycleKey} | মোট এন্ট্রি: ${data.length}</span>
+            // Build HTML - Professional report with table-based allocation
+            let html = `<div class="pdf-report-container">`;
+
+            // HEADER
+            html += `<div class="pdf-header">
+                <h1>📊 ${getCycleLabel(cycleKey)} - আর্থিক প্রতিবেদন</h1>
+                <div class="sub-title">সাইকেল: ${cycleKey} | মোট এন্ট্রি: ${data.length} | তৈরি: ${new Date().toLocaleString()}</div>
             </div>`;
 
-            // Profile section
-            html += `<div class="section-title">📊 আর্থিক প্রোফাইল (সাইকেল শেষে)</div>`;
-            html += `<div class="profile-grid">
-                <div class="pitem"><div class="plabel">Balance</div><div class="pvalue">৳${formatCurrency(cycleFinance.currentBalance)}</div></div>
-                <div class="pitem"><div class="plabel">Savings</div><div class="pvalue">৳${formatCurrency(cycleFinance.savings)}</div></div>
-                <div class="pitem"><div class="plabel">Liability</div><div class="pvalue">৳${formatCurrency(cycleFinance.liability)}</div></div>
-                <div class="pitem"><div class="plabel">Investment</div><div class="pvalue">৳${formatCurrency(cycleFinance.investment)}</div></div>
+            // SUMMARY GRID
+            html += `<div class="pdf-summary-grid">
+                <div class="item"><div class="label">Balance</div><div class="value">৳${formatCurrency(cycleFinance.currentBalance)}</div></div>
+                <div class="item"><div class="label">Savings</div><div class="value">৳${formatCurrency(cycleFinance.savings)}</div></div>
+                <div class="item"><div class="label">Liability</div><div class="value">৳${formatCurrency(cycleFinance.liability)}</div></div>
+                <div class="item"><div class="label">Investment</div><div class="value">৳${formatCurrency(cycleFinance.investment)}</div></div>
             </div>`;
 
-            // Earnings (Adjustments) section
+            // BUDGET ALLOCATION - TABLE FORMAT
+            html += `<div class="pdf-section-title">📋 বাজেট বরাদ্দ ও খরচ বিশ্লেষণ</div>`;
+            html += `<div class="pdf-allocation-table-wrap"><table>
+                <thead>
+                    <tr>
+                        <th style="width:25%;">মূল খাত</th>
+                        <th style="width:25%;">উপ-খাত</th>
+                        <th style="width:16%;text-align:right;">বরাদ্দ (৳)</th>
+                        <th style="width:16%;text-align:right;">খরচ (৳)</th>
+                        <th style="width:18%;text-align:right;">বাকি (৳)</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            const sortedMains = sortCategoriesWithOthersLast(Object.keys(subCategories));
+            const totalAllocated = sortedMains.reduce((sum, main) => sum + calculateMainBudget(main), 0);
+            let grandTotalSpent = 0;
+            let grandTotalRemain = 0;
+
+            const spentByMain = {};
+            expensesCycle.forEach(ex => {
+                spentByMain[ex.main] = (spentByMain[ex.main] || 0) + parseFloat(ex.amount);
+            });
+
+            const spentBySub = {};
+            expensesCycle.forEach(ex => {
+                const key = `${ex.main} - ${ex.sub}`;
+                spentBySub[key] = (spentBySub[key] || 0) + parseFloat(ex.amount);
+            });
+
+            let rowIndex = 0;
+            sortedMains.forEach(main => {
+                const budget = calculateMainBudget(main);
+                const spent = spentByMain[main] || 0;
+                const remaining = budget - spent;
+                grandTotalSpent += spent;
+                grandTotalRemain += remaining;
+
+                const subs = subCategories[main] || [];
+                const sortedSubs = sortCategoriesWithOthersLast(subs);
+                let hasSubData = false;
+                
+                // Show main name row first
+                html += `<tr class="main-row">
+                    <td class="main-name-cell" colspan="5"><b>${main}</b></td>
+                </tr>`;
+                
+                sortedSubs.forEach(sub => {
+                    const key = `${main} - ${sub}`;
+                    const subBudget = subBudgets[key] || 0;
+                    const subSpent = spentBySub[key] || 0;
+                    const subRemain = subBudget - subSpent;
+                    // Show all sub categories, even with zero values for completeness
+                    hasSubData = true;
+                    const rowClass = (rowIndex % 2 === 0) ? 'sub-row' : 'sub-row-alt';
+                    html += `<tr class="${rowClass}">
+                        <td class="sub-name-cell"></td>
+                        <td>${sub}</td>
+                        <td class="text-right budget-col">${formatCurrency(subBudget)}</td>
+                        <td class="text-right spent-col">${formatCurrency(subSpent)}</td>
+                        <td class="text-right remain-col ${subRemain < 0 ? 'negative' : ''}">${formatCurrency(subRemain)}</td>
+                    </tr>`;
+                    rowIndex++;
+                });
+
+                // Main total row
+                html += `<tr class="main-total-row">
+                    <td colspan="2" style="text-align:right;font-weight:700;">${main} - মোট</td>
+                    <td class="text-right" style="font-weight:700;">${formatCurrency(budget)}</td>
+                    <td class="text-right" style="font-weight:700;">${formatCurrency(spent)}</td>
+                    <td class="text-right" style="font-weight:700;color:${remaining < 0 ? '#dc2626' : '#047857'};">${formatCurrency(remaining)}</td>
+                </tr>`;
+                rowIndex++;
+            });
+
+            // Grand total row
+            html += `<tr class="grand-total-row">
+                <td colspan="2" style="text-align:right;font-weight:700;">সর্বমোট</td>
+                <td class="text-right" style="font-weight:700;">${formatCurrency(totalAllocated)}</td>
+                <td class="text-right" style="font-weight:700;">${formatCurrency(grandTotalSpent)}</td>
+                <td class="text-right" style="font-weight:700;color:${grandTotalRemain < 0 ? '#dc2626' : '#047857'};">${formatCurrency(grandTotalRemain)}</td>
+            </tr>`;
+
+            html += `</tbody></table></div>`;
+
+            // Totals bar
+            html += `<div class="pdf-totals-bar">
+                <span><strong>মোট বরাদ্দ:</strong> ৳${formatCurrency(totalAllocated)}</span>
+                <span><strong>মোট খরচ:</strong> ৳${formatCurrency(grandTotalSpent)}</span>
+                <span class="${grandTotalRemain < 0 ? 'negative' : 'positive'}"><strong>মোট বাকি:</strong> ৳${formatCurrency(grandTotalRemain)}</span>
+            </div>`;
+
+            // ANALYSIS
+            let overBudgetMains = [];
+            let underBudgetMains = [];
+            let overBudgetSubs = [];
+            
+            sortedMains.forEach(main => {
+                const budget = calculateMainBudget(main);
+                const spent = spentByMain[main] || 0;
+                const remaining = budget - spent;
+                if (budget > 0) {
+                    const pct = (spent / budget) * 100;
+                    if (pct > 100) {
+                        overBudgetMains.push({ main, pct: pct.toFixed(1), overshoot: Math.abs(remaining) });
+                    } else if (pct < 80 && spent > 0) {
+                        underBudgetMains.push({ main, pct: pct.toFixed(1), remaining });
+                    }
+                }
+                const subs = subCategories[main] || [];
+                subs.forEach(sub => {
+                    const key = `${main} - ${sub}`;
+                    const subBudget = subBudgets[key] || 0;
+                    const subSpent = spentBySub[key] || 0;
+                    if (subBudget > 0 && subSpent > subBudget) {
+                        overBudgetSubs.push({ main, sub, overshoot: subSpent - subBudget });
+                    }
+                });
+            });
+
+            html += `<div class="pdf-analysis-box">
+                <h4>🔍 বিশ্লেষণ ও অন্তর্দৃষ্টি</h4>`;
+            
+            if (overBudgetMains.length > 0) {
+                html += `<div class="insight"><span class="highlight over">⚠️ অতিরিক্ত খরচ:</span> `;
+                overBudgetMains.forEach((item, idx) => {
+                    html += `${idx > 0 ? ', ' : ''}<strong>${item.main}</strong> (${item.pct}%, অতিরিক্ত ৳${formatCurrency(item.overshoot)})`;
+                });
+                html += ` — এই খাতগুলোতে বাজেট পুনর্বিন্যাস প্রয়োজন।</div>`;
+            }
+
+            if (underBudgetMains.length > 0) {
+                html += `<div class="insight"><span class="highlight under">✅ কম খরচ:</span> `;
+                underBudgetMains.forEach((item, idx) => {
+                    html += `${idx > 0 ? ', ' : ''}<strong>${item.main}</strong> (${item.pct}%, অবশিষ্ট ৳${formatCurrency(item.remaining)})`;
+                });
+                html += ` — এই খাতগুলোতে সাশ্রয় হয়েছে, ভবিষ্যতে বাজেট কমানো যেতে পারে।</div>`;
+            }
+
+            if (overBudgetSubs.length > 0) {
+                html += `<div class="insight"><span class="highlight over">⚠️ উপ-খাতে অতিরিক্ত:</span> `;
+                overBudgetSubs.forEach((item, idx) => {
+                    html += `${idx > 0 ? ', ' : ''}<strong>${item.sub}</strong> (${item.main}, অতিরিক্ত ৳${formatCurrency(item.overshoot)})`;
+                });
+                html += ` — এই উপ-খাতগুলোতে খরচ কমানোর পরামর্শ দেওয়া হচ্ছে।</div>`;
+            }
+
+            if (overBudgetMains.length === 0 && underBudgetMains.length === 0 && overBudgetSubs.length === 0) {
+                html += `<div class="insight">✅ সব খাতেই বাজেটের মধ্যে রয়েছে। ভালো আর্থিক ব্যবস্থাপনা!</div>`;
+            }
+
+            html += `</div>`;
+
+            // ADJUSTMENTS TABLE
             if (adjustmentsCycle.length > 0) {
-                html += `<div class="section-title">💰 উপার্জন ও সমন্বয় (Adjustments)</div>`;
-                html += `<div class="cat-table-wrap-sm"><table><thead><tr><th>মূল খাত</th><th>উপ-খাত</th><th style="text-align:right;">পরিমাণ (৳)</th></tr></thead><tbody>`;
+                html += `<div class="pdf-section-title">💰 উপার্জন ও সমন্বয় (Adjustments)</div>`;
+                html += `<div class="pdf-table-wrap"><table><thead><tr><th>মূল খাত</th><th>উপ-খাত</th><th style="text-align:right;">পরিমাণ (৳)</th></tr></thead><tbody>`;
                 const adjGroups = {};
                 adjustmentsCycle.forEach(ex => {
                     const key = ex.main;
@@ -2363,10 +3014,10 @@
                 html += `</tbody></table></div>`;
             }
 
-            // Expenses section
+            // EXPENSES TABLE
             if (expensesCycle.length > 0) {
-                html += `<div class="section-title">💸 খরচের বিবরণ (Expenses)</div>`;
-                html += `<div class="cat-table-wrap-sm"><table><thead><tr><th>মূল খাত</th><th>উপ-খাত</th><th style="text-align:right;">পরিমাণ (৳)</th></tr></thead><tbody>`;
+                html += `<div class="pdf-section-title">💸 খরচের বিবরণ (Expenses)</div>`;
+                html += `<div class="pdf-table-wrap"><table><thead><tr><th>মূল খাত</th><th>উপ-খাত</th><th style="text-align:right;">পরিমাণ (৳)</th></tr></thead><tbody>`;
                 const expGroups = {};
                 expensesCycle.forEach(ex => {
                     const key = ex.main;
@@ -2390,60 +3041,329 @@
                 html += `</tbody></table></div>`;
             }
 
-            if (expensesCycle.length === 0 && adjustmentsCycle.length === 0) {
-                html += `<div class="empty-state"><div class="big-icon">📭</div><p>এই সাইকেলে কোনো ডেটা নেই</p></div>`;
-            }
+            // COMMENT SECTION - plain text
+            html += `<div class="pdf-comment-box">
+                <h4>📝 মন্তব্য ও পরামর্শ</h4>
+                <div class="comment-text" id="cycleCommentDisplay">${document.getElementById('cycleComment')?.value || ''}</div>
+            </div>`;
+
+            // FOOTER
+            html += `<div class="pdf-footer">জেনারেটেড: ${new Date().toLocaleString()} | স্মার্ট বাজেট ২০২৬</div>`;
+
+            html += `</div>`;
 
             container.innerHTML = html;
             document.getElementById('cycleReportActions').style.display = 'flex';
             showToast('✅ রিপোর্ট তৈরি হয়েছে!', 'success');
         }
 
+        // ================== DOWNLOAD PDF ==================
+
         function downloadCyclePDF() {
             const container = document.getElementById('cycleReportContainer');
             const content = container.innerHTML;
             if (!content || content.includes('empty-state')) {
-                showToast('প্রথমে একটি রিপোর্ড তৈরি করুন!', 'error');
+                showToast('প্রথমে একটি রিপোর্ট তৈরি করুন!', 'error');
                 return;
+            }
+
+            // Get comment value from textarea if exists
+            const commentText = document.getElementById('cycleComment')?.value || '';
+            // Update the display
+            const displayDiv = document.getElementById('cycleCommentDisplay');
+            if (displayDiv) {
+                displayDiv.textContent = commentText;
             }
 
             const win = window.open('', '_blank');
             const style = document.querySelector('style').innerHTML;
             const title = document.getElementById('cycleSelect').value ? getCycleLabel(document.getElementById('cycleSelect').value) : 'সাইকেল রিপোর্ট';
+            
             win.document.write(`
                 <html>
                 <head>
                     <title>${title}</title>
                     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
                     <style>
-                        body { font-family: 'Hind Siliguri', sans-serif; padding: 30px; background: white; }
-                        .report-header { border-bottom: 2px solid #10b981; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; }
-                        .report-header h3 { font-size: 20px; font-weight: 700; color: #065f46; }
-                        .cycle-badge { background: #d1fae5; padding: 4px 16px; border-radius: 30px; font-weight: 600; font-size: 12px; }
-                        .section-title { font-weight: 700; font-size: 16px; color: #1e293b; background: #f1f5f9; padding: 6px 12px; border-radius: 8px; margin: 16px 0 8px 0; display: inline-block; }
-                        .profile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; background: #f8fafc; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 8px; }
-                        .profile-grid .pitem { background: white; padding: 6px 12px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: center; }
-                        .profile-grid .pitem .plabel { font-size: 9px; font-weight: 600; color: #6b7280; text-transform: uppercase; }
-                        .profile-grid .pitem .pvalue { font-weight: 700; font-size: 14px; }
-                        .cat-table-wrap-sm { max-height: 400px; overflow-y: auto; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; margin-top: 6px; }
-                        .cat-table-wrap-sm table { width: 100%; border-collapse: collapse; }
-                        .cat-table-wrap-sm th { background: #e2e8f0; padding: 5px 8px; text-align: left; font-weight: 600; }
-                        .cat-table-wrap-sm td { padding: 4px 8px; border-bottom: 1px solid #e2e8f0; }
-                        .cat-table-wrap-sm tr:nth-child(even) { background: #f8fafc; }
-                        .cat-table-wrap-sm .main-row td { background: #d1fae5 !important; font-weight: 600; }
-                        .cat-table-wrap-sm .total-row td { background: #f0fdf4 !important; font-weight: 700; border-top: 2px solid #10b981; }
-                        .empty-state { text-align: center; padding: 30px 10px; color: #94a3b8; }
-                        .empty-state .big-icon { font-size: 40px; margin-bottom: 10px; }
-                        .report-actions { display: none; }
+                        /* Copy all styles from the page */
+                        ${style}
+                        /* Override for print - A4 friendly */
+                        .pdf-report-container {
+                            padding: 20px;
+                            background: white;
+                            color: #1e293b;
+                            line-height: 1.5;
+                            max-width: 1100px;
+                            margin: 0 auto;
+                        }
+                        .pdf-report-container .pdf-header {
+                            text-align: center;
+                            border-bottom: 3px solid #10b981;
+                            padding-bottom: 12px;
+                            margin-bottom: 20px;
+                        }
+                        .pdf-report-container .pdf-header h1 {
+                            font-size: 24px;
+                            font-weight: 700;
+                            color: #065f46;
+                            margin: 0;
+                        }
+                        .pdf-report-container .pdf-header .sub-title {
+                            font-size: 14px;
+                            color: #475569;
+                            margin-top: 4px;
+                        }
+                        .pdf-report-container .pdf-summary-grid {
+                            display: grid;
+                            grid-template-columns: repeat(4, 1fr);
+                            gap: 12px;
+                            margin-bottom: 20px;
+                        }
+                        .pdf-report-container .pdf-summary-grid .item {
+                            background: #f8fafc;
+                            padding: 10px 12px;
+                            border-radius: 10px;
+                            border: 1px solid #e2e8f0;
+                            text-align: center;
+                        }
+                        .pdf-report-container .pdf-summary-grid .item .label {
+                            font-size: 10px;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            color: #6b7280;
+                        }
+                        .pdf-report-container .pdf-summary-grid .item .value {
+                            font-size: 18px;
+                            font-weight: 800;
+                            color: #0f172a;
+                        }
+                        .pdf-report-container .pdf-section-title {
+                            font-size: 16px;
+                            font-weight: 700;
+                            color: #0f172a;
+                            background: #f1f5f9;
+                            padding: 6px 14px;
+                            border-radius: 8px;
+                            margin: 16px 0 10px 0;
+                            display: inline-block;
+                        }
+                        .pdf-report-container .pdf-table-wrap {
+                            overflow-x: auto;
+                            border-radius: 10px;
+                            border: 1px solid #e2e8f0;
+                            margin: 6px 0 12px 0;
+                        }
+                        .pdf-report-container .pdf-table-wrap table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            font-size: 12px;
+                        }
+                        .pdf-report-container .pdf-table-wrap th {
+                            background: #e2e8f0;
+                            padding: 6px 10px;
+                            text-align: left;
+                            font-weight: 600;
+                            border-bottom: 2px solid #cbd5e1;
+                        }
+                        .pdf-report-container .pdf-table-wrap td {
+                            padding: 5px 10px;
+                            border-bottom: 1px solid #e2e8f0;
+                        }
+                        .pdf-report-container .pdf-table-wrap tr:nth-child(even) {
+                            background: #f8fafc;
+                        }
+                        .pdf-report-container .pdf-table-wrap .main-row td {
+                            background: #d1fae5 !important;
+                            font-weight: 600;
+                            border-bottom: 2px solid #10b981;
+                        }
+                        .pdf-report-container .pdf-table-wrap .total-row td {
+                            background: #f0fdf4 !important;
+                            font-weight: 700;
+                            border-top: 2px solid #10b981;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap {
+                            overflow-x: auto;
+                            border-radius: 10px;
+                            border: 1px solid #e2e8f0;
+                            margin: 6px 0 12px 0;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            font-size: 12px;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap th {
+                            background: #e2e8f0;
+                            padding: 6px 10px;
+                            text-align: left;
+                            font-weight: 600;
+                            border-bottom: 2px solid #cbd5e1;
+                            position: sticky;
+                            top: 0;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap td {
+                            padding: 4px 10px;
+                            border-bottom: 1px solid #e2e8f0;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap tr:nth-child(even) {
+                            background: #f8fafc;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap .main-row td {
+                            background: #d1fae5 !important;
+                            font-weight: 600;
+                            border-bottom: 2px solid #10b981;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap .total-row td {
+                            background: #f0fdf4 !important;
+                            font-weight: 700;
+                            border-top: 2px solid #10b981;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap .sub-row-alt {
+                            background: #f8fafc;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap .sub-row {
+                            background: white;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap .text-right {
+                            text-align: right;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap .text-center {
+                            text-align: center;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap .budget-col {
+                            color: #2563eb;
+                            font-weight: 600;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap .spent-col {
+                            color: #dc2626;
+                            font-weight: 600;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap .remain-col {
+                            color: #16a34a;
+                            font-weight: 600;
+                        }
+                        .pdf-report-container .pdf-allocation-table-wrap .remain-col.negative {
+                            color: #dc2626;
+                        }
+                        .pdf-report-container .pdf-analysis-box {
+                            background: #f0f9ff;
+                            border: 1px solid #bae6fd;
+                            border-radius: 10px;
+                            padding: 14px 16px;
+                            margin: 12px 0 16px 0;
+                        }
+                        .pdf-report-container .pdf-analysis-box h4 {
+                            font-weight: 700;
+                            color: #0369a1;
+                            margin-bottom: 6px;
+                            font-size: 14px;
+                        }
+                        .pdf-report-container .pdf-analysis-box .insight {
+                            padding: 4px 0;
+                            font-size: 13px;
+                            border-bottom: 1px solid #e0f2fe;
+                        }
+                        .pdf-report-container .pdf-analysis-box .insight:last-child {
+                            border-bottom: none;
+                        }
+                        .pdf-report-container .pdf-analysis-box .insight .highlight {
+                            font-weight: 700;
+                        }
+                        .pdf-report-container .pdf-analysis-box .insight .over {
+                            color: #dc2626;
+                        }
+                        .pdf-report-container .pdf-analysis-box .insight .under {
+                            color: #16a34a;
+                        }
+                        .pdf-report-container .pdf-totals-bar {
+                            background: #f0fdf4;
+                            padding: 10px 16px;
+                            border-radius: 10px;
+                            border: 1px solid #bbf7d0;
+                            display: flex;
+                            justify-content: space-between;
+                            flex-wrap: wrap;
+                            font-size: 13px;
+                            margin: 10px 0 12px 0;
+                        }
+                        .pdf-report-container .pdf-totals-bar strong {
+                            font-weight: 700;
+                        }
+                        .pdf-report-container .pdf-totals-bar .positive {
+                            color: #16a34a;
+                        }
+                        .pdf-report-container .pdf-totals-bar .negative {
+                            color: #dc2626;
+                        }
+                        .pdf-report-container .pdf-comment-box {
+                            margin-top: 16px;
+                            padding-top: 16px;
+                            border-top: 2px solid #e2e8f0;
+                        }
+                        .pdf-report-container .pdf-comment-box h4 {
+                            font-weight: 700;
+                            font-size: 14px;
+                            color: #1e293b;
+                            margin-bottom: 4px;
+                        }
+                        .pdf-report-container .pdf-comment-box .comment-text {
+                            background: #f8fafc;
+                            padding: 12px 16px;
+                            border-radius: 10px;
+                            border: 1px solid #e2e8f0;
+                            font-size: 13px;
+                            min-height: 60px;
+                            white-space: pre-wrap;
+                        }
+                        .pdf-report-container .pdf-footer {
+                            margin-top: 20px;
+                            font-size: 10px;
+                            color: #94a3b8;
+                            text-align: center;
+                            border-top: 1px solid #e2e8f0;
+                            padding-top: 12px;
+                        }
+                        /* Fix for main name alignment in PDF */
+                        .pdf-allocation-table-wrap .main-name-cell {
+                            font-weight: 600;
+                            color: #065f46;
+                        }
+                        .pdf-allocation-table-wrap .sub-name-cell {
+                            padding-left: 20px !important;
+                            color: #334155;
+                        }
+                        .pdf-allocation-table-wrap .main-total-row td {
+                            background: #d1fae5 !important;
+                            font-weight: 700;
+                        }
+                        .pdf-allocation-table-wrap .main-total-row .main-name-cell {
+                            font-weight: 700;
+                            color: #047857;
+                        }
+                        .pdf-allocation-table-wrap .grand-total-row td {
+                            background: #f0fdf4 !important;
+                            font-weight: 700;
+                            border-top: 2px solid #10b981;
+                        }
                         @media print {
-                            .report-actions { display: none !important; }
-                            .cat-table-wrap-sm { max-height: none !important; overflow: visible !important; }
+                            .pdf-report-container .pdf-summary-grid { break-inside: avoid; }
+                            .pdf-report-container .pdf-allocation-table-wrap { break-inside: auto; }
+                            .pdf-report-container .pdf-analysis-box { break-inside: avoid; }
+                            .pdf-report-container .pdf-comment-box { break-inside: avoid; }
+                            .pdf-report-container .pdf-header { break-inside: avoid; }
+                            .report-actions, .cycle-selector-box { display: none !important; }
+                            body { margin: 0; padding: 0; }
+                            .pdf-report-container { padding: 15px; }
+                        }
+                        @page {
+                            size: A4;
+                            margin: 15mm;
                         }
                     </style>
                 </head>
                 <body>
                     ${content}
-                    <p style="margin-top:30px; font-size:10px; color:#9ca3af; text-align:center;">জেনারেটেড: ${new Date().toLocaleString()}</p>
                     <script>
                         window.print();
                     <\/script>
