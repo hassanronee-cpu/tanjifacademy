@@ -1281,18 +1281,59 @@
             if (closeBtn) closeBtn.style.display = 'inline-flex';
         }
 
+        // ===== CLOSE EMBEDDED PAGE - সম্পূর্ণ পরিবর্তন =====
         function closeEmbeddedPage() {
-            // বর্তমান স্ক্রল অবস্থান সংরক্ষণ করি
+            // বর্তমান স্ক্রল অবস্থান সংরক্ষণ
             const currentScrollY = window.scrollY;
             
+            // এমবেডেড ভিউয়ার বন্ধ করুন
             document.getElementById('embeddedPageViewer').style.display = 'none';
             document.getElementById('embeddedIframe').src = '';
             document.body.classList.remove('embedded-open');
             
+            // ব্রেডক্রাম্ব লুকান
             document.getElementById('breadcrumb').style.display = 'none';
             
+            // হোয়াটসঅ্যাপ আইকন দেখান (যদি ল্যান্ডিং ভিউতে থাকে)
             const isLanding = document.getElementById('landingView').classList.contains('active');
             document.getElementById('whatsappFloat').style.display = isLanding ? 'flex' : 'none';
+            
+            // ক্লোজ বাটন লুকান
+            const closeBtn = document.querySelector('.btn-close-view');
+            if (closeBtn) closeBtn.style.display = 'none';
+            
+            // URL থেকে প্যারামিটার সরান
+            if (window.location.search) {
+                window.history.replaceState({}, '', window.location.pathname);
+            }
+            
+            // ল্যান্ডিং ভিউ অ্যাকটিভ থাকলে সেটা নিশ্চিত করুন
+            if (!document.getElementById('landingView').classList.contains('active') && 
+                !document.getElementById('studentDashboardView').classList.contains('active') && 
+                !document.getElementById('adminDashboardView').classList.contains('active')) {
+                // কোনো ভিউ অ্যাকটিভ না থাকলে ল্যান্ডিং ভিউ দেখান
+                document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+                document.getElementById('landingView').classList.add('active');
+            }
+            
+            // আগের স্ক্রল পজিশনে ফিরে যান
+            setTimeout(() => {
+                window.scrollTo({
+                    top: currentScrollY,
+                    behavior: 'instant'
+                });
+            }, 10);
+        }
+
+        // ===== NAVIGATE TO HOME - আপডেট =====
+        function navigateToHome(section) {
+            const currentScrollY = window.scrollY;
+            
+            // এমবেডেড পেজ বন্ধ করুন
+            document.getElementById('embeddedPageViewer').style.display = 'none';
+            document.getElementById('embeddedIframe').src = '';
+            document.body.classList.remove('embedded-open');
+            document.getElementById('breadcrumb').style.display = 'none';
             
             const closeBtn = document.querySelector('.btn-close-view');
             if (closeBtn) closeBtn.style.display = 'none';
@@ -1301,17 +1342,18 @@
                 window.history.replaceState({}, '', window.location.pathname);
             }
             
-            // আগের স্ক্রল পজিশনে ফিরে যাই
+            // ল্যান্ডিং ভিউতে যান (স্ক্রল রিসেট না করে)
+            document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+            document.getElementById('landingView').classList.add('active');
+            document.getElementById('whatsappFloat').style.display = 'flex';
+            
+            // আগের স্ক্রল পজিশন রিস্টোর করুন
             setTimeout(() => {
                 window.scrollTo(0, currentScrollY);
-            }, 50);
-        }
-
-        function navigateToHome(section) {
-            closeEmbeddedPage();
-            switchView('landingView');
+            }, 10);
+            
             if (section) {
-                setTimeout(() => scrollToSection(section.replace('#', '')), 100);
+                setTimeout(() => scrollToSection(section.replace('#', '')), 150);
             }
         }
 
@@ -1329,7 +1371,7 @@
                 if (!savedUser) {
                     // লগ ইন না থাকলে URL থেকে প্যারামিটার সরান
                     window.history.replaceState({}, '', window.location.pathname);
-                    switchView('landingView');
+                    switchView('landingView', true);
                     openApologyModal();
                     return;
                 }
@@ -1339,7 +1381,7 @@
                 // অ্যাডমিন পেজ চেক
                 if (isAdminPage(decodedUrl) && user.role !== 'admin') {
                     window.history.replaceState({}, '', window.location.pathname);
-                    switchView('landingView');
+                    switchView('landingView', true);
                     alert('⚠️ এই পেজটি শুধুমাত্র অ্যাডমিনদের জন্য!');
                     return;
                 }
@@ -1360,7 +1402,9 @@
                     handleUrlParams();
                 } else {
                     closeEmbeddedPage();
-                    switchView('landingView');
+                    // ল্যান্ডিং ভিউ দেখান কিন্তু স্ক্রল রিসেট করবেন না
+                    document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+                    document.getElementById('landingView').classList.add('active');
                 }
             }
         });
@@ -1421,10 +1465,13 @@
         function toggleCollapsible(id) { document.getElementById(id).classList.toggle('active'); }
 
         // ===== VIEW SWITCHING =====
-        function switchView(viewId) {
+        function switchView(viewId, keepScroll = false) {
             document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            if (!keepScroll) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
             
             const wa = document.getElementById('whatsappFloat');
             if (viewId === 'landingView' && document.getElementById('embeddedPageViewer').style.display !== 'flex') {
@@ -1498,7 +1545,7 @@
                         <div class="nav-user-profile">
                             <span class="user-badge"><i class="fa-solid fa-user-shield"></i> ${user.name || 'অ্যাডমিন'}</span>
                             <button onclick="closeEmbeddedPage(); switchView('adminDashboardView')" class="btn-logout" style="background:#f59e0b;color:#000;">ড্যাশবোর্ড</button>
-                            <button onclick="closeEmbeddedPage()" class="btn-close-view" style="display:${document.getElementById('embeddedPageViewer').style.display === 'flex' ? 'inline-flex' : 'none'};">বন্ধ করুন</button>
+                            <button onclick="closeEmbeddedPage()" class="btn-close-view" style="display:${document.getElementById('embeddedPageViewer').style.display === 'flex' ? 'inline-flex' : 'none'};"><i class="fa-solid fa-xmark"></i> বন্ধ</button>
                             <button onclick="handleLogout()" class="btn-logout">লগআউট</button>
                         </div>
                     `;
