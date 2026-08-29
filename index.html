@@ -1288,32 +1288,12 @@
             
             document.getElementById('breadcrumb').style.display = 'none';
             
-            // 📌 **Fixed: নির্ধারণ করুন কোন ড্যাশবোর্ড ভিউ দেখাতে হবে**
-            const savedUser = localStorage.getItem('tanjif_active_user');
-            if (savedUser) {
-                const user = JSON.parse(savedUser);
-                if (user.role === 'admin') {
-                    switchView('adminDashboardView');
-                } else {
-                    switchView('studentDashboardView');
-                }
-            } else {
-                // লগ ইন না থাকলে ল্যান্ডিং পেজ
-                switchView('landingView');
-            }
-            
-            // WhatsApp ফ্লোট দেখান (শুধু ল্যান্ডিং পেজে)
-            const activeView = document.querySelector('.page-view.active');
-            if (activeView && activeView.id === 'landingView') {
-                document.getElementById('whatsappFloat').style.display = 'flex';
-            } else {
-                document.getElementById('whatsappFloat').style.display = 'none';
-            }
+            const isLanding = document.getElementById('landingView').classList.contains('active');
+            document.getElementById('whatsappFloat').style.display = isLanding ? 'flex' : 'none';
             
             const closeBtn = document.querySelector('.btn-close-view');
             if (closeBtn) closeBtn.style.display = 'none';
             
-            // URL পরিষ্কার করুন
             if (window.location.search) {
                 window.history.replaceState({}, '', window.location.pathname);
             }
@@ -1321,19 +1301,7 @@
 
         function navigateToHome(section) {
             closeEmbeddedPage();
-            // লগ ইন থাকলে ড্যাশবোর্ড দেখান, নাহলে ল্যান্ডিং
-            const savedUser = localStorage.getItem('tanjif_active_user');
-            if (savedUser) {
-                const user = JSON.parse(savedUser);
-                if (user.role === 'admin') {
-                    switchView('adminDashboardView');
-                } else {
-                    switchView('studentDashboardView');
-                }
-            } else {
-                switchView('landingView');
-            }
-            
+            switchView('landingView');
             if (section) {
                 setTimeout(() => scrollToSection(section.replace('#', '')), 100);
             }
@@ -1384,18 +1352,7 @@
                     handleUrlParams();
                 } else {
                     closeEmbeddedPage();
-                    // ড্যাশবোর্ড বা ল্যান্ডিং দেখান
-                    const savedUser = localStorage.getItem('tanjif_active_user');
-                    if (savedUser) {
-                        const user = JSON.parse(savedUser);
-                        if (user.role === 'admin') {
-                            switchView('adminDashboardView');
-                        } else {
-                            switchView('studentDashboardView');
-                        }
-                    } else {
-                        switchView('landingView');
-                    }
+                    switchView('landingView');
                 }
             }
         });
@@ -1468,16 +1425,6 @@
                 wa.style.display = 'none';
             }
             if (viewId !== 'landingView') document.getElementById('scrollTopBtn').style.display = 'none';
-            
-            // ক্লোজ বাটন আপডেট
-            const closeBtn = document.querySelector('.btn-close-view');
-            if (closeBtn) {
-                if (document.getElementById('embeddedPageViewer').style.display === 'flex') {
-                    closeBtn.style.display = 'inline-flex';
-                } else {
-                    closeBtn.style.display = 'none';
-                }
-            }
         }
 
         function scrollToSection(id) {
@@ -1488,6 +1435,7 @@
         // ===== AUTH FUNCTIONS =====
         function openAuthModal() { 
             document.getElementById('authModal').style.display = 'flex'; 
+            // অ্যাপোলজি মডাল থাকলে বন্ধ করুন
             closeApologyModal();
         }
         function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
@@ -1537,13 +1485,11 @@
         function updateNavAuthUI(user) {
             const nav = document.getElementById('navAuthArea');
             if (user) {
-                const closeBtnStyle = document.getElementById('embeddedPageViewer').style.display === 'flex' ? 'inline-flex' : 'none';
                 if (user.role === 'admin') {
                     nav.innerHTML = `
                         <div class="nav-user-profile">
                             <span class="user-badge"><i class="fa-solid fa-user-shield"></i> ${user.name || 'অ্যাডমিন'}</span>
                             <button onclick="closeEmbeddedPage(); switchView('adminDashboardView')" class="btn-logout" style="background:#f59e0b;color:#000;">ড্যাশবোর্ড</button>
-                            <button onclick="closeEmbeddedPage()" class="btn-close-view" style="display:${closeBtnStyle};">বন্ধ করুন</button>
                             <button onclick="handleLogout()" class="btn-logout">লগআউট</button>
                         </div>
                     `;
@@ -1552,7 +1498,7 @@
                         <div class="nav-user-profile">
                             <span class="user-badge"><i class="fa-solid fa-user-graduate"></i> ${user.name}</span>
                             <button onclick="closeEmbeddedPage(); switchView('studentDashboardView')" class="btn-logout" style="background:#0d9488;">ড্যাশবোর্ড</button>
-                            <button onclick="closeEmbeddedPage()" class="btn-close-view" style="display:${closeBtnStyle};">বন্ধ করুন</button>
+                            <button onclick="closeEmbeddedPage()" class="btn-close-view" style="display:${document.getElementById('embeddedPageViewer').style.display === 'flex' ? 'inline-flex' : 'none'};"><i class="fa-solid fa-xmark"></i> বন্ধ</button>
                             <button onclick="handleLogout()" class="btn-logout">লগআউট</button>
                         </div>
                     `;
@@ -1578,6 +1524,7 @@
             updateNavAuthUI(null);
             switchView('landingView');
             
+            // URL ক্লিন করুন
             if (window.location.search) {
                 window.history.replaceState({}, '', window.location.pathname);
             }
