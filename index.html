@@ -667,11 +667,17 @@
         }
         .breadcrumb a { color: var(--primary); text-decoration: none; cursor: pointer; }
         .breadcrumb a:hover { text-decoration: underline; }
+
+        /* লক আইকন */
+        .lock-icon {
+            color: #f59e0b;
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- ALWAYS FIXED TOP BAR NAVBAR -->
+    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo" onclick="navigateToHome()">
@@ -716,12 +722,12 @@
         <a onclick="navigateToHome()">🏠 হোম</a> <span id="breadcrumbPage"> / পেজ</span>
     </div>
 
-    <!-- IN-APP EMBEDDED PAGE CONTAINER -->
+    <!-- EMBEDDED PAGE -->
     <div id="embeddedPageViewer" class="embedded-page-overlay">
         <iframe id="embeddedIframe" class="embedded-page-frame" src=""></iframe>
     </div>
 
-    <!-- 1. PUBLIC LANDING PAGE VIEW -->
+    <!-- LANDING VIEW -->
     <div id="landingView" class="page-view active">
         <section class="hero">
             <div class="hero-container">
@@ -842,7 +848,7 @@
         </div>
     </div>
 
-    <!-- 2. STUDENT DASHBOARD VIEW -->
+    <!-- STUDENT DASHBOARD -->
     <div id="studentDashboardView" class="page-view">
         <div class="dashboard-hero" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #fff; padding: 2.5rem 1.5rem; border-bottom: 4px solid var(--primary);">
             <div class="dashboard-welcome" style="max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;">
@@ -892,7 +898,7 @@
         </div>
     </div>
 
-    <!-- 3. ADMIN DASHBOARD VIEW -->
+    <!-- ADMIN DASHBOARD -->
     <div id="adminDashboardView" class="page-view">
         <div class="dashboard-hero" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); border-bottom-color: #f59e0b; padding: 2.5rem 1.5rem; color:#fff;">
             <div class="dashboard-welcome" style="max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;">
@@ -1068,14 +1074,14 @@
     <div class="modal-overlay apology-modal" id="apologyModal">
         <div class="modal-card">
             <button class="modal-close" onclick="closeApologyModal()"><i class="fa-solid fa-xmark"></i></button>
-            <div class="apology-icon">🚧</div>
-            <h3>এই সেকশনটি নির্মাণাধীন</h3>
-            <p>আপডেট পেতে দয়া করে ইমেইল এবং মোবাইল নম্বর দিয়ে সাইন আপ করে সাথেই থাকুন।<br><strong>ধন্যবাদ।</strong></p>
+            <div class="apology-icon">🔒</div>
+            <h3>লগ ইন প্রয়োজন!</h3>
+            <p>এই পেজটি দেখতে আপনাকে প্রথমে লগ ইন করতে হবে। <br>দয়া করে আপনার একাউন্ট দিয়ে লগ ইন করুন।</p>
             <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
                 <button onclick="closeApologyModal(); openAuthModal();" class="btn-submit" style="width:auto;padding:8px 24px;background:var(--primary);font-size:0.95rem;">
-                    <i class="fa-solid fa-user-plus"></i> সাইন আপ করুন
+                    <i class="fa-solid fa-right-to-bracket"></i> লগইন করুন
                 </button>
-                <a href="https://wa.me/8801700000000?text=আসসালামু%20আলাইকুম%2C%20তানজিফ%20একাডেমির%20নির্মাণাধীন%20সেকশন%20সম্পর্কে%20জানতে%20চাই।" target="_blank" class="apology-cta">
+                <a href="https://wa.me/8801700000000?text=আসসালামু%20আলাইকুম%2C%20তানজিফ%20একাডেমির%20পেজ%20দেখতে%20লগইন%20ইস্যু%20হচ্ছে।" target="_blank" class="apology-cta">
                     <i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপে যোগাযোগ
                 </a>
             </div>
@@ -1214,17 +1220,50 @@
     <script>
         const scriptUrl = "https://script.google.com/macros/s/AKfycbwrhgHZkSFd44x4EzRzSQ1EncIs7xcmh2Q5BmrOKw_iHefmEsUe7yfO523RpE1oE41eZQ/exec";
 
-        // ===== PAGE NAVIGATION SYSTEM =====
+        // ===== 🔐 SECURE PAGE NAVIGATION SYSTEM =====
+        
+        // অ্যাডমিন পেজ লিস্ট (যে পেজগুলো শুধু অ্যাডমিন দেখতে পারবে)
+        const ADMIN_ONLY_PAGES = [
+            'admin', 'student-list', 'settings', 'manage-courses', 
+            'user-management', 'dashboard', 'budget', 'plan 2030',
+            'activity-2026', 'mission-2026', 'committment-2026'
+        ];
+
+        function isAdminPage(url) {
+            if (!url) return false;
+            const lowerUrl = url.toLowerCase();
+            return ADMIN_ONLY_PAGES.some(page => lowerUrl.includes(page));
+        }
+
         function openPage(url, title) {
             if (!url || url === '#') { openApologyModal(); return; }
             
-            // URL এনকোড করুন
+            // 🔐 চেক ১: ইউজার লগ ইন আছে কিনা
+            const savedUser = localStorage.getItem('tanjif_active_user');
+            if (!savedUser) {
+                openApologyModal();
+                return;
+            }
+            
+            const user = JSON.parse(savedUser);
+            
+            // 🔐 চেক ২: অ্যাডমিন পেজ চেক
+            if (isAdminPage(url) && user.role !== 'admin') {
+                alert('⚠️ এই পেজটি শুধুমাত্র অ্যাডমিনদের জন্য!');
+                return;
+            }
+            
+            // 🔐 চেক ৩: URL এ কোনো সন্দেহজনক কিছু আছে কিনা
+            if (url.includes('javascript:') || url.includes('data:')) {
+                alert('⚠️ অনিরাপদ URL!');
+                return;
+            }
+            
+            // ✅ সব চেক পাস
             const encodedUrl = encodeURIComponent(url);
-            // ব্রাউজারের URL আপডেট করুন
             const newUrl = window.location.pathname + '?page=' + encodedUrl + '&title=' + encodeURIComponent(title || 'পেজ');
             window.history.pushState({ page: 'embedded', url: url, title: title }, title, newUrl);
             
-            // iframe এ লোড করুন
             let embedUrl = url;
             if (embedUrl.includes('drive.google.com') && embedUrl.includes('/view')) {
                 embedUrl = embedUrl.replace(/\/view(\?.*)?$/, '/preview');
@@ -1233,18 +1272,11 @@
             document.getElementById('embeddedPageViewer').style.display = 'flex';
             document.body.classList.add('embedded-open');
             
-            // ব্রেডক্রাম্ব দেখান
-            const breadcrumb = document.getElementById('breadcrumb');
-            breadcrumb.style.display = 'block';
+            document.getElementById('breadcrumb').style.display = 'block';
             document.getElementById('breadcrumbPage').textContent = ' / ' + (title || 'পেজ');
-            
-            // হোম ভিউ লুকান
             document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-            
-            // হোয়াটসঅ্যাপ ফ্লোট লুকান
             document.getElementById('whatsappFloat').style.display = 'none';
             
-            // নেভে ক্লোজ বাটন দেখান
             const closeBtn = document.querySelector('.btn-close-view');
             if (closeBtn) closeBtn.style.display = 'inline-flex';
         }
@@ -1254,18 +1286,14 @@
             document.getElementById('embeddedIframe').src = '';
             document.body.classList.remove('embedded-open');
             
-            // ব্রেডক্রাম্ব লুকান
             document.getElementById('breadcrumb').style.display = 'none';
             
-            // হোয়াটসঅ্যাপ ফ্লোট দেখান (যদি ল্যান্ডিং পেজে থাকে)
             const isLanding = document.getElementById('landingView').classList.contains('active');
             document.getElementById('whatsappFloat').style.display = isLanding ? 'flex' : 'none';
             
-            // ক্লোজ বাটন লুকান
             const closeBtn = document.querySelector('.btn-close-view');
             if (closeBtn) closeBtn.style.display = 'none';
             
-            // URL থেকে প্যারামিটার সরান
             if (window.location.search) {
                 window.history.replaceState({}, '', window.location.pathname);
             }
@@ -1279,7 +1307,7 @@
             }
         }
 
-        // ===== URL PARAMETER HANDLING =====
+        // ===== URL PARAMETER HANDLING WITH SECURITY =====
         function handleUrlParams() {
             const params = new URLSearchParams(window.location.search);
             const page = params.get('page');
@@ -1287,25 +1315,42 @@
             
             if (page) {
                 const decodedUrl = decodeURIComponent(page);
+                
+                // 🔐 সিকিউরিটি চেক
+                const savedUser = localStorage.getItem('tanjif_active_user');
+                if (!savedUser) {
+                    // লগ ইন না থাকলে URL থেকে প্যারামিটার সরান
+                    window.history.replaceState({}, '', window.location.pathname);
+                    switchView('landingView');
+                    openApologyModal();
+                    return;
+                }
+                
+                const user = JSON.parse(savedUser);
+                
+                // অ্যাডমিন পেজ চেক
+                if (isAdminPage(decodedUrl) && user.role !== 'admin') {
+                    window.history.replaceState({}, '', window.location.pathname);
+                    switchView('landingView');
+                    alert('⚠️ এই পেজটি শুধুমাত্র অ্যাডমিনদের জন্য!');
+                    return;
+                }
+                
                 openPage(decodedUrl, title || 'পেজ');
             }
         }
 
-        // ===== POPSTATE HANDLER (ব্যাক/ফরওয়ার্ড) =====
+        // ===== POPSTATE HANDLER =====
         window.addEventListener('popstate', function(event) {
             if (event.state && event.state.page === 'embedded') {
-                // যদি এম্বেডেড পেজ খোলা থাকে
                 if (document.getElementById('embeddedPageViewer').style.display === 'flex') {
                     closeEmbeddedPage();
                 }
             } else {
-                // যদি এম্বেডেড পেজ না থাকে, তবুও চেক করুন
                 const params = new URLSearchParams(window.location.search);
                 if (params.get('page')) {
-                    // প্যারামিটার থাকলে আবার ওপেন করুন
                     handleUrlParams();
                 } else {
-                    // প্যারামিটার না থাকলে হোমে নিয়ে যান
                     closeEmbeddedPage();
                     switchView('landingView');
                 }
@@ -1317,7 +1362,7 @@
             checkPersistedSession();
             handleUrlParams();
             
-            // কপি, কাট, পেস্ট প্রিভেন্ট
+            // সিকিউরিটি: কপি, কাট, পেস্ট প্রিভেন্ট
             document.addEventListener('contextmenu', e => { 
                 if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); 
             });
@@ -1329,7 +1374,6 @@
             document.addEventListener('cut', e => { if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); });
             document.addEventListener('paste', e => { if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); });
 
-            // ইতিহাসে একটি স্টেট রাখা
             if (!window.location.search) {
                 history.replaceState({ page: 'main' }, '');
             }
@@ -1352,7 +1396,10 @@
         function handleKidsOption(url, title) {
             closeKidsModal();
             const savedUser = localStorage.getItem('tanjif_active_user');
-            if (!savedUser) { openAuthModal(); return; }
+            if (!savedUser) { 
+                openApologyModal(); 
+                return; 
+            }
             if (!url || url === '#') { openApologyModal(); return; }
             openPage(url, title);
         }
@@ -1386,7 +1433,11 @@
         }
 
         // ===== AUTH FUNCTIONS =====
-        function openAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
+        function openAuthModal() { 
+            document.getElementById('authModal').style.display = 'flex'; 
+            // অ্যাপোলজি মডাল থাকলে বন্ধ করুন
+            closeApologyModal();
+        }
         function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
         
         function toggleStudentAuth(type) {
@@ -1473,6 +1524,12 @@
             closeEmbeddedPage();
             updateNavAuthUI(null);
             switchView('landingView');
+            
+            // URL ক্লিন করুন
+            if (window.location.search) {
+                window.history.replaceState({}, '', window.location.pathname);
+            }
+            
             alert("সফলভাবে লগআউট হয়েছেন।");
         }
 
