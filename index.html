@@ -1282,6 +1282,9 @@
         }
 
         function closeEmbeddedPage() {
+            // বর্তমান স্ক্রল অবস্থান সংরক্ষণ করি
+            const currentScrollY = window.scrollY;
+            
             document.getElementById('embeddedPageViewer').style.display = 'none';
             document.getElementById('embeddedIframe').src = '';
             document.body.classList.remove('embedded-open');
@@ -1297,6 +1300,11 @@
             if (window.location.search) {
                 window.history.replaceState({}, '', window.location.pathname);
             }
+            
+            // আগের স্ক্রল পজিশনে ফিরে যাই
+            setTimeout(() => {
+                window.scrollTo(0, currentScrollY);
+            }, 50);
         }
 
         function navigateToHome(section) {
