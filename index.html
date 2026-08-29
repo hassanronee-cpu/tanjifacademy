@@ -1282,6 +1282,9 @@
         }
 
         // ===== CLOSE EMBEDDED PAGE - সম্পূর্ণ পরিবর্তন =====
+        // আগের ভিউ ট্র্যাক করার জন্য ভেরিয়েবল
+        let previousView = 'landingView';
+        
         function closeEmbeddedPage() {
             // বর্তমান স্ক্রল অবস্থান সংরক্ষণ
             const currentScrollY = window.scrollY;
@@ -1294,10 +1297,6 @@
             // ব্রেডক্রাম্ব লুকান
             document.getElementById('breadcrumb').style.display = 'none';
             
-            // হোয়াটসঅ্যাপ আইকন দেখান (যদি ল্যান্ডিং ভিউতে থাকে)
-            const isLanding = document.getElementById('landingView').classList.contains('active');
-            document.getElementById('whatsappFloat').style.display = isLanding ? 'flex' : 'none';
-            
             // ক্লোজ বাটন লুকান
             const closeBtn = document.querySelector('.btn-close-view');
             if (closeBtn) closeBtn.style.display = 'none';
@@ -1307,13 +1306,29 @@
                 window.history.replaceState({}, '', window.location.pathname);
             }
             
-            // ল্যান্ডিং ভিউ অ্যাকটিভ থাকলে সেটা নিশ্চিত করুন
-            if (!document.getElementById('landingView').classList.contains('active') && 
-                !document.getElementById('studentDashboardView').classList.contains('active') && 
-                !document.getElementById('adminDashboardView').classList.contains('active')) {
-                // কোনো ভিউ অ্যাকটিভ না থাকলে ল্যান্ডিং ভিউ দেখান
+            // কোন ভিউ অ্যাকটিভ আছে তা চেক করুন
+            const isLanding = document.getElementById('landingView').classList.contains('active');
+            const isStudentDash = document.getElementById('studentDashboardView').classList.contains('active');
+            const isAdminDash = document.getElementById('adminDashboardView').classList.contains('active');
+            
+            // যদি কোনো ভিউ অ্যাকটিভ না থাকে, তাহলে আগের ভিউতে ফিরে যান
+            if (!isLanding && !isStudentDash && !isAdminDash) {
+                // আগের ভিউ রিস্টোর করুন
                 document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-                document.getElementById('landingView').classList.add('active');
+                const targetView = document.getElementById(previousView);
+                if (targetView) {
+                    targetView.classList.add('active');
+                } else {
+                    document.getElementById('landingView').classList.add('active');
+                }
+            }
+            
+            // হোয়াটসঅ্যাপ আইকন দেখান (যদি ল্যান্ডিং ভিউতে থাকে)
+            const currentActiveView = document.querySelector('.page-view.active');
+            if (currentActiveView && currentActiveView.id === 'landingView') {
+                document.getElementById('whatsappFloat').style.display = 'flex';
+            } else {
+                document.getElementById('whatsappFloat').style.display = 'none';
             }
             
             // আগের স্ক্রল পজিশনে ফিরে যান
@@ -1355,6 +1370,30 @@
             if (section) {
                 setTimeout(() => scrollToSection(section.replace('#', '')), 150);
             }
+        }
+
+        // ===== VIEW SWITCHING - আপডেট =====
+        function switchView(viewId, keepScroll = false) {
+            // আগের ভিউ সংরক্ষণ করুন
+            const currentActive = document.querySelector('.page-view.active');
+            if (currentActive) {
+                previousView = currentActive.id;
+            }
+            
+            document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            
+            if (!keepScroll) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            const wa = document.getElementById('whatsappFloat');
+            if (viewId === 'landingView' && document.getElementById('embeddedPageViewer').style.display !== 'flex') {
+                wa.style.display = 'flex';
+            } else {
+                wa.style.display = 'none';
+            }
+            if (viewId !== 'landingView') document.getElementById('scrollTopBtn').style.display = 'none';
         }
 
         // ===== URL PARAMETER HANDLING WITH SECURITY =====
@@ -1402,9 +1441,6 @@
                     handleUrlParams();
                 } else {
                     closeEmbeddedPage();
-                    // ল্যান্ডিং ভিউ দেখান কিন্তু স্ক্রল রিসেট করবেন না
-                    document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-                    document.getElementById('landingView').classList.add('active');
                 }
             }
         });
@@ -1463,24 +1499,6 @@
         function closeApologyModal() { document.getElementById('apologyModal').style.display = 'none'; }
 
         function toggleCollapsible(id) { document.getElementById(id).classList.toggle('active'); }
-
-        // ===== VIEW SWITCHING =====
-        function switchView(viewId, keepScroll = false) {
-            document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-            document.getElementById(viewId).classList.add('active');
-            
-            if (!keepScroll) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-            
-            const wa = document.getElementById('whatsappFloat');
-            if (viewId === 'landingView' && document.getElementById('embeddedPageViewer').style.display !== 'flex') {
-                wa.style.display = 'flex';
-            } else {
-                wa.style.display = 'none';
-            }
-            if (viewId !== 'landingView') document.getElementById('scrollTopBtn').style.display = 'none';
-        }
 
         function scrollToSection(id) {
             const el = document.getElementById(id);
