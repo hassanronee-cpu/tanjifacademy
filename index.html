@@ -295,24 +295,6 @@
 
         .btn-logout:hover { background: #dc2626; }
 
-        .btn-close-view {
-            background: #6366f1;
-            color: #fff;
-            border: none;
-            padding: 2px 7px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.68rem;
-            cursor: pointer;
-            transition: 0.2s;
-            display: none;
-            align-items: center;
-            gap: 3px;
-            white-space: nowrap;
-        }
-
-        .btn-close-view:hover { background: #4f46e5; }
-
         .page-view {
             display: none;
             animation: fadeIn 0.4s ease-in-out;
@@ -486,7 +468,7 @@
             .btn-auth { padding: 0.2rem 0.6rem; font-size: 0.68rem; }
             .nav-user-profile { padding: 2px 5px; gap: 3px; }
             .user-badge { font-size: 0.68rem; }
-            .btn-logout, .btn-close-view { padding: 2px 5px; font-size: 0.6rem; }
+            .btn-logout { padding: 2px 5px; font-size: 0.6rem; }
             .nav-dropdown-btn { font-size: 1.1rem; padding: 2px 6px; }
             .nav-dropdown-content { right: -5px; min-width: 160px; top: 34px; }
             .embedded-page-overlay { top: var(--nav-height); height: calc(100vh - var(--nav-height)); }
@@ -1259,18 +1241,25 @@
                 return;
             }
             
+            // ✅ URL তৈরি করুন - ফিক্স করা হলো
+            const baseUrl = window.location.pathname;
             const encodedUrl = encodeURIComponent(url);
-            const newUrl = window.location.pathname + '?page=' + encodedUrl + '&title=' + encodeURIComponent(title || 'পেজ');
+            const encodedTitle = encodeURIComponent(title || 'পেজ');
+            const newUrl = baseUrl + '?page=' + encodedUrl + '&title=' + encodedTitle;
             
-            // ✅ URL আপডেট করুন (হিস্টোরি স্টেট)
-            window.history.pushState({ page: 'embedded', url: url, title: title }, title, newUrl);
+            // ✅ URL আপডেট করুন (হিস্টোরি স্টেট) - সঠিকভাবে পুশ করুন
+            window.history.pushState(
+                { page: 'embedded', url: url, title: title }, 
+                title || 'পেজ', 
+                newUrl
+            );
             
+            // ✅ Iframe লোড করুন
             let embedUrl = url;
             if (embedUrl.includes('drive.google.com') && embedUrl.includes('/view')) {
                 embedUrl = embedUrl.replace(/\/view(\?.*)?$/, '/preview');
             }
             
-            // ✅ Iframe সেট করুন
             const iframe = document.getElementById('embeddedIframe');
             iframe.src = embedUrl;
             
@@ -1285,12 +1274,9 @@
             // ✅ অন্যান্য ভিউ লুকান
             document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
             document.getElementById('whatsappFloat').style.display = 'none';
-            
-            // ✅ ক্লোজ বাটন দেখান
-            const closeBtn = document.querySelector('.btn-close-view');
-            if (closeBtn) closeBtn.style.display = 'inline-flex';
         }
 
+        // ===== CLOSE EMBEDDED PAGE =====
         function closeEmbeddedPage() {
             document.getElementById('embeddedPageViewer').style.display = 'none';
             document.getElementById('embeddedIframe').src = '';
@@ -1301,11 +1287,9 @@
             const isLanding = document.getElementById('landingView').classList.contains('active');
             document.getElementById('whatsappFloat').style.display = isLanding ? 'flex' : 'none';
             
-            const closeBtn = document.querySelector('.btn-close-view');
-            if (closeBtn) closeBtn.style.display = 'none';
-            
+            // URL থেকে প্যারামিটার রিমুভ করুন
             if (window.location.search) {
-                window.history.replaceState({}, '', window.location.pathname);
+                window.history.replaceState({ page: 'main' }, '', window.location.pathname);
             }
         }
 
@@ -1357,41 +1341,32 @@
                 document.getElementById('breadcrumbPage').textContent = ' / ' + (title || 'পেজ');
                 document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
                 document.getElementById('whatsappFloat').style.display = 'none';
-                
-                const closeBtn = document.querySelector('.btn-close-view');
-                if (closeBtn) closeBtn.style.display = 'inline-flex';
             }
         }
 
-        // ===== POPSTATE HANDLER =====
+        // ===== POPSTATE HANDLER - ব্রাউজারের ব্যাক/ফরওয়ার্ড বাটন =====
         window.addEventListener('popstate', function(event) {
-            if (event.state && event.state.page === 'embedded') {
-                // পেজ ইতিমধ্যে খোলা আছে কিনা চেক করুন
-                const viewer = document.getElementById('embeddedPageViewer');
-                if (viewer.style.display === 'flex') {
-                    // যদি ইতিমধ্যে খোলা থাকে, কিছু করবেন না
-                } else {
-                    // পেজ খুলুন
-                    const params = new URLSearchParams(window.location.search);
-                    const page = params.get('page');
-                    if (page) {
-                        const decodedUrl = decodeURIComponent(page);
-                        let embedUrl = decodedUrl;
-                        if (embedUrl.includes('drive.google.com') && embedUrl.includes('/view')) {
-                            embedUrl = embedUrl.replace(/\/view(\?.*)?$/, '/preview');
-                        }
-                        document.getElementById('embeddedIframe').src = embedUrl;
-                        viewer.style.display = 'flex';
-                        document.body.classList.add('embedded-open');
-                        document.getElementById('breadcrumb').style.display = 'block';
-                        document.getElementById('breadcrumbPage').textContent = ' / ' + (params.get('title') || 'পেজ');
-                        document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-                        document.getElementById('whatsappFloat').style.display = 'none';
-                        const closeBtn = document.querySelector('.btn-close-view');
-                        if (closeBtn) closeBtn.style.display = 'inline-flex';
-                    }
+            // চেক করুন পেজ প্যারামিটার আছে কিনা
+            const params = new URLSearchParams(window.location.search);
+            const page = params.get('page');
+            const title = params.get('title');
+            
+            if (page && event.state && event.state.page === 'embedded') {
+                // পেজ খোলা আছে, Iframe আপডেট করুন
+                const decodedUrl = decodeURIComponent(page);
+                let embedUrl = decodedUrl;
+                if (embedUrl.includes('drive.google.com') && embedUrl.includes('/view')) {
+                    embedUrl = embedUrl.replace(/\/view(\?.*)?$/, '/preview');
                 }
-            } else {
+                document.getElementById('embeddedIframe').src = embedUrl;
+                document.getElementById('embeddedPageViewer').style.display = 'flex';
+                document.body.classList.add('embedded-open');
+                document.getElementById('breadcrumb').style.display = 'block';
+                document.getElementById('breadcrumbPage').textContent = ' / ' + (title || 'পেজ');
+                document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+                document.getElementById('whatsappFloat').style.display = 'none';
+            } else if (!page) {
+                // প্যারামিটার নেই, পেজ ক্লোজ করুন
                 closeEmbeddedPage();
                 switchView('landingView');
             }
@@ -1414,6 +1389,7 @@
             document.addEventListener('cut', e => { if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); });
             document.addEventListener('paste', e => { if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); });
 
+            // প্রাথমিক স্টেট সেট করুন
             if (!window.location.search) {
                 history.replaceState({ page: 'main' }, '');
             }
@@ -1529,7 +1505,6 @@
                         <div class="nav-user-profile">
                             <span class="user-badge"><i class="fa-solid fa-user-shield"></i> ${user.name || 'অ্যাডমিন'}</span>
                             <button onclick="closeEmbeddedPage(); switchView('adminDashboardView')" class="btn-logout" style="background:#f59e0b;color:#000;">ড্যাশবোর্ড</button>
-                            <button onclick="closeEmbeddedPage()" class="btn-close-view" style="display:${document.getElementById('embeddedPageViewer').style.display === 'flex' ? 'inline-flex' : 'none'};">বন্ধ করুন</button>
                             <button onclick="handleLogout()" class="btn-logout">লগআউট</button>
                         </div>
                     `;
@@ -1538,7 +1513,6 @@
                         <div class="nav-user-profile">
                             <span class="user-badge"><i class="fa-solid fa-user-graduate"></i> ${user.name}</span>
                             <button onclick="closeEmbeddedPage(); switchView('studentDashboardView')" class="btn-logout" style="background:#0d9488;">ড্যাশবোর্ড</button>
-                            <button onclick="closeEmbeddedPage()" class="btn-close-view" style="display:${document.getElementById('embeddedPageViewer').style.display === 'flex' ? 'inline-flex' : 'none'};"><i class="fa-solid fa-xmark"></i> বন্ধ</button>
                             <button onclick="handleLogout()" class="btn-logout">লগআউট</button>
                         </div>
                     `;
