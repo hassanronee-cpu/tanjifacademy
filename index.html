@@ -668,7 +668,6 @@
         .breadcrumb a { color: var(--primary); text-decoration: none; cursor: pointer; }
         .breadcrumb a:hover { text-decoration: underline; }
 
-        /* লক আইকন */
         .lock-icon {
             color: #f59e0b;
             margin-right: 5px;
@@ -1235,6 +1234,7 @@
             return ADMIN_ONLY_PAGES.some(page => lowerUrl.includes(page));
         }
 
+        // ===== MAIN openPage() FUNCTION WITH URL UPDATE FIX =====
         function openPage(url, title) {
             if (!url || url === '#') { openApologyModal(); return; }
             
@@ -1259,24 +1259,34 @@
                 return;
             }
             
-            // ✅ সব চেক পাস
             const encodedUrl = encodeURIComponent(url);
             const newUrl = window.location.pathname + '?page=' + encodedUrl + '&title=' + encodeURIComponent(title || 'পেজ');
+            
+            // ✅ URL আপডেট করুন (হিস্টোরি স্টেট)
             window.history.pushState({ page: 'embedded', url: url, title: title }, title, newUrl);
             
             let embedUrl = url;
             if (embedUrl.includes('drive.google.com') && embedUrl.includes('/view')) {
                 embedUrl = embedUrl.replace(/\/view(\?.*)?$/, '/preview');
             }
-            document.getElementById('embeddedIframe').src = embedUrl;
+            
+            // ✅ Iframe সেট করুন
+            const iframe = document.getElementById('embeddedIframe');
+            iframe.src = embedUrl;
+            
+            // ✅ ভিউ দেখান
             document.getElementById('embeddedPageViewer').style.display = 'flex';
             document.body.classList.add('embedded-open');
             
+            // ✅ ব্রেডক্রাম্ব আপডেট
             document.getElementById('breadcrumb').style.display = 'block';
             document.getElementById('breadcrumbPage').textContent = ' / ' + (title || 'পেজ');
+            
+            // ✅ অন্যান্য ভিউ লুকান
             document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
             document.getElementById('whatsappFloat').style.display = 'none';
             
+            // ✅ ক্লোজ বাটন দেখান
             const closeBtn = document.querySelector('.btn-close-view');
             if (closeBtn) closeBtn.style.display = 'inline-flex';
         }
@@ -1319,7 +1329,6 @@
                 // 🔐 সিকিউরিটি চেক
                 const savedUser = localStorage.getItem('tanjif_active_user');
                 if (!savedUser) {
-                    // লগ ইন না থাকলে URL থেকে প্যারামিটার সরান
                     window.history.replaceState({}, '', window.location.pathname);
                     switchView('landingView');
                     openApologyModal();
@@ -1328,7 +1337,6 @@
                 
                 const user = JSON.parse(savedUser);
                 
-                // অ্যাডমিন পেজ চেক
                 if (isAdminPage(decodedUrl) && user.role !== 'admin') {
                     window.history.replaceState({}, '', window.location.pathname);
                     switchView('landingView');
@@ -1336,24 +1344,56 @@
                     return;
                 }
                 
-                openPage(decodedUrl, title || 'পেজ');
+                // পেজ লোড করুন
+                let embedUrl = decodedUrl;
+                if (embedUrl.includes('drive.google.com') && embedUrl.includes('/view')) {
+                    embedUrl = embedUrl.replace(/\/view(\?.*)?$/, '/preview');
+                }
+                
+                document.getElementById('embeddedIframe').src = embedUrl;
+                document.getElementById('embeddedPageViewer').style.display = 'flex';
+                document.body.classList.add('embedded-open');
+                document.getElementById('breadcrumb').style.display = 'block';
+                document.getElementById('breadcrumbPage').textContent = ' / ' + (title || 'পেজ');
+                document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+                document.getElementById('whatsappFloat').style.display = 'none';
+                
+                const closeBtn = document.querySelector('.btn-close-view');
+                if (closeBtn) closeBtn.style.display = 'inline-flex';
             }
         }
 
         // ===== POPSTATE HANDLER =====
         window.addEventListener('popstate', function(event) {
             if (event.state && event.state.page === 'embedded') {
-                if (document.getElementById('embeddedPageViewer').style.display === 'flex') {
-                    closeEmbeddedPage();
+                // পেজ ইতিমধ্যে খোলা আছে কিনা চেক করুন
+                const viewer = document.getElementById('embeddedPageViewer');
+                if (viewer.style.display === 'flex') {
+                    // যদি ইতিমধ্যে খোলা থাকে, কিছু করবেন না
+                } else {
+                    // পেজ খুলুন
+                    const params = new URLSearchParams(window.location.search);
+                    const page = params.get('page');
+                    if (page) {
+                        const decodedUrl = decodeURIComponent(page);
+                        let embedUrl = decodedUrl;
+                        if (embedUrl.includes('drive.google.com') && embedUrl.includes('/view')) {
+                            embedUrl = embedUrl.replace(/\/view(\?.*)?$/, '/preview');
+                        }
+                        document.getElementById('embeddedIframe').src = embedUrl;
+                        viewer.style.display = 'flex';
+                        document.body.classList.add('embedded-open');
+                        document.getElementById('breadcrumb').style.display = 'block';
+                        document.getElementById('breadcrumbPage').textContent = ' / ' + (params.get('title') || 'পেজ');
+                        document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+                        document.getElementById('whatsappFloat').style.display = 'none';
+                        const closeBtn = document.querySelector('.btn-close-view');
+                        if (closeBtn) closeBtn.style.display = 'inline-flex';
+                    }
                 }
             } else {
-                const params = new URLSearchParams(window.location.search);
-                if (params.get('page')) {
-                    handleUrlParams();
-                } else {
-                    closeEmbeddedPage();
-                    switchView('landingView');
-                }
+                closeEmbeddedPage();
+                switchView('landingView');
             }
         });
 
@@ -1435,7 +1475,6 @@
         // ===== AUTH FUNCTIONS =====
         function openAuthModal() { 
             document.getElementById('authModal').style.display = 'flex'; 
-            // অ্যাপোলজি মডাল থাকলে বন্ধ করুন
             closeApologyModal();
         }
         function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
@@ -1490,6 +1529,7 @@
                         <div class="nav-user-profile">
                             <span class="user-badge"><i class="fa-solid fa-user-shield"></i> ${user.name || 'অ্যাডমিন'}</span>
                             <button onclick="closeEmbeddedPage(); switchView('adminDashboardView')" class="btn-logout" style="background:#f59e0b;color:#000;">ড্যাশবোর্ড</button>
+                            <button onclick="closeEmbeddedPage()" class="btn-close-view" style="display:${document.getElementById('embeddedPageViewer').style.display === 'flex' ? 'inline-flex' : 'none'};">বন্ধ করুন</button>
                             <button onclick="handleLogout()" class="btn-logout">লগআউট</button>
                         </div>
                     `;
@@ -1524,7 +1564,6 @@
             updateNavAuthUI(null);
             switchView('landingView');
             
-            // URL ক্লিন করুন
             if (window.location.search) {
                 window.history.replaceState({}, '', window.location.pathname);
             }
