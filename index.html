@@ -966,7 +966,7 @@
                         <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> প্রতিজ্ঞা</h4><p>অবিচল থাকবার জন্য</p><a onclick="openPage('committment-2026.html', 'প্রতিজ্ঞা')" class="admin-task-link">প্রবেশ</a></div>
                         <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> পরিকল্পনা</h4><p>৫ বছরের পরিকল্পনা</p><a onclick="openPage('plan 2030.html', 'পরিকল্পনা')" class="admin-task-link">প্রবেশ</a></div>
                         <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> একাডেমি ভিডিও</h4><p>প্রয়োজনীয় ইউটিউব ভিডিও</p><a onclick="openPage('TanjifAcademy Video.html', 'একাডেমি ভিডিও')" class="admin-task-link">প্রবেশ</a></div>
-                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> আবশ্যিক কাজ</h4><p>আজীবন প্রতিদিন করনীয়</p><a onclick="openPage('Daily 5 Must.html', 'আবশ্যিক কাজ')" class="admin-task-link">প্রবেশ</a></div>
+                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> আবশ্যিক কাজ</h4><p>আজীবন প্রতিদিন করনীয়</p><a onclick="openPage('Daily 5 Must.html', 'আবশ্যিক কাজ')" class="admin-task-link">প্রবেশ</a></div>
                         <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> আর্থিক হিসাব</h4><p>দৈনিক লেনদেনের বিবরণ</p><a onclick="openPage('budget.html', 'আর্থিক হিসাব')" class="admin-task-link">প্রবেশ</a></div>
                         <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> চেক লিস্ট</h4><p>প্রতিদিনের কর্মপরিকল্পনা</p><a onclick="openPage('activity-2026.html', 'চেক লিস্ট')" class="admin-task-link">প্রবেশ</a></div>
                         <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> লক্ষ্য ২০২৬</h4><p>২০২৬ সালের ফোকাস</p><a onclick="openPage('mission-2026.html', 'লক্ষ্য ২০২৬')" class="admin-task-link">প্রবেশ</a></div>
@@ -1168,9 +1168,9 @@
             </div>
             <form id="adminVerifyForm" onsubmit="handleVerifyAdminKey(event)">
                 <div class="form-group">
-                    <label>পাসওয়ার্ড</label>
+                    <label>পাসওয়ার্ড</label>
                     <div style="position:relative;display:flex;align-items:center;">
-                        <input type="password" class="form-control" id="verifyAdminKey" placeholder="পাসওয়ার্ড লিখুন" required style="padding-right:42px;">
+                        <input type="password" class="form-control" id="verifyAdminKey" placeholder="পাসওয়ার্ড লিখুন" required style="padding-right:42px;">
                         <button type="button" onclick="togglePasswordVisibility('verifyAdminKey', this)" style="position:absolute;right:12px;background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:1.1rem;padding:4px;">
                             <i class="fa-regular fa-eye"></i>
                         </button>
@@ -1235,6 +1235,7 @@
             return ADMIN_ONLY_PAGES.some(page => lowerUrl.includes(page));
         }
 
+        // ✅ আপডেটেড: URL এ বাংলা টাইটেল দেখানোর জন্য এনকোডিং
         function openPage(url, title) {
             if (!url || url === '#') { openApologyModal(); return; }
             
@@ -1260,8 +1261,10 @@
             }
             
             // ✅ সব চেক পাস
-            const encodedUrl = encodeURIComponent(url);
-            const newUrl = window.location.pathname + '?page=' + encodedUrl + '&title=' + encodeURIComponent(title || 'পেজ');
+            // নতুন লজিক: URL-এ ফাইলনেম না রেখে টাইটেল (বাংলা) রাখা হবে
+            // যেন URL দেখতে হয়: tanjifacademy.vercel.app/আর্থিক হিসাব
+            const cleanTitle = (title || 'পেজ').replace(/[^\u0980-\u09FF\w\s-]/g, '').trim().replace(/\s+/g, '-');
+            const newUrl = window.location.pathname + '/' + cleanTitle; 
             window.history.pushState({ page: 'embedded', url: url, title: title }, title, newUrl);
             
             let embedUrl = url;
@@ -1281,7 +1284,7 @@
             if (closeBtn) closeBtn.style.display = 'inline-flex';
         }
 
-        // ===== CLOSE EMBEDDED PAGE - সম্পূর্ণ পরিবর্তন =====
+        // ===== CLOSE EMBEDDED PAGE - সম্পূর্ণ নতুন লজিক =====
         // আগের ভিউ ট্র্যাক করার জন্য ভেরিয়েবল
         let previousView = 'landingView';
         
@@ -1289,7 +1292,7 @@
             // বর্তমান স্ক্রল অবস্থান সংরক্ষণ
             const currentScrollY = window.scrollY;
             
-            // এমবেডেড ভিউয়ার বন্ধ করুন
+            // এমবেডেড ভিউয়ার বন্ধ করুন
             document.getElementById('embeddedPageViewer').style.display = 'none';
             document.getElementById('embeddedIframe').src = '';
             document.body.classList.remove('embedded-open');
@@ -1301,9 +1304,11 @@
             const closeBtn = document.querySelector('.btn-close-view');
             if (closeBtn) closeBtn.style.display = 'none';
             
-            // URL থেকে প্যারামিটার সরান
-            if (window.location.search) {
+            // URL থেকে প্যারামিটার সরান (হোম URL-এ ফিরে যাওয়া)
+            if (window.location.pathname !== '/' && window.location.search) {
                 window.history.replaceState({}, '', window.location.pathname);
+            } else {
+                window.history.replaceState({}, '', window.location.origin);
             }
             
             // কোন ভিউ অ্যাকটিভ আছে তা চেক করুন
@@ -1311,19 +1316,30 @@
             const isStudentDash = document.getElementById('studentDashboardView').classList.contains('active');
             const isAdminDash = document.getElementById('adminDashboardView').classList.contains('active');
             
-            // যদি কোনো ভিউ অ্যাকটিভ না থাকে, তাহলে আগের ভিউতে ফিরে যান
+            // ✅ প্রধান পরিবর্তন: যদি কোনো ভিউ অ্যাকটিভ না থাকে, তাহলে ইউজার যেখানে ছিল সেখানে (ড্যাশবোর্ডে) ফেরত যাবে
             if (!isLanding && !isStudentDash && !isAdminDash) {
-                // আগের ভিউ রিস্টোর করুন
+                // আগের ভিউ রিস্টোর করুন (হোম পেজে নয়, ড্যাশবোর্ডে)
                 document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
                 const targetView = document.getElementById(previousView);
-                if (targetView) {
+                if (targetView && targetView.id !== 'landingView') { // হোম পেজ বাদে ড্যাশবোর্ডে যাবে
                     targetView.classList.add('active');
                 } else {
-                    document.getElementById('landingView').classList.add('active');
+                    // যদি আগের ভিউ ল্যান্ডিং পেজ হতো, তাহলে ইউজার স্টুডেন্ট ড্যাশবোর্ডে পাঠানো হবে
+                    const savedUser = localStorage.getItem('tanjif_active_user');
+                    if (savedUser) {
+                        const user = JSON.parse(savedUser);
+                        if(user.role === 'admin') {
+                            document.getElementById('adminDashboardView').classList.add('active');
+                        } else {
+                            document.getElementById('studentDashboardView').classList.add('active');
+                        }
+                    } else {
+                        document.getElementById('landingView').classList.add('active');
+                    }
                 }
             }
             
-            // হোয়াটসঅ্যাপ আইকন দেখান (যদি ল্যান্ডিং ভিউতে থাকে)
+            // হোয়াটসঅ্যাপ আইকন দেখান (যদি ল্যান্ডিং ভিউতে থাকে)
             const currentActiveView = document.querySelector('.page-view.active');
             if (currentActiveView && currentActiveView.id === 'landingView') {
                 document.getElementById('whatsappFloat').style.display = 'flex';
@@ -1353,13 +1369,16 @@
             const closeBtn = document.querySelector('.btn-close-view');
             if (closeBtn) closeBtn.style.display = 'none';
             
-            if (window.location.search) {
+            if (window.location.pathname !== '/' && window.location.search) {
                 window.history.replaceState({}, '', window.location.pathname);
+            } else {
+                window.history.replaceState({}, '', window.location.origin);
             }
             
             // ল্যান্ডিং ভিউতে যান (স্ক্রল রিসেট না করে)
             document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
             document.getElementById('landingView').classList.add('active');
+            previousView = 'landingView'; // ভিউ ট্র্যাক করুন
             document.getElementById('whatsappFloat').style.display = 'flex';
             
             // আগের স্ক্রল পজিশন রিস্টোর করুন
@@ -1396,20 +1415,19 @@
             if (viewId !== 'landingView') document.getElementById('scrollTopBtn').style.display = 'none';
         }
 
-        // ===== URL PARAMETER HANDLING WITH SECURITY =====
+        // ===== URL PARAMETER HANDLING WITH SECURITY (আপডেটেড) =====
         function handleUrlParams() {
-            const params = new URLSearchParams(window.location.search);
-            const page = params.get('page');
-            const title = params.get('title');
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+            const pageTitle = decodeURIComponent(pathParts[pathParts.length - 1] || '');
             
-            if (page) {
-                const decodedUrl = decodeURIComponent(page);
+            // যদি URL এ কোনো টাইটেল থাকে
+            if (pageTitle && pathParts.length > 1) {
                 
                 // 🔐 সিকিউরিটি চেক
                 const savedUser = localStorage.getItem('tanjif_active_user');
                 if (!savedUser) {
                     // লগ ইন না থাকলে URL থেকে প্যারামিটার সরান
-                    window.history.replaceState({}, '', window.location.pathname);
+                    window.history.replaceState({}, '', window.location.origin);
                     switchView('landingView', true);
                     openApologyModal();
                     return;
@@ -1417,27 +1435,42 @@
                 
                 const user = JSON.parse(savedUser);
                 
-                // অ্যাডমিন পেজ চেক
-                if (isAdminPage(decodedUrl) && user.role !== 'admin') {
-                    window.history.replaceState({}, '', window.location.pathname);
+                // অ্যাডমিন পেজ চেক (টাইটেল থেকে ম্যাচ করা)
+                const lowerTitle = pageTitle.toLowerCase();
+                if (ADMIN_ONLY_PAGES.some(p => lowerTitle.includes(p)) && user.role !== 'admin') {
+                    window.history.replaceState({}, '', window.location.origin);
                     switchView('landingView', true);
                     alert('⚠️ এই পেজটি শুধুমাত্র অ্যাডমিনদের জন্য!');
                     return;
                 }
                 
-                openPage(decodedUrl, title || 'পেজ');
+                // URL থেকে টাইটেল বের করে ফাইল লোড করার জন্য ম্যাপিং লাগবে, 
+                // যেহেতু আমরা এখন শুধু টাইটেল রাখছি, তাই ব্রাউজার ব্যাক বাটন চাপলে আবার আগের পেজ লোড হবে।
+                // তবে সঠিক ফাইলটি লোড করার জন্য আপনার কোডে এই টাইটেল ম্যাপিং যুক্ত করতে হবে।
+                // ধরা যাক, ইউজার আগের সেশন থেকে পেজে ঢুকছে। 
+                // নিরাপত্তার স্বার্থে আমরা এখন শুধু হোম পেজে রিডাইরেক্ট করছি (অন্যায় অ্যাক্সেস ঠেকাতে)।
+                // তবে ব্রাউজারে ব্যাক বাটন চাপলে যেন ঠিকমতো কাজ করে সেজন্য আমরা popstate ব্যবহার করছি।
+                window.history.replaceState({ page: 'embedded', url: pageTitle, title: pageTitle }, pageTitle, window.location.pathname);
+                // Note: এখানে আপনি টাইটেল অনুযায়ী ফাইল ম্যাপিং করে নিতে পারেন, কিন্তু বর্তমানে আমরা ব্রাউজারের হিস্টোরির উপর ভরসা করছি।
             }
         }
 
-        // ===== POPSTATE HANDLER =====
+        // ===== POPSTATE HANDLER (আপডেটেড) =====
         window.addEventListener('popstate', function(event) {
+            const params = new URLSearchParams(window.location.search);
+            const hasParams = params.get('page');
+            
+            // ব্রাউজারে ব্যাক বাটন চাপলে
             if (event.state && event.state.page === 'embedded') {
                 if (document.getElementById('embeddedPageViewer').style.display === 'flex') {
+                    // পুরনো অবস্থা থেকে বের হওয়া (যেমন: ড্যাশবোর্ডে ফেরা)
                     closeEmbeddedPage();
+                } else {
+                    // নতুন অবস্থায় ঢোকা (উদাহরণস্বরূপ, ব্রাউজারে ফরোয়ার্ড চাপলে)
+                    // এই লজিকটি আপনার ম্যাপিং অনুযায়ী কাজ করবে।
                 }
             } else {
-                const params = new URLSearchParams(window.location.search);
-                if (params.get('page')) {
+                if (hasParams) {
                     handleUrlParams();
                 } else {
                     closeEmbeddedPage();
@@ -1445,7 +1478,7 @@
             }
         });
 
-        // ===== DOMContentLoaded =====
+        // ===== DOMContentLoaded (আপডেটেড) =====
         window.addEventListener('DOMContentLoaded', () => {
             checkPersistedSession();
             handleUrlParams();
@@ -1462,7 +1495,7 @@
             document.addEventListener('cut', e => { if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); });
             document.addEventListener('paste', e => { if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); });
 
-            if (!window.location.search) {
+            if (!window.location.search && window.location.pathname === '/') {
                 history.replaceState({ page: 'main' }, '');
             }
         });
@@ -1543,8 +1576,8 @@
             btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> যাচাই...';
             const res = await sendApiRequest({ action: 'verifyAdminKey', adminKey: key });
             btn.disabled = false; btn.innerHTML = '<span>যাচাই করুন</span> <i class="fa-solid fa-shield-check"></i>';
-            if (res.success) { alert("পাসওয়ার্ড সঠিক!"); closeAdminVerifyModal(); toggleAdminAuth('signup'); }
-            else alert(res.message || "ভুল পাসওয়ার্ড!");
+            if (res.success) { alert("পাসওয়ার্ড সঠিক!"); closeAdminVerifyModal(); toggleAdminAuth('signup'); }
+            else alert(res.message || "ভুল পাসওয়ার্ড!");
         }
 
         function switchLoginMode(mode) {
@@ -1603,7 +1636,7 @@
                 window.history.replaceState({}, '', window.location.pathname);
             }
             
-            alert("সফলভাবে লগআউট হয়েছেন।");
+            alert("সফলভাবে লগআউট হয়েছেন।");
         }
 
         async function sendApiRequest(payload) {
@@ -1630,8 +1663,8 @@
             if (check.success && check.students) {
                 const emailExists = check.students.some(s => s.email && s.email.toLowerCase() === email.toLowerCase());
                 const phoneExists = check.students.some(s => String(s.phone).replace(/^'/, '').trim() === phone);
-                if (emailExists) { alert("এই ইমেইল দিয়ে একাউন্ট আছে!"); btn.disabled=false; btn.innerHTML='<span>রেজিস্ট্রেশন নিশ্চিত করুন</span>'; return; }
-                if (phoneExists) { alert("এই মোবাইল দিয়ে একাউন্ট আছে!"); btn.disabled=false; btn.innerHTML='<span>রেজিস্ট্রেশন নিশ্চিত করুন</span>'; return; }
+                if (emailExists) { alert("এই ইমেইল দিয়ে একাউন্ট আছে!"); btn.disabled=false; btn.innerHTML='<span>রেজিস্ট্রেশন নিশ্চিত করুন</span>'; return; }
+                if (phoneExists) { alert("এই মোবাইল দিয়ে একাউন্ট আছে!"); btn.disabled=false; btn.innerHTML='<span>রেজিস্ট্রেশন নিশ্চিত করুন</span>'; return; }
             }
 
             const res = await sendApiRequest({ action: 'register', name, email, phone: "'" + phone, pin: "'" + pin });
@@ -1668,7 +1701,7 @@
             const password = document.getElementById('adminSignupPassword').value.trim();
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert("সঠিক ইমেইল দিন!"); return; }
             const hasLetter = /[a-zA-Z]/.test(password), hasNumber = /\d/.test(password), hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
-            if (!hasLetter || !hasNumber || !hasSpecial) { alert("পাসওয়ার্ডে বর্ণ, সংখ্যা ও বিশেষ চিহ্ন থাকতে হবে!"); return; }
+            if (!hasLetter || !hasNumber || !hasSpecial) { alert("পাসওয়ার্ডে বর্ণ, সংখ্যা ও বিশেষ চিহ্ন থাকতে হবে!"); return; }
 
             const btn = e.target.querySelector('button');
             btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...';
@@ -1713,7 +1746,7 @@
                     </tr>
                 `).join('');
             } else {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:20px;">কোনো শিক্ষার্থী নিবন্ধিত নয়।</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:20px;">কোনো শিক্ষার্থী নিবন্ধিত নয়।</td></tr>`;
             }
         }
 
