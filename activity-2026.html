@@ -436,6 +436,24 @@ window.onclick = function(event) {
         </div>
     </div>
 </div>
-
+<script>
+    // এই স্ক্রিপ্টটি চেকলিস্ট পেজের লিংকগুলোকে মূল ইনডেক্স পেজে নেভিগেট করতে সাহায্য করবে।
+    document.addEventListener('click', function(event) {
+        let target = event.target.closest('a');
+        if (target && target.href) {
+            // লিংকটি বাইরের (external) না হয়ে ভেতরের (relative) হলে
+            if (!target.href.startsWith('http') && !target.href.startsWith('#')) {
+                event.preventDefault();
+                let pageUrl = target.getAttribute('href');
+                let pageTitle = target.innerText || pageUrl;
+                
+                // মূল পেজের openPage ফাংশনটি কল করা
+                if (window.parent && window.parent.openPage) {
+                    window.parent.openPage(pageUrl, pageTitle);
+                }
+            }
+        }
+    });
+</script>
 </body>
 </html>
