@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* ===== সব স্টাইল আগের মতোই, শুধু নতুন কিছু যোগ হচ্ছে ===== */
         :root {
             --primary: #0d9488;
             --primary-dark: #0f766e;
@@ -325,6 +326,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* হিরো ও অন্যান্য স্টাইল আগের মতো... (সংক্ষিপ্ত করার জন্য বাদ দিচ্ছি) */
         .hero {
             position: relative;
             min-height: calc(100vh - var(--nav-height));
@@ -460,16 +462,9 @@
         }
 
         @media(max-width: 900px) {
-            .nav-links {
-                display: none;
-            }
-            .nav-dropdown {
-                display: block;
-            }
-            .hero-container {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
+            .nav-links { display: none; }
+            .nav-dropdown { display: block; }
+            .hero-container { grid-template-columns: 1fr; text-align: center; }
             .hero h1 { font-size: 2.2rem; }
             .hero p { margin-left: auto; margin-right: auto; }
             .hero-btns { justify-content: center; }
@@ -667,17 +662,11 @@
         }
         .breadcrumb a { color: var(--primary); text-decoration: none; cursor: pointer; }
         .breadcrumb a:hover { text-decoration: underline; }
-
-        /* লক আইকন */
-        .lock-icon {
-            color: #f59e0b;
-            margin-right: 5px;
-        }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR -->
+    <!-- ===== NAVBAR ===== -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo" onclick="navigateToHome()">
@@ -695,7 +684,7 @@
                 <li><a onclick="navigateToHome('#ebooks')">ই-বুক</a></li>
                 <li><a onclick="navigateToHome('#about')">আমাদের সম্পর্কে</a></li>
                 <li><a onclick="openKidsModal()" class="kids-corner-nav-btn"><i class="fa-solid fa-child-reaching"></i> কিডস কর্নার</a></li>
-                <li><a onclick="openPage('Tanjif Academy Course Project.html', 'চলো শিখি')">চলো শিখি</a></li>
+                <li><a onclick="navigateToPage('চলো-শিখি', 'Tanjif Academy Course Project.html', 'চলো শিখি')">চলো শিখি</a></li>
             </ul>
 
             <div class="nav-dropdown">
@@ -705,7 +694,7 @@
                     <a onclick="closeDropdown(); navigateToHome('#ebooks')"><i class="fa-solid fa-book"></i> ই-বুক</a>
                     <a onclick="closeDropdown(); navigateToHome('#about')"><i class="fa-solid fa-circle-info"></i> আমাদের সম্পর্কে</a>
                     <a onclick="closeDropdown(); openKidsModal()" class="kids-corner-nav-btn" style="margin:4px 10px;"><i class="fa-solid fa-child-reaching"></i> কিডস কর্নার</a>
-                    <a onclick="closeDropdown(); openPage('Tanjif Academy Course Project.html', 'চলো শিখি')"><i class="fa-solid fa-book-open"></i> চলো শিখি</a>
+                    <a onclick="closeDropdown(); navigateToPage('চলো-শিখি', 'Tanjif Academy Course Project.html', 'চলো শিখি')"><i class="fa-solid fa-book-open"></i> চলো শিখি</a>
                 </div>
             </div>
 
@@ -717,17 +706,17 @@
         </div>
     </nav>
 
-    <!-- BREADCRUMB -->
+    <!-- ===== BREADCRUMB ===== -->
     <div class="breadcrumb" id="breadcrumb">
         <a onclick="navigateToHome()">🏠 হোম</a> <span id="breadcrumbPage"> / পেজ</span>
     </div>
 
-    <!-- EMBEDDED PAGE -->
+    <!-- ===== EMBEDDED PAGE ===== -->
     <div id="embeddedPageViewer" class="embedded-page-overlay">
         <iframe id="embeddedIframe" class="embedded-page-frame" src=""></iframe>
     </div>
 
-    <!-- LANDING VIEW -->
+    <!-- ===== LANDING VIEW ===== -->
     <div id="landingView" class="page-view active">
         <section class="hero">
             <div class="hero-container">
@@ -752,44 +741,24 @@
         <div class="stats-section">
             <div class="stats-container">
                 <div class="stats-grid">
-                    <div class="stat-item">
-                        <h3 class="counter" data-target="1250">0</h3>
-                        <p>সক্রিয় শিক্ষার্থী</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3 class="counter" data-target="65">0</h3>
-                        <p>ভিডিও লেসন</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3 class="counter" data-target="15">0</h3>
-                        <p>ফ্রি ই-বুক ও নোট</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3><span class="counter" data-target="100">0</span>%</h3>
-                        <p>ফ্রি এক্সেস</p>
-                    </div>
+                    <div class="stat-item"><h3 class="counter" data-target="1250">0</h3><p>সক্রিয় শিক্ষার্থী</p></div>
+                    <div class="stat-item"><h3 class="counter" data-target="65">0</h3><p>ভিডিও লেসন</p></div>
+                    <div class="stat-item"><h3 class="counter" data-target="15">0</h3><p>ফ্রি ই-বুক ও নোট</p></div>
+                    <div class="stat-item"><h3><span class="counter" data-target="100">0</span>%</h3><p>ফ্রি এক্সেস</p></div>
                 </div>
             </div>
         </div>
 
         <section class="section" id="courses">
-            <div class="section-header">
-                <h2>আমাদের কোর্সসমূহ</h2>
-                <p>আপনার শেখার সুবিধার্থে আমাদের কোর্সগুলোকে নিখুঁতভাবে সাজানো হয়েছে</p>
-            </div>
-
+            <div class="section-header"><h2>আমাদের কোর্সসমূহ</h2><p>আপনার শেখার সুবিধার্থে আমাদের কোর্সগুলোকে নিখুঁতভাবে সাজানো হয়েছে</p></div>
             <div class="filter-tabs">
                 <button class="tab-btn active" onclick="filterCourses('all', this)">সব কোর্স</button>
                 <button class="tab-btn" onclick="filterCourses('basic', this)">বেসিক</button>
                 <button class="tab-btn" onclick="filterCourses('advance', this)">এডভান্সড</button>
             </div>
-
             <div class="courses-grid">
                 <div class="course-card" data-category="basic">
-                    <div class="course-banner">
-                        <i class="fa-solid fa-book-open-reader"></i>
-                        <span class="course-badge">বেসিক</span>
-                    </div>
+                    <div class="course-banner"><i class="fa-solid fa-book-open-reader"></i><span class="course-badge">বেসিক</span></div>
                     <div class="course-content">
                         <h3>এসো আরবি শিখি (১ম খণ্ড)</h3>
                         <p>ইসমুল ইশারাহ, হরফে জার এবং দৈনিক প্রয়োজনীয় বাক্যগঠন দিয়ে সাজানো মৌলিক পাঠ।</p>
@@ -799,12 +768,8 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="course-card" data-category="advance">
-                    <div class="course-banner" style="background: linear-gradient(135deg, #0f766e, #134e4a);">
-                        <i class="fa-solid fa-brain"></i>
-                        <span class="course-badge">এডভান্সড</span>
-                    </div>
+                    <div class="course-banner" style="background: linear-gradient(135deg, #0f766e, #134e4a);"><i class="fa-solid fa-brain"></i><span class="course-badge">এডভান্সড</span></div>
                     <div class="course-content">
                         <h3>সহজ নাহু ও সরফ</h3>
                         <p>আরবি ব্যাকরণ ও শব্দ রূপান্তরের নিয়মগুলো সহজ উদাহরণের মাধ্যমে শিখুন।</p>
@@ -818,37 +783,21 @@
         </section>
 
         <section class="section" id="ebooks" style="background: #f1f5f9; border-radius: 32px;">
-            <div class="section-header">
-                <h2>ফ্রি ই-বুক ও স্টাডি নোটস</h2>
-                <p>যেকোনো সময় পড়ার জন্য সহায়ক ই-বুক ডাউনলোড করুন</p>
-            </div>
-
+            <div class="section-header"><h2>ফ্রি ই-বুক ও স্টাডি নোটস</h2><p>যেকোনো সময় পড়ার জন্য সহায়ক ই-বুক ডাউনলোড করুন</p></div>
             <div class="ebooks-grid">
-                <div class="ebook-card">
-                    <div class="ebook-icon"><i class="fa-solid fa-file-pdf"></i></div>
-                    <h3>এসো আরবি শিখি (নোটস)</h3>
-                    <p>সহজ ভাষায় প্রথম খণ্ডের নোটসমূহ সংগ্রহ করুন।</p>
-                    <a href="#" class="btn-download"><i class="fa-solid fa-download"></i> ডাউনলোড PDF</a>
-                </div>
-                <div class="ebook-card">
-                    <div class="ebook-icon"><i class="fa-solid fa-book"></i></div>
-                    <h3>দৈনন্দিন প্রয়োজনীয় আরবি</h3>
-                    <p>দৈনন্দিন ব্যবহারের জন্য ১০০+ গুরুত্বপূর্ণ বাক্য।</p>
-                    <a href="#" class="btn-download"><i class="fa-solid fa-download"></i> ডাউনলোড PDF</a>
-                </div>
+                <div class="ebook-card"><div class="ebook-icon"><i class="fa-solid fa-file-pdf"></i></div><h3>এসো আরবি শিখি (নোটস)</h3><p>সহজ ভাষায় প্রথম খণ্ডের নোটসমূহ সংগ্রহ করুন।</p><a href="#" class="btn-download"><i class="fa-solid fa-download"></i> ডাউনলোড PDF</a></div>
+                <div class="ebook-card"><div class="ebook-icon"><i class="fa-solid fa-book"></i></div><h3>দৈনন্দিন প্রয়োজনীয় আরবি</h3><p>দৈনন্দিন ব্যবহারের জন্য ১০০+ গুরুত্বপূর্ণ বাক্য।</p><a href="#" class="btn-download"><i class="fa-solid fa-download"></i> ডাউনলোড PDF</a></div>
             </div>
         </section>
 
         <div class="kids-corner-bottom-box">
             <h2>🎈 কিডস কর্নার 🎨</h2>
             <p>ছোট সোনামণিদের আনন্দে আনন্দে শেখার জন্য আমাদের বিশেষ আয়োজন!</p>
-            <button onclick="openKidsModal()" class="btn-kids-corner-box">
-                <i class="fa-solid fa-face-smile"></i> কিডস কর্নারে প্রবেশ করুন
-            </button>
+            <button onclick="openKidsModal()" class="btn-kids-corner-box"><i class="fa-solid fa-face-smile"></i> কিডস কর্নারে প্রবেশ করুন</button>
         </div>
     </div>
 
-    <!-- STUDENT DASHBOARD -->
+    <!-- ===== STUDENT DASHBOARD ===== -->
     <div id="studentDashboardView" class="page-view">
         <div class="dashboard-hero" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #fff; padding: 2.5rem 1.5rem; border-bottom: 4px solid var(--primary);">
             <div class="dashboard-welcome" style="max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;">
@@ -859,46 +808,18 @@
                 </div>
             </div>
         </div>
-
         <div class="section">
-            <div class="section-header" style="text-align:left;margin-bottom:1.5rem;">
-                <h2>আপনার শিক্ষণীয় কোর্সসমূহ</h2>
-                <p>নিচের অপশনগুলো থেকে আপনার ক্লাস নির্বাচন করে পড়া শুরু করুন:</p>
-            </div>
-
+            <div class="section-header" style="text-align:left;margin-bottom:1.5rem;"><h2>আপনার শিক্ষণীয় কোর্সসমূহ</h2><p>নিচের অপশনগুলো থেকে আপনার ক্লাস নির্বাচন করে পড়া শুরু করুন:</p></div>
             <div class="dash-grid">
-                <div class="dash-card">
-                    <div class="dash-card-icon"><i class="fa-solid fa-book-quran"></i></div>
-                    <h3>এসো আরবি শিখি (১ম খণ্ড)</h3>
-                    <p>৬-ট্যাব ইন্টারেক্টিভ পাঠ্যক্রম, শব্দার্থ ও অনুশীলন।</p>
-                    <a href="#" class="dash-card-btn">ক্লাস শুরু করুন <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-
-                <div class="dash-card">
-                    <div class="dash-card-icon"><i class="fa-solid fa-spell-check"></i></div>
-                    <h3>সহজ নাহু ও সরফ</h3>
-                    <p>আরবি ব্যাকরণ শিখুন সহজ ও সাবলীল নিয়মাবলীতে।</p>
-                    <a href="#" class="dash-card-btn">ক্লাস শুরু করুন <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-
-                <div class="dash-card">
-                    <div class="dash-card-icon"><i class="fa-solid fa-layer-group"></i></div>
-                    <h3>ভোকাবুলারি ফ্ল্যাশকার্ড</h3>
-                    <p>দৈনন্দিন ব্যবহারিক শব্দের শব্দকোষ এবং অনুশীলনী।</p>
-                    <a href="#" class="dash-card-btn">অনুশীলন করুন <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-
-                <div class="dash-card">
-                    <div class="dash-card-icon"><i class="fa-solid fa-file-arrow-down"></i></div>
-                    <h3>আমার ই-বুক লাইব্রেরি</h3>
-                    <p>আপনার কোর্সের সাথে সম্পর্কিত সমস্ত লেকচার শিট ও PDF।</p>
-                    <a href="#" class="dash-card-btn">ডাউনলোড করুন <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
+                <div class="dash-card"><div class="dash-card-icon"><i class="fa-solid fa-book-quran"></i></div><h3>এসো আরবি শিখি (১ম খণ্ড)</h3><p>৬-ট্যাব ইন্টারেক্টিভ পাঠ্যক্রম, শব্দার্থ ও অনুশীলন।</p><a href="#" class="dash-card-btn">ক্লাস শুরু করুন <i class="fa-solid fa-arrow-right"></i></a></div>
+                <div class="dash-card"><div class="dash-card-icon"><i class="fa-solid fa-spell-check"></i></div><h3>সহজ নাহু ও সরফ</h3><p>আরবি ব্যাকরণ শিখুন সহজ ও সাবলীল নিয়মাবলীতে।</p><a href="#" class="dash-card-btn">ক্লাস শুরু করুন <i class="fa-solid fa-arrow-right"></i></a></div>
+                <div class="dash-card"><div class="dash-card-icon"><i class="fa-solid fa-layer-group"></i></div><h3>ভোকাবুলারি ফ্ল্যাশকার্ড</h3><p>দৈনন্দিন ব্যবহারিক শব্দের শব্দকোষ এবং অনুশীলনী।</p><a href="#" class="dash-card-btn">অনুশীলন করুন <i class="fa-solid fa-arrow-right"></i></a></div>
+                <div class="dash-card"><div class="dash-card-icon"><i class="fa-solid fa-file-arrow-down"></i></div><h3>আমার ই-বুক লাইব্রেরি</h3><p>আপনার কোর্সের সাথে সম্পর্কিত সমস্ত লেকচার শিট ও PDF।</p><a href="#" class="dash-card-btn">ডাউনলোড করুন <i class="fa-solid fa-arrow-right"></i></a></div>
             </div>
         </div>
     </div>
 
-    <!-- ADMIN DASHBOARD -->
+    <!-- ===== ADMIN DASHBOARD ===== -->
     <div id="adminDashboardView" class="page-view">
         <div class="dashboard-hero" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); border-bottom-color: #f59e0b; padding: 2.5rem 1.5rem; color:#fff;">
             <div class="dashboard-welcome" style="max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;">
@@ -909,8 +830,8 @@
                 </div>
             </div>
         </div>
-
         <div class="section" style="padding-top:1.5rem;">
+            <!-- Students List -->
             <div class="collapsible-wrapper" id="collapseStudents">
                 <div class="collapsible-header" onclick="toggleCollapsible('collapseStudents')">
                     <h2><i class="fa-solid fa-users" style="color: var(--primary);"></i> নিবন্ধিত শিক্ষার্থীদের তালিকা</h2>
@@ -919,31 +840,18 @@
                 <div class="collapsible-content">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;gap:10px;padding-top:0.8rem;">
                         <p style="color:var(--text-muted);font-size:0.9rem;">গুগোল শিট হতে লাইভ ডাটা লোড করা হয়েছে</p>
-                        <button onclick="fetchStudentList()" class="btn-auth" style="background:#0284c7;padding:0.3rem 1rem;font-size:0.8rem;">
-                            <i class="fa-solid fa-rotate"></i> ডাটা রিফ্রেশ
-                        </button>
+                        <button onclick="fetchStudentList()" class="btn-auth" style="background:#0284c7;padding:0.3rem 1rem;font-size:0.8rem;"><i class="fa-solid fa-rotate"></i> ডাটা রিফ্রেশ</button>
                     </div>
-
                     <div class="admin-table-container">
                         <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>শিক্ষার্থীর নাম</th>
-                                    <th>মোবাইল নম্বর</th>
-                                    <th>ইমেইল</th>
-                                    <th>পিন</th>
-                                    <th>তারিখ</th>
-                                </tr>
-                            </thead>
-                            <tbody id="studentTableBody">
-                                <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:25px;">ডাটা লোড হচ্ছে...</td></tr>
-                            </tbody>
+                            <thead><tr><th>#</th><th>শিক্ষার্থীর নাম</th><th>মোবাইল নম্বর</th><th>ইমেইল</th><th>পিন</th><th>তারিখ</th></tr></thead>
+                            <tbody id="studentTableBody"><tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:25px;">ডাটা লোড হচ্ছে...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
+            <!-- My Tasks -->
             <div class="collapsible-wrapper" id="collapseTasks">
                 <div class="collapsible-header" onclick="toggleCollapsible('collapseTasks')">
                     <h2><i class="fa-solid fa-list-check" style="color: var(--primary);"></i> আমার কাজ</h2>
@@ -952,28 +860,21 @@
                 <div class="collapsible-content">
                     <p style="color:var(--text-muted);margin-bottom:1rem;padding-top:0.8rem;font-size:0.9rem;">গুরুত্বপূর্ণ টাস্ক ও কাজের দ্রুত লিঙ্কসমূহ:</p>
                     <div class="admin-task-grid">
-                        <div class="admin-task-card">
-                            <h4><i class="fa-solid fa-link" style="color:var(--primary);"></i> ভোকাবুলারি শিখি</h4>
-                            <p>স্মার্ট মেমোরাইজ</p>
-                            <a onclick="openPage('Deepseek_Vocab_2.0_05-08-2026_Final.html', 'ভোকাবুলারি শিখি')" class="admin-task-link">প্রবেশ</a>
-                        </div>
-                        <div class="admin-task-card">
-                            <h4><i class="fa-solid fa-link" style="color:var(--primary);"></i> প্রতিদিনের কাজ</h4>
-                            <p>প্রতিদিনের বাধ্যতামূলক</p>
-                            <a onclick="openPage('protidiner ovvash.html', 'প্রতিদিনের কাজ')" class="admin-task-link">প্রবেশ</a>
-                        </div>
-                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> স্মার্ট টাইপিং</h4><p>স্মার্ট অনুবাদ ও টাইপিং</p><a onclick="openPage('smart_translator_tracker.html', 'স্মার্ট টাইপিং')" class="admin-task-link">প্রবেশ</a></div>
-                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> প্রতিজ্ঞা</h4><p>অবিচল থাকবার জন্য</p><a onclick="openPage('committment-2026.html', 'প্রতিজ্ঞা')" class="admin-task-link">প্রবেশ</a></div>
-                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> পরিকল্পনা</h4><p>৫ বছরের পরিকল্পনা</p><a onclick="openPage('plan 2030.html', 'পরিকল্পনা')" class="admin-task-link">প্রবেশ</a></div>
-                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> একাডেমি ভিডিও</h4><p>প্রয়োজনীয় ইউটিউব ভিডিও</p><a onclick="openPage('TanjifAcademy Video.html', 'একাডেমি ভিডিও')" class="admin-task-link">প্রবেশ</a></div>
-                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> আবশ্যিক কাজ</h4><p>আজীবন প্রতিদিন করনীয়</p><a onclick="openPage('Daily 5 Must.html', 'আবশ্যিক কাজ')" class="admin-task-link">প্রবেশ</a></div>
-                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> আর্থিক হিসাব</h4><p>দৈনিক লেনদেনের বিবরণ</p><a onclick="openPage('budget.html', 'আর্থিক হিসাব')" class="admin-task-link">প্রবেশ</a></div>
-                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> চেক লিস্ট</h4><p>প্রতিদিনের কর্মপরিকল্পনা</p><a onclick="openPage('activity-2026.html', 'চেক লিস্ট')" class="admin-task-link">প্রবেশ</a></div>
-                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> লক্ষ্য ২০২৬</h4><p>২০২৬ সালের ফোকাস</p><a onclick="openPage('mission-2026.html', 'লক্ষ্য ২০২৬')" class="admin-task-link">প্রবেশ</a></div>
+                        <div class="admin-task-card"><h4><i class="fa-solid fa-link" style="color:var(--primary);"></i> ভোকাবুলারি শিখি</h4><p>স্মার্ট মেমোরাইজ</p><a onclick="navigateToPage('ভোকাবুলারি-শিখি', 'Deepseek_Vocab_2.0_05-08-2026_Final.html', 'ভোকাবুলারি শিখি')" class="admin-task-link">প্রবেশ</a></div>
+                        <div class="admin-task-card"><h4><i class="fa-solid fa-link" style="color:var(--primary);"></i> প্রতিদিনের কাজ</h4><p>প্রতিদিনের বাধ্যতামূলক</p><a onclick="navigateToPage('প্রতিদিনের-কাজ', 'protidiner ovvash.html', 'প্রতিদিনের কাজ')" class="admin-task-link">প্রবেশ</a></div>
+                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> স্মার্ট টাইপিং</h4><p>স্মার্ট অনুবাদ ও টাইপিং</p><a onclick="navigateToPage('স্মার্ট-টাইপিং', 'smart_translator_tracker.html', 'স্মার্ট টাইপিং')" class="admin-task-link">প্রবেশ</a></div>
+                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> প্রতিজ্ঞা</h4><p>অবিচল থাকবার জন্য</p><a onclick="navigateToPage('প্রতিজ্ঞা', 'committment-2026.html', 'প্রতিজ্ঞা')" class="admin-task-link">প্রবেশ</a></div>
+                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> পরিকল্পনা</h4><p>৫ বছরের পরিকল্পনা</p><a onclick="navigateToPage('পরিকল্পনা', 'plan 2030.html', 'পরিকল্পনা')" class="admin-task-link">প্রবেশ</a></div>
+                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> একাডেমি ভিডিও</h4><p>প্রয়োজনীয় ইউটিউব ভিডিও</p><a onclick="navigateToPage('একাডেমি-ভিডিও', 'TanjifAcademy Video.html', 'একাডেমি ভিডিও')" class="admin-task-link">প্রবেশ</a></div>
+                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> আবশ্যিক কাজ</h4><p>আজীবন প্রতিদিন করনীয়</p><a onclick="navigateToPage('আবশ্যিক-কাজ', 'Daily 5 Must.html', 'আবশ্যিক কাজ')" class="admin-task-link">প্রবেশ</a></div>
+                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> আর্থিক হিসাব</h4><p>দৈনিক লেনদেনের বিবরণ</p><a onclick="navigateToPage('আর্থিক-হিসাব', 'budget.html', 'আর্থিক হিসাব')" class="admin-task-link">প্রবেশ</a></div>
+                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> চেক লিস্ট</h4><p>প্রতিদিনের কর্মপরিকল্পনা</p><a onclick="navigateToPage('চেক-লিস্ট', 'activity-2026.html', 'চেক লিস্ট')" class="admin-task-link">প্রবেশ</a></div>
+                        <div class="admin-task-card"><h4><i class="fa-solid fa-link"></i> লক্ষ্য ২০২৬</h4><p>২০২৬ সালের ফোকাস</p><a onclick="navigateToPage('লক্ষ্য-২০২৬', 'mission-2026.html', 'লক্ষ্য ২০২৬')" class="admin-task-link">প্রবেশ</a></div>
                     </div>
                 </div>
             </div>
 
+            <!-- My Books -->
             <div class="collapsible-wrapper" id="collapseBooks">
                 <div class="collapsible-header" onclick="toggleCollapsible('collapseBooks')">
                     <h2><i class="fa-solid fa-book-bookmark" style="color: var(--accent);"></i> আমার বই</h2>
@@ -984,28 +885,25 @@
                     <div class="ebooks-grid">
                         <div class="ebook-card" style="text-align:left;">
                             <div class="book-frame-container"><iframe src="https://drive.google.com/file/d/1yCsGe_JjB1LfO4yEf5YPQxD-FK21wp39/preview" allow="autoplay"></iframe></div>
-                            <h3>বইয়ের নাম ১</h3>
-                            <p>গুগোল ড্রাইভ ফাইল ১</p>
+                            <h3>বইয়ের নাম ১</h3><p>গুগোল ড্রাইভ ফাইল ১</p>
                             <div style="display:flex;gap:8px;">
-                                <a onclick="openPage('https://drive.google.com/file/d/1yCsGe_JjB1LfO4yEf5YPQxD-FK21wp39/view', 'বই ১')" class="btn-download" style="flex:1;text-align:center;cursor:pointer;"><i class="fa-solid fa-eye"></i> পড়ুন</a>
+                                <a onclick="navigateToPage('বই-১', 'https://drive.google.com/file/d/1yCsGe_JjB1LfO4yEf5YPQxD-FK21wp39/view', 'বই ১')" class="btn-download" style="flex:1;text-align:center;cursor:pointer;"><i class="fa-solid fa-eye"></i> পড়ুন</a>
                                 <a href="https://drive.google.com/file/d/1yCsGe_JjB1LfO4yEf5YPQxD-FK21wp39/view" target="_blank" class="btn-download" style="flex:1;text-align:center;background:var(--primary);color:#fff;"><i class="fa-solid fa-download"></i> ডাউনলোড</a>
                             </div>
                         </div>
                         <div class="ebook-card" style="text-align:left;">
                             <div class="book-frame-container"><iframe src="https://drive.google.com/file/d/1eikSZot4EVIpVmfK1hVrMdh6CSPdlXny/preview" allow="autoplay"></iframe></div>
-                            <h3>বইয়ের নাম ২</h3>
-                            <p>গুগোল ড্রাইভ ফাইল ২</p>
+                            <h3>বইয়ের নাম ২</h3><p>গুগোল ড্রাইভ ফাইল ২</p>
                             <div style="display:flex;gap:8px;">
-                                <a onclick="openPage('https://drive.google.com/file/d/1eikSZot4EVIpVmfK1hVrMdh6CSPdlXny/view', 'বই ২')" class="btn-download" style="flex:1;text-align:center;cursor:pointer;"><i class="fa-solid fa-eye"></i> পড়ুন</a>
+                                <a onclick="navigateToPage('বই-২', 'https://drive.google.com/file/d/1eikSZot4EVIpVmfK1hVrMdh6CSPdlXny/view', 'বই ২')" class="btn-download" style="flex:1;text-align:center;cursor:pointer;"><i class="fa-solid fa-eye"></i> পড়ুন</a>
                                 <a href="https://drive.google.com/file/d/1eikSZot4EVIpVmfK1hVrMdh6CSPdlXny/view" target="_blank" class="btn-download" style="flex:1;text-align:center;background:var(--primary);color:#fff;"><i class="fa-solid fa-download"></i> ডাউনলোড</a>
                             </div>
                         </div>
                         <div class="ebook-card" style="text-align:left;">
                             <div class="book-frame-container"><iframe src="https://drive.google.com/file/d/15aqvZQlEUOTS1ceqoCf13lSz9pk1oqhO/preview" allow="autoplay"></iframe></div>
-                            <h3>বইয়ের নাম ৩</h3>
-                            <p>গুগোল ড্রাইভ ফাইল ৩</p>
+                            <h3>বইয়ের নাম ৩</h3><p>গুগোল ড্রাইভ ফাইল ৩</p>
                             <div style="display:flex;gap:8px;">
-                                <a onclick="openPage('https://drive.google.com/file/d/15aqvZQlEUOTS1ceqoCf13lSz9pk1oqhO/view', 'বই ৩')" class="btn-download" style="flex:1;text-align:center;cursor:pointer;"><i class="fa-solid fa-eye"></i> পড়ুন</a>
+                                <a onclick="navigateToPage('বই-৩', 'https://drive.google.com/file/d/15aqvZQlEUOTS1ceqoCf13lSz9pk1oqhO/view', 'বই ৩')" class="btn-download" style="flex:1;text-align:center;cursor:pointer;"><i class="fa-solid fa-eye"></i> পড়ুন</a>
                                 <a href="https://drive.google.com/file/d/15aqvZQlEUOTS1ceqoCf13lSz9pk1oqhO/view" target="_blank" class="btn-download" style="flex:1;text-align:center;background:var(--primary);color:#fff;"><i class="fa-solid fa-download"></i> ডাউনলোড</a>
                             </div>
                         </div>
@@ -1014,33 +912,20 @@
             </div>
 
             <div class="dash-grid" style="margin-top:2rem;">
-                <div class="dash-card">
-                    <div class="dash-card-icon" style="background:#fef3c7;color:#d97706;"><i class="fa-solid fa-plus"></i></div>
-                    <h3>নতুন কোর্স যোগ করুন</h3>
-                    <p>প্ল্যাটফর্মে নতুন কোনো টিউটোরিয়াল বা বিষয়বস্তু যুক্ত করুন।</p>
-                    <a href="#" class="dash-card-btn" style="color:#d97706;">ম্যানেজ করুন <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-
-                <div class="dash-card">
-                    <div class="dash-card-icon" style="background:#e0f2fe;color:#0284c7;"><i class="fa-solid fa-table"></i></div>
-                    <h3>গুগোল শিট সরাসরি খুলুন</h3>
-                    <p>গুগোল ড্রাইভের মূল স্প্রেডশিটে তথ্য দেখুন ও সম্পাদন করুন।</p>
-                    <a onclick="openPage('https://docs.google.com/spreadsheets', 'গুগোল শিট')" class="dash-card-btn" style="color:#0284c7;cursor:pointer;">শিটে যান <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                </div>
+                <div class="dash-card"><div class="dash-card-icon" style="background:#fef3c7;color:#d97706;"><i class="fa-solid fa-plus"></i></div><h3>নতুন কোর্স যোগ করুন</h3><p>প্ল্যাটফর্মে নতুন কোনো টিউটোরিয়াল বা বিষয়বস্তু যুক্ত করুন।</p><a href="#" class="dash-card-btn" style="color:#d97706;">ম্যানেজ করুন <i class="fa-solid fa-arrow-right"></i></a></div>
+                <div class="dash-card"><div class="dash-card-icon" style="background:#e0f2fe;color:#0284c7;"><i class="fa-solid fa-table"></i></div><h3>গুগোল শিট সরাসরি খুলুন</h3><p>গুগোল ড্রাইভের মূল স্প্রেডশিটে তথ্য দেখুন ও সম্পাদন করুন।</p><a onclick="navigateToPage('গুগোল-শিট', 'https://docs.google.com/spreadsheets', 'গুগোল শিট')" class="dash-card-btn" style="color:#0284c7;cursor:pointer;">শিটে যান <i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
             </div>
         </div>
     </div>
 
-    <!-- KIDS CORNER MODAL -->
+    <!-- ===== KIDS CORNER MODAL ===== -->
     <div class="modal-overlay" id="kidsModal">
         <div class="modal-card" style="max-width:550px;background:linear-gradient(135deg,#ffffff 0%,#f0f3ff 100%);border:3px solid #ff7675;">
             <button class="modal-close" onclick="closeKidsModal()"><i class="fa-solid fa-xmark"></i></button>
-
             <div style="text-align:center;margin-bottom:1rem;">
                 <h3 style="font-size:1.6rem;color:#d63031;font-weight:800;">🎈 কিডস কর্নার 🎨</h3>
                 <p style="color:var(--text-muted);font-size:0.9rem;">ছোটদের আনন্দের সাথে শেখার জগত!</p>
             </div>
-
             <div class="kids-modal-grid">
                 <div onclick="handleKidsOption('Tanjif Video.html', 'কিডস কর্নার - দেখা')" class="kids-option-card">
                     <div class="kids-icon-circle" style="background:linear-gradient(135deg,#ff7675,#d63031);"><i class="fa-solid fa-eye"></i></div>
@@ -1070,7 +955,7 @@
         </div>
     </div>
 
-    <!-- APOLOGY MODAL -->
+    <!-- ===== APOLOGY MODAL ===== -->
     <div class="modal-overlay apology-modal" id="apologyModal">
         <div class="modal-card">
             <button class="modal-close" onclick="closeApologyModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -1088,7 +973,7 @@
         </div>
     </div>
 
-    <!-- AUTH MODAL -->
+    <!-- ===== AUTH MODAL ===== -->
     <div class="modal-overlay" id="authModal">
         <div class="modal-card">
             <button class="modal-close" onclick="closeAuthModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -1096,68 +981,46 @@
                 <h3 style="font-size:1.4rem;color:var(--secondary);">Tanjif Academy</h3>
                 <p style="color:var(--text-muted);font-size:0.85rem;">পড়াশোনা শুরু করতে একাউন্টে প্রবেশ করুন</p>
             </div>
-
             <div class="modal-tabs">
                 <button class="modal-tab-btn active" id="userTab" onclick="switchLoginMode('user')">📱 শিক্ষার্থী</button>
                 <button class="modal-tab-btn" id="adminTab" onclick="switchLoginMode('admin')">👑 এডমিন লগইন</button>
             </div>
-
             <div id="studentAuthArea">
                 <form id="userLoginForm" onsubmit="handleUserLogin(event)">
-                    <div class="form-group">
-                        <label>মোবাইল নম্বর (১১ ডিজিট)</label>
-                        <input type="tel" class="form-control" id="loginPhone" maxlength="11" placeholder="01700000000" pattern="^01\d{9}$" required>
-                    </div>
-                    <div class="form-group">
-                        <label>৪ সংখ্যার পিন (PIN)</label>
-                        <input type="password" class="form-control" id="loginPin" maxlength="4" placeholder="••••" pattern="\d{4}" required>
-                    </div>
+                    <div class="form-group"><label>মোবাইল নম্বর (১১ ডিজিট)</label><input type="tel" class="form-control" id="loginPhone" maxlength="11" placeholder="01700000000" pattern="^01\d{9}$" required></div>
+                    <div class="form-group"><label>৪ সংখ্যার পিন (PIN)</label><input type="password" class="form-control" id="loginPin" maxlength="4" placeholder="••••" pattern="\d{4}" required></div>
                     <button type="submit" class="btn-submit"><span>লগইন করুন</span> <i class="fa-solid fa-arrow-right"></i></button>
-                    <p style="text-align:center;margin-top:0.8rem;font-size:0.85rem;color:var(--text-muted);">
-                        নতুন একাউন্ট? <a onclick="toggleStudentAuth('register')" style="color:var(--primary);font-weight:700;cursor:pointer;">রেজিস্ট্রেশন</a>
-                    </p>
-                    <div class="forgot-pin-box">
-                        <i class="fa-solid fa-circle-info"></i> পিন ভুলে গিয়েছেন? <br>
-                        <a href="https://wa.me/8801700000000?text=আসসালামু%20আলাইকুম%2C%20আমি%20তানজিফ%20একাডেমির%20পিন%20ভুলে%20গেছি।" target="_blank"><i class="fa-brands fa-whatsapp"></i> অ্যাডমিনকে মেসেজ দিন</a>
-                    </div>
+                    <p style="text-align:center;margin-top:0.8rem;font-size:0.85rem;color:var(--text-muted);">নতুন একাউন্ট? <a onclick="toggleStudentAuth('register')" style="color:var(--primary);font-weight:700;cursor:pointer;">রেজিস্ট্রেশন</a></p>
+                    <div class="forgot-pin-box"><i class="fa-solid fa-circle-info"></i> পিন ভুলে গিয়েছেন? <br><a href="https://wa.me/8801700000000?text=আসসালামু%20আলাইকুম%2C%20আমি%20তানজিফ%20একাডেমির%20পিন%20ভুলে%20গেছি।" target="_blank"><i class="fa-brands fa-whatsapp"></i> অ্যাডমিনকে মেসেজ দিন</a></div>
                 </form>
-
                 <form id="userRegisterForm" style="display:none;" onsubmit="handleUserRegister(event)">
                     <div class="form-group"><label>আপনার নাম</label><input type="text" class="form-control" id="regName" placeholder="আপনার পুরো নাম" required></div>
                     <div class="form-group"><label>ইমেইল</label><input type="email" class="form-control" id="regEmail" placeholder="example@mail.com" required></div>
                     <div class="form-group"><label>মোবাইল (১১ ডিজিট)</label><input type="tel" class="form-control" id="regPhone" maxlength="11" placeholder="01700000000" pattern="^01\d{9}$" required></div>
                     <div class="form-group"><label>নতুন ৪ সংখ্যার পিন</label><input type="password" class="form-control" id="regPin" maxlength="4" placeholder="0123" pattern="\d{4}" required></div>
                     <button type="submit" class="btn-submit" style="background:#0284c7;"><span>রেজিস্ট্রেশন নিশ্চিত করুন</span></button>
-                    <p style="text-align:center;margin-top:0.8rem;font-size:0.85rem;color:var(--text-muted);">
-                        একাউন্ট আছে? <a onclick="toggleStudentAuth('login')" style="color:var(--primary);font-weight:700;cursor:pointer;">লগইন করুন</a>
-                    </p>
+                    <p style="text-align:center;margin-top:0.8rem;font-size:0.85rem;color:var(--text-muted);">একাউন্ট আছে? <a onclick="toggleStudentAuth('login')" style="color:var(--primary);font-weight:700;cursor:pointer;">লগইন করুন</a></p>
                 </form>
             </div>
-
             <div id="adminAuthArea" style="display:none;">
                 <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
                     <div class="form-group"><label>এডমিন ইমেইল</label><input type="email" class="form-control" id="adminEmail" placeholder="admin@example.com" required></div>
                     <div class="form-group"><label>পাসওয়ার্ড</label><input type="password" class="form-control" id="adminPassword" placeholder="••••••••" required></div>
                     <button type="submit" class="btn-submit" style="background:var(--secondary);"><span>অ্যাডমিন প্যানেলে প্রবেশ</span></button>
-                    <p style="text-align:center;margin-top:0.8rem;font-size:0.85rem;color:var(--text-muted);">
-                        নতুন এডমিন? <a onclick="openAdminVerifyModal()" style="color:var(--accent);font-weight:700;cursor:pointer;">এডমিন সাইন-আপ</a>
-                    </p>
+                    <p style="text-align:center;margin-top:0.8rem;font-size:0.85rem;color:var(--text-muted);">নতুন এডমিন? <a onclick="openAdminVerifyModal()" style="color:var(--accent);font-weight:700;cursor:pointer;">এডমিন সাইন-আপ</a></p>
                 </form>
-
                 <form id="adminSignupForm" style="display:none;" onsubmit="handleAdminSignup(event)">
                     <div class="form-group"><label>এডমিন নাম</label><input type="text" class="form-control" id="adminSignupName" placeholder="আপনার নাম" required></div>
                     <div class="form-group"><label>এডমিন ইমেইল</label><input type="email" class="form-control" id="adminSignupEmail" placeholder="admin@example.com" required></div>
                     <div class="form-group"><label>নতুন পাসওয়ার্ড (অক্ষর+সংখ্যা+বিশেষ)</label><input type="password" class="form-control" id="adminSignupPassword" placeholder="Admin@123" required></div>
                     <button type="submit" class="btn-submit" style="background:var(--accent);"><span>এডমিন সাইন-আপ নিশ্চিত করুন</span></button>
-                    <p style="text-align:center;margin-top:0.8rem;font-size:0.85rem;color:var(--text-muted);">
-                        ইতোমধ্যে এডমিন? <a onclick="toggleAdminAuth('login')" style="color:var(--primary);font-weight:700;cursor:pointer;">লগইন করুন</a>
-                    </p>
+                    <p style="text-align:center;margin-top:0.8rem;font-size:0.85rem;color:var(--text-muted);">ইতোমধ্যে এডমিন? <a onclick="toggleAdminAuth('login')" style="color:var(--primary);font-weight:700;cursor:pointer;">লগইন করুন</a></p>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- ADMIN VERIFICATION MODAL -->
+    <!-- ===== ADMIN VERIFICATION MODAL ===== -->
     <div class="modal-overlay" id="adminVerifyModal" style="z-index:2500;">
         <div class="modal-card" style="max-width:380px;">
             <button class="modal-close" onclick="closeAdminVerifyModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -1168,9 +1031,9 @@
             </div>
             <form id="adminVerifyForm" onsubmit="handleVerifyAdminKey(event)">
                 <div class="form-group">
-                    <label>পাসওয়ার্ড</label>
+                    <label>পাসওয়ার্ড</label>
                     <div style="position:relative;display:flex;align-items:center;">
-                        <input type="password" class="form-control" id="verifyAdminKey" placeholder="পাসওয়ার্ড লিখুন" required style="padding-right:42px;">
+                        <input type="password" class="form-control" id="verifyAdminKey" placeholder="পাসওয়ার্ড লিখুন" required style="padding-right:42px;">
                         <button type="button" onclick="togglePasswordVisibility('verifyAdminKey', this)" style="position:absolute;right:12px;background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:1.1rem;padding:4px;">
                             <i class="fa-regular fa-eye"></i>
                         </button>
@@ -1181,7 +1044,7 @@
         </div>
     </div>
 
-    <!-- WHATSAPP & SCROLL TOP -->
+    <!-- ===== WHATSAPP & SCROLL TOP ===== -->
     <a href="https://wa.me/8801700000000?text=আসসালামু%20আলাইকুম%2C%20তানজিফ%20একাডেমি%20সম্পর্কে%20জানতে%20চাই।" target="_blank" class="whatsapp-float" id="whatsappFloat"><i class="fa-brands fa-whatsapp"></i></a>
     <button class="scroll-top-btn" id="scrollTopBtn" onclick="scrollToTop()"><i class="fa-solid fa-arrow-up"></i></button>
 
@@ -1220,63 +1083,95 @@
     <script>
         const scriptUrl = "https://script.google.com/macros/s/AKfycbwrhgHZkSFd44x4EzRzSQ1EncIs7xcmh2Q5BmrOKw_iHefmEsUe7yfO523RpE1oE41eZQ/exec";
 
-        // ===== 🔐 SECURE PAGE NAVIGATION SYSTEM =====
+        // ============================================================
+        //  🚀 NEW: SEO-FRIENDLY URL ROUTING SYSTEM
+        // ============================================================
         
-        // অ্যাডমিন পেজ লিস্ট (যে পেজগুলো শুধু অ্যাডমিন দেখতে পারবে)
-        const ADMIN_ONLY_PAGES = [
-            'admin', 'student-list', 'settings', 'manage-courses', 
-            'user-management', 'dashboard', 'budget', 'plan 2030',
-            'activity-2026', 'mission-2026', 'committment-2026'
-        ];
+        // পেজ ম্যাপিং: URL স্লাগ → আসল ফাইল + টাইটেল
+        const PAGE_ROUTES = {
+            '': { file: null, title: 'হোম' },
+            'হোম': { file: null, title: 'হোম' },
+            'ভোকাবুলারি-শিখি': { file: 'Deepseek_Vocab_2.0_05-08-2026_Final.html', title: 'ভোকাবুলারি শিখি' },
+            'প্রতিদিনের-কাজ': { file: 'protidiner ovvash.html', title: 'প্রতিদিনের কাজ' },
+            'স্মার্ট-টাইপিং': { file: 'smart_translator_tracker.html', title: 'স্মার্ট টাইপিং' },
+            'প্রতিজ্ঞা': { file: 'committment-2026.html', title: 'প্রতিজ্ঞা' },
+            'পরিকল্পনা': { file: 'plan 2030.html', title: 'পরিকল্পনা' },
+            'একাডেমি-ভিডিও': { file: 'TanjifAcademy Video.html', title: 'একাডেমি ভিডিও' },
+            'আবশ্যিক-কাজ': { file: 'Daily 5 Must.html', title: 'আবশ্যিক কাজ' },
+            'আর্থিক-হিসাব': { file: 'budget.html', title: 'আর্থিক হিসাব' },
+            'চেক-লিস্ট': { file: 'activity-2026.html', title: 'চেক লিস্ট' },
+            'লক্ষ্য-২০২৬': { file: 'mission-2026.html', title: 'লক্ষ্য ২০২৬' },
+            'চলো-শিখি': { file: 'Tanjif Academy Course Project.html', title: 'চলো শিখি' },
+            'বই-১': { file: 'https://drive.google.com/file/d/1yCsGe_JjB1LfO4yEf5YPQxD-FK21wp39/view', title: 'বই ১' },
+            'বই-২': { file: 'https://drive.google.com/file/d/1eikSZot4EVIpVmfK1hVrMdh6CSPdlXny/view', title: 'বই ২' },
+            'বই-৩': { file: 'https://drive.google.com/file/d/15aqvZQlEUOTS1ceqoCf13lSz9pk1oqhO/view', title: 'বই ৩' },
+            'গুগোল-শিট': { file: 'https://docs.google.com/spreadsheets', title: 'গুগোল শিট' },
+        };
 
-        function isAdminPage(url) {
-            if (!url) return false;
-            const lowerUrl = url.toLowerCase();
-            return ADMIN_ONLY_PAGES.some(page => lowerUrl.includes(page));
+        // অ্যাডমিন পেজ লিস্ট (যে পেজগুলো শুধু অ্যাডমিন দেখতে পারবে)
+        const ADMIN_ONLY_SLUGS = ['প্রতিদিনের-কাজ', 'আর্থিক-হিসাব', 'চেক-লিস্ট', 'লক্ষ্য-২০২৬', 'পরিকল্পনা'];
+
+        // ===== নেভিগেট টু পেজ (SEO-friendly URL) =====
+        function navigateToPage(slug, fileUrl, title) {
+            if (!slug) return;
+            
+            // স্লাগ থেকে URL তৈরি করুন
+            const newUrl = '/' + slug;
+            
+            // 🔐 সিকিউরিটি চেক
+            const savedUser = localStorage.getItem('tanjif_active_user');
+            if (!savedUser && slug !== '') {
+                openApologyModal();
+                // URL আপডেট না করেই থামুন
+                return;
+            }
+            
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                // অ্যাডমিন পেজ চেক
+                if (ADMIN_ONLY_SLUGS.includes(slug) && user.role !== 'admin') {
+                    alert('⚠️ এই পেজটি শুধুমাত্র অ্যাডমিনদের জন্য!');
+                    return;
+                }
+            }
+            
+            // URL আপডেট করুন (পেজ রিলোড না করে)
+            window.history.pushState({ page: slug, file: fileUrl, title: title }, title, newUrl);
+            
+            // পেজ টাইটেল আপডেট করুন
+            document.title = title + ' | Tanjif Academy';
+            
+            // পেজ লোড করুন
+            if (fileUrl) {
+                loadPage(fileUrl, title);
+            } else {
+                // হোম পেজ
+                closeEmbeddedPage();
+                switchView('landingView');
+                document.title = 'Tanjif Academy | তানজিফ একাডেমি';
+            }
+            
+            // ব্রেডক্রাম্ব আপডেট করুন
+            const breadcrumb = document.getElementById('breadcrumb');
+            if (fileUrl) {
+                breadcrumb.style.display = 'block';
+                document.getElementById('breadcrumbPage').textContent = ' / ' + title;
+            } else {
+                breadcrumb.style.display = 'none';
+            }
         }
 
-        // ✅ আপডেটেড: URL এ বাংলা টাইটেল দেখানোর জন্য এনকোডিং
-        function openPage(url, title) {
-            if (!url || url === '#') { openApologyModal(); return; }
+        // ===== পেজ লোড করুন =====
+        function loadPage(fileUrl, title) {
+            if (!fileUrl) return;
             
-            // 🔐 চেক ১: ইউজার লগ ইন আছে কিনা
-            const savedUser = localStorage.getItem('tanjif_active_user');
-            if (!savedUser) {
-                openApologyModal();
-                return;
-            }
-            
-            const user = JSON.parse(savedUser);
-            
-            // 🔐 চেক ২: অ্যাডমিন পেজ চেক
-            if (isAdminPage(url) && user.role !== 'admin') {
-                alert('⚠️ এই পেজটি শুধুমাত্র অ্যাডমিনদের জন্য!');
-                return;
-            }
-            
-            // 🔐 চেক ৩: URL এ কোনো সন্দেহজনক কিছু আছে কিনা
-            if (url.includes('javascript:') || url.includes('data:')) {
-                alert('⚠️ অনিরাপদ URL!');
-                return;
-            }
-            
-            // ✅ সব চেক পাস
-            // নতুন লজিক: URL-এ ফাইলনেম না রেখে টাইটেল (বাংলা) রাখা হবে
-            // যেন URL দেখতে হয়: tanjifacademy.vercel.app/আর্থিক হিসাব
-            const cleanTitle = (title || 'পেজ').replace(/[^\u0980-\u09FF\w\s-]/g, '').trim().replace(/\s+/g, '-');
-            const newUrl = window.location.pathname + '/' + cleanTitle; 
-            window.history.pushState({ page: 'embedded', url: url, title: title }, title, newUrl);
-            
-            let embedUrl = url;
+            let embedUrl = fileUrl;
             if (embedUrl.includes('drive.google.com') && embedUrl.includes('/view')) {
                 embedUrl = embedUrl.replace(/\/view(\?.*)?$/, '/preview');
             }
             document.getElementById('embeddedIframe').src = embedUrl;
             document.getElementById('embeddedPageViewer').style.display = 'flex';
             document.body.classList.add('embedded-open');
-            
-            document.getElementById('breadcrumb').style.display = 'block';
-            document.getElementById('breadcrumbPage').textContent = ' / ' + (title || 'পেজ');
             document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
             document.getElementById('whatsappFloat').style.display = 'none';
             
@@ -1284,127 +1179,116 @@
             if (closeBtn) closeBtn.style.display = 'inline-flex';
         }
 
-        // ===== CLOSE EMBEDDED PAGE - সম্পূর্ণ নতুন লজিক =====
-        // আগের ভিউ ট্র্যাক করার জন্য ভেরিয়েবল
-        let previousView = 'landingView';
-        
-        function closeEmbeddedPage() {
-            // বর্তমান স্ক্রল অবস্থান সংরক্ষণ
-            const currentScrollY = window.scrollY;
-            
-            // এমবেডেড ভিউয়ার বন্ধ করুন
-            document.getElementById('embeddedPageViewer').style.display = 'none';
-            document.getElementById('embeddedIframe').src = '';
-            document.body.classList.remove('embedded-open');
-            
-            // ব্রেডক্রাম্ব লুকান
+        // ===== হোমে ফেরা =====
+        function navigateToHome(section) {
+            closeEmbeddedPage();
+            window.history.pushState({ page: 'home' }, 'হোম', '/');
+            document.title = 'Tanjif Academy | তানজিফ একাডেমি';
+            switchView('landingView');
             document.getElementById('breadcrumb').style.display = 'none';
-            
-            // ক্লোজ বাটন লুকান
-            const closeBtn = document.querySelector('.btn-close-view');
-            if (closeBtn) closeBtn.style.display = 'none';
-            
-            // URL থেকে প্যারামিটার সরান (হোম URL-এ ফিরে যাওয়া)
-            if (window.location.pathname !== '/' && window.location.search) {
-                window.history.replaceState({}, '', window.location.pathname);
-            } else {
-                window.history.replaceState({}, '', window.location.origin);
+            if (section) {
+                setTimeout(() => scrollToSection(section.replace('#', '')), 100);
             }
+        }
+
+        // ===== URL রাউটিং হ্যান্ডলার =====
+        function handleRouting() {
+            const path = window.location.pathname;
+            const slug = path.replace(/^\//, '').replace(/\/$/, '');
             
-            // কোন ভিউ অ্যাকটিভ আছে তা চেক করুন
-            const isLanding = document.getElementById('landingView').classList.contains('active');
-            const isStudentDash = document.getElementById('studentDashboardView').classList.contains('active');
-            const isAdminDash = document.getElementById('adminDashboardView').classList.contains('active');
-            
-            // ✅ প্রধান পরিবর্তন: যদি কোনো ভিউ অ্যাকটিভ না থাকে, তাহলে ইউজার যেখানে ছিল সেখানে (ড্যাশবোর্ডে) ফেরত যাবে
-            if (!isLanding && !isStudentDash && !isAdminDash) {
-                // আগের ভিউ রিস্টোর করুন (হোম পেজে নয়, ড্যাশবোর্ডে)
-                document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-                const targetView = document.getElementById(previousView);
-                if (targetView && targetView.id !== 'landingView') { // হোম পেজ বাদে ড্যাশবোর্ডে যাবে
-                    targetView.classList.add('active');
-                } else {
-                    // যদি আগের ভিউ ল্যান্ডিং পেজ হতো, তাহলে ইউজার স্টুডেন্ট ড্যাশবোর্ডে পাঠানো হবে
-                    const savedUser = localStorage.getItem('tanjif_active_user');
-                    if (savedUser) {
-                        const user = JSON.parse(savedUser);
-                        if(user.role === 'admin') {
-                            document.getElementById('adminDashboardView').classList.add('active');
-                        } else {
-                            document.getElementById('studentDashboardView').classList.add('active');
-                        }
-                    } else {
-                        document.getElementById('landingView').classList.add('active');
+            if (slug && PAGE_ROUTES[slug]) {
+                const route = PAGE_ROUTES[slug];
+                
+                // 🔐 সিকিউরিটি চেক
+                const savedUser = localStorage.getItem('tanjif_active_user');
+                if (!savedUser) {
+                    // লগ ইন না থাকলে অ্যাপোলজি দেখান
+                    openApologyModal();
+                    // URL ঠিক রাখতে হোমে রিডাইরেক্ট করবেন না, শুধু মডাল দেখান
+                    return;
+                }
+                
+                const user = JSON.parse(savedUser);
+                if (ADMIN_ONLY_SLUGS.includes(slug) && user.role !== 'admin') {
+                    alert('⚠️ এই পেজটি শুধুমাত্র অ্যাডমিনদের জন্য!');
+                    window.history.replaceState({}, '', '/');
+                    switchView('landingView');
+                    return;
+                }
+                
+                if (route.file) {
+                    loadPage(route.file, route.title);
+                    document.getElementById('breadcrumb').style.display = 'block';
+                    document.getElementById('breadcrumbPage').textContent = ' / ' + route.title;
+                    document.title = route.title + ' | Tanjif Academy';
+                }
+            } else if (slug === '' || slug === 'হোম') {
+                // হোম পেজ
+                switchView('landingView');
+                document.getElementById('breadcrumb').style.display = 'none';
+                document.title = 'Tanjif Academy | তানজিফ একাডেমি';
+            }
+        }
+
+        // ===== POPSTATE ইভেন্ট =====
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.page === 'home') {
+                closeEmbeddedPage();
+                switchView('landingView');
+                document.getElementById('breadcrumb').style.display = 'none';
+                document.title = 'Tanjif Academy | তানজিফ একাডেমি';
+            } else if (event.state && event.state.page) {
+                const slug = event.state.page;
+                if (PAGE_ROUTES[slug]) {
+                    const route = PAGE_ROUTES[slug];
+                    if (route.file) {
+                        loadPage(route.file, route.title);
+                        document.getElementById('breadcrumb').style.display = 'block';
+                        document.getElementById('breadcrumbPage').textContent = ' / ' + route.title;
+                        document.title = route.title + ' | Tanjif Academy';
                     }
                 }
-            }
-            
-            // হোয়াটসঅ্যাপ আইকন দেখান (যদি ল্যান্ডিং ভিউতে থাকে)
-            const currentActiveView = document.querySelector('.page-view.active');
-            if (currentActiveView && currentActiveView.id === 'landingView') {
-                document.getElementById('whatsappFloat').style.display = 'flex';
             } else {
-                document.getElementById('whatsappFloat').style.display = 'none';
+                // ব্যাক বাটনে এম্বেডেড পেজ বন্ধ
+                if (document.getElementById('embeddedPageViewer').style.display === 'flex') {
+                    closeEmbeddedPage();
+                    switchView('landingView');
+                    document.getElementById('breadcrumb').style.display = 'none';
+                    document.title = 'Tanjif Academy | তানজিফ একাডেমি';
+                }
+                handleRouting();
             }
-            
-            // আগের স্ক্রল পজিশনে ফিরে যান
-            setTimeout(() => {
-                window.scrollTo({
-                    top: currentScrollY,
-                    behavior: 'instant'
-                });
-            }, 10);
+        });
+
+        // ============================================================
+        //  🔐 OLD FUNCTIONS (রক্ষণাবেক্ষণের জন্য)
+        // ============================================================
+
+        function openPage(url, title) {
+            // এই ফাংশনটি এখন navigateToPage ব্যবহার করে
+            // তবে ব্যাকওয়ার্ড কম্প্যাটিবিলিটির জন্য রাখা হয়েছে
+            const slug = title ? title.replace(/\s+/g, '-') : 'পেজ';
+            navigateToPage(slug, url, title);
         }
 
-        // ===== NAVIGATE TO HOME - আপডেট =====
-        function navigateToHome(section) {
-            const currentScrollY = window.scrollY;
-            
-            // এমবেডেড পেজ বন্ধ করুন
+        function closeEmbeddedPage() {
             document.getElementById('embeddedPageViewer').style.display = 'none';
             document.getElementById('embeddedIframe').src = '';
             document.body.classList.remove('embedded-open');
+            
             document.getElementById('breadcrumb').style.display = 'none';
+            
+            const isLanding = document.getElementById('landingView').classList.contains('active');
+            document.getElementById('whatsappFloat').style.display = isLanding ? 'flex' : 'none';
             
             const closeBtn = document.querySelector('.btn-close-view');
             if (closeBtn) closeBtn.style.display = 'none';
-            
-            if (window.location.pathname !== '/' && window.location.search) {
-                window.history.replaceState({}, '', window.location.pathname);
-            } else {
-                window.history.replaceState({}, '', window.location.origin);
-            }
-            
-            // ল্যান্ডিং ভিউতে যান (স্ক্রল রিসেট না করে)
-            document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-            document.getElementById('landingView').classList.add('active');
-            previousView = 'landingView'; // ভিউ ট্র্যাক করুন
-            document.getElementById('whatsappFloat').style.display = 'flex';
-            
-            // আগের স্ক্রল পজিশন রিস্টোর করুন
-            setTimeout(() => {
-                window.scrollTo(0, currentScrollY);
-            }, 10);
-            
-            if (section) {
-                setTimeout(() => scrollToSection(section.replace('#', '')), 150);
-            }
         }
 
-        // ===== VIEW SWITCHING - আপডেট =====
-        function switchView(viewId, keepScroll = false) {
-            // আগের ভিউ সংরক্ষণ করুন
-            const currentActive = document.querySelector('.page-view.active');
-            if (currentActive) {
-                previousView = currentActive.id;
-            }
-            
+        function switchView(viewId) {
             document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
-            
-            if (!keepScroll) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             
             const wa = document.getElementById('whatsappFloat');
             if (viewId === 'landingView' && document.getElementById('embeddedPageViewer').style.display !== 'flex') {
@@ -1415,73 +1299,17 @@
             if (viewId !== 'landingView') document.getElementById('scrollTopBtn').style.display = 'none';
         }
 
-        // ===== URL PARAMETER HANDLING WITH SECURITY (আপডেটেড) =====
-        function handleUrlParams() {
-            const pathParts = window.location.pathname.split('/').filter(Boolean);
-            const pageTitle = decodeURIComponent(pathParts[pathParts.length - 1] || '');
-            
-            // যদি URL এ কোনো টাইটেল থাকে
-            if (pageTitle && pathParts.length > 1) {
-                
-                // 🔐 সিকিউরিটি চেক
-                const savedUser = localStorage.getItem('tanjif_active_user');
-                if (!savedUser) {
-                    // লগ ইন না থাকলে URL থেকে প্যারামিটার সরান
-                    window.history.replaceState({}, '', window.location.origin);
-                    switchView('landingView', true);
-                    openApologyModal();
-                    return;
-                }
-                
-                const user = JSON.parse(savedUser);
-                
-                // অ্যাডমিন পেজ চেক (টাইটেল থেকে ম্যাচ করা)
-                const lowerTitle = pageTitle.toLowerCase();
-                if (ADMIN_ONLY_PAGES.some(p => lowerTitle.includes(p)) && user.role !== 'admin') {
-                    window.history.replaceState({}, '', window.location.origin);
-                    switchView('landingView', true);
-                    alert('⚠️ এই পেজটি শুধুমাত্র অ্যাডমিনদের জন্য!');
-                    return;
-                }
-                
-                // URL থেকে টাইটেল বের করে ফাইল লোড করার জন্য ম্যাপিং লাগবে, 
-                // যেহেতু আমরা এখন শুধু টাইটেল রাখছি, তাই ব্রাউজার ব্যাক বাটন চাপলে আবার আগের পেজ লোড হবে।
-                // তবে সঠিক ফাইলটি লোড করার জন্য আপনার কোডে এই টাইটেল ম্যাপিং যুক্ত করতে হবে।
-                // ধরা যাক, ইউজার আগের সেশন থেকে পেজে ঢুকছে। 
-                // নিরাপত্তার স্বার্থে আমরা এখন শুধু হোম পেজে রিডাইরেক্ট করছি (অন্যায় অ্যাক্সেস ঠেকাতে)।
-                // তবে ব্রাউজারে ব্যাক বাটন চাপলে যেন ঠিকমতো কাজ করে সেজন্য আমরা popstate ব্যবহার করছি।
-                window.history.replaceState({ page: 'embedded', url: pageTitle, title: pageTitle }, pageTitle, window.location.pathname);
-                // Note: এখানে আপনি টাইটেল অনুযায়ী ফাইল ম্যাপিং করে নিতে পারেন, কিন্তু বর্তমানে আমরা ব্রাউজারের হিস্টোরির উপর ভরসা করছি।
-            }
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // ===== POPSTATE HANDLER (আপডেটেড) =====
-        window.addEventListener('popstate', function(event) {
-            const params = new URLSearchParams(window.location.search);
-            const hasParams = params.get('page');
-            
-            // ব্রাউজারে ব্যাক বাটন চাপলে
-            if (event.state && event.state.page === 'embedded') {
-                if (document.getElementById('embeddedPageViewer').style.display === 'flex') {
-                    // পুরনো অবস্থা থেকে বের হওয়া (যেমন: ড্যাশবোর্ডে ফেরা)
-                    closeEmbeddedPage();
-                } else {
-                    // নতুন অবস্থায় ঢোকা (উদাহরণস্বরূপ, ব্রাউজারে ফরোয়ার্ড চাপলে)
-                    // এই লজিকটি আপনার ম্যাপিং অনুযায়ী কাজ করবে।
-                }
-            } else {
-                if (hasParams) {
-                    handleUrlParams();
-                } else {
-                    closeEmbeddedPage();
-                }
-            }
-        });
-
-        // ===== DOMContentLoaded (আপডেটেড) =====
+        // ============================================================
+        //  DOMContentLoaded
+        // ============================================================
         window.addEventListener('DOMContentLoaded', () => {
             checkPersistedSession();
-            handleUrlParams();
+            handleRouting();
             
             // সিকিউরিটি: কপি, কাট, পেস্ট প্রিভেন্ট
             document.addEventListener('contextmenu', e => { 
@@ -1494,13 +1322,12 @@
             document.addEventListener('copy', e => { if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); });
             document.addEventListener('cut', e => { if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); });
             document.addEventListener('paste', e => { if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); });
-
-            if (!window.location.search && window.location.pathname === '/') {
-                history.replaceState({ page: 'main' }, '');
-            }
         });
 
-        // ===== DROPDOWN =====
+        // ============================================================
+        //  বাকি ফাংশনগুলো আগের মতোই (auth, dropdown, etc.)
+        // ============================================================
+        
         function toggleDropdown() {
             document.getElementById('navDropdownContent').classList.toggle('show');
         }
@@ -1513,16 +1340,13 @@
             }
         });
 
-        // ===== KIDS CORNER =====
         function handleKidsOption(url, title) {
             closeKidsModal();
             const savedUser = localStorage.getItem('tanjif_active_user');
-            if (!savedUser) { 
-                openApologyModal(); 
-                return; 
-            }
+            if (!savedUser) { openApologyModal(); return; }
             if (!url || url === '#') { openApologyModal(); return; }
-            openPage(url, title);
+            const slug = title ? title.replace(/\s+/g, '-') : 'পেজ';
+            navigateToPage(slug, url, title);
         }
 
         function openKidsModal() { document.getElementById('kidsModal').style.display = 'flex'; }
@@ -1533,15 +1357,8 @@
 
         function toggleCollapsible(id) { document.getElementById(id).classList.toggle('active'); }
 
-        function scrollToSection(id) {
-            const el = document.getElementById(id);
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // ===== AUTH FUNCTIONS =====
         function openAuthModal() { 
             document.getElementById('authModal').style.display = 'flex'; 
-            // অ্যাপোলজি মডাল থাকলে বন্ধ করুন
             closeApologyModal();
         }
         function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
@@ -1576,8 +1393,8 @@
             btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> যাচাই...';
             const res = await sendApiRequest({ action: 'verifyAdminKey', adminKey: key });
             btn.disabled = false; btn.innerHTML = '<span>যাচাই করুন</span> <i class="fa-solid fa-shield-check"></i>';
-            if (res.success) { alert("পাসওয়ার্ড সঠিক!"); closeAdminVerifyModal(); toggleAdminAuth('signup'); }
-            else alert(res.message || "ভুল পাসওয়ার্ড!");
+            if (res.success) { alert("পাসওয়ার্ড সঠিক!"); closeAdminVerifyModal(); toggleAdminAuth('signup'); }
+            else alert(res.message || "ভুল পাসওয়ার্ড!");
         }
 
         function switchLoginMode(mode) {
@@ -1596,7 +1413,7 @@
                         <div class="nav-user-profile">
                             <span class="user-badge"><i class="fa-solid fa-user-shield"></i> ${user.name || 'অ্যাডমিন'}</span>
                             <button onclick="closeEmbeddedPage(); switchView('adminDashboardView')" class="btn-logout" style="background:#f59e0b;color:#000;">ড্যাশবোর্ড</button>
-                            <button onclick="closeEmbeddedPage()" class="btn-close-view" style="display:${document.getElementById('embeddedPageViewer').style.display === 'flex' ? 'inline-flex' : 'none'};"><i class="fa-solid fa-xmark"></i> বন্ধ</button>
+                            <button onclick="closeEmbeddedPage()" class="btn-close-view" style="display:${document.getElementById('embeddedPageViewer').style.display === 'flex' ? 'inline-flex' : 'none'};">বন্ধ করুন</button>
                             <button onclick="handleLogout()" class="btn-logout">লগআউট</button>
                         </div>
                     `;
@@ -1629,14 +1446,8 @@
             localStorage.removeItem('tanjif_active_user');
             closeEmbeddedPage();
             updateNavAuthUI(null);
-            switchView('landingView');
-            
-            // URL ক্লিন করুন
-            if (window.location.search) {
-                window.history.replaceState({}, '', window.location.pathname);
-            }
-            
-            alert("সফলভাবে লগআউট হয়েছেন।");
+            navigateToHome();
+            alert("সফলভাবে লগআউট হয়েছেন।");
         }
 
         async function sendApiRequest(payload) {
@@ -1663,8 +1474,8 @@
             if (check.success && check.students) {
                 const emailExists = check.students.some(s => s.email && s.email.toLowerCase() === email.toLowerCase());
                 const phoneExists = check.students.some(s => String(s.phone).replace(/^'/, '').trim() === phone);
-                if (emailExists) { alert("এই ইমেইল দিয়ে একাউন্ট আছে!"); btn.disabled=false; btn.innerHTML='<span>রেজিস্ট্রেশন নিশ্চিত করুন</span>'; return; }
-                if (phoneExists) { alert("এই মোবাইল দিয়ে একাউন্ট আছে!"); btn.disabled=false; btn.innerHTML='<span>রেজিস্ট্রেশন নিশ্চিত করুন</span>'; return; }
+                if (emailExists) { alert("এই ইমেইল দিয়ে একাউন্ট আছে!"); btn.disabled=false; btn.innerHTML='<span>রেজিস্ট্রেশন নিশ্চিত করুন</span>'; return; }
+                if (phoneExists) { alert("এই মোবাইল দিয়ে একাউন্ট আছে!"); btn.disabled=false; btn.innerHTML='<span>রেজিস্ট্রেশন নিশ্চিত করুন</span>'; return; }
             }
 
             const res = await sendApiRequest({ action: 'register', name, email, phone: "'" + phone, pin: "'" + pin });
@@ -1701,7 +1512,7 @@
             const password = document.getElementById('adminSignupPassword').value.trim();
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert("সঠিক ইমেইল দিন!"); return; }
             const hasLetter = /[a-zA-Z]/.test(password), hasNumber = /\d/.test(password), hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
-            if (!hasLetter || !hasNumber || !hasSpecial) { alert("পাসওয়ার্ডে বর্ণ, সংখ্যা ও বিশেষ চিহ্ন থাকতে হবে!"); return; }
+            if (!hasLetter || !hasNumber || !hasSpecial) { alert("পাসওয়ার্ডে বর্ণ, সংখ্যা ও বিশেষ চিহ্ন থাকতে হবে!"); return; }
 
             const btn = e.target.querySelector('button');
             btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...';
@@ -1746,7 +1557,7 @@
                     </tr>
                 `).join('');
             } else {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:20px;">কোনো শিক্ষার্থী নিবন্ধিত নয়।</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:20px;">কোনো শিক্ষার্থী নিবন্ধিত নয়।</td></tr>`;
             }
         }
 
