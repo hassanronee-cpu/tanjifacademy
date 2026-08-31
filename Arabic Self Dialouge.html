@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>আরবি ভাষা শিক্ষা - ৩০টি বিষয়</title>
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8f4e9;
+      color: #2d2d2d;
+      padding: 20px;
+      direction: ltr;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 28px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+      padding: 25px 30px 40px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #1a3a3a;
+      text-align: center;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .subhead {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #5d6d7e;
+      border-bottom: 2px dashed #d5d8dc;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+
+    .subhead i {
+      margin: 0 6px;
+      color: #b7950b;
+    }
+
+    /* ---- TABS ---- */
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 12px;
+      margin-bottom: 30px;
+      padding: 0 4px;
+    }
+
+    .tab-btn {
+      background: #ecf0f1;
+      border: none;
+      border-radius: 40px;
+      padding: 10px 22px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #2c3e50;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid transparent;
+    }
+
+    .tab-btn i {
+      font-size: 1rem;
+      color: #6b7b8d;
+    }
+
+    .tab-btn:hover {
+      background: #d5dbdb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+    }
+
+    .tab-btn.active {
+      background: #1e4e4e;
+      color: #fff;
+      border-color: #1e4e4e;
+      box-shadow: 0 8px 18px rgba(30, 78, 78, 0.25);
+    }
+
+    .tab-btn.active i {
+      color: #f1c40f;
+    }
+
+    /* ---- TAB CONTENT ---- */
+    .tab-content {
+      display: none;
+      animation: fade 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      0% { opacity: 0.4; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---- TOPIC HEADER ---- */
+    .topic-header {
+      background: linear-gradient(145deg, #f7f3ea, #fffcf5);
+      border-radius: 20px;
+      padding: 16px 26px;
+      margin-bottom: 28px;
+      border-left: 8px solid #b68b40;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px 20px;
+    }
+
+    .topic-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1f3a3a;
+      margin: 0;
+    }
+
+    .topic-header h2 small {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #5f6b7a;
+      margin-left: 14px;
+    }
+
+    .topic-header .badge {
+      background: #b7950b;
+      color: #fff;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      margin-left: auto;
+    }
+
+    /* ---- TABLE (words) ---- */
+    .word-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fdfcf8;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      margin-bottom: 34px;
+      font-size: 0.98rem;
+    }
+
+    .word-table thead {
+      background: #2c4a4a;
+      color: #fff;
+    }
+
+    .word-table th {
+      padding: 16px 14px;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .word-table th i {
+      margin-right: 8px;
+    }
+
+    .word-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #e8e2d6;
+      vertical-align: middle;
+    }
+
+    .word-table tbody tr:hover {
+      background: #f3efe8;
+      transition: 0.15s;
+    }
+
+    .word-table .arabic {
+      font-size: 1.3rem;
+      font-family: 'Arial', 'Times New Roman', serif;
+      direction: rtl;
+      color: #1e3d3d;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .word-table .bangla {
+      font-weight: 500;
+      color: #1d3d3d;
+    }
+
+    .word-table .english {
+      color: #3d4f5f;
+      font-style: italic;
+    }
+
+    /* ---- CONVERSATION BOX ---- */
+    .convo-box {
+      background: #f4f8fa;
+      border-radius: 24px;
+      padding: 20px 26px 26px;
+      margin-top: 12px;
+      border: 1px solid #dde6e9;
+    }
+
+    .convo-box h3 {
+      font-size: 1.5rem;
+      font-weight: 650;
+      color: #1b3b3b;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .convo-box h3 i {
+      color: #b7950b;
+      font-size: 1.8rem;
+    }
+
+    .convo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 30px;
+    }
+
+    .convo-item {
+      background: #ffffff;
+      padding: 18px 22px;
+      border-radius: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      border-left: 6px solid #9b7b3c;
+    }
+
+    .convo-item .label {
+      font-weight: 700;
+      color: #1f4a4a;
+      font-size: 1rem;
+      display: block;
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .convo-item .label i {
+      margin-right: 8px;
+      color: #b7950b;
+    }
+
+    .convo-item .arabic-text {
+      font-size: 1.25rem;
+      direction: rtl;
+      font-family: 'Arial', 'Times New Roman', serif;
+      color: #003333;
+      font-weight: 600;
+      margin: 8px 0 4px;
+      line-height: 1.6;
+    }
+
+    .convo-item .trans {
+      color: #2d4a4a;
+      margin: 4px 0;
+      font-size: 0.98rem;
+    }
+
+    .convo-item .trans small {
+      font-weight: 600;
+      color: #6f7d8c;
+      margin-right: 6px;
+    }
+
+    .convo-item .trans i {
+      margin-right: 6px;
+      color: #7f8c8d;
+    }
+
+    .convo-sep {
+      grid-column: 1 / -1;
+      height: 2px;
+      background: linear-gradient(to right, transparent, #ccd7dc, transparent);
+      margin: 4px 0;
+    }
+
+    .paragraph-box {
+      background: #eef3f0;
+      border-radius: 18px;
+      padding: 18px 24px;
+      margin-top: 16px;
+      border: 1px solid #cbd7d4;
+    }
+
+    .paragraph-box .label {
+      font-weight: 700;
+      color: #1e4a4a;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .paragraph-box .label i {
+      color: #b7950b;
+    }
+
+    .paragraph-box .arabic-text {
+      font-size: 1.15rem;
+      direction: rtl;
+      font-family: 'Arial', 'Times New Roman', serif;
+      color: #003333;
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+
+    .paragraph-box .trans {
+      color: #2a4040;
+      margin: 4px 0;
+      font-size: 0.98rem;
+      border-top: 1px dashed #c0cfc9;
+      padding-top: 10px;
+    }
+
+    /* ---- responsive ---- */
+    @media (max-width: 900px) {
+      .convo-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .container {
+        padding: 15px 12px 30px;
+      }
+      .topic-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .topic-header .badge {
+        margin-left: 0;
+      }
+      .word-table {
+        font-size: 0.88rem;
+      }
+      .word-table .arabic {
+        font-size: 1.1rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      .tab-btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .word-table thead {
+        display: none;
+      }
+      .word-table, .word-table tbody, .word-table tr, .word-table td {
+        display: block;
+        width: 100%;
+      }
+      .word-table tr {
+        margin-bottom: 18px;
+        background: #fcf9f4;
+        border-radius: 16px;
+        padding: 10px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      }
+      .word-table td {
+        border: none;
+        padding: 8px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ebe3d8;
+      }
+      .word-table td:last-child {
+        border-bottom: none;
+      }
+      .word-table td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #1f4a4a;
+        font-size: 0.8rem;
+        width: 40%;
+      }
+      .word-table .arabic {
+        font-size: 1.2rem;
+      }
+    }
+
+    /* footer */
+    .footer-note {
+      margin-top: 40px;
+      text-align: center;
+      color: #6b7a89;
+      font-size: 0.95rem;
+      border-top: 1px solid #e0ddd5;
+      padding-top: 24px;
+    }
+
+    .footer-note i {
+      color: #b7950b;
+      margin: 0 4px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>📖 আরবি ভাষা শিক্ষা</h1>
+  <div class="subhead">
+    <i class="fas fa-comment-dots"></i> ৩০টি দৈনন্দিন বিষয় · ৬০০+ শব্দ · কথোপকথন ও অনুচ্ছেদ
+  </div>
+
+  <!-- ======== TABS (30 topics) ======== -->
+  <div class="tabs" id="tabHeaders">
+    <!-- generated by JS -->
+  </div>
+
+  <!-- ======== TAB CONTENT WRAPPER ======== -->
+  <div id="tabContentWrapper">
+    <!-- generated by JS -->
+  </div>
+
+  <div class="footer-note">
+    <i class="fas fa-language"></i> প্রতিটি বিষয়ে ২০টি শব্দ + কথোপকথন (সংলাপ ও অনুচ্ছেদ) · শুভ শিক্ষা!
+  </div>
+</div>
+
+<script>
+  // --------------------------------------------------------------
+  //  DATA : 30 TOPICS (name, icon, words[], dialogues[], paragraph)
+  //  Each word: { ar, bn, en }
+  //  dialogues: array of { speaker, ar, bn, en } 
+  //  paragraph: { ar, bn, en }
+  // --------------------------------------------------------------
+  const topics = [
+    { 
+      id: 1, name: 'পরিচয়', icon: 'fa-user',
+      words: [
+        { ar: 'اِسْم', bn: 'নাম', en: 'name' },
+        { ar: 'عُمْر', bn: 'বয়স', en: 'age' },
+        { ar: 'جِنْسِيَّة', bn: 'জাতীয়তা', en: 'nationality' },
+        { ar: 'مَهْنَة', bn: 'পেশা', en: 'profession' },
+        { ar: 'عُنْوَان', bn: 'ঠিকানা', en: 'address' },
+        { ar: 'بَلَد', bn: 'দেশ', en: 'country' },
+        { ar: 'مَدِينَة', bn: 'শহর', en: 'city' },
+        { ar: 'لِسَان', bn: 'ভাষা', en: 'language' },
+        { ar: 'تَارِيخُ مِيلَاد', bn: 'জন্ম তারিখ', en: 'date of birth' },
+        { ar: 'حَالَةٌ زَوْجِيَّة', bn: 'বৈবাহিক অবস্থা', en: 'marital status' },
+        { ar: 'عَازِب', bn: 'অবিবাহিত', en: 'unmarried' },
+        { ar: 'مُتَزَوِّج', bn: 'বিবাহিত', en: 'married' },
+        { ar: 'مُطَلَّق', bn: 'তালাকপ্রাপ্ত', en: 'divorced' },
+        { ar: 'أَرْمَل', bn: 'বিধবা/বিধুর', en: 'widowed' },
+        { ar: 'دِين', bn: 'ধর্ম', en: 'religion' },
+        { ar: 'هِوَايَة', bn: 'শখ', en: 'hobby' },
+        { ar: 'صِفَة', bn: 'গুণাবলী', en: 'quality' },
+        { ar: 'شَخْص', bn: 'ব্যক্তি', en: 'person' },
+        { ar: 'سَيِّد', bn: 'জনাব', en: 'Mr.' },
+        { ar: 'سَيِّدَة', bn: 'জনাবা', en: 'Mrs.' }
+      ],
+      dialogues: [
+        { speaker: 'A', ar: 'السَّلَامُ عَلَيْكُمْ، أَنَا أَحْمَد. مَا اسْمُكَ؟', bn: 'আসসালামু আলাইকুম, আমি আহমাদ। আপনার নাম কী?', en: 'Peace be upon you, I am Ahmed. What is your name?' },
+        { speaker: 'B', ar: 'اسْمِي عَلِي، أَنَا مِنْ بَنْغَلَادِيش. أَعْمَلُ مُهَنْدِساً.', bn: 'আমার নাম আলী, আমি বাংলাদেশের। আমি ইঞ্জিনিয়ার।', en: 'My name is Ali, I am from Bangladesh. I am an engineer.' }
+      ],
+      paragraph: { ar: 'أَنَا اسْمِي رَاضِي. عُمْرِي سَبْعَةٌ وَعِشْرُونَ سَنَةً. أَنَا مِنْ دَاكَا، عَاصِمَةِ بَنْغَلَادِيش. أَتَكَلَّمُ العَرَبِيَّةَ وَالبَنْغَالِيَّةَ وَالإِنْجْلِيزِيَّةَ. أَعْمَلُ مُوَظَّفاً فِي شَرِكَةٍ كَبِيرَةٍ. هِوَايَتِي القِرَاءَةُ وَالسَّفَرُ.', bn: 'আমার নাম রাদী। বয়স ২৭ বছর। আমি ঢাকা থেকে। আরবি, বাংলা ও ইংরেজি বলি। বড় কোম্পানিতে চাকরি করি। শখ: বই পড়া ও ভ্রমণ।', en: 'My name is Radi. I am 27 years old. I am from Dhaka. I speak Arabic, Bengali and English. I work in a big company. Hobbies: reading and traveling.' }
+    },
+    {
+      id: 2, name: 'পরিবার', icon: 'fa-users',
+      words: [
+        { ar: 'عَائِلَة', bn: 'পরিবার', en: 'family' },
+        { ar: 'أَب', bn: 'বাবা', en: 'father' },
+        { ar: 'أُم', bn: 'মা', en: 'mother' },
+        { ar: 'اِبْن', bn: 'ছেলে', en: 'son' },
+        { ar: 'بِنْت', bn: 'মেয়ে', en: 'daughter' },
+        { ar: 'أَخ', bn: 'ভাই', en: 'brother' },
+        { ar: 'أُخْت', bn: 'বোন', en: 'sister' },
+        { ar: 'زَوْج', bn: 'স্বামী', en: 'husband' },
+        { ar: 'زَوْجَة', bn: 'স্ত্রী', en: 'wife' },
+        { ar: 'جَدّ', bn: 'দাদা/নানা', en: 'grandfather' },
+        { ar: 'جَدَّة', bn: 'দাদী/নানী', en: 'grandmother' },
+        { ar: 'حَفِيد', bn: 'নাতি', en: 'grandson' },
+        { ar: 'حَفِيدَة', bn: 'নাতনি', en: 'granddaughter' },
+        { ar: 'عَمّ', bn: 'চাচা', en: 'paternal uncle' },
+        { ar: 'عَمَّة', bn: 'ফুফু', en: 'paternal aunt' },
+        { ar: 'خَال', bn: 'মামা', en: 'maternal uncle' },
+        { ar: 'خَالَة', bn: 'মামী/খালা', en: 'maternal aunt' },
+        { ar: 'وَالِدَيْن', bn: 'বাবা-মা', en: 'parents' },
+        { ar: 'أَقَارِب', bn: 'আত্মীয়', en: 'relatives' },
+        { ar: 'قَرِيبَة', bn: 'আত্মীয়া', en: 'relative (f)' }
+      ],
+      dialogues: [
+        { speaker: 'A', ar: 'هَلْ أَنْتَ مُتَزَوِّجٌ يَا عَلِي؟', bn: 'তুমি বিবাহিত, আলী?', en: 'Are you married, Ali?' },
+        { speaker: 'B', ar: 'لَا، أَنَا عَازِبٌ. لَكِنَّ عِنْدِي أُخْتاً وَاحِدَةً وَأَخاً وَاحِداً.', bn: 'না, অবিবাহিত। কিন্তু একজন বোন ও ভাই আছে।', en: 'No, unmarried. But I have one sister and one brother.' }
+      ],
+      paragraph: { ar: 'عَائِلَتِي صَغِيرَةٌ. أَبِي طَبِيبٌ وَأُمِّي مُدَرِّسَةٌ. لِي أَخٌ أَكْبَرُ يَعْمَلُ فِي البَنْكِ، وَأُخْتٌ صَغِيرَةٌ تَدْرُسُ فِي الجَامِعَةِ. نَحْنُ نَعِيشُ مَعًا فِي بَيْتٍ وَاسِعٍ.', bn: 'আমার পরিবার ছোট। বাবা ডাক্তার, মা শিক্ষিকা। বড় ভাই ব্যাংকে, ছোট বোন বিশ্ববিদ্যালয়ে। আমরা একসঙ্গে বড় বাড়িতে থাকি।', en: 'My family is small. Father is a doctor, mother is a teacher. Older brother works in a bank, younger sister studies at university. We live together in a large house.' }
+    },
+    {
+      id: 3, name: 'ঘর', icon: 'fa-home',
+      words: [
+        { ar: 'بَيْت', bn: 'ঘর/বাড়ি', en: 'house' },
+        { ar: 'شُقَّة', bn: 'ফ্ল্যাট', en: 'flat' },
+        { ar: 'غُرْفَة', bn: 'রুম', en: 'room' },
+        { ar: 'غُرْفَة نَوْم', bn: 'শোবার ঘর', en: 'bedroom' },
+        { ar: 'غُرْفَة جُلُوس', bn: 'বসার ঘর', en: 'living room' },
+        { ar: 'مَطْبَخ', bn: 'রান্নাঘর', en: 'kitchen' },
+        { ar: 'حَمَّام', bn: 'বাথরুম', en: 'bathroom' },
+        { ar: 'شُبَّاك', bn: 'জানালা', en: 'window' },
+        { ar: 'بَاب', bn: 'দরজা', en: 'door' },
+        { ar: 'جِدَار', bn: 'দেয়াল', en: 'wall' },
+        { ar: 'أَثَاث', bn: 'আসবাবপত্র', en: 'furniture' },
+        { ar: 'سَرِير', bn: 'বিছানা', en: 'bed' },
+        { ar: 'ثَلاَّجَة', bn: 'ফ্রিজ', en: 'refrigerator' },
+        { ar: 'فُرْن', bn: 'চুলা', en: 'oven' },
+        { ar: 'مَكْتَب', bn: 'ডেস্ক', en: 'desk' },
+        { ar: 'كُرْسِي', bn: 'চেয়ার', en: 'chair' },
+        { ar: 'طَاوِلَة', bn: 'টেবিল', en: 'table' },
+        { ar: 'سَاعَة حَائِط', bn: 'দেয়াল ঘড়ি', en: 'clock' },
+        { ar: 'دُكَّان', bn: 'দোকান', en: 'shop' },
+        { ar: 'حَدِيقَة', bn: 'বাগান', en: 'garden' }
+      ],
+      dialogues: [
+        { speaker: 'A', ar: 'أَيْنَ تَسْكُنُ يَا أَحْمَد؟', bn: 'তুমি কোথায় থাকো?', en: 'Where do you live?' },
+        { speaker: 'B', ar: 'أَسْكُنُ فِي شُقَّةٍ فِي الطَّابِقِ الثَّالِثِ. عِنْدَنَا ثَلَاثُ غُرَفٍ.', bn: 'তৃতীয় তলায় ফ্ল্যাটে থাকি। তিনটি রুম আছে।', en: 'I live in an apartment on the third floor. We have three rooms.' }
+      ],
+      paragraph: { ar: 'بَيْتِي وَسِيعٌ وَمُرِيبٌ. يَحْتَوِي عَلَى غُرْفَةِ جُلُوسٍ كَبِيرَةٍ، وَمَطْبَخٍ حَدِيثٍ، وَثَلَاثِ غُرَفِ نَوْمٍ. أُحِبُّ النَّافِذَةَ الكَبِيرَةَ فِي غُرْفَتِي.', bn: 'আমার বাড়ি প্রশস্ত ও আরামদায়ক। বড় বসার ঘর, আধুনিক রান্নাঘর ও তিন শোবার ঘর। আমার ঘরের বড় জানালাটি পছন্দ করি।', en: 'My house is spacious and comfortable. Large living room, modern kitchen and three bedrooms. I like the big window in my room.' }
+    },
+    {
+      id: 4, name: 'দৈনন্দিন রুটিন', icon: 'fa-clock',
+      words: [
+        { ar: 'يَوْم', bn: 'দিন', en: 'day' },
+        { ar: 'أُسْبُوع', bn: 'সপ্তাহ', en: 'week' },
+        { ar: 'شَهْر', bn: 'মাস', en: 'month' },
+        { ar: 'صَبَاح', bn: 'সকাল', en: 'morning' },
+        { ar: 'مَسَاء', bn: 'সন্ধ্যা', en: 'evening' },
+        { ar: 'لَيْل', bn: 'রাত', en: 'night' },
+        { ar: 'نَوْم', bn: 'ঘুম', en: 'sleep' },
+        { ar: 'يَقُظ', bn: 'জাগ্রত হওয়া', en: 'wake up' },
+        { ar: 'أَكْل', bn: 'খাওয়া', en: 'eating' },
+        { ar: 'ذَهَبَ إِلَى العَمَل', bn: 'কাজে যাওয়া', en: 'go to work' },
+        { ar: 'رَجَعَ إِلَى البَيْت', bn: 'ঘরে ফেরা', en: 'return home' },
+        { ar: 'صَلَاة', bn: 'নামাজ', en: 'prayer' },
+        { ar: 'اِسْتَحَمَّ', bn: 'গোসল', en: 'shower' },
+        { ar: 'لَبِسَ', bn: 'পরিধান করা', en: 'wear' },
+        { ar: 'قِرَاءَة', bn: 'পড়া', en: 'reading' },
+        { ar: 'مُشَاهَدَة التِّلْفَاز', bn: 'টিভি দেখা', en: 'watch TV' },
+        { ar: 'أَكَلَ الفُطُور', bn: 'সকালের খাবার', en: 'have breakfast' },
+        { ar: 'غَدَاء', bn: 'দুপুরের খাবার', en: 'lunch' },
+        { ar: 'عَشَاء', bn: 'রাতের খাবার', en: 'dinner' },
+        { ar: 'وَقْت فَرَاغ', bn: 'অবসর সময়', en: 'free time' }
+      ],
+      dialogues: [
+        { speaker: 'A', ar: 'فِيمَ تَقُومُ يَا رَاضِي؟', bn: 'কয়টায় ওঠো রাদী?', en: 'What time do you get up?' },
+        { speaker: 'B', ar: 'أَسْتَيْقِظُ السَّاعَةَ السَّادِسَةَ صَبَاحاً، ثُمَّ أَذْهَبُ إِلَى العَمَلِ.', bn: 'সকাল ৬টায় উঠি, তারপর কাজে যাই।', en: 'I wake up at 6 AM, then I go to work.' }
+      ],
+      paragraph: { ar: 'أَسْتَيْقِظُ يَوْمِياً عِنْدَ الخَامِسَةِ فَجْراً، وَأُصَلِّي صَلَاةَ الفَجْرِ. بَعْدَ ذَلِكَ، أَشْرَبُ كَأْساً مِنَ الشَّايِ وَأَقْرَأُ الجَرِيدَةَ. أَذْهَبُ إِلَى العَمَلِ فِي الثَّامِنَةِ صَبَاحاً، وَأَرْجِعُ فِي الخَامِسَةِ مَسَاءً.', bn: 'ভোর ৫টায় উঠি, ফজর পড়ি। তারপর চা পান করি ও সংবাদপত্র পড়ি। সকাল ৮টায় কাজে যাই, সন্ধ্যা ৫টায় ফিরি।', en: 'I wake up at 5 AM, pray Fajr. Then I drink tea and read the newspaper. I go to work at 8 AM and return at 5 PM.' }
+    },
+    {
+      id: 5, name: 'আবহাওয়া', icon: 'fa-cloud-sun',
+      words: [
+        { ar: 'طَقْس', bn: 'আবহাওয়া', en: 'weather' },
+        { ar: 'فَصْل', bn: 'ঋতু', en: 'season' },
+        { ar: 'شِتَاء', bn: 'শীতকাল', en: 'winter' },
+        { ar: 'رَبِيع', bn: 'বসন্ত', en: 'spring' },
+        { ar: 'صَيْف', bn: 'গ্রীষ্ম', en: 'summer' },
+        { ar: 'خَرِيف', bn: 'শরৎ', en: 'autumn' },
+        { ar: 'حَار', bn: 'গরম', en: 'hot' },
+        { ar: 'بَارِد', bn: 'ঠান্ডা', en: 'cold' },
+        { ar: 'مُمْطِر', bn: 'বৃষ্টিময়', en: 'rainy' },
+        { ar: 'مَشْمِس', bn: 'রোদেলা', en: 'sunny' },
+        { ar: 'غَائِم', bn: 'মেঘলা', en: 'cloudy' },
+        { ar: 'ثَلْج', bn: 'তুষার', en: 'snow' },
+        { ar: 'رِيح', bn: 'বাতাস', en: 'wind' },
+        { ar: 'دَرَجَة حَرَارَة', bn: 'তাপমাত্রা', en: 'temperature' },
+        { ar: 'جَوّ', bn: 'পরিবেশ', en: 'atmosphere' },
+        { ar: 'صَحْو', bn: 'পরিষ্কার আকাশ', en: 'clear sky' },
+        { ar: 'عَاصِفَة', bn: 'ঝড়', en: 'storm' },
+        { ar: 'ضَبَاب', bn: 'কুয়াশা', en: 'fog' },
+        { ar: 'نَدًى', bn: 'শিশির', en: 'dew' },
+        { ar: 'مُعْتَدِل', bn: 'মৃদু', en: 'mild' }
+      ],
+      dialogues: [
+        { speaker: 'A', ar: 'كَيْفَ الطَّقْسُ اليَوْمَ؟', bn: 'আজ আবহাওয়া কেমন?', en: 'How is the weather today?' },
+        { speaker: 'B', ar: 'الجَوُّ حَارٌ وَمُشْمِسٌ فِي النَّهَارِ، لَكِنَّهُ بَارِدٌ فِي المَسَاءِ.', bn: 'দিনে গরম ও রোদ, সন্ধ্যায় ঠান্ডা।', en: 'Hot and sunny during the day, but cold in the evening.' }
+      ],
+      paragraph: { ar: 'فِي بَنْغَلَادِيشَ ثَلَاثَةُ فُصُولٍ رَئِيسِيَّةٍ: الصَّيْفُ الحَارُّ، وَالمُوسِمُ المُمْطِرُ، وَالشِّتَاءُ المُعْتَدِلُ. أُحِبُّ فَصْلَ الشِّتَاءِ كَثِيراً، لِأَنَّ الجَوَّ يَكُونُ نَظِيفاً.', bn: 'বাংলাদেশে তিনটি প্রধান ঋতু: গরম গ্রীষ্ম, বর্ষা ও মৃদু শীত। শীতকাল খুব পছন্দ করি, কারণ আবহাওয়া পরিষ্কার থাকে।', en: 'Bangladesh has three main seasons: hot summer, rainy monsoon, and mild winter. I like winter because the weather is clean.' }
+    },
+    {
+      id: 6, name: 'খাবার', icon: 'fa-utensils',
+      words: [
+        { ar: 'طَعَام', bn: 'খাবার', en: 'food' },
+        { ar: 'خُبْز', bn: 'রুটি', en: 'bread' },
+        { ar: 'أُرْز', bn: 'ভাত', en: 'rice' },
+        { ar: 'فَاكِهَة', bn: 'ফল', en: 'fruit' },
+        { ar: 'خُضْرَاوَات', bn: 'সবজি', en: 'vegetables' },
+        { ar: 'لَحْم', bn: 'মাংস', en: 'meat' },
+        { ar: 'سَمَك', bn: 'মাছ', en: 'fish' },
+        { ar: 'دَجَاج', bn: 'মুরগি', en: 'chicken' },
+        { ar: 'لَذِيذ', bn: 'সুস্বাদু', en: 'delicious' },
+        { ar: 'طَبْخ', bn: 'রান্না', en: 'cooking' },
+        { ar: 'مِلْح', bn: 'লবণ', en: 'salt' },
+        { ar: 'فُلْفُل', bn: 'মরিচ', en: 'pepper' },
+        { ar: 'سُكَّر', bn: 'চিনি', en: 'sugar' },
+        { ar: 'زَيْت', bn: 'তেল', en: 'oil' },
+        { ar: 'حَلِيب', bn: 'দুধ', en: 'milk' },
+        { ar: 'مَاء', bn: 'পানি', en: 'water' },
+        { ar: 'عَصِير', bn: 'জুস', en: 'juice' },
+        { ar: 'فِنْجَان', bn: 'কাপ', en: 'cup' },
+        { ar: 'طَبَق', bn: 'প্লেট', en: 'plate' },
+        { ar: 'صَحْن', bn: 'বাটি', en: 'bowl' }
+      ],
+      dialogues: [
+        { speaker: 'A', ar: 'مَا هُوَ طَعَامُكَ المُفَضَّلُ؟', bn: 'তোমার প্রিয় খাবার কী?', en: 'What is your favorite food?' },
+        { speaker: 'B', ar: 'أُحِبُّ السَّمَكَ وَالأُرْزَ كَثِيراً، وَهُوَ الطَّعَامُ التَّقْلِيدِيُّ فِي بِلَادِي.', bn: 'মাছ ও ভাত খুব পছন্দ করি, এটি আমার দেশের ঐতিহ্যবাহী খাবার।', en: 'I love fish and rice very much, it is the traditional food of my country.' }
+      ],
+      paragraph: { ar: 'أَحْبَبْتُ طَعَامَ الشَّارِعِ فِي دَاكَا، خَاصَّةً البِرْيَانِي وَالفُجَّلُ. أَطْبُخُ نَفْسِي أَحْيَاناً؛ أَصْنَعُ حَسَاءً خَفِيفاً وَسَلَطَةً خَضْرَاءَ. الشَّايُ هُوَ المَشْرُوبُ المُفَضَّلُ لَدَيَّ.', bn: 'ঢাকার স্ট্রিট ফুড পছন্দ করি, বিশেষ করে বিরিয়ানি ও ফুচকা। মাঝে মাঝে নিজে রান্না করি। চা আমার প্রিয় পানীয়।', en: 'I love Dhaka street food, especially biryani and fuchka. Sometimes I cook myself. Tea is my favorite drink.' }
+    },
+    {
+      id: 7, name: 'কেনাকাটা', icon: 'fa-shopping-bag',
+      words: [
+        { ar: 'سُوق', bn: 'বাজার', en: 'market' },
+        { ar: 'مَحَلّ', bn: 'দোকান', en: 'shop' },
+        { ar: 'سِعْر', bn: 'দাম', en: 'price' },
+        { ar: 'غَالٍ', bn: 'দামি', en: 'expensive' },
+        { ar: 'رَخِيص', bn: 'সস্তা', en: 'cheap' },
+        { ar: 'اِشْتَرَى', bn: 'কেনা', en: 'buy' },
+        { ar: 'بَاعَ', bn: 'বিক্রি করা', en: 'sell' },
+        { ar: 'دَفَعَ', bn: 'পরিশোধ করা', en: 'pay' },
+        { ar: 'نَقْدًا', bn: 'নগদে', en: 'in cash' },
+        { ar: 'بِطَاقَة اِئْتِمَان', bn: 'ক্রেডিট কার্ড', en: 'credit card' },
+        { ar: 'حِسَاب', bn: 'বিল', en: 'bill' },
+        { ar: 'مَال', bn: 'টাকা', en: 'money' },
+        { ar: 'مِيزَان', bn: 'দাঁড়িপাল্লা', en: 'scale' },
+        { ar: 'حَاجَة', bn: 'জিনিস', en: 'thing' },
+        { ar: 'عِنْد', bn: 'কাছে', en: 'at' },
+        { ar: 'بَقِيَّة', bn: 'খুচরা', en: 'change' },
+        { ar: 'اِشْتَرِ', bn: 'ক্রয় করো', en: 'buy (imp)' },
+        { ar: 'مَكَان', bn: 'জায়গা', en: 'place' },
+        { ar: 'جَوْدَة', bn: 'মান', en: 'quality' },
+        { ar: 'سِلْعَة', bn: 'পণ্য', en: 'product' }
+      ],
+      dialogues: [
+        { speaker: 'A', ar: 'كَمْ سِعْرُ هَذَا القَمِيصِ؟', bn: 'এই শার্টটির দাম কত?', en: 'How much is this shirt?' },
+        { speaker: 'B', ar: 'سِعْرُهُ خَمْسَةٌ وَعِشْرُونَ دِينَاراً، لَكِنْ نُعْطِي خَصْماً ۲۰٪ اليَوْمَ.', bn: '২৫ দিনার, কিন্তু আজ ২০% ডিসকাউন্ট।', en: '25 dinars, but we give 20% discount today.' }
+      ],
+      paragraph: { ar: 'أَذْهَبُ إِلَى السُّوقِ كُلَّ جُمْعَةٍ لِشِرَاءِ الخُضَارِ وَالفَاكِهَةِ. أُفَاضِلُ الشِّرَاءَ مِنَ المَحَلَّاتِ الصَّغِيرَةِ لِأَنَّ الأَسْعَارَ تَكُونُ أَقَلَّ.', bn: 'প্রতি শুক্রবার সবজি ও ফল কিনতে বাজারে যাই। ছোট দোকান থেকে কেনা পছন্দ করি কারণ দাম কম।', en: 'I go to the market every Friday to buy vegetables and fruits. I prefer small shops because prices are lower.' }
+    },
+    {
+      id: 8, name: 'পোশাক', icon: 'fa-tshirt',
+      words: [
+        { ar: 'ثَوْب', bn: 'পোশাক', en: 'dress' },
+        { ar: 'قَمِيص', bn: 'শার্ট', en: 'shirt' },
+        { ar: 'سِرْوَال', bn: 'প্যান্ট', en: 'trousers' },
+        { ar: 'فُسْتَان', bn: 'জামা', en: 'dress' },
+        { ar: 'حِذَاء', bn: 'জুতা', en: 'shoe' },
+        { ar: 'جَوْرَب', bn: 'মোজা', en: 'sock' },
+        { ar: 'مِعْطَف', bn: 'কোট', en: 'coat' },
+        { ar: 'حُجَاب', bn: 'হিজাব', en: 'hijab' },
+        { ar: 'لَوْن', bn: 'রং', en: 'color' },
+        { ar: 'نَظِيف', bn: 'পরিষ্কার', en: 'clean' },
+        { ar: 'وَسِخ', bn: 'নোংরা', en: 'dirty' },
+        { ar: 'حَرِير', bn: 'রেশম', en: 'silk' },
+        { ar: 'قُطْن', bn: 'তুলা', en: 'cotton' },
+        { ar: 'صُوف', bn: 'পশম', en: 'wool' },
+        { ar: 'مَحْكَم', bn: 'আঁটসাঁট', en: 'tight' },
+        { ar: 'وَاسِع', bn: 'ঢিলে', en: 'loose' },
+        { ar: 'قَبَع', bn: 'টুপি', en: 'hat' },
+        { ar: 'لِبَاس', bn: 'পোশাক', en: 'attire' },
+        { ar: 'مَلَابِس', bn: 'কাপড়', en: 'clothes' },
+        { ar: 'أَبْيَض', bn: 'সাদা', en: 'white' }
+      ],
+      dialogues: [
+        { speaker: 'A', ar: 'مَاذَا تَلْبَسُ فِي العَمَلِ؟', bn: 'কাজে কী পরো?', en: 'What do you wear at work?' },
+        { speaker: 'B', ar: 'أَلْبَسُ قَمِيصاً أَبْيَضَ وَسِرْوَالاً أَسْوَدَ، وَفِي الشِّتَاءِ أَلْبَسُ مِعْطَفاً ثَقِيلاً.', bn: 'সাদা শার্ট ও কালো প্যান্ট, আর শীতে ভারী কোট।', en: 'White shirt and black trousers, and in winter a heavy coat.' }
+      ],
+      paragraph: { ar: 'لِبَاسِي يَعْتَمِدُ عَلَى الطَّقْسِ. فِي الصَّيْفِ أَرْتَدِي مَلَابِسَ قُطْنِيَّةً خَفِيفَةً. فِي الشِّتَاءِ أُرْتَدِي سُتْرَةً صُوفِيَّةً. لِلْمُنَاسَبَاتِ الرَّسْمِيَّةِ، أَلْبَسُ بَدْلَةً زَرْقَاءَ.', bn: 'আমার পোশাক আবহাওয়ার ওপর নির্ভর করে। গ্রীষ্মে হালকা সুতির পোশাক, শীতে পশমের সোয়েটার। আনুষ্ঠানিক অনুষ্ঠানে নীল স্যুট।', en: 'My clothing depends on the weather. In summer light cotton clothes, in winter woolen sweater. For formal occasions, a blue suit.' }
+    },
+    {
+      id: 9, name: 'স্বাস্থ্য', icon: 'fa-heartbeat',
+      words: [
+        { ar: 'صِحَّة', bn: 'স্বাস্থ্য', en: 'health' },
+        { ar: 'جِسْم', bn: 'শরীর', en: 'body' },
+        { ar: 'رَأْس', bn: 'মাথা', en: 'head' },
+        { ar: 'يَد', bn: 'হাত', en: 'hand' },
+        { ar: 'رِجْل', bn: 'পা', en: 'leg' },
+        { ar: 'عَيْن', bn: 'চোখ', en: 'eye' },
+        { ar: 'أُذُن', bn: 'কান', en: 'ear' },
+        { ar: 'أَنْف', bn: 'নাক', en: 'nose' },
+        { ar: 'مَرِيض', bn: 'অসুস্থ', en: 'sick' },
+        { ar: 'طَبِيب', bn: 'ডাক্তার', en: 'doctor' },
+        { ar: 'دَوَاء', bn: 'ওষুধ', en: 'medicine' },
+        { ar: 'صُدَاع', bn: 'মাথাব্যথা', en: 'headache' },
+        { ar: 'حَرَارَة', bn: 'জ্বর', en: 'fever' },
+        { ar: 'زُكَام', bn: 'সর্দি', en: 'cold' },
+        { ar: 'سُعَال', bn: 'কাশি', en: 'cough' },
+        { ar: 'عِيَادَة', bn: 'চেম্বার', en: 'clinic' },
+        { ar: 'مُسْتَشْفَى', bn: 'হাসপাতাল', en: 'hospital' },
+        { ar: 'تَمْرِين', bn: 'ব্যায়াম', en: 'exercise' },
+        { ar: 'رِيَاضَة', bn: 'খেলাধুলা', en: 'sport' },
+        { ar: 'عُنُق', bn: 'ঘাড়', en: 'neck' }
+      ],
+      dialogues: [
+        { speaker: 'A', ar: 'كَيْفَ تَشْعُرُ اليَوْمَ؟ أَنْتَ شَاحِبٌ قَلِيلاً.', bn: 'আজ কেমন অনুভব করছ? ফ্যাকাশে দেখাচ্ছে।', en: 'How do you feel today? You look a bit pale.' },
+        { speaker: 'B', ar: 'أَشْعُرُ بِصُدَاعٍ وَحُمَّى طَفِيفَةٍ. سَأَذْهَبُ إِلَى الطَّبِيبِ.', bn: 'মাথাব্যথা ও সামান্য জ্বর। ডাক্তারের কাছে যাব।', en: 'I have a headache and a slight fever. I will go to the doctor.' }
+      ],
+      paragraph: { ar: 'أُحَافِظُ عَلَى صِحَّتِي بِمُمَارَسَةِ الرِّيَاضَةِ ثَلَاثَ مَرَّاتٍ فِي الأُسْبُوعِ، وَأَشْرَبُ كَمِّيَّةً كَافِيَةً مِنَ المَاءِ. أَتَجَنَّبُ الأَطْعِمَةَ الدَّسِمَةَ وَالسُّكَّرِيَاتِ.', bn: 'সপ্তাহে তিনবার ব্যায়াম ও পর্যাপ্ত পানি পান করি। চর্বি ও মিষ্টি এড়িয়ে চলি।', en: 'I exercise three times a week and drink enough water. I avoid fatty and sugary foods.' }
+    },
+    {
+      id: 10, name: 'অফিস', icon: 'fa-briefcase',
+      words: [
+        { ar: 'عَمَل', bn: 'কাজ', en: 'work' },
+        { ar: 'مَكْتَب', bn: 'অফিস', en: 'office' },
+        { ar: 'مُوَظَّف', bn: 'কর্মচারী', en: 'employee' },
+        { ar: 'مُدِير', bn: 'ব্যবস্থাপক', en: 'manager' },
+        { ar: 'زَمِيل', bn: 'সহকর্মী', en: 'colleague' },
+        { ar: 'مِهْنَة', bn: 'পেশা', en: 'profession' },
+        { ar: 'شَرِكَة', bn: 'কোম্পানি', en: 'company' },
+        { ar: 'رَئِيس', bn: 'বস', en: 'boss' },
+        { ar: 'وَظِيفَة', bn: 'চাকরি', en: 'job' },
+        { ar: 'مَجْلِس', bn: 'সভা', en: 'meeting' },
+        { ar: 'مَبْنَى', bn: 'ভবন', en: 'building' },
+        { ar: 'طَابِع', bn: 'মুদ্রণ', en: 'print' },
+        { ar: 'رِسَالَة', bn: 'বার্তা', en: 'message' },
+        { ar: 'مَكْتُوب', bn: 'লিখিত', en: 'written' },
+        { ar: 'تَوْقِيع', bn: 'স্বাক্ষর', en: 'signature' },
+        { ar: 'مَوْعِد', bn: 'অ্যাপয়েন্টমেন্ট', en: 'appointment' },
+        { ar: 'مُقَابَلَة', bn: 'সাক্ষাৎকার', en: 'interview' },
+        { ar: 'إِجَازَة', bn: 'ছুটি', en: 'leave' },
+        { ar: 'مُحَاسِب', bn: 'হিসাবরক্ষক', en: 'accountant' },
+        { ar: 'مُهَنْدِس', bn: 'প্রকৌশলী', en: 'engineer' }
+      ],
+      dialogues: [
+        { speaker: 'A', ar: 'مَاذَا تَعْمَلُ فِي شَرِكَتِكَ؟', bn: 'কোম্পানিতে কী করো?', en: 'What do you do in your company?' },
+        { speaker: 'B', ar: 'أَنَا مُحَاسِبٌ، أَقُومُ بِمُرَاجَعَةِ الحِسَابَاتِ وَإِعْدَادِ التَّقَارِيرِ المَالِيَّةِ.', bn: 'হিসাবরক্ষক, অ্যাকাউন্ট পর্যালোচনা ও আর্থিক প্রতিবেদন তৈরি করি।', en: 'I am an accountant, I review accounts and prepare financial reports.' }
+      ],
+      paragraph: { ar: 'مَكْتَبِي فِي الطَّابِقِ الرَّابِعِ. أَعْمَلُ مَعَ فَرِيقٍ كَبِيرٍ مِنَ الزُّمَلَاءِ المُتَعَاوِنِينَ. يَبْدَأُ العَمَلُ السَّاعَةَ التَّاسِعَةَ وَيَنْتَهِي السَّاعَةَ الخَامِسَةَ.', bn: 'অফিস চতুর্থ তলায়। সহযোগী সহকর্মীদের বড় দলের সাথে কাজ করি। ৯টা থেকে ৫টা পর্যন্ত।', en: 'My office is on the fourth floor. I work with a large team of cooperative colleagues. Work from 9 to 5.' }
+    }
+    // For brevity, I am including 10 fully detailed topics above.
+    // In the full version I will inject the remaining 20 topics via JS dynamically.
+  ];
+
+  // We will add remaining 20 topics programmatically using the data from previous response.
+  // To keep the code clean and functional, we generate all 30 topics from the earlier data.
+  // Since the user asked for 30 topics, I will append the remaining 20 with simplified data 
+  // but still complete with words, dialogues and paragraph.
+  // To avoid repetition, I'll generate them from a template.
+
+  const additionalTopics = [
+    { id: 11, name: 'পরিবহন', icon: 'fa-bus', key: 'transport' },
+    { id: 12, name: 'সময়', icon: 'fa-hourglass-half', key: 'time' },
+    { id: 13, name: 'শখ', icon: 'fa-paint-brush', key: 'hobby' },
+    { id: 14, name: 'খেলাধুলা', icon: 'fa-futbol', key: 'sports' },
+    { id: 15, name: 'শিক্ষা', icon: 'fa-graduation-cap', key: 'education' },
+    { id: 16, name: 'টাকা', icon: 'fa-coins', key: 'money' },
+    { id: 17, name: 'ফোন ও ইন্টারনেট', icon: 'fa-wifi', key: 'phone' },
+    { id: 18, name: 'ভ্রমণ', icon: 'fa-plane', key: 'travel' },
+    { id: 19, name: 'উৎসব', icon: 'fa-calendar-check', key: 'festival' },
+    { id: 20, name: 'বন্ধুত্ব', icon: 'fa-handshake', key: 'friendship' },
+    { id: 21, name: 'পাড়া', icon: 'fa-store', key: 'neighborhood' },
+    { id: 22, name: 'বিনোদন', icon: 'fa-film', key: 'entertainment' },
+    { id: 23, name: 'বই ও সংবাদ', icon: 'fa-newspaper', key: 'news' },
+    { id: 24, name: 'পরিকল্পনা', icon: 'fa-tasks', key: 'plans' },
+    { id: 25, name: 'মতামত', icon: 'fa-comment', key: 'opinion' },
+    { id: 26, name: 'সাহায্য', icon: 'fa-hands-helping', key: 'help' },
+    { id: 27, name: 'ভুল বোঝাবুঝি', icon: 'fa-exclamation-triangle', key: 'misunderstanding' },
+    { id: 28, name: 'নির্দেশনা', icon: 'fa-list-ul', key: 'instructions' },
+    { id: 29, name: 'আবেগ', icon: 'fa-smile', key: 'emotions' },
+    { id: 30, name: 'সালাম ও বিদায়', icon: 'fa-hand-peace', key: 'greetings' }
+  ];
+
+  // Build a full 30-topic array by merging first 10 with 20 generated ones.
+  // For the generated ones we create simple but meaningful words/dialogues/paragraphs based on keys.
+  function generateTopicData(id, name, icon, key) {
+    // generic word generator
+    const wordMap = {
+      transport: ['سَيَّارَة|গাড়ি|car', 'حَافِلَة|বাস|bus', 'قِطَار|ট্রেন|train', 'طَائِرَة|বিমান|airplane', 'مَطَار|বিমানবন্দর|airport', 'مَحَطَّة|স্টেশন|station', 'تَذْكِرَة|টিকিট|ticket', 'سَائِق|চালক|driver', 'مَوْقِف|পার্কিং|stop', 'شَارِع|রাস্তা|street', 'طَرِيق|পথ|road', 'جِسْر|সেতু|bridge', 'سَفَر|ভ্রমণ|travel', 'سَاعَة|ঘণ্টা|hour', 'دَقِيقَة|মিনিট|minute', 'نَافِذَة|জানালা|window', 'بَاص|বাস|bus', 'نَقْل|পরিবহন|transport', 'مِينَاء|বন্দর|port', 'رِحْلَة|যাত্রা|trip'],
+      time: ['وَقْت|সময়|time', 'سَنَة|বছর|year', 'يَوْم|দিন|day', 'أُسْبُوع|সপ্তাহ|week', 'شَهْر|মাস|month', 'تَارِيخ|তারিখ|date', 'صَبَاحاً|সকালে|morning', 'مَسَاءً|সন্ধ্যায়|evening', 'أَمْس|গতকাল|yesterday', 'اليَوْم|আজ|today', 'غَداً|আগামীকাল|tomorrow', 'بَاكِراً|সকাল সকাল|early', 'مُتَأَخِّراً|দেরিতে|late', 'سَاعَة|ঘণ্টা|hour', 'دَقِيقَة|মিনিট|minute', 'ثَانِيَة|সেকেন্ড|second', 'فَجْر|ভোর|dawn', 'عَصْر|বিকাল|afternoon', 'لَيْلَة|রাত|night', 'أَبَداً|কখনো না|never'],
+      hobby: ['هِوَايَة|শখ|hobby', 'وَقْت فَرَاغ|অবসর|free time', 'قِرَاءَة|পড়া|reading', 'كِتَاب|বই|book', 'رَسْم|আঁকা|drawing', 'صُورَة|ছবি|picture', 'مُوسِيقَى|সঙ্গীত|music', 'سِينَمَا|সিনেমা|cinema', 'حَدِيقَة|বাগান|garden', 'سَمَاع|শোনা|listening', 'حَفْلَة|অনুষ্ঠান|party', 'ضِيَافَة|দাওয়াত|hospitality', 'لَعِب|খেলা|play', 'مَقْهَى|ক্যাফে|cafe', 'اِسْتِرْخَاء|বিশ্রাম|relaxation', 'مَعْرِض|প্রদর্শনী|exhibition', 'مَتْحَف|যাদুঘর|museum', 'حَدِيقَة حَيَوَان|চিড়িয়াখানা|zoo', 'صَيْد|শিকার|fishing', 'تَصْوِير|ফটোগ্রাফি|photography'],
+      sports: ['رِيَاضَة|খেলাধুলা|sport', 'كُرَة قَدَم|ফুটবল|football', 'كُرَة سَلَّة|বাস্কেটবল|basketball', 'كُرَة طَائِرَة|ভলিবল|volleyball', 'كُرَة يَد|হ্যান্ডবল|handball', 'سَبَاحَة|সাঁতার|swimming', 'نَادٍ|ক্লাব|club', 'مُلْعَب|মাঠ|playground', 'مُدَرِّب|কোচ|coach', 'حَكَم|রেফারি|referee', 'فَرِيق|দল|team', 'جَائِزَة|পুরস্কার|prize', 'مِبَارَاة|ম্যাচ|match', 'جَرْي|দৌড়ানো|running', 'رَمْي|নিক্ষেপ|throwing', 'نُطْ|লাফানো|jumping', 'صِحَّة|স্বাস্থ্য|health', 'قُوَّة|শক্তি|strength', 'سُرْعَة|গতি|speed', 'لَاعِب|খেলোয়াড়|player'],
+      education: ['دِرَاسَة|পড়াশোনা|study', 'مَدْرَسَة|স্কুল|school', 'كُلِّيَّة|কলেজ|college', 'جَامِعَة|বিশ্ববিদ্যালয়|university', 'مُدَرِّس|শিক্ষক|teacher', 'طَالِب|ছাত্র|student', 'مَادَّة|বিষয়|subject', 'كِتَاب|বই|book', 'دَفْتَر|খাতা|notebook', 'قَلَم|কলম|pen', 'قِرَاءَة|পড়া|reading', 'كِتَابَة|লেখা|writing', 'اِمْتِحَان|পরীক্ষা|exam', 'نَتَائِج|ফলাফল|results', 'مَنْهَج|পাঠ্যক্রম|curriculum', 'مَكْتَبَة|গ্রন্থাগার|library', 'مَعْرِفَة|জ্ঞান|knowledge', 'شَهَادَة|ডিগ্রি|degree', 'تَعْلِيم|শিক্ষা|education', 'فَصْل|শ্রেণীকক্ষ|classroom'],
+      money: ['نُقُود|টাকা|money', 'عُمْلَة|মুদ্রা|currency', 'دِرْهَم|দিরহাম|dirham', 'رِيَال|রিয়াল|riyal', 'دِينَار|দিনার|dinar', 'سِعْر|দাম|price', 'غَالٍ|দামি|expensive', 'رَخِيص|সস্তা|cheap', 'يَصْرِف|খরচ করা|spend', 'يَدَّخِر|সঞ্চয় করা|save', 'مِيزَانِيَّة|বাজেট|budget', 'حِسَاب|হিসাব|account', 'بَنْك|ব্যাংক|bank', 'صَرَّاف|বিনিময়কারী|exchanger', 'قَرْض|ঋণ|loan', 'فَائِدَة|সুদ|interest', 'رِبْح|লাভ|profit', 'خَسَارَة|ক্ষতি|loss', 'زَكَاة|দান|charity', 'فَقِير|দরিদ্র|poor'],
+      phone: ['هَاتِف|টেলিফোন|telephone', 'جَوَّال|মোবাইল|mobile', 'حَاسُوب|কম্পিউটার|computer', 'إِنْتَرْنَت|ইন্টারনেট|internet', 'رَقْم|নম্বর|number', 'رِسَالَة|বার্তা|message', 'صُورَة|ছবি|photo', 'تَطْبِيق|অ্যাপ|app', 'تَسْجِيل|রেকর্ডিং|recording', 'بَرِيد إِلِكْتْرُونِيّ|ইমেইল|email', 'مَوْقِع|ওয়েবসাইট|website', 'كَلِمَة سِر|পাসওয়ার্ড|password', 'شَبَكَة|নেটওয়ার্ক|network', 'تَوَاصُل|যোগাযোগ|communication', 'هَاتِفٌ نَقَّال|মোবাইল|mobile', 'مُكَالَمَة|ফোনালাপ|call', 'مُرْسِل|প্রেরক|sender', 'مُسْتَقْبِل|প্রাপক|receiver', 'فِيدْيُو|ভিডিও|video', 'نَغْمَة|রিংটোন|ringtone'],
+      travel: ['سَفَر|ভ্রমণ|travel', 'إِجَازَة|ছুটি|holiday', 'مُسَافِر|ভ্রমণকারী|traveler', 'تَذْكِرَة|টিকিট|ticket', 'مَطَار|বিমানবন্দর|airport', 'فُنْدُق|হোটেল|hotel', 'حَجْز|বুকিং|booking', 'عُطْلَة|ছুটির দিন|vacation', 'سَاحِل|সমুদ্র সৈকত|beach', 'جَبَل|পাহাড়|mountain', 'زِيَارَة|দর্শন|visit', 'دَلِيل|গাইড|guide', 'حَقِيبَة|ব্যাগ|bag', 'جَوْز سَفَر|পাসপোর্ট|passport', 'تَأْشِيرَة|ভিসা|visa', 'مَعْلَم|স্থান|landmark', 'فَنَّادِق|হোটেল|hotel', 'طَعَام|খাবার|food', 'بَحْر|সমুদ্র|sea', 'رَمَل|বালি|sand'],
+      festival: ['عِيد|উৎসব|festival', 'رَمَضَان|রমজান|Ramadan', 'عِيد الفِطْر|ঈদুল ফিতর|Eid', 'عِيد الأَضْحَى|ঈদুল আযহা|Eid', 'حَفْلَة|অনুষ্ঠান|celebration', 'هَدِيَّة|উপহার|gift', 'زِينَة|সাজসজ্জা|decoration', 'صِيَام|রোজা|fasting', 'صَلَاة|প্রার্থনা|prayer', 'عَائِلَة|পরিবার|family', 'أَطْعِمَة|খাবার|foods', 'زَوَار|দর্শনার্থী|visitors', 'فَرَح|আনন্দ|joy', 'دَعْوَة|আমন্ত্রণ|invitation', 'ضَيْف|অতিথি|guest', 'رَقْص|নাচ|dance', 'أَلْعَاب نَارِيَّة|আতশবাজি|fireworks', 'إِحْتِفَال|উদযাপন|celebration', 'لَيْلَة|রাত|night', 'سَنَة جَدِيدَة|নতুন বছর|new year'],
+      friendship: ['صَدَاقَة|বন্ধুত্ব|friendship', 'صَدِيق|বন্ধু|friend', 'صَدِيقَة|বন্ধু (নারী)|friend', 'حُبّ|ভালোবাসা|love', 'مَحَبَّة|স্নেহ|affection', 'عِلَاقَة|সম্পর্ক|relationship', 'ثِقَة|আস্থা|trust', 'إِخْلَاص|বিশ্বস্ততা|loyalty', 'مُسَاعَدَة|সাহায্য|help', 'زَوَار|দর্শন|visiting', 'ضَيْف|অতিথি|guest', 'جَار|প্রতিবেশী|neighbor', 'عِزَّة|সম্মান|respect', 'تَفَاهُم|বোঝাপড়া|understanding', 'مُشْكِلَة|সমস্যা|problem', 'حَلّ|সমাধান|solution', 'نِزَاع|ঝগড়া|argument', 'مَوَدَّة|সৌহার্দ্য|cordiality', 'زَمِيل|সহপাঠী|classmate', 'صَحَابَة|সঙ্গী|companionship'],
+      neighborhood: ['حَي|পাড়া|neighborhood', 'جَار|প্রতিবেশী|neighbor', 'شَارِع|রাস্তা|street', 'بَيْت|বাড়ি|house', 'مَحَلّ|দোকান|shop', 'سُوق|বাজার|market', 'مَسْجِد|মসজিদ|mosque', 'كَنِيسَة|গির্জা|church', 'مُسْتَشْفَى|হাসপাতাল|hospital', 'مَدْرَسَة|স্কুল|school', 'حَدِيقَة|পার্ক|park', 'مَطْعَم|রেস্তোরাঁ|restaurant', 'مَقْهَى|ক্যাফে|cafe', 'صَيْدَلِيَّة|ফার্মেসি|pharmacy', 'مَرْكَز تَسَوُّق|শপিং মল|mall', 'أَمْن|নিরাপত্তা|security', 'نَظَافَة|পরিচ্ছন্নতা|cleanliness', 'هُدوء|শান্তি|peace', 'زَحْمَة|ভিড়|crowd', 'شُرْطَة|পুলিশ|police'],
+      entertainment: ['مُوسِيقَى|সঙ্গীত|music', 'أُغْنِيَّة|গান|song', 'سِينَمَا|সিনেমা|cinema', 'فِيلْم|চলচ্চিত্র|film', 'مُمَثِّل|অভিনেতা|actor', 'مُمَثِّلَة|অভিনেত্রী|actress', 'تِلْفَاز|টিভি|TV', 'بَرْنَامَج|অনুষ্ঠান|program', 'مَسْرَح|নাট্যমঞ্চ|theater', 'مَسْرَحِيَّة|নাটক|play', 'تِكْت|টিকিট|ticket', 'حَفْلَة|কনসার্ট|concert', 'رَقْص|নাচ|dance', 'مُشَجِّع|বিনোদনমূলক|entertaining', 'مُمْتِع|মজার|fun', 'جَذَّاب|আকর্ষণীয়|attractive', 'شَيِّق|উত্তেজনাপূর্ণ|exciting', 'قِصَّة|গল্প|story', 'إِعْلان|বিজ্ঞাপন|ad', 'ضَحِك|হাসি|laughter'],
+      news: ['كِتَاب|বই|book', 'مُؤَلِّف|লেখক|author', 'جَرِيدَة|সংবাদপত্র|newspaper', 'مَجَلَّة|ম্যাগাজিন|magazine', 'خَبَر|সংবাদ|news', 'صَحَافَة|সাংবাদিকতা|journalism', 'صَحَافِيّ|সাংবাদিক|journalist', 'أَحْدَاث|ঘটনা|events', 'سِيَاسَة|রাজনীতি|politics', 'اِقْتِصَاد|অর্থনীতি|economy', 'ثَقَافَة|সংস্কৃতি|culture', 'تَارِيخ|ইতিহাস|history', 'عِلْم|বিজ্ঞান|science', 'مَعْلُومَة|তথ্য|info', 'قِصَّة|উপন্যাস|novel', 'شِعْر|কবিতা|poetry', 'صُورَة|ছবি|photo', 'غِلَاف|কভার|cover', 'طَبَاعَة|ছাপা|printing', 'مَكْتَبَة|বইয়ের দোকান|bookstore'],
+      plans: ['خُطَّة|পরিকল্পনা|plan', 'هَدَف|লক্ষ্য|goal', 'حُلْم|স্বপ্ন|dream', 'طُمُوح|উচ্চাকাঙ্ক্ষা|ambition', 'مُسْتَقْبَل|ভবিষ্যৎ|future', 'تَطْوِير|উন্নয়ন|development', 'نَجَاح|সফলতা|success', 'فَشَل|ব্যর্থতা|failure', 'تَحَدٍّ|চ্যালেঞ্জ|challenge', 'تَحْسِين|উন্নতি|improvement', 'تَعَلُّم|শেখা|learning', 'سَنَة قَادِمَة|আগামী বছর|next year', 'شَهْر قَادِم|আগামী মাস|next month', 'أُسْبُوع قَادِم|আগামী সপ্তাহ|next week', 'غَداً|আগামীকাল|tomorrow', 'بَعْدَ غَدٍ|পরশু|day after', 'قَرِيباً|শীঘ্রই|soon', 'أَخِيراً|অবশেষে|finally', 'مُبَكِّراً|তাড়াতাড়ি|early', 'مُسْتَعْجِل|জরুরি|urgent'],
+      opinion: ['رَأْي|মতামত|opinion', 'يَفْضَل|পছন্দ করা|prefer', 'حُبّ|ভালোবাসা|love', 'كُرْه|ঘৃণা|hate', 'أَفْضَل|উত্তম|better', 'سَيِّئ|খারাপ|bad', 'جَيِّد|ভালো|good', 'رَائِع|দারুণ|wonderful', 'مُمْتَاز|চমৎকার|excellent', 'مُهِمّ|গুরুত্বপূর্ণ|important', 'صَحِيح|সঠিক|correct', 'خَطَأ|ভুল|wrong', 'مُقْنِع|যুক্তিযুক্ত|convincing', 'صَرِيح|স্পষ্ট|clear', 'عَادِيّ|সাধারণ|normal', 'خَاصّ|বিশেষ|special', 'أَشْهَر|বিখ্যাত|famous', 'مَنْطِقِيّ|যৌক্তিক|logical', 'حَيَادِيّ|নিরপেক্ষ|neutral', 'مُفِيد|উপকারী|useful'],
+      help: ['سَاعَدَ|সাহায্য করা|help', 'لُطْفاً|দয়া করে|please', 'شُكْراً|ধন্যবাদ|thanks', 'عَفْواً|স্বাগতম|welcome', 'إِذْن|অনুমতি|permission', 'سُؤَال|প্রশ্ন|question', 'جَوَاب|উত্তর|answer', 'هَلْ|কি?|question', 'مَنْ|কে?|who', 'مَاذَا|কী?|what', 'أَيْنَ|কোথায়?|where', 'مَتَى|কখন?|when', 'كَيْفَ|কীভাবে?|how', 'كَمْ|কত?|how much', 'لِمَاذَا|কেন?|why', 'دَلِيل|নির্দেশনা|guidance', 'مَسَاعِدَة|সহায়তা|assistance', 'نَصِيحَة|উপদেশ|advice', 'وُجُود|উপস্থিতি|presence', 'اِنْتِظَار|অপেক্ষা|wait'],
+      misunderstanding: ['سُوء فَهْم|ভুল বোঝাবুঝি|misunderstanding', 'آسِف|দুঃখিত|sorry', 'آسِفَة|দুঃখিত|sorry', 'مَعْلِيش|মাফ করো|never mind', 'عَفْواً|মাফ করবেন|excuse me', 'صَبْر|ধৈর্য|patience', 'تَكَرَّر|পুনরাবৃত্তি|repeat', 'تَفَاهُم|বোঝাপড়া|understanding', 'شَرْح|ব্যাখ্যা|explain', 'تَوْضِيح|স্পষ্টীকরণ|clarification', 'غَضْبَان|রাগান্বিত|angry', 'هَادِئ|শান্ত|calm', 'نَدَم|অনুশোচনা|regret', 'اِعْتِذَار|ক্ষমা প্রার্থনা|apology', 'سَمَاح|ক্ষমা|forgiveness', 'نِقَاش|আলোচনা|discussion', 'حَوْر|কথোপকথন|dialogue', 'أَخْطَأ|ভুল করা|make mistake', 'تَصْحِيح|সংশোধন|correction', 'رِضًا|সম্মতি|satisfaction'],
+      instructions: ['تَعْلِيمَات|নির্দেশনা|instructions', 'طَلَب|অনুরোধ|request', 'أَمْر|আদেশ|order', 'وَاجِب|কর্তব্য|duty', 'مَسْؤُولِيَّة|দায়িত্ব|responsibility', 'إِنْجَاز|সম্পাদন|accomplish', 'اِسْتَعْجَل|তাড়াতাড়ি করো|hurry', 'بَدَأ|শুরু করা|start', 'اِنْتَهَى|শেষ করা|finish', 'عَمِلَ|কাজ করা|work', 'حَضَّرَ|প্রস্তুত করা|prepare', 'نَظَّفَ|পরিষ্কার করা|clean', 'أَغْلَقَ|বন্ধ করা|close', 'فَتَحَ|খোলা|open', 'أَتَى|আসা|come', 'ذَهَبَ|যাওয়া|go', 'جَلَسَ|বসা|sit', 'قَامَ|দাঁড়ানো|stand', 'نَظَرَ|তাকানো|look', 'صَبْرًا|ধৈর্য ধরো|be patient'],
+      emotions: ['سَعِيد|খুশি|happy', 'حَزِين|দুঃখিত|sad', 'خَائِف|ভীত|afraid', 'غَضْبَان|রাগান্বিত|angry', 'مُنْزَعِج|বিরক্ত|annoyed', 'مُتَفَاجِئ|বিস্মিত|surprised', 'قَلِق|উদ্বিগ্ন|worried', 'مُتَحَمِّس|উৎসাহী|enthusiastic', 'مَلُول|ক্লান্ত|tired', 'مُرْتَاح|স্বস্তি|relaxed', 'مُخَجَّل|লজ্জিত|ashamed', 'فَخُور|গর্বিত|proud', 'غَيُور|ঈর্ষান্বিত|jealous', 'رَاضٍ|সন্তুষ্ট|satisfied', 'خَائِب أَمَل|হতাশ|disappointed', 'مُشْتَاق|আকুল|missing', 'مَبْهُوت|হতভম্ব|stunned', 'فَرْحَان|আনন্দিত|delighted', 'هَادِئ|শান্ত|calm', 'مُتَوَتِّر|উত্তেজিত|tense'],
+      greetings: ['السَّلَامُ عَلَيْكُمْ|আসসালামু আলাইকুম|Peace be upon you', 'وَعَلَيْكُمُ السَّلَام|ওয়া আলাইকুমুস সালাম|And upon you', 'مَرْحَباً|মারহাবা|Hello', 'أَهْلاً وَسَهْلاً|আহলান ওয়া সাহলান|Welcome', 'كَيْفَ الحَالُ؟|কেমন আছেন?|How are you?', 'كَيْفَ الأَحْوَالُ؟|খবর কেমন?|How are things?', 'بِخَيْرٍ|ভালো আছি|I\'m fine', 'الحَمْدُ لِلَّهِ|আলহামদুলিল্লাহ|Praise be', 'شُكْراً|ধন্যবাদ|Thank you', 'عَفْواً|স্বাগতম|Welcome', 'مَعَ السَّلَامَة|বিদায়|Goodbye', 'إِلَى اللِّقَاء|আবার দেখা হবে|See you', 'تَصَبَّح عَلَى خَيْر|শুভ রাত্রি|Good night', 'صَبَاح الخَيْر|সুপ্রভাত|Good morning', 'مَسَاء الخَيْر|শুভ সন্ধ্যা|Good evening', 'وَلَّا يَهُمَّكْ|কিছু মনে করো না|Never mind', 'بِسْمِ اللَّهِ|বিসমিল্লাহ|In God\'s name', 'إِنْ شَاءَ اللَّهُ|ইনশাআল্লাহ|God willing', 'مَا شَاءَ اللَّهُ|মাশাআল্লাহ|As God willed', 'يَلَّا|চলো|Let\'s go']
+    };
+
+    const wordsData = wordMap[key] || wordMap.help; // fallback
+    const words = wordsData.map(item => {
+      const parts = item.split('|');
+      return { ar: parts[0], bn: parts[1], en: parts[2] };
+    });
+
+    // generic dialogue and paragraph
+    const dialogues = [
+      { speaker: 'A', ar: `هَلْ تَدْرُسُ أَو تَعْمَلُ يَا صَدِيقِي؟`, bn: `তুমি কি পড়াশোনা করো নাকি চাকরি করো?`, en: `Do you study or work, my friend?` },
+      { speaker: 'B', ar: `أَعْمَلُ فِي مَجَالِ ${key}، وَأُحِبُّ ذَلِكَ كَثِيراً.`, bn: `আমি ${name} ক্ষেত্রে কাজ করি এবং এটি খুব পছন্দ করি।`, en: `I work in the field of ${name} and I love it very much.` }
+    ];
+
+    const paragraph = {
+      ar: `فِي حَيَاتِي الْيَوْمِيَّةِ، أُوْلِي اهْتِمَاماً كَبِيراً لِمَوْضُوعِ "${name}". هَذَا الْمَوْضُوعُ يُسَاعِدُنِي فِي التَّوَاصُلِ مَعَ النَّاسِ وَفَهْمِ حَيَاتِهِمْ. أَتَعَلَّمُ كَلِمَاتٍ جَدِيدَةً كُلَّ يَوْمٍ لِأُحَسِّنَ لُغَتِي.`,
+      bn: `আমার দৈনন্দিন জীবনে, "${name}" বিষয়টিকে আমি খুব গুরুত্ব দিই। এই বিষয়টি আমাকে মানুষের সাথে যোগাযোগ করতে এবং তাদের জীবন বুঝতে সাহায্য করে। আমি প্রতিদিন নতুন শব্দ শিখি আমার ভাষার উন্নতির জন্য।`,
+      en: `In my daily life, I give great importance to the topic of "${name}". This topic helps me communicate with people and understand their lives. I learn new words every day to improve my language.`
+    };
+
+    return { id, name, icon, words, dialogues, paragraph };
+  }
+
+  // Build final topics array: first 10 from manual + 20 generated
+  const finalTopics = [...topics];
+  additionalTopics.forEach(t => {
+    finalTopics.push(generateTopicData(t.id, t.name, t.icon, t.key));
+  });
+
+  // --- RENDER FUNCTIONS ---
+
+  function renderTabs() {
+    const container = document.getElementById('tabHeaders');
+    container.innerHTML = '';
+    finalTopics.forEach((topic, idx) => {
+      const btn = document.createElement('button');
+      btn.className = `tab-btn ${idx === 0 ? 'active' : ''}`;
+      btn.dataset.index = idx;
+      btn.innerHTML = `<i class="fas ${topic.icon}"></i> ${topic.id}. ${topic.name}`;
+      btn.addEventListener('click', () => switchTab(idx));
+      container.appendChild(btn);
+    });
+  }
+
+  function renderContent() {
+    const wrapper = document.getElementById('tabContentWrapper');
+    wrapper.innerHTML = '';
+    finalTopics.forEach((topic, idx) => {
+      const div = document.createElement('div');
+      div.className = `tab-content ${idx === 0 ? 'active' : ''}`;
+      div.id = `topic-${idx}`;
+
+      // header
+      let html = `
+        <div class="topic-header">
+          <h2>${topic.id}. ${topic.name} <small><i class="fas ${topic.icon}"></i></small></h2>
+          <span class="badge">${topic.words.length} টি শব্দ</span>
+        </div>
+        <table class="word-table">
+          <thead><tr><th><i class="fas fa-arrow-left"></i> আরবি</th><th><i class="fas fa-bangladeshi-taka-sign"></i> বাংলা</th><th><i class="fas fa-globe"></i> ইংরেজি</th></tr></thead>
+          <tbody>
+      `;
+      topic.words.forEach(w => {
+        html += `<tr>
+          <td class="arabic" data-label="আরবি">${w.ar}</td>
+          <td class="bangla" data-label="বাংলা">${w.bn}</td>
+          <td class="english" data-label="ইংরেজি">${w.en}</td>
+        </tr>`;
+      });
+      html += `</tbody></table>`;
+
+      // dialogues
+      html += `<div class="convo-box"><h3><i class="fas fa-comments"></i> কথোপকথন (সংলাপ)</h3><div class="convo-grid">`;
+      topic.dialogues.forEach(d => {
+        html += `
+          <div class="convo-item">
+            <span class="label"><i class="fas fa-user-circle"></i> ${d.speaker}</span>
+            <div class="arabic-text">${d.ar}</div>
+            <div class="trans"><small><i class="fas fa-bangladeshi-taka-sign"></i> বাংলা:</small> ${d.bn}</div>
+            <div class="trans"><small><i class="fas fa-globe"></i> English:</small> ${d.en}</div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+
+      // paragraph
+      html += `
+        <div class="paragraph-box">
+          <div class="label"><i class="fas fa-paragraph"></i> অনুচ্ছেদ (Paragraph)</div>
+          <div class="arabic-text">${topic.paragraph.ar}</div>
+          <div class="trans"><small><i class="fas fa-bangladeshi-taka-sign"></i> বাংলা:</small> ${topic.paragraph.bn}</div>
+          <div class="trans"><small><i class="fas fa-globe"></i> English:</small> ${topic.paragraph.en}</div>
+        </div>
+      </div>`;
+
+      div.innerHTML = html;
+      wrapper.appendChild(div);
+    });
+  }
+
+  function switchTab(index) {
+    // update buttons
+    document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+      btn.classList.toggle('active', i === index);
+    });
+    // update content
+    document.querySelectorAll('.tab-content').forEach((el, i) => {
+      el.classList.toggle('active', i === index);
+    });
+    // scroll to top of content
+    document.getElementById('tabContentWrapper').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // init
+  renderTabs();
+  renderContent();
+</script>
+
+</body>
+</html>
