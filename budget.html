@@ -2264,7 +2264,7 @@
         }
 
         function getCycleSpentBySub(main, sub) {
-            return expenses.filter(ex => ex.mode === 'expense' && ex.main === main && ex.sub.startsWith(sub) && isCurrentCycle(ex
+            return expenses.filter(ex => ex.mode === 'expense' && ex.main === main && ex.sub && ex.sub.startsWith(sub) && isCurrentCycle(ex
                     .date) && ex.deleted !== true)
                 .reduce((sum, ex) => sum + parseFloat(ex.amount), 0);
         }
@@ -2853,15 +2853,20 @@
             let grandTotalSpent = 0;
             let grandTotalRemain = 0;
 
+            // --- FIX: Calculate spent by sub correctly using the sub field ---
+            const spentBySub = {};
+            expensesCycle.forEach(ex => {
+                // Use the actual sub field (which may contain note)
+                const subKey = ex.sub;
+                const main = ex.main;
+                const key = `${main} - ${subKey}`;
+                spentBySub[key] = (spentBySub[key] || 0) + parseFloat(ex.amount);
+            });
+
+            // Also calculate spent by main for totals
             const spentByMain = {};
             expensesCycle.forEach(ex => {
                 spentByMain[ex.main] = (spentByMain[ex.main] || 0) + parseFloat(ex.amount);
-            });
-
-            const spentBySub = {};
-            expensesCycle.forEach(ex => {
-                const key = `${ex.main} - ${ex.sub}`;
-                spentBySub[key] = (spentBySub[key] || 0) + parseFloat(ex.amount);
             });
 
             let rowIndex = 0;
@@ -2874,7 +2879,6 @@
 
                 const subs = subCategories[main] || [];
                 const sortedSubs = sortCategoriesWithOthersLast(subs);
-                let hasSubData = false;
                 
                 // Show main name row first
                 html += `<tr class="main-row">
@@ -2882,12 +2886,19 @@
                 </tr>`;
                 
                 sortedSubs.forEach(sub => {
+                    // For sub spending, we need to match based on sub field (which may contain note)
+                    // The sub field in expenses may have a note appended, so we check if the sub starts with the sub name
+                    let subSpent = 0;
+                    // Check all expenses for this main and sub
+                    expensesCycle.forEach(ex => {
+                        if (ex.main === main && ex.sub && ex.sub.startsWith(sub)) {
+                            subSpent += parseFloat(ex.amount);
+                        }
+                    });
+                    
                     const key = `${main} - ${sub}`;
                     const subBudget = subBudgets[key] || 0;
-                    const subSpent = spentBySub[key] || 0;
                     const subRemain = subBudget - subSpent;
-                    // Show all sub categories, even with zero values for completeness
-                    hasSubData = true;
                     const rowClass = (rowIndex % 2 === 0) ? 'sub-row' : 'sub-row-alt';
                     html += `<tr class="${rowClass}">
                         <td class="sub-name-cell"></td>
@@ -2945,9 +2956,15 @@
                 }
                 const subs = subCategories[main] || [];
                 subs.forEach(sub => {
+                    // Calculate sub spent correctly
+                    let subSpent = 0;
+                    expensesCycle.forEach(ex => {
+                        if (ex.main === main && ex.sub && ex.sub.startsWith(sub)) {
+                            subSpent += parseFloat(ex.amount);
+                        }
+                    });
                     const key = `${main} - ${sub}`;
                     const subBudget = subBudgets[key] || 0;
-                    const subSpent = spentBySub[key] || 0;
                     if (subBudget > 0 && subSpent > subBudget) {
                         overBudgetSubs.push({ main, sub, overshoot: subSpent - subBudget });
                     }
