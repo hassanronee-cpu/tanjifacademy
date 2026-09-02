@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডেইলি হ্যাবিট ট্রাকার - গ্রিন ল্যান্ডস্কেপ মুড</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #047857;
+            --primary-hover: #065f46;
+            --bg-color: #f0fdf4;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --border-color: #bbf7d0;
+        }
+
+        body {
+            font-family: 'Kalpurush', 'SolaimanLipi', 'Hind Siliguri', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px;
+        }
+
+        .sticky-wrapper {
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-color);
+            z-index: 1000;
+            padding-bottom: 10px;
+        }
+
+        .container {
+            max-width: 1450px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.08);
+            border: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        input[type="date"] {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #f7fee7;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        #syncMsg {
+            font-size: 13px;
+            font-weight: 600;
+            color: #047857;
+            background: #d1fae5;
+            padding: 6px 12px;
+            border-radius: 6px;
+            display: none;
+            border: 1px solid #a7f3d0;
+        }
+
+        .motivation-box {
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+            color: #ecfdf5;
+            padding: 14px 22px;
+            border-radius: 10px;
+            margin-top: 12px;
+            box-shadow: 0 4px 15px rgba(4, 120, 87, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 6px solid #34d399;
+        }
+
+        .motivation-box span {
+            font-size: 14px;
+            font-weight: 700;
+            color: #34d399;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .motivation-box p {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 500;
+            flex-grow: 1;
+            padding-left: 20px;
+            line-height: 1.5;
+        }
+
+        .stats-banner {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.1);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+            padding: 9px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(4, 120, 87, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+            background: var(--card-bg);
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.05);
+            margin-top: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #d1fae5;
+            padding: 6px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 13px;
+        }
+
+        th {
+            background-color: #ecfdf5;
+            font-weight: 700;
+            color: #065f46;
+        }
+
+        /* সেল স্টাইল - ছোট সাইজ, মিডল পজিশন */
+        .cell-display {
+            min-height: 32px;
+            padding: 4px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            word-break: break-word;
+            background: #fafffe;
+            border: 1px solid transparent;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            line-height: 1.3;
+            max-height: 60px;
+            overflow: hidden;
+        }
+        .cell-display:hover {
+            background: #ecfdf5;
+            border-color: #a7f3d0;
+        }
+        .cell-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-height: 34px;
+            flex: 1;
+        }
+        .read-more-btn {
+            color: #047857;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            background: #d1fae5;
+            padding: 0 6px;
+            border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .read-more-btn:hover {
+            background: #a7f3d0;
+        }
+
+        /* লিংক সেল */
+        .link-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .link-btn {
+            display: inline-block;
+            background: #e6fffa;
+            color: #047857;
+            padding: 2px 10px;
+            border: 1px solid #34d399;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 11px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .link-btn:hover {
+            background: #047857;
+            color: #ffffff;
+        }
+        .link-edit-input {
+            display: none;
+            width: 100%;
+            padding: 2px 4px;
+            border: 1px solid #a7f3d0;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        .checkbox-cell {
+            text-align: center;
+        }
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            font-size: 16px;
+            color: #065f46;
+            font-weight: 600;
+            background: #ecfdf5;
+            border-radius: 8px;
+            border: 1px dashed #34d399;
+        }
+
+        /* মেসেজ বক্স (পপআপ) - বড় সাইজ */
+        .message-popup-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(3px);
+        }
+        .message-popup-box {
+            background: white;
+            max-width: 900px;
+            width: 95%;
+            max-height: 90vh;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            padding: 30px 35px;
+            position: relative;
+            border: 2px solid #34d399;
+            animation: popFade 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        @keyframes popFade {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .message-popup-box textarea {
+            width: 100%;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 18px 20px;
+            font-size: 18px;
+            font-family: inherit;
+            resize: none;
+            min-height: 300px;
+            box-sizing: border-box;
+            line-height: 1.8;
+            background: #fafffe;
+            transition: 0.15s;
+            flex: 1;
+        }
+        .message-popup-box textarea:focus {
+            outline: 2px solid #047857;
+            border-color: transparent;
+            background: white;
+        }
+        .popup-close-hint {
+            text-align: right;
+            margin-top: 12px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .popup-header strong {
+            font-size: 20px;
+            color: #065f46;
+        }
+        .popup-close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 0 10px;
+        }
+        .popup-close-btn:hover {
+            color: #1f2937;
+        }
+
+        /* রো কালার - আলাদা আলাদা হালকা কালার */
+        tbody tr:nth-child(odd) {
+            background-color: #f0fdf4;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f5fdf8;
+        }
+        tbody tr:nth-child(3n+0) {
+            background-color: #f0faf4;
+        }
+        tbody tr:nth-child(5n+0) {
+            background-color: #f5fcf7;
+        }
+        tbody tr:nth-child(7n+0) {
+            background-color: #f2faf6;
+        }
+        tbody tr:hover {
+            background-color: #e6f7ec !important;
+        }
+
+        .tab-btn[data-color="0"] { background: #d1fae5; color: #065f46; }
+        .tab-btn[data-color="0"].active { background: #047857; color: white; }
+        .tab-btn[data-color="1"] { background: #dbeafe; color: #1e3a8a; }
+        .tab-btn[data-color="1"].active { background: #1e3a8a; color: white; }
+        .tab-btn[data-color="2"] { background: #fce7f3; color: #831843; }
+        .tab-btn[data-color="2"].active { background: #831843; color: white; }
+        .tab-btn[data-color="3"] { background: #fef3c7; color: #78350f; }
+        .tab-btn[data-color="3"].active { background: #78350f; color: white; }
+        .tab-btn[data-color="4"] { background: #e0e7ff; color: #3730a3; }
+        .tab-btn[data-color="4"].active { background: #3730a3; color: white; }
+        .tab-btn[data-color="5"] { background: #d1fae5; color: #065f46; }
+        .tab-btn[data-color="5"].active { background: #065f46; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="sticky-wrapper">
+    <div class="container">
+        <header>
+            <h1>ডেইলি হ্যাবিট ট্রাকার</h1>
+            <div class="controls">
+                <span id="syncMsg">ডেটা লোড হচ্ছে...</span>
+                <label for="selectDate" style="font-weight:600; color:#065f46;">তারিখ:</label>
+                <input type="date" id="selectDate">
+                <button onclick="fetchData()">গুগল সিঙ্ক</button>
+                <button onclick="saveData()" style="background-color:#059669;">সেভ করুন</button>
+            </div>
+        </header>
+
+        <div class="motivation-box">
+            <span>আমার কথা:</span>
+            <p id="quoteText">"ছোট ছোট ধারাবাহিক প্রচেষ্টা এবং আত্মনিয়ন্ত্রণই জীবনের বড় পরিবর্তন এনে দেয়। ফোকাস বজায় রাখুন।"</p>
+        </div>
+
+        <div class="stats-banner" id="statsBanner">
+            <span>মোট সম্পন্ন কাজ: <strong id="completedCount">০</strong> / <strong id="totalCount">০</strong></span>
+            <span id="completionPercent">প্রোগ্রেস: ০%</span>
+        </div>
+
+        <div class="tabs" id="tabNav"></div>
+    </div>
+</div>
+
+<div class="container">
+    <div id="tabContainer"></div>
+</div>
+
+<!-- মেসেজ পপআপ - বড় সাইজ -->
+<div class="message-popup-overlay" id="popupOverlay">
+    <div class="message-popup-box" id="popupBox">
+        <div class="popup-header">
+            <strong id="popupTitle">সেল এডিট</strong>
+            <button class="popup-close-btn" onclick="closePopup()">✕</button>
+        </div>
+        <textarea id="popupTextarea" rows="6"></textarea>
+        <div class="popup-close-hint">✕ বাইরে ক্লিক করলে বন্ধ | ডাবল-ক্লিক করলে এডিট</div>
+    </div>
+</div>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEKWjfPoYn7MImUyaQIg3WtpQw13UaU7sG0k0iBdtb1JfoUBGFWoogoE731sFhT2lPMw/exec";
+
+    let dynamicQuotes = [
+        "ছোট ছোট ধারাবাহিক প্রচেষ্টা এবং আত্মনিয়ন্ত্রণই জীবনের বড় পরিবর্তন এনে দেয়। ফোকাস বজায় রাখুন।"
+    ];
+
+    let currentData = [];
+    let activeTabCat = "";
+
+    // পপআপ স্টেট
+    let popupActive = false;
+    let popupTarget = null; // { index, field }
+
+    document.getElementById('selectDate').valueAsDate = new Date();
+    document.getElementById('selectDate').addEventListener('change', fetchData);
+
+    function setSyncMessage(msg, show = true) {
+        const box = document.getElementById('syncMsg');
+        box.innerText = msg;
+        box.style.display = show ? 'inline-block' : 'none';
+    }
+
+    function loadRandomQuote() {
+        if (dynamicQuotes.length > 0) {
+            const randomQuote = dynamicQuotes[Math.floor(Math.random() * dynamicQuotes.length)];
+            document.getElementById('quoteText').innerText = `"${randomQuote}"`;
+        }
+    }
+
+    function getUniqueCategories() {
+        let cats = [];
+        currentData.forEach(item => {
+            if (!cats.includes(item.cat)) cats.push(item.cat);
+        });
+        return cats;
+    }
+
+    function switchTab(catName) {
+        activeTabCat = catName;
+        renderUI();
+    }
+
+    // পপআপ শো
+    function showPopup(content, index, field) {
+        const overlay = document.getElementById('popupOverlay');
+        const textarea = document.getElementById('popupTextarea');
+        const title = document.getElementById('popupTitle');
+        
+        // ফিল্ড নাম বাংলায় দেখানোর জন্য
+        const fieldNames = {
+            'point': 'কাজের পয়েন্ট',
+            'task': 'নির্ধারিত কাজ',
+            'when': 'কখন',
+            'link': 'লিঙ্ক',
+            'today': 'আজকের কাজ',
+            'achievement': 'আজকের অর্জন',
+            'plan': 'আগামীকালের পরিকল্পনা'
+        };
+        title.innerText = fieldNames[field] || 'সেল এডিট';
+        
+        textarea.value = content || '';
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(textarea.scrollHeight, 500) + 'px';
+        overlay.style.display = 'flex';
+        popupActive = true;
+        popupTarget = { index, field };
+    }
+
+    function closePopup() {
+        document.getElementById('popupOverlay').style.display = 'none';
+        popupActive = false;
+        popupTarget = null;
+    }
+
+    // পপআপ এডিট (ডাবল ক্লিক)
+    function enablePopupEdit() {
+        const textarea = document.getElementById('popupTextarea');
+        textarea.focus();
+        textarea.select();
+    }
+
+    // সেল ক্লিক হ্যান্ডেল - পপআপ দেখান
+    function handleCellClick(e, index, field) {
+        e.stopPropagation();
+        const value = currentData[index]?.[field] ?? '';
+        showPopup(value, index, field);
+    }
+
+    // পপআপ সেভ (বাইরে ক্লিক করলে)
+    function savePopupContent() {
+        if (!popupTarget) return;
+        const { index, field } = popupTarget;
+        const textarea = document.getElementById('popupTextarea');
+        const newVal = textarea.value;
+        currentData[index][field] = newVal;
+        closePopup();
+        renderUI(); // রিফ্রেশ
+    }
+
+    // পপআপ ওভারলে ক্লিক (বাইরে ক্লিক)
+    document.getElementById('popupOverlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+            savePopupContent();
+        }
+    });
+
+    // পপআপ টেক্সটএরিয়া ডাবল ক্লিক = এডিট
+    document.getElementById('popupTextarea').addEventListener('dblclick', function(e) {
+        e.stopPropagation();
+        enablePopupEdit();
+    });
+
+    // রেন্ডার UI
+    function renderUI() {
+        const cats = getUniqueCategories();
+        if (!cats.includes(activeTabCat) && cats.length > 0) {
+            activeTabCat = cats[0];
+        }
+
+        const navContainer = document.getElementById('tabNav');
+        navContainer.innerHTML = '';
+        cats.forEach((cat, idx) => {
+            let btn = document.createElement('button');
+            btn.className = `tab-btn ${cat === activeTabCat ? 'active' : ''}`;
+            btn.innerText = cat;
+            btn.dataset.color = (idx % 6).toString();
+            btn.onclick = () => switchTab(cat);
+            navContainer.appendChild(btn);
+        });
+
+        const container = document.getElementById('tabContainer');
+        container.innerHTML = '';
+
+        if (currentData.length === 0) {
+            container.innerHTML = `<div class="tab-content active"><div class="no-data">এই তারিখের জন্য কোনো ডেটা পাওয়া যায়নি। অনুগ্রহ করে শিটে ডেটা যোগ করুন অথবা নিচে এডিট করে সেভ করুন।</div></div>`;
+            updateStats();
+            return;
+        }
+
+        cats.forEach((cat, catIdx) => {
+            const div = document.createElement('div');
+            div.className = `tab-content ${cat === activeTabCat ? 'active' : ''}`;
+            
+            let html = `
+                <h3 style="margin-top:0; color:#065f46; font-size:17px; border-bottom: 2px solid #a7f3d0; padding-bottom: 8px;">${cat}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">কাজের পয়েন্ট</th>
+                            <th style="width: 18%;">নির্ধারিত কাজ</th>
+                            <th style="width: 8%;">কখন</th>
+                            <th style="width: 10%;">লিঙ্ক</th>
+                            <th style="width: 16%;">আজকের কাজ</th>
+                            <th style="width: 6%;">সম্পন্ন</th>
+                            <th style="width: 14%;">আজকের অর্জন</th>
+                            <th style="width: 18%;">আগামীকালের পরিকল্পনা</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            currentData.forEach((t, index) => {
+                if (t.cat === cat) {
+                    // লিংক
+                    let linkDisplay = '-';
+                    let linkUrl = t.link || '';
+                    if (linkUrl.trim() !== '' && linkUrl !== '-') {
+                        let cleanUrl = linkUrl.startsWith('http') ? linkUrl : 'https://' + linkUrl;
+                        linkDisplay = `<a href="${cleanUrl}" target="_blank" class="link-btn" onclick="event.stopPropagation();">🔗 ওপেন</a>`;
+                    }
+
+                    // প্রতিটি ফিল্ডের জন্য cellDisplay তৈরি
+                    const fields = ['point', 'task', 'when', 'today', 'achievement', 'plan'];
+                    let cells = {};
+                    fields.forEach(f => {
+                        const val = t[f] || '';
+                        const isLong = val.length > 35;
+                        let displayHtml = '';
+                        if (isLong) {
+                            displayHtml = `
+                                <span class="cell-text">${val}</span>
+                                <span class="read-more-btn" onclick="event.stopPropagation(); handleCellClick(event, ${index}, '${f}')">আরও পড়ুন</span>
+                            `;
+                        } else {
+                            displayHtml = `<span class="cell-text">${val}</span>`;
+                        }
+                        cells[f] = displayHtml;
+                    });
+
+                    html += `
+                        <tr>
+                            <td><div class="cell-display" onclick="handleCellClick(event, ${index}, 'point')">${cells.point}</div></td>
+                            <td><div class="cell-display" onclick="handleCellClick(event, ${index}, 'task')">${cells.task}</div></td>
+                            <td><div class="cell-display" onclick="handleCellClick(event, ${index}, 'when')">${cells.when}</div></td>
+                            <td class="link-cell">
+                                ${linkDisplay}
+                                <input class="link-edit-input" id="link-input-${index}" value="${t.link || ''}" 
+                                       onchange="updateField(${index}, 'link', this.value)" placeholder="লিংক দিন">
+                            </td>
+                            <td><div class="cell-display" onclick="handleCellClick(event, ${index}, 'today')">${cells.today}</div></td>
+                            <td class="checkbox-cell">
+                                <input type="checkbox" ${t.done ? 'checked' : ''} onchange="updateField(${index}, 'done', this.checked)">
+                            </td>
+                            <td><div class="cell-display" onclick="handleCellClick(event, ${index}, 'achievement')">${cells.achievement}</div></td>
+                            <td><div class="cell-display" onclick="handleCellClick(event, ${index}, 'plan')">${cells.plan}</div></td>
+                        </tr>
+                    `;
+                }
+            });
+
+            html += `</tbody></table>`;
+            div.innerHTML = html;
+            container.appendChild(div);
+        });
+
+        updateStats();
+        
+        // লিংক এডিট টগল - ডাবল ক্লিক
+        document.querySelectorAll('.link-cell .link-btn').forEach(el => {
+            el.addEventListener('dblclick', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const td = this.closest('.link-cell');
+                const input = td.querySelector('.link-edit-input');
+                const btn = td.querySelector('.link-btn');
+                if (input.style.display === 'none' || input.style.display === '') {
+                    input.style.display = 'block';
+                    btn.style.display = 'none';
+                    input.focus();
+                } else {
+                    input.style.display = 'none';
+                    btn.style.display = 'inline-block';
+                }
+            });
+        });
+        // লিংক ইনপুটে blur হলে সেভ
+        document.querySelectorAll('.link-edit-input').forEach(inp => {
+            inp.addEventListener('blur', function() {
+                const td = this.closest('.link-cell');
+                const btn = td.querySelector('.link-btn');
+                this.style.display = 'none';
+                btn.style.display = 'inline-block';
+            });
+        });
+    }
+
+    function updateField(index, field, value) {
+        currentData[index][field] = value;
+        updateStats();
+        renderUI();
+    }
+
+    function updateStats() {
+        let total = currentData.length;
+        let completed = 0;
+        currentData.forEach(t => {
+            if (t.done) completed++;
+        });
+
+        document.getElementById('totalCount').innerText = total;
+        document.getElementById('completedCount').innerText = completed;
+        const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+        document.getElementById('completionPercent').innerText = `প্রোগ্রেস: ${percent}%`;
+    }
+
+    function fetchData() {
+        const date = document.getElementById('selectDate').value;
+        if(SCRIPT_URL.includes("YOUR_GOOGLE_APPS_SCRIPT_URL_HERE")) {
+            currentData = [];
+            renderUI();
+            return;
+        }
+
+        setSyncMessage("ডেটা লোড হচ্ছে...", true);
+        
+        fetch(`${SCRIPT_URL}?action=get&date=${date}`)
+            .then(res => res.json())
+            .then(resData => {
+                setSyncMessage("", false);
+                
+                if (resData.quotes && resData.quotes.length > 0) {
+                    dynamicQuotes = resData.quotes;
+                }
+                loadRandomQuote();
+
+                if (resData.tasks && resData.tasks.length > 0) {
+                    currentData = resData.tasks.map(row => ({
+                        cat: row["মূল কাজ"] || "অন্যান্য",
+                        point: row["কাজের পয়েন্ট"] || "",
+                        task: row["নির্ধারিত কাজ"] || "",
+                        when: row["কখন করবো"] || "",
+                        link: row["প্রয়োজনীয় লিঙ্ক"] || "",
+                        today: row["আজকের কাজ"] || "",
+                        done: String(row["সম্পন্ন কিনা"]).toLowerCase() === 'true' || row["সম্পন্ন কিনা"] === true,
+                        achievement: row["আজকের অর্জন"] || "",
+                        plan: row["আগামীকালের পরিকল্পনা"] || ""
+                    }));
+                } else {
+                    currentData = [];
+                }
+                renderUI();
+            })
+            .catch(err => {
+                setSyncMessage("ত্রুটি হয়েছে!", true);
+                console.error("Error fetching data:", err);
+                currentData = [];
+                renderUI();
+            });
+    }
+
+    function saveData() {
+        const date = document.getElementById('selectDate').value;
+        if(SCRIPT_URL.includes("YOUR_GOOGLE_APPS_SCRIPT_URL_HERE")) {
+            alert("অনুগ্রহ করে আগে Google Apps Script URL কোডে কনফিগার করুন!");
+            return;
+        }
+
+        let updates = currentData.map((t, idx) => ({
+            rowIndex: idx + 1,
+            "মূল কাজ": t.cat,
+            "কাজের পয়েন্ট": t.point,
+            "নির্ধারিত কাজ": t.task,
+            "কখন করবো": t.when,
+            "প্রয়োজনীয় লিঙ্ক": t.link,
+            "আজকের কাজ": t.today,
+            "সম্পন্ন কিনা": t.done,
+            "আজকের অর্জন": t.achievement,
+            "আগামীকালের পরিকল্পনা": t.plan
+        }));
+
+        setSyncMessage("সেভ হচ্ছে...", true);
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({ date: date, updates: updates })
+        })
+        .then(res => res.json())
+        .then(res => {
+            setSyncMessage("সফলভাবে সেভ হয়েছে!", true);
+            setTimeout(() => setSyncMessage("", false), 3000);
+        })
+        .catch(err => {
+            setSyncMessage("সেভ করতে সমস্যা হয়েছে!", true);
+            console.error(err);
+        });
+    }
+
+    fetchData();
+</script>
+
+</body>
+</html>
