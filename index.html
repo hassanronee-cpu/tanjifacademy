@@ -139,9 +139,11 @@
 
         .nav-links a:hover { color: #38bdf8; }
 
-        /* --- Dropdown (hamburger) for mobile & dashboard --- */
+        /* --- Dropdown (hamburger) always on right --- */
         .nav-dropdown {
             position: relative;
+            order: 10; /* push to the right */
+            margin-left: auto;
         }
 
         .nav-dropdown-btn {
@@ -156,10 +158,36 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 32px;
+            height: 32px;
         }
 
         .nav-dropdown-btn:hover {
             background: rgba(255,255,255,0.15);
+        }
+
+        /* --- three horizontal lines (hamburger icon) --- */
+        .nav-dropdown-btn .hamburger-lines {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .nav-dropdown-btn .hamburger-lines span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background-color: #cbd5e1;
+            border-radius: 2px;
+            transition: 0.2s;
+        }
+
+        .nav-dropdown-btn:hover .hamburger-lines span {
+            background-color: #ffffff;
         }
 
         .nav-dropdown-content {
@@ -301,22 +329,22 @@
             display: none !important;
         }
 
-        /* --- show dropdown button always, but style differently when logged in --- */
+        /* --- show dropdown always on the right --- */
         .nav-dropdown {
             display: block;
         }
 
-        /* --- on larger screens, we still hide the dropdown if not logged in? no, we want it always available.
-               but we show desktop links only when not logged in. */
+        /* --- on larger screens, we hide the dropdown if not logged in? no, we want it always visible on right --- */
         @media(min-width: 901px) {
-            body:not(.logged-in) .nav-dropdown {
-                display: none;
-            }
-            body.logged-in .nav-dropdown {
-                display: block;
+            body:not(.logged-in) .nav-links {
+                display: flex;
             }
             body.logged-in .nav-links {
                 display: none !important;
+            }
+            .nav-dropdown {
+                display: block;
+                margin-left: auto;
             }
         }
 
@@ -327,6 +355,7 @@
             }
             .nav-dropdown {
                 display: block;
+                margin-left: auto;
             }
         }
 
@@ -710,9 +739,15 @@
                 <li><a onclick="openPage('Tanjif Academy Course Project.html', 'চলো শিখি')">চলো শিখি</a></li>
             </ul>
 
-            <!-- Dropdown (hamburger) always visible -->
+            <!-- Dropdown (hamburger) always on the right -->
             <div class="nav-dropdown">
-                <button class="nav-dropdown-btn" onclick="toggleDropdown()" aria-label="মেনু"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                <button class="nav-dropdown-btn" onclick="toggleDropdown()" aria-label="মেনু">
+                    <span class="hamburger-lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
                 <div class="nav-dropdown-content" id="navDropdownContent">
                     <a onclick="closeDropdown(); navigateToHome('#courses')"><i class="fa-solid fa-book-open"></i> কোর্সসমূহ</a>
                     <a onclick="closeDropdown(); navigateToHome('#ebooks')"><i class="fa-solid fa-book"></i> ই-বুক</a>
