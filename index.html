@@ -118,6 +118,7 @@
 
         .logo-text span { color: var(--primary); }
 
+        /* --- Navigation Links (desktop) --- */
         .nav-links {
             display: flex;
             align-items: center;
@@ -138,8 +139,8 @@
 
         .nav-links a:hover { color: #38bdf8; }
 
+        /* --- Dropdown (hamburger) for mobile & dashboard --- */
         .nav-dropdown {
-            display: none;
             position: relative;
         }
 
@@ -295,6 +296,41 @@
 
         .btn-logout:hover { background: #dc2626; }
 
+        /* --- hide desktop nav links when user is logged in (we show them in dropdown) --- */
+        body.logged-in .nav-links {
+            display: none !important;
+        }
+
+        /* --- show dropdown button always, but style differently when logged in --- */
+        .nav-dropdown {
+            display: block;
+        }
+
+        /* --- on larger screens, we still hide the dropdown if not logged in? no, we want it always available.
+               but we show desktop links only when not logged in. */
+        @media(min-width: 901px) {
+            body:not(.logged-in) .nav-dropdown {
+                display: none;
+            }
+            body.logged-in .nav-dropdown {
+                display: block;
+            }
+            body.logged-in .nav-links {
+                display: none !important;
+            }
+        }
+
+        /* mobile: always show dropdown, hide nav-links */
+        @media(max-width: 900px) {
+            .nav-links {
+                display: none !important;
+            }
+            .nav-dropdown {
+                display: block;
+            }
+        }
+
+        /* --- rest of the original styles --- */
         .page-view {
             display: none;
             animation: fadeIn 0.4s ease-in-out;
@@ -442,12 +478,6 @@
         }
 
         @media(max-width: 900px) {
-            .nav-links {
-                display: none;
-            }
-            .nav-dropdown {
-                display: block;
-            }
             .hero-container {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -671,6 +701,7 @@
                 <div class="logo-text">Tanjif <span>Academy</span></div>
             </div>
 
+            <!-- Desktop Nav Links (hidden when logged in via CSS) -->
             <ul class="nav-links">
                 <li><a onclick="navigateToHome('#courses')">কোর্সসমূহ</a></li>
                 <li><a onclick="navigateToHome('#ebooks')">ই-বুক</a></li>
@@ -679,6 +710,7 @@
                 <li><a onclick="openPage('Tanjif Academy Course Project.html', 'চলো শিখি')">চলো শিখি</a></li>
             </ul>
 
+            <!-- Dropdown (hamburger) always visible -->
             <div class="nav-dropdown">
                 <button class="nav-dropdown-btn" onclick="toggleDropdown()" aria-label="মেনু"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                 <div class="nav-dropdown-content" id="navDropdownContent">
@@ -687,6 +719,8 @@
                     <a onclick="closeDropdown(); navigateToHome('#about')"><i class="fa-solid fa-circle-info"></i> আমাদের সম্পর্কে</a>
                     <a onclick="closeDropdown(); openKidsModal()" class="kids-corner-nav-btn" style="margin:4px 10px;"><i class="fa-solid fa-child-reaching"></i> কিডস কর্নার</a>
                     <a onclick="closeDropdown(); openPage('Tanjif Academy Course Project.html', 'চলো শিখি')"><i class="fa-solid fa-book-open"></i> চলো শিখি</a>
+                    <!-- লগআউটের পাশে ড্যাশবোর্ড লিংক (শুধু লগ ইন অবস্থায় দেখাবে) -->
+                    <a id="dropdownDashboardLink" style="display:none;" onclick="closeDropdown(); goToDashboard()"><i class="fa-solid fa-gauge-high"></i> ড্যাশবোর্ড</a>
                 </div>
             </div>
 
@@ -746,7 +780,7 @@
                         <p>ফ্রি ই-বুক ও নোট</p>
                     </div>
                     <div class="stat-item">
-                        <h3><span class="counter" data-target="100">0</span>%</h3>
+                        <h4><span class="counter" data-target="100">0</span>%</h4>
                         <p>ফ্রি এক্সেস</p>
                     </div>
                 </div>
@@ -1202,8 +1236,6 @@
         const scriptUrl = "https://script.google.com/macros/s/AKfycbwrhgHZkSFd44x4EzRzSQ1EncIs7xcmh2Q5BmrOKw_iHefmEsUe7yfO523RpE1oE41eZQ/exec";
 
         // ===== 🔐 SECURE PAGE NAVIGATION SYSTEM =====
-        
-        // অ্যাডমিন পেজ লিস্ট (যে পেজগুলো শুধু অ্যাডমিন দেখতে পারবে)
         const ADMIN_ONLY_PAGES = [
             'admin', 'student-list', 'settings', 'manage-courses', 
             'user-management', 'dashboard', 'budget', 'plan 2030',
@@ -1216,11 +1248,10 @@
             return ADMIN_ONLY_PAGES.some(page => lowerUrl.includes(page));
         }
 
-        // ===== MAIN openPage() FUNCTION WITH URL UPDATE FIX =====
+        // ===== MAIN openPage() =====
         function openPage(url, title) {
             if (!url || url === '#') { openApologyModal(); return; }
             
-            // 🔐 চেক ১: ইউজার লগ ইন আছে কিনা
             const savedUser = localStorage.getItem('tanjif_active_user');
             if (!savedUser) {
                 openApologyModal();
@@ -1229,32 +1260,27 @@
             
             const user = JSON.parse(savedUser);
             
-            // 🔐 চেক ২: অ্যাডমিন পেজ চেক
             if (isAdminPage(url) && user.role !== 'admin') {
                 alert('⚠️ এই পেজটি শুধুমাত্র অ্যাডমিনদের জন্য!');
                 return;
             }
             
-            // 🔐 চেক ৩: URL এ কোনো সন্দেহজনক কিছু আছে কিনা
             if (url.includes('javascript:') || url.includes('data:')) {
                 alert('⚠️ অনিরাপদ URL!');
                 return;
             }
             
-            // ✅ URL তৈরি করুন - ফিক্স করা হলো
             const baseUrl = window.location.pathname;
             const encodedUrl = encodeURIComponent(url);
             const encodedTitle = encodeURIComponent(title || 'পেজ');
             const newUrl = baseUrl + '?page=' + encodedUrl + '&title=' + encodedTitle;
             
-            // ✅ URL আপডেট করুন (হিস্টোরি স্টেট) - সঠিকভাবে পুশ করুন
             window.history.pushState(
                 { page: 'embedded', url: url, title: title }, 
                 title || 'পেজ', 
                 newUrl
             );
             
-            // ✅ Iframe লোড করুন
             let embedUrl = url;
             if (embedUrl.includes('drive.google.com') && embedUrl.includes('/view')) {
                 embedUrl = embedUrl.replace(/\/view(\?.*)?$/, '/preview');
@@ -1263,60 +1289,26 @@
             const iframe = document.getElementById('embeddedIframe');
             iframe.src = embedUrl;
             
-            // ✅ ভিউ দেখান
             document.getElementById('embeddedPageViewer').style.display = 'flex';
             document.body.classList.add('embedded-open');
             
-            // ✅ ব্রেডক্রাম্ব আপডেট
             document.getElementById('breadcrumb').style.display = 'block';
             document.getElementById('breadcrumbPage').textContent = ' / ' + (title || 'পেজ');
             
-            // ✅ অন্যান্য ভিউ লুকান
             document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
             document.getElementById('whatsappFloat').style.display = 'none';
         }
 
-        // ===== FIX FOR INTERNAL LINKS (Checklist Page Links) =====
-        // এই ইভেন্ট লিসেনারটি Iframe-এর ভেতরের যেকোনো লিংকে ক্লিক করলে সেটিকে আটকে দিয়ে openPage ফাংশনটি চালাবে।
-        window.addEventListener('load', () => {
-            const iframe = document.getElementById('embeddedIframe');
-            iframe.onload = () => {
-                try {
-                    const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
-                    if (innerDoc) {
-                        innerDoc.addEventListener('click', function(event) {
-                            const target = event.target.closest('a');
-                            if (target && target.href && !target.href.startsWith('#') && !target.href.startsWith('http')) {
-                                // ইভেন্ট থামিয়ে দিন যাতে Iframe ভেতরে না যায়
-                                event.preventDefault();
-                                const newPageUrl = target.getAttribute('href');
-                                const newTitle = target.innerText || newPageUrl;
-                                if (newPageUrl && newPageUrl !== '#' && newPageUrl !== '') {
-                                    // মূল পেজের openPage ফাংশনটি কল করুন
-                                    window.openPage(newPageUrl, newTitle);
-                                }
-                            }
-                        });
-                    }
-                } catch (error) {
-                    // Cross-origin issues might throw an error here; we ignore it.
-                    console.log("Unable to attach link listener to iframe content.");
-                }
-            };
-        });
-
-        // ===== CLOSE EMBEDDED PAGE =====
+        // ===== CLOSE EMBEDDED =====
         function closeEmbeddedPage() {
             document.getElementById('embeddedPageViewer').style.display = 'none';
             document.getElementById('embeddedIframe').src = '';
             document.body.classList.remove('embedded-open');
-            
             document.getElementById('breadcrumb').style.display = 'none';
             
             const isLanding = document.getElementById('landingView').classList.contains('active');
             document.getElementById('whatsappFloat').style.display = isLanding ? 'flex' : 'none';
             
-            // URL থেকে প্যারামিটার রিমুভ করুন
             if (window.location.search) {
                 window.history.replaceState({ page: 'main' }, '', window.location.pathname);
             }
@@ -1330,7 +1322,7 @@
             }
         }
 
-        // ===== URL PARAMETER HANDLING WITH SECURITY =====
+        // ===== URL PARAM HANDLING =====
         function handleUrlParams() {
             const params = new URLSearchParams(window.location.search);
             const page = params.get('page');
@@ -1339,7 +1331,6 @@
             if (page) {
                 const decodedUrl = decodeURIComponent(page);
                 
-                // 🔐 সিকিউরিটি চেক
                 const savedUser = localStorage.getItem('tanjif_active_user');
                 if (!savedUser) {
                     window.history.replaceState({}, '', window.location.pathname);
@@ -1357,7 +1348,6 @@
                     return;
                 }
                 
-                // পেজ লোড করুন
                 let embedUrl = decodedUrl;
                 if (embedUrl.includes('drive.google.com') && embedUrl.includes('/view')) {
                     embedUrl = embedUrl.replace(/\/view(\?.*)?$/, '/preview');
@@ -1373,15 +1363,13 @@
             }
         }
 
-        // ===== POPSTATE HANDLER - ব্রাউজারের ব্যাক/ফরওয়ার্ড বাটন =====
+        // ===== POPSTATE =====
         window.addEventListener('popstate', function(event) {
-            // চেক করুন পেজ প্যারামিটার আছে কিনা
             const params = new URLSearchParams(window.location.search);
             const page = params.get('page');
             const title = params.get('title');
             
             if (page && event.state && event.state.page === 'embedded') {
-                // পেজ খোলা আছে, Iframe আপডেট করুন
                 const decodedUrl = decodeURIComponent(page);
                 let embedUrl = decodedUrl;
                 if (embedUrl.includes('drive.google.com') && embedUrl.includes('/view')) {
@@ -1395,7 +1383,6 @@
                 document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
                 document.getElementById('whatsappFloat').style.display = 'none';
             } else if (!page) {
-                // প্যারামিটার নেই, পেজ ক্লোজ করুন
                 closeEmbeddedPage();
                 switchView('landingView');
             }
@@ -1406,7 +1393,6 @@
             checkPersistedSession();
             handleUrlParams();
             
-            // সিকিউরিটি: কপি, কাট, পেস্ট প্রিভেন্ট
             document.addEventListener('contextmenu', e => { 
                 if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); 
             });
@@ -1418,7 +1404,6 @@
             document.addEventListener('cut', e => { if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); });
             document.addEventListener('paste', e => { if(!e.target.closest('input, textarea, .form-control, #authModal, #adminVerifyModal')) e.preventDefault(); });
 
-            // প্রাথমিক স্টেট সেট করুন
             if (!window.location.search) {
                 history.replaceState({ page: 'main' }, '');
             }
@@ -1528,7 +1513,10 @@
 
         function updateNavAuthUI(user) {
             const nav = document.getElementById('navAuthArea');
+            const dropdownDashboard = document.getElementById('dropdownDashboardLink');
             if (user) {
+                // show dashboard link in dropdown
+                dropdownDashboard.style.display = 'flex';
                 if (user.role === 'admin') {
                     nav.innerHTML = `
                         <div class="nav-user-profile">
@@ -1546,8 +1534,25 @@
                         </div>
                     `;
                 }
+                // add logged-in class to body to hide desktop nav links
+                document.body.classList.add('logged-in');
             } else {
+                dropdownDashboard.style.display = 'none';
                 nav.innerHTML = `<button class="btn-auth" onclick="openAuthModal()"><i class="fa-solid fa-right-to-bracket"></i> লগইন / রেজিস্টার</button>`;
+                document.body.classList.remove('logged-in');
+            }
+        }
+
+        function goToDashboard() {
+            const saved = localStorage.getItem('tanjif_active_user');
+            if (saved) {
+                const user = JSON.parse(saved);
+                if (user.role === 'admin') {
+                    switchView('adminDashboardView');
+                } else {
+                    switchView('studentDashboardView');
+                }
+                closeDropdown();
             }
         }
 
@@ -1558,6 +1563,8 @@
                 updateNavAuthUI(user);
                 if (user.role === 'admin') document.getElementById('adminWelcomeName').innerText = user.name || 'অ্যাডমিন';
                 else document.getElementById('studentWelcomeName').innerText = user.name;
+            } else {
+                updateNavAuthUI(null);
             }
         }
 
