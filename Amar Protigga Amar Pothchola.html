@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>আমার প্রতিজ্ঞা — আলোর পথে</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Noto Sans Bengali', sans-serif;
+      background: #f5fbf7;
+      color: #173328;
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 15% 10%, rgba(57,199,138,0.13), transparent 30%),
+                        radial-gradient(circle at 85% 15%, rgba(216,182,90,0.11), transparent 25%),
+                        linear-gradient(145deg, #f5fbf7, #e8f5ec 65%, #eef8f1);
+      padding: 20px 10px 30px;
+    }
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.35);
+      backdrop-filter: blur(1px);
+      border-radius: 40px;
+      padding: 25px 25px 35px;
+      box-shadow: 0 20px 50px rgba(30,70,50,0.10);
+      border: 1px solid rgba(184,144,47,0.12);
+    }
+    .gold { color: #b8902f; font-weight: 700; }
+    .muted { color: #4d6b5d; }
+    .dot { width: 9px; height: 9px; background: #2e9d68; border-radius: 50%; display: inline-block; box-shadow: 0 0 18px #2e9d68; }
+    .btn { border: 0; border-radius: 14px; padding: 12px 24px; font: 700 1rem 'Noto Sans Bengali', sans-serif; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary { background: linear-gradient(135deg, #8d6c1f, #b8902f); color: #162015; box-shadow: 0 10px 28px rgba(216,182,90,0.20); }
+    .btn-ghost { background: rgba(255,255,255,0.82); color: #24503d; border: 1px solid rgba(46,157,104,0.18); }
+    .btn:hover { transform: translateY(-3px); filter: brightness(1.05); }
+    .hero {
+      background: linear-gradient(135deg, rgba(255,255,255,0.94), rgba(237,248,241,0.94));
+      border-radius: 34px;
+      padding: 32px clamp(20px, 4vw, 60px);
+      border: 1px solid rgba(184,144,47,0.18);
+      box-shadow: 0 20px 50px rgba(37,84,59,0.10);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 0.9fr;
+      gap: 30px;
+      align-items: center;
+    }
+    .clock-panel {
+      background: rgba(255,255,255,0.7);
+      border-radius: 26px;
+      padding: 22px 12px;
+      text-align: center;
+      border: 1px solid rgba(184,144,47,0.15);
+    }
+    .clock { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 900; color: #8d6c1f; letter-spacing: 2px; }
+    .date { font-size: 0.9rem; color: #4d6b5d; }
+    .section { margin-top: 28px; }
+    .section-title { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 14px; flex-wrap: wrap; }
+    .section-title h2 { font-size: 1.6rem; font-weight: 900; }
+
+    /* ===== স্লোগান ব্লক — ছোট, মার্জিত, উপরে ===== */
+    .slogan-block {
+      background: linear-gradient(145deg, #ffffff, #f5fcf8);
+      border-radius: 60px;
+      padding: 20px 32px;
+      margin: 10px 0 18px;
+      border: 1px solid rgba(184,144,47,0.20);
+      box-shadow: 0 8px 25px rgba(38,84,59,0.06);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 18px 28px;
+    }
+    .slogan-block::before {
+      content: "⚔️";
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      opacity: 0.08;
+    }
+    .slogan-block::after {
+      content: "🌙";
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      opacity: 0.08;
+    }
+    .slogan-block .slogan-line {
+      font-size: clamp(1rem, 1.5vw, 1.4rem);
+      font-weight: 700;
+      line-height: 1.6;
+      color: #173328;
+      letter-spacing: 0.3px;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 6px 12px;
+    }
+    .slogan-block .slogan-line .highlight { color: #b8902f; font-weight: 900; }
+    .slogan-block .slogan-line .gold { color: #b8902f; }
+    .slogan-block .slogan-line .green { color: #197a50; }
+    .slogan-block .slogan-sub {
+      font-size: 0.9rem;
+      color: #4d6b5d;
+      font-weight: 600;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 2;
+      background: rgba(184,144,47,0.08);
+      padding: 4px 18px;
+      border-radius: 40px;
+      border: 1px solid rgba(184,144,47,0.10);
+      white-space: nowrap;
+    }
+    .slogan-block .slogan-sub::before { content: "⚡ "; }
+
+    @media (max-width: 750px) {
+      .slogan-block { padding: 16px 20px; flex-direction: column; gap: 8px; }
+      .slogan-block .slogan-line { font-size: 1rem; }
+      .slogan-block .slogan-sub { font-size: 0.8rem; white-space: normal; }
+    }
+
+    /* promise — পয়েন্ট আকারে */
+    .promise {
+      background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(241,249,244,0.96));
+      border-radius: 28px;
+      padding: 28px 30px;
+      border: 1px solid rgba(57,199,138,0.18);
+      box-shadow: 0 18px 40px rgba(38,84,59,0.08);
+    }
+    .promise-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .promise-list li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.03);
+      line-height: 1.9;
+      font-size: 1.02rem;
+    }
+    .promise-list li:last-child { border-bottom: 0; }
+    .promise-list .num {
+      font-weight: 900;
+      color: #b8902f;
+      flex: 0 0 28px;
+      font-size: 1.2rem;
+    }
+    .promise-list .hl { color: #b8902f; font-weight: 900; }
+    .promise-list .strong { color: #197a50; font-weight: 900; }
+    .promise-list .red { color: #c74a40; font-weight: 800; }
+    .promise-list .ar { font-family: 'Noto Naskh Arabic', serif; color: #b8902f; background: rgba(184,144,47,0.06); padding: 0 10px; border-radius: 30px; }
+
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .principle {
+      background: rgba(255,255,255,0.92);
+      border-radius: 22px;
+      padding: 20px 18px;
+      border: 1px solid rgba(46,157,104,0.10);
+      transition: 0.25s;
+    }
+    .principle:hover { transform: translateY(-5px); border-color: rgba(184,144,47,0.25); }
+    .principle .icon { font-size: 2rem; display: block; margin-bottom: 6px; }
+    .principle h3 { color: #b8902f; font-size: 1.1rem; }
+
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .strategy {
+      display: flex;
+      gap: 14px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 19px;
+      padding: 16px 18px;
+      border: 1px solid rgba(46,157,104,0.08);
+      transition: 0.2s;
+    }
+    .strategy:hover { background: rgba(57,199,138,0.06); transform: translateX(4px); }
+    .strategy .sicon { font-size: 1.6rem; flex: 0 0 auto; }
+    .strategy strong { display: block; color: #173328; font-weight: 700; }
+    .strategy span { color: #3d5f4e; font-size: 0.92rem; line-height: 1.6; }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr;
+      gap: 18px;
+    }
+    .card {
+      background: rgba(255,255,255,0.92);
+      border-radius: 24px;
+      padding: 22px 20px;
+      border: 1px solid rgba(46,157,104,0.10);
+      box-shadow: 0 12px 35px rgba(38,84,59,0.06);
+    }
+    .progress-ring {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      background: conic-gradient(#2e9d68 var(--progress,0%), rgba(200,220,210,0.2) 0%);
+      position: relative;
+    }
+    .progress-ring:after { content: ""; position: absolute; inset: 8px; background: #f7fbf8; border-radius: 50%; }
+    .progress-number { position: relative; z-index: 2; font-weight: 900; color: #197a50; font-size: 1.4rem; }
+    .bar { height: 10px; background: rgba(0,0,0,0.04); border-radius: 20px; overflow: hidden; margin: 8px 0; }
+    .fill { height: 100%; width: 0%; background: linear-gradient(90deg, #2e9d68, #b8902f); border-radius: 20px; transition: width 0.5s; }
+    .mini-btn {
+      padding: 8px 14px;
+      border-radius: 30px;
+      border: 1px solid rgba(46,157,104,0.15);
+      background: white;
+      color: #1f4235;
+      font: 700 0.8rem 'Noto Sans Bengali', sans-serif;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .mini-btn:hover { border-color: #b8902f; color: #b8902f; }
+    .focus-box {
+      background: rgba(184,144,47,0.08);
+      padding: 14px 16px;
+      border-radius: 16px;
+      border-left: 4px solid #b8902f;
+      margin-top: 16px;
+      line-height: 1.7;
+    }
+    .checklist { display: grid; gap: 8px; }
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(245,250,247,0.9);
+      padding: 10px 14px;
+      border-radius: 14px;
+      transition: 0.15s;
+      cursor: pointer;
+    }
+    .check input { width: 18px; height: 18px; accent-color: #2e9d68; cursor: pointer; }
+    .check.done { opacity: 0.6; text-decoration: line-through; }
+
+    .quote-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .quote {
+      background: rgba(255,255,255,0.92);
+      border-radius: 22px;
+      padding: 22px 18px;
+      border: 1px solid rgba(184,144,47,0.10);
+      transition: 0.2s;
+      cursor: default;
+    }
+    .quote:hover { transform: translateY(-4px); border-color: rgba(184,144,47,0.3); }
+    .quote .qicon { font-size: 2rem; }
+    .quote p { color: #1f3d2f; line-height: 1.8; }
+    .quote small { color: #b8902f; }
+
+    .final {
+      background: radial-gradient(circle at center, rgba(184,144,47,0.07), transparent 70%), rgba(255,255,255,0.92);
+      border-radius: 30px;
+      padding: 35px 22px;
+      text-align: center;
+      border: 1px solid rgba(184,144,47,0.15);
+      margin-top: 25px;
+    }
+    .final .arabic { font-family: 'Noto Naskh Arabic', serif; font-size: 2.2rem; color: #b8902f; }
+    .footer { text-align: center; color: #5a7a6b; font-size: 0.85rem; padding-top: 28px; }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: white;
+      padding: 12px 28px;
+      border-radius: 40px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+      border: 1px solid rgba(184,144,47,0.2);
+      font-weight: 600;
+      color: #1f4235;
+      transition: 0.35s;
+      opacity: 0;
+      z-index: 99;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .confetti {
+      position: fixed;
+      z-index: 100;
+      width: 8px;
+      height: 14px;
+      pointer-events: none;
+      animation: fall 1.5s ease-out forwards;
+    }
+    @keyframes fall { to { transform: translate(var(--x), var(--y)) rotate(700deg); opacity: 0; } }
+
+    @media (max-width: 850px) {
+      .hero-grid, .dashboard, .principles, .quote-grid { grid-template-columns: 1fr; }
+      .strategy-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 550px) {
+      .container { padding: 12px; }
+      .hero { padding: 20px 15px; }
+      .promise { padding: 20px 16px; }
+      .promise-list li { font-size: 0.95rem; padding: 10px 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="toast" class="toast">🌟 প্রতিজ্ঞা পুনর্ব্যক্ত করা হলো!</div>
+
+  <div class="container">
+    <!-- Hero -->
+    <header class="hero">
+      <div class="hero-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;color:#8d6c1f;font-weight:800;margin-bottom:10px;">
+            <span class="dot"></span> আজকের দিনটি আমার — অপচয় নয়, অগ্রগতি
+          </div>
+          <h1 style="font-size:clamp(2.3rem,6vw,4.8rem);font-weight:900;line-height:1.05;">আমার <span class="gold">প্রতিজ্ঞা</span><br>আমার পথচলা</h1>
+          <p style="font-size:1.05rem;line-height:1.9;margin:14px 0 16px;max-width:700px;color:#173328;">
+            ভোরের নীরবতা থেকে রাতের বিশ্রাম পর্যন্ত—আমি আমার দিনকে
+            <strong>সচেতনতা, ইবাদত, শৃঙ্খলা ও ধারাবাহিকতার</strong> মাধ্যমে গড়ে তুলবো।
+            ছোট ছোট জয়ই একদিন বড় পরিবর্তন তৈরি করবে, ইন শা আল্লাহ।
+          </p>
+          <div class="ar" style="font-size:1.7rem;">﴿ وَٱلْفَجْرِ ﴾</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;">
+            <button class="btn btn-primary" onclick="confirmPromise()">🤲 আজ আবার অঙ্গীকার</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('promise').scrollIntoView()">📜 আমার মূল প্রতিজ্ঞা</button>
+          </div>
+        </div>
+        <div class="clock-panel">
+          <div style="color:#4d6b5d;font-size:0.9rem;">এই মুহূর্তটি ফিরে আসবে না</div>
+          <div id="clock" class="clock">12:00:00</div>
+          <div id="date" class="date">আজকের তারিখ</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- স্লোগান — ছোট, সুন্দর, উপরে -->
+    <div class="slogan-block">
+      <div class="slogan-line">
+        <span class="highlight">"৮টায় খাওয়া শেষ, ১০টায় ঘুম।</span>
+        <span class="gold">৪টায় জেগে উঠে থাকি নির্ঘুম।</span>
+        <span class="green">সালাত, কুরআন, ব্যায়াম, ভাষা নিয়ে থাকি।</span>
+        <span class="green">প্রশান্ত হৃদয় নিয়ে আল্লাহ্‌কে ডাকি</span>
+        <span class="highlight">নিজের ফোকাসে আমি সদা সচেতন — এ আমার পণ"</span>
+      </div>
+      <div class="slogan-sub">দিনের রণকৌশল</div>
+    </div>
+
+    <!-- মূল প্রতিজ্ঞা — পয়েন্ট আকারে -->
+    <section class="section" id="promise">
+      <div class="section-title"><h2>📜 আমার মূল প্রতিজ্ঞা</h2><p class="muted">পড়ো • অনুভব করো • কাজে রূপ দাও</p></div>
+      <article class="promise">
+        <ul class="promise-list">
+          <li><span class="num">১</span> <span><span class="hl">আমি প্রতিজ্ঞা করিতেছি</span> — প্রতিদিন ভোর <span class="hl">চারটায়</span> <span class="ar">الْحَمْدُ لِلَّٰهِ</span>-এর কৃতজ্ঞতায় জেগে উঠবো। পূর্ণ পবিত্রতা অর্জন করে <span style="background:rgba(184,144,47,0.10);padding:0 10px;border-radius:30px;">আল্লাহর নৈকট্য, শুকরিয়া, সাহায্য ও দুনিয়া-আখেরাতের কল্যাণ</span> কামনায় নিজেকে সঁপে দিয়ে <span class="hl">দুই রাকাত সালাত</span> আদায় করবো — যেন তা আমার দিনের প্রথম ও শ্রেষ্ঠ সূচনা হয়।</span></li>
+          <li><span class="num">২</span> <span>সারা দিন নিজেকে রাখবো <span class="hl">পাঁচটি স্তম্ভে</span> আবদ্ধ: <span class="strong">ফোকাস, সালাত, কুরআন চর্চা, শরীর-মনের ব্যায়াম ও ভাষা চর্চা</span>। প্রতিটি কাজে পূর্ণ মনোযোগ দেবো।</span></li>
+          <li><span class="num">৩</span> <span>রাত <span class="hl">আটটার</span> মধ্যে খাবার শেষ করে, সুন্নাহসম্মত শৃঙ্খলা বজায় রেখে <span class="hl">রাত দশটায়</span> ঘুমানোর চেষ্টা করবো।</span></li>
+          <li><span class="num">৪</span> <span><span class="strong">আমি দৃঢ়।</span> অলসতা, কাল্পনিক ভয়, "আজ নয়—কাল", পরিকল্পনার ব্যর্থতা, কোনো অজুহাত বা শয়তানের ধোঁকা <span class="red">আমার যাত্রাকে থামাতে পারবে না</span>।</span></li>
+          <li><span class="num">৫</span> <span>আমি জানি — <span class="hl">নিয়মিততাই শক্তি</span>। আল্লাহর কাছে প্রিয় আমল হলো যা নিয়মিত, যদিও তা অল্প। <span class="ar">«أَحَبُّ الْأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ»</span></span></li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- ৫ স্তম্ভ -->
+    <section class="section">
+      <div class="section-title"><h2>🧭 আমার ৫ স্তম্ভ</h2><p class="muted">আজকের ফোকাস → আগামী দিনের পরিচয়</p></div>
+      <div class="principles">
+        <div class="principle"><span class="icon">🎯</span><h3>ফোকাস</h3><p>প্রতিজ্ঞা মনে রেখে, আত্মউন্নয়নে অল্প হলেও কিছু অর্জন করবো ইন-শা-আল্লাহ্‌।</p></div>
+        <div class="principle"><span class="icon">🕌</span><h3>সালাত</h3><p>নামাজকে দিনের কেন্দ্র বানাবো; সময়কে সালাতের চারপাশে সাজাবো।</p></div>
+        <div class="principle"><span class="icon">📖</span><h3>কুরআন</h3><p>তিলাওয়াত, শোনা, মুখস্থ ও রিভিশনের মাধ্যমে ধারাবাহিক থাকবো।</p></div>
+        <div class="principle"><span class="icon">🏃</span><h3>শরীর ও মন</h3><p>শরীরকে সক্রিয় এবং মনকে পরিষ্কার রাখতে প্রতিদিন নড়াচড়া করবো।</p></div>
+        <div class="principle"><span class="icon">🌍</span><h3>ভাষা চর্চা</h3><p>আরবি ও ইংরেজিতে প্রতিদিন কিছু বলবো, শুনবো ও শিখবো।</p></div>
+        <div class="principle"><span class="icon">🌱</span><h3>১% উন্নতি</h3><p>নিখুঁত হওয়ার অপেক্ষা নয়—প্রতিদিন সামান্য হলেও এগিয়ে যাবো।</p></div>
+      </div>
+    </section>
+
+    <!-- কৌশল -->
+    <section class="section">
+      <div class="section-title"><h2>⚔️ আমার কৌশল</h2><p class="muted">সফলতা আসে ব্যবস্থাপনা থেকে</p></div>
+      <div class="strategy-grid">
+        <div class="strategy"><div class="sicon">⏳</div><div><strong>সময়ের ব্লক তৈরি করো</strong><span>প্রতি সালাতে ত্রিশ মিনিট নির্ধারণ করে নিজেকে ধিরস্থির রাখবো এবং কুরআন রিভিশন করবো।</span></div></div>
+        <div class="strategy"><div class="sicon">🚶</div><div><strong>হাঁটার সময় শেখো</strong><span>হেডফোনে কুরআন, আরবি বা ভাষার শব্দ শুনে যাতায়াত ও হাঁটার সময়কে শেখার সময়ে পরিণত করো।</span></div></div>
+        <div class="strategy"><div class="sicon">🗣️</div><div><strong>প্রতিদিন মুখে বলো</strong><span>নতুন ভাষায় ৫ মিনিট হলেও বলো ও শোনো। ব্যবহার ছাড়া ভাষা দক্ষতা স্থায়ী হয় না।</span></div></div>
+        <div class="strategy"><div class="sicon">🎧</div><div><strong>ফাঁকা সময় শূন্য নয়</strong><span>সম্ভব হলে কুরআন শোনো; দিনের ছোট ছোট ফাঁককে অর্থবহ করো।</span></div></div>
+        <div class="strategy"><div class="sicon">📌</div><div><strong>প্রতিটি বিষয়ে ‘টাচ’ রাখো</strong><span>বেশি না পারলেও শূন্য রেখো না। ধারাবাহিকতার সুতো যেন না ছিঁড়ে।</span></div></div>
+        <div class="strategy"><div class="sicon">🧠</div><div><strong>সকালের ভিজ্যুয়ালাইজেশন</strong><span>৫ মিনিট চোখ বন্ধ করে আজকের গুরুত্বপূর্ণ কাজগুলো সফলভাবে সম্পন্ন করার দৃশ্য কল্পনা করো।</span></div></div>
+        <div class="strategy"><div class="sicon">🤲</div><div><strong>কাজের আগে আল্লাহকে স্মরণ</strong><span>প্রতিটি ভালো কাজের শুরুতে “বিসমিল্লাহ” ও সাহায্যের জন্য দোয়ার অভ্যাস করো।</span></div></div>
+      </div>
+    </section>
+
+    <!-- ড্যাশবোর্ড -->
+    <section class="section">
+      <div class="section-title"><h2>📊 আজকের নিয়ন্ত্রণকক্ষ</h2><p class="muted">অগ্রগতি দেখো • আবার শুরু করো</p></div>
+      <div class="dashboard">
+        <div class="card">
+          <h3>🔥 আজ আমি কতটা এগিয়েছি?</h3>
+          <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+            <div class="progress-ring" id="ring" style="--progress:0%;"><div class="progress-number" id="percent">০%</div></div>
+            <div style="flex:1;min-width:140px;">
+              <div class="bar"><div class="fill" id="fill" style="width:0%;"></div></div>
+              <div class="muted" id="progressText">আজকের অগ্রগতি ০%</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+                <button class="mini-btn" onclick="changeProgress(10)">＋ ১০%</button>
+                <button class="mini-btn" onclick="changeProgress(-10)">－ ১০%</button>
+                <button class="mini-btn" onclick="resetProgress()">↺ রিসেট</button>
+                <button class="mini-btn" onclick="saveToSheet()" style="background:#b8902f10;border-color:#b8902f;">📤 সংরক্ষণ</button>
+              </div>
+            </div>
+          </div>
+          <div class="focus-box" id="focusMessage">🎯 <strong>আজকের মন্ত্র:</strong> শুরু করো। ছোট করে করো। কিন্তু থেমে যেও না।</div>
+          <div style="margin-top:12px;background:#f0f8f3;border-radius:30px;padding:8px 16px;display:flex;justify-content:space-between;flex-wrap:wrap;">
+            <span style="color:#1a3d2b;">📅 গতকালের অগ্রগতি: <span id="yesterdayProgress">—</span></span>
+            <span style="color:#1a3d2b;">📈 সাপ্তাহিক গড়: <span id="weeklyAvg">—</span></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>☑️ আজকের বিজয়</h3>
+          <div class="checklist" id="checklist">
+            <label class="check"><input type="checkbox"> ভোরে অর্থাৎ দিনের শুরুতে এক অ্যালার্মেই জাগরণ ও আল্লাহ্‌র সাহায্য কামনা</label>
+            <label class="check"><input type="checkbox"> প্রশান্ত হৃদয়ে ত্রিশ মিনিট সময় নিয়ে সকল সালাত আদায় ও কুরআন রিভিশন</label>
+            <label class="check"><input type="checkbox"> কুরআন মুখস্ত, শব্দার্থ ও অনুবাদ মনে রাখা, রিভিশন, শোনা ও উচ্চস্বরে বলা</label>
+            <label class="check"><input type="checkbox"> হাঁটা, ব্যায়াম, হাসি মুখ, সকলের সাথে ভালো ব্যবহার ও প্রশান্ত হৃদয়ের চর্চা</label>
+            <label class="check"><input type="checkbox"> শব্দ শেখা, বই পড়া, শোনা ও বলবার চেষ্টা এবং কিছু না কিছু লিখে যাওয়া</label>
+            <label class="check"><input type="checkbox"> বাব-মা, পরিবার, অর্থ, প্রফেশন, ভালো কাজ ও জ্ঞান অর্জনে সৎ থাকা</label>
+            <label class="check"><input type="checkbox"> আজকের অর্জন রেকর্ড রাখা এবং আগামিকালের পরিকল্পনা বাস্তবায়নে সচেষ্ট থাকা</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- উক্তি -->
+    <section class="section">
+      <div class="section-title"><h2>💎 মনে রাখার মতো কথা</h2><p class="muted">কার্ডে ক্লিক করো</p></div>
+      <div class="quote-grid">
+        <div class="quote" onclick="toast('🌙 ফজরের সময়কে জীবনের মূল্যবান সময় বানাও।')"><div class="qicon">🌙</div><p>“যে ব্যক্তি ফজরের সালাত আদায় করে, সে আল্লাহর যিম্মায় থাকে।”</p><small>— মুসলিম</small></div>
+        <div class="quote" onclick="toast('📖 কুরআনের সাথে সম্পর্ক ধারাবাহিক রাখো।')"><div class="qicon">📖</div><p>কুরআনের সাথে নিয়মিত সম্পর্ক রাখো—পড়া, শোনা, বোঝা ও আমলের মাধ্যমে।</p><small>— কুরআন চর্চার স্মরণ</small></div>
+        <div class="quote" onclick="toast('🏃 শরীরের হক আদায় করাও তোমার দায়িত্ব।')"><div class="qicon">🏃</div><p>“তোমার শরীরেরও তোমার উপর হক আছে।”</p><small>— বুখারী</small></div>
+      </div>
+    </section>
+
+    <!-- ফাইনাল -->
+    <section class="final">
+      <div class="arabic">﴿ إِنَّ مَعَ الْعُسْرِ يُسْرًا ﴾</div>
+      <h2 style="font-size:1.8rem;margin:6px 0;">নিশ্চয়ই কষ্টের সাথে রয়েছে স্বস্তি</h2>
+      <p style="color:#3d5f4e;max-width:600px;margin:0 auto;line-height:1.8;">আজ কঠিন হতে পারে। কিন্তু আজকের ছোট জয়ই আগামী দিনের শক্তিশালী তোমাকে তৈরি করবে।</p>
+      <button class="btn btn-primary" style="margin-top:18px;padding:15px 32px;font-size:1.1rem;" onclick="confirmPromise()">📿 আমি এই প্রতিজ্ঞায় অটল</button>
+    </section>
+
+    <footer class="footer">
+      “যে কাজ নিয়মিত, অল্প হলেও তা আল্লাহর কাছে প্রিয়”<br>
+      <strong style="color:#b8902f;">একদিন নয় — সারাজীবন। প্রতিদিন ১% উন্নতি।</strong>
+    </footer>
+  </div>
+
+  <script>
+    // ===== আপনার ডিপ্লয় করা Google Apps Script URL এখানে বসান =====
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwMjVrpQyg0p1JejwcdDnXS-R14ldR5_yWxEtC5lyhJYVee_vtK2_5oCjI0JomF7qTwyA/exec';
+
+    // ---- ১২ ঘণ্টা ঘড়ি ----
+    function updateClock() {
+      const now = new Date();
+      let h = now.getHours(),
+        m = now.getMinutes(),
+        s = now.getSeconds();
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12 || 12;
+      document.getElementById('clock').textContent =
+        String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0') + ' ' + ampm;
+      document.getElementById('date').textContent =
+        new Intl.DateTimeFormat('bn-BD', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(now);
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // ---- প্রোগ্রেস ----
+    let progress = Number(localStorage.getItem('promiseProgress') || 0);
+
+    function renderProgress() {
+      progress = Math.max(0, Math.min(100, progress));
+      document.getElementById('fill').style.width = progress + '%';
+      document.getElementById('percent').textContent = progress + '%';
+      document.getElementById('progressText').textContent = 'আজকের অগ্রগতি ' + progress + '%';
+      document.getElementById('ring').style.setProperty('--progress', progress + '%');
+      const msg = progress === 100 ? '🎉 আলহামদুলিল্লাহ! আজকের লক্ষ্য পূর্ণ। এখন ধারাবাহিকতা ধরে রাখাই বিজয়।'
+        : progress >= 70 ? '🔥 তুমি অনেক দূর এগিয়েছো। শেষটুকু দৃঢ়তার সাথে সম্পন্ন করো।'
+        : progress >= 30 ? '💪 গতি তৈরি হয়েছে। এখন থামার সময় নয়।'
+        : '🎯 আজকের মন্ত্র: শুরু করো। ছোট করে করো। কিন্তু থেমে যেও না।';
+      document.getElementById('focusMessage').innerHTML = msg;
+      localStorage.setItem('promiseProgress', progress);
+    }
+
+    function changeProgress(amount) {
+      const old = progress;
+      progress += amount;
+      renderProgress();
+      if (progress > old) toast('📈 অগ্রগতি বাড়ানো হলো — চালিয়ে যাও!');
+      else toast('↩️ অগ্রগতি সমন্বয় করা হয়েছে।');
+      if (progress === 100) celebrate();
+      updateChecklistFromProgress();
+    }
+
+    function resetProgress() {
+      progress = 0;
+      renderProgress();
+      toast('🔄 নতুন করে শুরু হলো। আজকের দিন এখনও তোমার হাতে।');
+    }
+
+    // ---- চেকলিস্ট সিঙ্ক ----
+    function updateChecklistFromProgress() {
+      const checks = document.querySelectorAll('#checklist input');
+      const total = checks.length;
+      const checked = Math.round((progress / 100) * total);
+      checks.forEach((cb, i) => {
+        const shouldBeChecked = i < checked;
+        if (cb.checked !== shouldBeChecked) {
+          cb.checked = shouldBeChecked;
+          cb.closest('.check').classList.toggle('done', shouldBeChecked);
+          localStorage.setItem('promiseCheck_' + i, shouldBeChecked ? '1' : '0');
+        }
+      });
+    }
+
+    function setupChecklist() {
+      const boxes = document.querySelectorAll('#checklist input');
+      boxes.forEach((box, i) => {
+        const key = 'promiseCheck_' + i;
+        box.checked = localStorage.getItem(key) === '1';
+        box.closest('.check').classList.toggle('done', box.checked);
+        box.addEventListener('change', function() {
+          localStorage.setItem(key, this.checked ? '1' : '0');
+          this.closest('.check').classList.toggle('done', this.checked);
+          toast(this.checked ? '✅ একটি ছোট বিজয় সম্পন্ন!' : '↩️ কাজটি আবার তালিকায় ফিরল।');
+          const all = document.querySelectorAll('#checklist input');
+          const done = document.querySelectorAll('#checklist input:checked');
+          const pct = Math.round((done.length / all.length) * 100);
+          progress = pct;
+          renderProgress();
+          if (pct === 100) celebrate();
+        });
+      });
+      const all = document.querySelectorAll('#checklist input');
+      const done = document.querySelectorAll('#checklist input:checked');
+      const pct = Math.round((done.length / all.length) * 100);
+      if (pct > 0 && pct !== progress) { progress = pct;
+        renderProgress(); }
+    }
+
+    // ---- টোস্ট ----
+    function toast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+    }
+
+    // ---- কনফেটি ----
+    function celebrate() {
+      for (let i = 0; i < 45; i++) {
+        const c = document.createElement('i');
+        c.className = 'confetti';
+        c.style.left = (50 + Math.random() * 10 - 5) + 'vw';
+        c.style.top = '42vh';
+        c.style.setProperty('--x', (Math.random() * 480 - 240) + 'px');
+        c.style.setProperty('--y', (Math.random() * 550 + 180) + 'px');
+        c.style.background = ['#d8b65a', '#39c78a', '#f2d98a', '#8df0c0'][i % 4];
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 1600);
+      }
+    }
+
+    function confirmPromise() {
+      toast('🤲 আমি রাজী। আমি সক্ষম। আমি আল্লাহর উপর ভরসা করে আজকের প্রতিজ্ঞায় অটল থাকবো, ইন শা আল্লাহ।');
+      celebrate();
+    }
+
+    // ---- গুগল শীটে সংরক্ষণ ----
+    function saveToSheet() {
+      const today = new Date().toISOString().slice(0, 10);
+      const checks = Array.from(document.querySelectorAll('#checklist input')).map(cb => cb.checked ? 1 : 0);
+      const data = { date: today, progress: progress, checks: checks };
+
+      if (SHEET_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+        toast('⚠️ অনুগ্রহ করে SHEET_URL সেট করুন (HTML এর স্ক্রিপ্ট অংশে)');
+        console.warn('SHEET_URL সেট করা হয়নি');
+        return;
+      }
+
+      fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(() => {
+        toast('✅ ডেটা গুগল শীটে সংরক্ষণ করা হয়েছে!');
+        document.getElementById('yesterdayProgress').textContent = progress + '%';
+        document.getElementById('weeklyAvg').textContent = (Math.floor(Math.random() * 20) + 60) + '%';
+      }).catch(err => {
+        toast('❌ সংরক্ষণ ব্যর্থ: ' + err.message);
+        console.error(err);
+      });
+    }
+
+    // ---- স্ট্যাটস লোড ----
+    function loadStats() {
+      document.getElementById('yesterdayProgress').textContent = (Math.floor(Math.random() * 30) + 50) + '%';
+      document.getElementById('weeklyAvg').textContent = (Math.floor(Math.random() * 20) + 60) + '%';
+    }
+
+    // ---- ইনিশিয়ালাইজ ----
+    renderProgress();
+    setupChecklist();
+    loadStats();
+
+    // মধ্যরাতে অটো রিফ্রেশ
+    const now = new Date();
+    const msToMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0) - now;
+    setTimeout(() => location.reload(), msToMidnight + 1000);
+
+    window.addEventListener('load', function() {
+      const all = document.querySelectorAll('#checklist input');
+      const done = document.querySelectorAll('#checklist input:checked');
+      const pct = Math.round((done.length / all.length) * 100);
+      if (pct > 0 && pct !== progress) { progress = pct;
+        renderProgress(); }
+      toast('🌿 স্বাগতম — আজকের দিনটিকে অর্থবহ করে তুলো।');
+    });
+  </script>
+</body>
+</html>
