@@ -142,8 +142,8 @@
         /* --- Dropdown (hamburger) always on right --- */
         .nav-dropdown {
             position: relative;
-            order: 10; /* push to the right */
             margin-left: auto;
+            display: block;
         }
 
         .nav-dropdown-btn {
@@ -329,12 +329,7 @@
             display: none !important;
         }
 
-        /* --- show dropdown always on the right --- */
-        .nav-dropdown {
-            display: block;
-        }
-
-        /* --- on larger screens, we hide the dropdown if not logged in? no, we want it always visible on right --- */
+        /* --- on larger screens, we show desktop links when not logged in --- */
         @media(min-width: 901px) {
             body:not(.logged-in) .nav-links {
                 display: flex;
@@ -754,12 +749,13 @@
                     <a onclick="closeDropdown(); navigateToHome('#about')"><i class="fa-solid fa-circle-info"></i> আমাদের সম্পর্কে</a>
                     <a onclick="closeDropdown(); openKidsModal()" class="kids-corner-nav-btn" style="margin:4px 10px;"><i class="fa-solid fa-child-reaching"></i> কিডস কর্নার</a>
                     <a onclick="closeDropdown(); openPage('Tanjif Academy Course Project.html', 'চলো শিখি')"><i class="fa-solid fa-book-open"></i> চলো শিখি</a>
-                    <!-- লগআউটের পাশে ড্যাশবোর্ড লিংক (শুধু লগ ইন অবস্থায় দেখাবে) -->
+                    <!-- Dashboard link inside dropdown -->
                     <a id="dropdownDashboardLink" style="display:none;" onclick="closeDropdown(); goToDashboard()"><i class="fa-solid fa-gauge-high"></i> ড্যাশবোর্ড</a>
                 </div>
             </div>
 
-            <div id="navAuthArea">
+            <!-- Auth area: shows login or user profile with logout -->
+            <div id="navAuthArea" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
                 <button class="btn-auth" onclick="openAuthModal()">
                     <i class="fa-solid fa-right-to-bracket"></i> লগইন / রেজিস্টার
                 </button>
