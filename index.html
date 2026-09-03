@@ -139,10 +139,18 @@
 
         .nav-links a:hover { color: #38bdf8; }
 
-        /* --- Dropdown (hamburger) always on right --- */
+        /* --- Right side group: auth + hamburger (hamburger comes last) --- */
+        .nav-right-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
+        /* --- Dropdown (hamburger) always on right, after auth --- */
         .nav-dropdown {
             position: relative;
-            margin-left: auto;
             display: block;
         }
 
@@ -337,20 +345,12 @@
             body.logged-in .nav-links {
                 display: none !important;
             }
-            .nav-dropdown {
-                display: block;
-                margin-left: auto;
-            }
         }
 
         /* mobile: always show dropdown, hide nav-links */
         @media(max-width: 900px) {
             .nav-links {
                 display: none !important;
-            }
-            .nav-dropdown {
-                display: block;
-                margin-left: auto;
             }
         }
 
@@ -734,31 +734,33 @@
                 <li><a onclick="openPage('Tanjif Academy Course Project.html', 'চলো শিখি')">চলো শিখি</a></li>
             </ul>
 
-            <!-- Dropdown (hamburger) always on the right -->
-            <div class="nav-dropdown">
-                <button class="nav-dropdown-btn" onclick="toggleDropdown()" aria-label="মেনু">
-                    <span class="hamburger-lines">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </span>
-                </button>
-                <div class="nav-dropdown-content" id="navDropdownContent">
-                    <a onclick="closeDropdown(); navigateToHome('#courses')"><i class="fa-solid fa-book-open"></i> কোর্সসমূহ</a>
-                    <a onclick="closeDropdown(); navigateToHome('#ebooks')"><i class="fa-solid fa-book"></i> ই-বুক</a>
-                    <a onclick="closeDropdown(); navigateToHome('#about')"><i class="fa-solid fa-circle-info"></i> আমাদের সম্পর্কে</a>
-                    <a onclick="closeDropdown(); openKidsModal()" class="kids-corner-nav-btn" style="margin:4px 10px;"><i class="fa-solid fa-child-reaching"></i> কিডস কর্নার</a>
-                    <a onclick="closeDropdown(); openPage('Tanjif Academy Course Project.html', 'চলো শিখি')"><i class="fa-solid fa-book-open"></i> চলো শিখি</a>
-                    <!-- Dashboard link inside dropdown -->
-                    <a id="dropdownDashboardLink" style="display:none;" onclick="closeDropdown(); goToDashboard()"><i class="fa-solid fa-gauge-high"></i> ড্যাশবোর্ড</a>
+            <!-- Right group: Auth area + Hamburger (hamburger comes last) -->
+            <div class="nav-right-group">
+                <div id="navAuthArea">
+                    <button class="btn-auth" onclick="openAuthModal()">
+                        <i class="fa-solid fa-right-to-bracket"></i> লগইন / রেজিস্টার
+                    </button>
                 </div>
-            </div>
 
-            <!-- Auth area: shows login or user profile with logout -->
-            <div id="navAuthArea" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-                <button class="btn-auth" onclick="openAuthModal()">
-                    <i class="fa-solid fa-right-to-bracket"></i> লগইন / রেজিস্টার
-                </button>
+                <!-- Dropdown (hamburger) - always on the right, after auth -->
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-btn" onclick="toggleDropdown()" aria-label="মেনু">
+                        <span class="hamburger-lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
+                    <div class="nav-dropdown-content" id="navDropdownContent">
+                        <a onclick="closeDropdown(); navigateToHome('#courses')"><i class="fa-solid fa-book-open"></i> কোর্সসমূহ</a>
+                        <a onclick="closeDropdown(); navigateToHome('#ebooks')"><i class="fa-solid fa-book"></i> ই-বুক</a>
+                        <a onclick="closeDropdown(); navigateToHome('#about')"><i class="fa-solid fa-circle-info"></i> আমাদের সম্পর্কে</a>
+                        <a onclick="closeDropdown(); openKidsModal()" class="kids-corner-nav-btn" style="margin:4px 10px;"><i class="fa-solid fa-child-reaching"></i> কিডস কর্নার</a>
+                        <a onclick="closeDropdown(); openPage('Tanjif Academy Course Project.html', 'চলো শিখি')"><i class="fa-solid fa-book-open"></i> চলো শিখি</a>
+                        <!-- Dashboard link inside dropdown -->
+                        <a id="dropdownDashboardLink" style="display:none;" onclick="closeDropdown(); goToDashboard()"><i class="fa-solid fa-gauge-high"></i> ড্যাশবোর্ড</a>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
