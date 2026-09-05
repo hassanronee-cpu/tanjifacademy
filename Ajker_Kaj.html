@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>আজকের কাজ — Daily Mission</title>
+<style>
+:root{
+  --bg:#f4f7f5; --card:#ffffff; --ink:#18352b; --muted:#66766f;
+  --primary:#167c57; --primary2:#0f6245; --gold:#d39a25; --line:#e5ece8;
+  --soft:#edf8f3; --danger:#c95b4a; --shadow:0 12px 35px rgba(24,53,43,.09);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans Bengali","SolaimanLipi","Segoe UI",sans-serif;background:linear-gradient(135deg,#f7faf8,#edf5f1);color:var(--ink)}
+button{font:inherit}
+.container{max-width:1050px;margin:auto;padding:22px}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#0d6246,#19845d);color:#fff;border-radius:28px;padding:30px 30px 24px;box-shadow:var(--shadow)}
+.hero:after{content:"";position:absolute;width:230px;height:230px;border-radius:50%;right:-70px;top:-100px;background:rgba(255,255,255,.08)}
+.kicker{font-size:13px;letter-spacing:1.4px;opacity:.85}
+h1{margin:7px 0 5px;font-size:clamp(30px,5vw,48px);line-height:1.12}
+.hero p{margin:0;opacity:.9;font-size:15px}
+.date{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.17);font-size:13px}
+.progressWrap{margin-top:22px}
+.progressTop{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}
+.progress{height:11px;background:rgba(255,255,255,.18);border-radius:20px;overflow:hidden}
+.bar{height:100%;width:0;background:#f4c85f;border-radius:20px;transition:.35s}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.toolbar button{border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 14px;border-radius:12px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.04)}
+.toolbar button:hover{border-color:#bfd8cc}
+.quote{background:#fff8e8;border:1px solid #f2dfb3;color:#74531d;padding:15px 17px;border-radius:17px;margin:18px 0;font-size:14px}
+.section{margin:24px 0}
+.sectionHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.sectionTitle{display:flex;align-items:center;gap:10px}
+.icon{width:40px;height:40px;border-radius:13px;background:var(--soft);display:grid;place-items:center;font-size:21px}
+h2{font-size:20px;margin:0}
+.count{font-size:12px;color:var(--muted);background:#fff;padding:6px 9px;border-radius:999px;border:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.task{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;box-shadow:0 5px 18px rgba(24,53,43,.045);transition:.2s}
+.task:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.task.done{background:#f3faf6;border-color:#cbe7da}
+.taskTop{display:flex;gap:12px;align-items:flex-start}
+.check{appearance:none;width:23px;height:23px;min-width:23px;border:2px solid #aac6ba;border-radius:7px;margin:1px 0 0;cursor:pointer;background:#fff;position:relative}
+.check:checked{background:var(--primary);border-color:var(--primary)}
+.check:checked:after{content:"✓";position:absolute;color:white;font-weight:800;left:4px;top:-1px}
+.taskName{font-weight:750;font-size:16px;line-height:1.35}
+.taskDesc{color:var(--muted);font-size:13px;line-height:1.65;margin:7px 0 0 35px}
+.tag{display:inline-block;margin:9px 0 0 35px;font-size:11px;padding:4px 8px;border-radius:999px;background:#f2f5f3;color:#5f7169}
+.task.done .taskName{text-decoration:line-through;text-decoration-thickness:1px;opacity:.7}
+.footer{margin:30px 0 10px;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:720px){.container{padding:12px}.hero{border-radius:22px;padding:24px 20px}.grid{grid-template-columns:1fr}h1{font-size:34px}.taskDesc{margin-left:35px}}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="hero">
+  <div class="kicker">DAILY MISSION • 01% BETTER EVERY DAY</div>
+  <h1>আজকের কাজ</h1>
+  <p>কম কাজ নয়—সঠিক কাজ। একবারই তালিকাভুক্ত, পরিষ্কারভাবে সাজানো।</p>
+  <div class="date">
+    <span class="pill">📅 <span id="today"></span></span>
+    <span class="pill">🎯 <span id="status">আজকের মিশন শুরু করো</span></span>
+  </div>
+  <div class="progressWrap">
+    <div class="progressTop"><span>আজকের অগ্রগতি</span><b id="percent">0%</b></div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <button onclick="checkAll()">✓ সব সম্পন্ন</button>
+  <button onclick="uncheckAll()">↺ আবার শুরু</button>
+  <button onclick="window.print()">🖨️ প্রিন্ট</button>
+</div>
+
+<div class="quote">“আমার প্রতিদিনের কাজ করতেই হবে—ইন শা আল্লাহ্।” <br><small>আজকের লক্ষ্য: নিখুঁত হওয়া নয়, ধারাবাহিক থাকা।</small></div>
+
+<main id="tasks">
+
+<section class="section">
+<div class="sectionHead"><div class="sectionTitle"><div class="icon">🌙</div><h2>১. দিনের সূচনা</h2></div><span class="count">৪ কাজ</span></div>
+<div class="grid">
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">ভোর ৪টায় জাগরণ ও কৃতজ্ঞতা</div></div><div class="taskDesc">অ্যালার্মের সাথে সাথে উঠবে। আল্লাহর কৃতজ্ঞতা, বিনয় ও সাহায্যের আকুতি নিয়ে দিন শুরু করবে।</div><span class="tag">৪:০০ AM</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">তাহাজ্জুদ ও দোয়া</div></div><div class="taskDesc">পবিত্র হয়ে তাহাজ্জুদ আদায় করবে এবং নিজের দুনিয়া ও আখিরাতের কল্যাণের জন্য আন্তরিকভাবে দোয়া করবে।</div><span class="tag">ইবাদত</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">আজকের প্রতিজ্ঞা পাঠ</div></div><div class="taskDesc">আজকের প্রতিটি নির্ধারিত কাজ সম্পন্ন করার দৃঢ় সংকল্প করবে।</div><span class="tag">ফোকাস</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">দিনের কাজের পরিকল্পনা</div></div><div class="taskDesc">দিনের বাকি কাজগুলো কখন, কীভাবে ও কোন অগ্রাধিকারে করবে—সংক্ষেপে ঠিক করবে এবং পরে মনিটর করবে।</div><span class="tag">পরিকল্পনা</span></div>
+</div></section>
+
+<section class="section">
+<div class="sectionHead"><div class="sectionTitle"><div class="icon">🕌</div><h2>২. সালাত ও কুরআন</h2></div><span class="count">৫ কাজ</span></div>
+<div class="grid">
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">পাঁচ ওয়াক্ত সালাত যথাসময়ে</div></div><div class="taskDesc">সকল ফরজ ও নির্ধারিত সুন্নত সালাত আদায় করবে। সুন্নত সালাতে ধারাবাহিকভাবে মুখস্ত কুরআন রিভিশন করবে।</div><span class="tag">সারাদিন</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">সালাতে কুরআন রিভিশন</div></div><div class="taskDesc">দৈনিক সুন্নত রাকায়াত ১৬টি: ৬ রাকায়াতে আজকের মুখস্ত অংশ এবং ১০ রাকায়াতে পূর্বের ৫ পৃষ্ঠা রিভিশন। বিতরে রিভিশন নয়।</div><span class="tag">১৬ রাকাত</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">আধা পৃষ্ঠা কুরআন মুখস্ত</div></div><div class="taskDesc">প্রতিদিন নতুন আধা পৃষ্ঠা মুখস্ত করবে এবং নির্ধারিত অংশটি পরিষ্কারভাবে আয়ত্ত করবে।</div><span class="tag">প্রতিদিন</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">রিভিশনের আগে কুরআন শোনা ও পড়া</div></div><div class="taskDesc">প্রত্যেক সুন্নত সালাতের আগে যে অংশ রিভিশন করবে, সেই অংশ নির্দিষ্ট ক্বারির কণ্ঠে শুনবে এবং নির্দিষ্ট মুসহাফ দেখে পড়বে।</div><span class="tag">শোনা + পড়া</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">রাতে মুখস্ত অংশ উচ্চস্বরে পড়া</div></div><div class="taskDesc">ঘুমানোর আগে দিনের নতুন মুখস্ত অংশ অন্তত একবার উচ্চস্বরে পড়বে।</div><span class="tag">রাত</span></div>
+</div></section>
+
+<section class="section">
+<div class="sectionHead"><div class="sectionTitle"><div class="icon">🗣️</div><h2>৩. আরবি ভাষা চর্চা</h2></div><span class="count">৬ কাজ</span></div>
+<div class="grid">
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">আরবি লিসেনিং</div></div><div class="taskDesc">দেওয়া ভিডিও সিরিজ থেকে প্রতিদিন ১টি ভিডিও মনোযোগ দিয়ে চর্চা করবে।</div><span class="tag">১ ভিডিও</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">আরবি কথোপকথন</div></div><div class="taskDesc">কথোপকথন ভিডিও সিরিজ থেকে প্রতিদিন ১টি ভিডিও দেখে/শুনে চর্চা করবে।</div><span class="tag">১ ভিডিও</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">লুগাতুল / আরবি পড়া</div></div><div class="taskDesc">দেওয়া সিরিজ থেকে প্রতিদিন ২টি ভিডিও/ক্লাস চর্চা করবে।</div><span class="tag">২ ভিডিও</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">অনুবাদ লেখা</div></div><div class="taskDesc">বাংলা → আরবি এবং আরবি → বাংলা অনুবাদ লিখবে—প্রতিদিন ১ পৃষ্ঠা।</div><span class="tag">১ পৃষ্ঠা</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">শব্দভাণ্ডার</div></div><div class="taskDesc">Vocabulary Builder / শব্দ সিরিজ থেকে প্রতিদিন ১টি ক্লাস চর্চা করবে।</div><span class="tag">১ ক্লাস</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">আরবি Self-Dialogue</div></div><div class="taskDesc">যেকোনো একটি বিষয়ে নিজে নিজে আরবিতে বলবে এবং সম্ভব হলে নিজের বক্তব্য লিখেও অনুশীলন করবে।</div><span class="tag">১ বিষয়</span></div>
+</div></section>
+
+<section class="section">
+<div class="sectionHead"><div class="sectionTitle"><div class="icon">🏃</div><h2>৪. শরীর ও মন</h2></div><span class="count">৪ কাজ</span></div>
+<div class="grid">
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">ফজরের পর ৪০+ মিনিট হাঁটা</div></div><div class="taskDesc">ফজরের নামাজের পর অন্তত ৪০ মিনিট হাঁটবে। শুক্রবার ও শনিবার হাঁটার বদলে/সঙ্গে দৌড়ের সময় ধীরে ধীরে বাড়াবে।</div><span class="tag">৪০+ মিনিট</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">১০টি শারীরিক ব্যায়াম</div></div><div class="taskDesc">হাঁটার পর প্রয়োজনীয় ১০টি ব্যায়াম করবে এবং সক্ষমতা অনুযায়ী ধীরে ধীরে পরিমাণ বাড়াবে।</div><span class="tag">১০ ব্যায়াম</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">পুষ্টিকর খাবার ও জাঙ্ক ফুড এড়িয়ে চলা</div></div><div class="taskDesc">কিশমিশ, ছোলা, বাদাম, খেজুর, কালিজিরা, মধু, দুধ, কলা ইত্যাদি পুষ্টিকর খাবারের মধ্যে উপযুক্ত কিছু বেছে নেবে; জাঙ্ক ও অতিরিক্ত চিনিযুক্ত খাবার এড়িয়ে চলবে।</div><span class="tag">খাদ্য</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">১০–২০ মিনিট Power Nap</div></div><div class="taskDesc">প্রয়োজনে দিনের একটি সময়ে সংক্ষিপ্ত বিশ্রাম নেবে, যাতে রাত পর্যন্ত সতেজ থাকা যায়।</div><span class="tag">১০–২০ মিনিট</span></div>
+</div></section>
+
+<section class="section">
+<div class="sectionHead"><div class="sectionTitle"><div class="icon">🌱</div><h2>৫. চরিত্র, ঈমান ও মানসিক দৃঢ়তা</h2></div><span class="count">৩ কাজ</span></div>
+<div class="grid">
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">আল্লাহকে স্মরণ, ইস্তিগফার ও তাওয়াক্কুল</div></div><div class="taskDesc">সারাদিন আল্লাহকে স্মরণ করবে, বেশি বেশি ইস্তিগফার করবে এবং তাঁর সিদ্ধান্তের ওপর সন্তুষ্ট থাকার চেষ্টা করবে।</div><span class="tag">সারাদিন</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">সবর, হাসিমুখ ও প্রশান্তি</div></div><div class="taskDesc">কষ্ট পেলে তাৎক্ষণিক প্রতিক্রিয়ার বদলে দোয়া, ইতিবাচকতা ও শিক্ষা খুঁজবে। প্রয়োজন হলে স্পষ্ট কিন্তু কোমলভাবে দৃঢ় উত্তর দেবে; হতাশ হবে না এবং কাউকে কষ্ট না দেওয়ার চেষ্টা করবে।</div><span class="tag">মানসিক শক্তি</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">ব্যক্তিত্ব ও অন্যায়ের প্রতিবাদ</div></div><div class="taskDesc">অহংকার ছাড়া ব্যক্তিত্ব বজায় রাখবে এবং অন্যায় দেখলে পরিস্থিতি অনুযায়ী সরাসরি বা কৌশলে প্রতিবাদ করবে।</div><span class="tag">চরিত্র</span></div>
+</div></section>
+
+<section class="section">
+<div class="sectionHead"><div class="sectionTitle"><div class="icon">📚</div><h2>৬. জ্ঞান, পেশা ও আত্মউন্নয়ন</h2></div><span class="count">৫ কাজ</span></div>
+<div class="grid">
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">পেশাগত দায়িত্ব ও স্কিল উন্নয়ন</div></div><div class="taskDesc">সততা, দায়িত্বশীলতা ও শৃঙ্খলার সাথে কাজ শেষ করবে এবং প্রতিদিন নিজের পেশাগত দক্ষতা উন্নত করবে।</div><span class="tag">কাজ + স্কিল</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">ইসলামিক জ্ঞান অর্জন</div></div><div class="taskDesc">একটি ইসলামিক বিষয় নিয়ে লেকচার শুনবে অথবা আজকের হাদীস/আয়াত পড়ে জ্ঞান অর্জন করবে।</div><span class="tag">জ্ঞান</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">বিশ্ব, সমাজ ও প্রযুক্তি সম্পর্কে জানা</div></div><div class="taskDesc">প্রয়োজনীয় বিশ্বসংবাদ ও সমসাময়িক জ্ঞান অর্জন করবে, সাধারণ বই পড়বে এবং যুগ ও প্রযুক্তির সঙ্গে তাল মিলিয়ে চলবে।</div><span class="tag">জ্ঞান</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">পরিবার ও আত্মীয়দের সময় দেওয়া</div></div><div class="taskDesc">বাবা-মা, পরিবার, সন্তান ও আত্মীয়দের খোঁজ নেবে এবং সংসার ও পরিবারে আন্তরিকভাবে সময়/সহায়তা দেবে।</div><span class="tag">পরিবার</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">সদাকাহ, অপচয় রোধ ও অর্থব্যবস্থাপনা</div></div><div class="taskDesc">সামর্থ্য অনুযায়ী সদাকাহ করবে, প্রয়োজন বুঝে খরচ করবে, আয়-ব্যয়ের রেকর্ড রাখবে এবং ঋণমুক্ত জীবনের দিকে এগোবে।</div><span class="tag">অর্থ</span></div>
+</div></section>
+
+<section class="section">
+<div class="sectionHead"><div class="sectionTitle"><div class="icon">🌙</div><h2>৭. দিনের সমাপ্তি</h2></div><span class="count">২ কাজ</span></div>
+<div class="grid">
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">রাত ৮টার মধ্যে রাতের খাবার শেষ</div></div><div class="taskDesc">রাত ৮টার পরে রাতের খাবার নয়। সময় দেখে আগেই প্রয়োজনীয় প্রস্তুতি সম্পন্ন করবে।</div><span class="tag">৮:০০ PM</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">আজকের হিসাব ও আগামীকালের পরিকল্পনা</div></div><div class="taskDesc">আজ কী অর্জন হলো, কী বাকি রইল এবং কোথায় উন্নতি দরকার—দেখে আগামীকালের নির্দিষ্ট পরিকল্পনা করবে ও আল্লাহর সাহায্য চাইবে। এরপর রাত ১০টার মধ্যে ঘুমের প্রস্তুতি শেষ করবে।</div><span class="tag">১০:০০ PM</span></div>
+</div></section>
+
+<section class="section">
+<div class="sectionHead"><div class="sectionTitle"><div class="icon">🎙️</div><h2>বিশেষ সাপ্তাহিক কাজ</h2></div><span class="count">শুক্র + শনি</span></div>
+<div class="grid">
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">সাপ্তাহিক কুরআন রেকর্ড</div></div><div class="taskDesc">শুক্রবার ও শনিবার সপ্তাহে মুখস্ত ও রিভিশন হওয়া অংশ মুখে বলে রেকর্ড করবে; ভুল থাকলে সংশোধন করবে।</div><span class="tag">শুক্র/শনি</span></div>
+<div class="task"><div class="taskTop"><input class="check" type="checkbox"><div class="taskName">দৌড় ও Endurance বৃদ্ধি</div></div><div class="taskDesc">শুক্রবার ও শনিবার দৌড়াবে এবং প্রতি সপ্তাহে একটানা দৌড়ানোর সময়/সহনশীলতা ধীরে ধীরে বাড়াবে।</div><span class="tag">শুক্র/শনি</span></div>
+</div></section>
+
+</main>
+<div class="footer">আজকের কাজ • একদিন নয়, সারাজীবন • প্রতিদিন ১% উন্নতি • ইন শা আল্লাহ্</div>
+</div>
+
+<script>
+const KEY='ajkerKaj_v1_'+new Date().toISOString().slice(0,10);
+const checks=[...document.querySelectorAll('.check')];
+const saved=JSON.parse(localStorage.getItem(KEY)||'[]');
+checks.forEach((c,i)=>{c.checked=!!saved[i]; c.addEventListener('change',update)});
+function update(){
+  const state=checks.map(c=>c.checked);
+  localStorage.setItem(KEY,JSON.stringify(state));
+  checks.forEach(c=>c.closest('.task').classList.toggle('done',c.checked));
+  const done=checks.filter(c=>c.checked).length, total=checks.length;
+  const pct=Math.round(done/total*100);
+  document.getElementById('percent').textContent=pct+'%';
+  document.getElementById('bar').style.width=pct+'%';
+  document.getElementById('status').textContent=pct===100?'মাশা আল্লাহ্! আজকের মিশন সম্পন্ন 🎉':done+' / '+total+' কাজ সম্পন্ন';
+}
+function checkAll(){checks.forEach(c=>c.checked=true);update()}
+function uncheckAll(){checks.forEach(c=>c.checked=false);update()}
+const now=new Date();
+document.getElementById('today').textContent=new Intl.DateTimeFormat('bn-BD',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).format(now);
+update();
+</script>
+</body>
+</html>
