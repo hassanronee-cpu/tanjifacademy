@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রতিদিনের সকালের প্রতিজ্ঞা ও সংকল্প</title>
+    <!-- Google Fonts: Noto Sans Bengali for elegant reading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f7f3e9 0%, #e8e0d5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1.5rem;
+            font-family: 'Noto Sans Bengali', 'Segoe UI', sans-serif;
+            line-height: 1.7;
+            color: #1e2a3a;
+        }
+
+        .card {
+            max-width: 820px;
+            width: 100%;
+            background: rgba(255, 251, 245, 0.85);
+            backdrop-filter: blur(2px);
+            background: #ffffff;
+            border-radius: 48px 48px 40px 40px;
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25), 0 8px 24px -6px rgba(0, 20, 30, 0.15);
+            padding: 2.8rem 2.8rem 3.2rem;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(200, 180, 160, 0.25);
+        }
+
+        /* decorative header */
+        .bismillah {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2a4b4e;
+            text-align: center;
+            letter-spacing: 1px;
+            background: #e7f0ed;
+            display: inline-block;
+            padding: 0.4rem 2rem;
+            border-radius: 60px;
+            margin: 0 auto 1.2rem;
+            box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.8), 0 4px 8px rgba(0, 30, 20, 0.08);
+            border: 1px solid #d0ddd8;
+        }
+
+        .header-title {
+            text-align: center;
+            margin-bottom: 2.4rem;
+            border-bottom: 2px dashed #cfc3b4;
+            padding-bottom: 1.2rem;
+        }
+
+        .header-title h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #1b3b3a;
+            letter-spacing: -0.3px;
+            line-height: 1.3;
+            margin-top: 0.2rem;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.02);
+        }
+
+        .header-title .subhead {
+            font-size: 1.1rem;
+            color: #4b5e5c;
+            font-weight: 400;
+            margin-top: 0.3rem;
+            background: #f2efe8;
+            display: inline-block;
+            padding: 0.2rem 1.6rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+        }
+
+        .intro-text {
+            background: #f9f6f0;
+            padding: 1.4rem 2rem;
+            border-radius: 30px;
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+            border-left: 6px solid #8baa9f;
+            color: #1f3636;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            font-weight: 400;
+        }
+
+        .intro-text strong {
+            color: #1b4a44;
+            font-weight: 600;
+        }
+
+        /* list styling */
+        .promise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin: 2rem 0 2.2rem;
+        }
+
+        .promise-item {
+            background: #fcfaf7;
+            border-radius: 28px;
+            padding: 1.1rem 1.8rem 1.1rem 2.2rem;
+            border: 1px solid #e7dfd6;
+            transition: 0.15s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.02);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .promise-item:hover {
+            background: #f8f4ee;
+            border-color: #cdc0b0;
+            box-shadow: 0 6px 12px rgba(70, 60, 40, 0.06);
+        }
+
+        .promise-number {
+            background: #d6e3dd;
+            color: #1b3d3a;
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+            background: #dce8e2;
+            border: 1px solid #bccfc6;
+        }
+
+        .promise-content {
+            flex: 1;
+        }
+
+        .promise-content .label {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #1a3b3a;
+            display: inline-block;
+            margin-bottom: 0.1rem;
+        }
+
+        .promise-content .label i {
+            font-style: normal;
+            background: #e2eae5;
+            padding: 0 0.6rem;
+            border-radius: 14px;
+            font-weight: 400;
+            color: #2e4f4a;
+            font-size: 0.9rem;
+            margin-left: 0.4rem;
+        }
+
+        .promise-content p {
+            margin-top: 0.15rem;
+            color: #2c3f3f;
+            font-weight: 400;
+        }
+
+        .promise-content strong {
+            color: #1d4a44;
+            font-weight: 600;
+        }
+
+        /* motto */
+        .motto-box {
+            background: #e3ede8;
+            border-radius: 40px;
+            padding: 1.8rem 2.2rem;
+            margin: 2.5rem 0 2rem;
+            border: 1px solid #b9ccc2;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .motto-box .motto-head {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #12322e;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #b9ccc2;
+            padding-bottom: 0.4rem;
+            margin-bottom: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .motto-box .motto-head span {
+            font-size: 1.5rem;
+        }
+
+        .motto-box blockquote {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #03201e;
+            line-height: 1.8;
+            padding-left: 0.6rem;
+            font-style: normal;
+        }
+
+        .motto-box blockquote em {
+            font-style: normal;
+            background: #d1e0d9;
+            padding: 0.1rem 0.6rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .dua-section {
+            background: #f2efe7;
+            padding: 1.4rem 2rem;
+            border-radius: 40px;
+            text-align: center;
+            font-size: 1.15rem;
+            border: 1px solid #d7cec2;
+            color: #1d322e;
+            margin-top: 1.6rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .dua-section strong {
+            color: #1b4e47;
+            font-weight: 600;
+        }
+
+        .dua-section .amin {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #16423c;
+            letter-spacing: 2px;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px dotted #cfc3b4;
+            margin: 0.8rem 0 0.2rem;
+            opacity: 0.4;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #5f6f6a;
+            margin-top: 1.2rem;
+            letter-spacing: 0.5px;
+            font-weight: 300;
+        }
+
+        /* responsive */
+        @media (max-width: 550px) {
+            .card {
+                padding: 1.8rem 1.2rem 2.2rem;
+                border-radius: 32px;
+            }
+            .header-title h1 {
+                font-size: 1.8rem;
+            }
+            .bismillah {
+                font-size: 1.3rem;
+                padding: 0.2rem 1.2rem;
+            }
+            .promise-item {
+                padding: 0.9rem 1rem 0.9rem 1.2rem;
+                gap: 0.6rem;
+                flex-wrap: wrap;
+            }
+            .promise-number {
+                min-width: 1.8rem;
+                height: 1.8rem;
+                font-size: 1rem;
+            }
+            .motto-box {
+                padding: 1.4rem 1.2rem;
+            }
+            .motto-box blockquote {
+                font-size: 1rem;
+            }
+            .intro-text {
+                font-size: 1rem;
+                padding: 0.8rem 1.2rem;
+            }
+            .dua-section {
+                font-size: 1rem;
+                padding: 1rem 1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .promise-content .label {
+                font-size: 1rem;
+            }
+            .promise-content p {
+                font-size: 0.95rem;
+            }
+            .header-title h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <!-- বismillah -->
+        <div style="text-align: center;">
+            <div class="bismillah">﷽ বিসমিল্লাহির রাহমানির রাহিম</div>
+        </div>
+
+        <div class="header-title">
+            <h1>প্রতিদিনের সকালের প্রতিজ্ঞা ও সংকল্প</h1>
+            <div class="subhead">আজকের দিন — নতুন সুযোগ</div>
+        </div>
+
+        <div class="intro-text">
+            <strong>আজকের দিনটি আল্লাহ তাআলার পক্ষ থেকে আমাকে দেওয়া এক অমূল্য নিয়ামত ও নতুন সুযোগ।</strong> 
+            এই মুহূর্ত থেকে আমি আমার প্রতিটি মুহূর্তকে অর্থবহ ও সফল করে তুলতে নিচের প্রতিজ্ঞাগুলো আমার হৃদয়ে ধারণ করছি:
+        </div>
+
+        <!-- প্রতিজ্ঞা সমূহ -->
+        <div class="promise-list">
+            <!-- 1 -->
+            <div class="promise-item">
+                <div class="promise-number">১</div>
+                <div class="promise-content">
+                    <div class="label">দিনের সূচনা ও কৃতজ্ঞতা <i>ভোর ৪টা</i></div>
+                    <p>আমি ভোর ৪টায় ঘুম থেকে জেগে পরম কৃতজ্ঞতা, বিনয় ও আল্লাহর সাহায্যের আকুতি নিয়ে আমার দিন শুরু করব। আমার আজকের এই প্রতিজ্ঞা ও পরিকল্পনা আমার প্রতিটি পদক্ষেপে দিকনির্দেশনা দেবে।</p>
+                </div>
+            </div>
+            <!-- 2 -->
+            <div class="promise-item">
+                <div class="promise-number">২</div>
+                <div class="promise-content">
+                    <div class="label">সালাত ও কুরআনের নূর</div>
+                    <p>যথাযথ সময়ে পাঁচ ওয়াক্ত সালাত আদায় করব। সুন্নাত সালাতগুলোতে কুরআন রিভিশন করব, প্রতিদিন নিয়মমাফিক নতুন আধা পৃষ্ঠা কুরআন মুখস্ত করব এবং আমার রবের কালামের সাথে নিবিড় সম্পর্ক বজায় রাখব।</p>
+                </div>
+            </div>
+            <!-- 3 -->
+            <div class="promise-item">
+                <div class="promise-number">৩</div>
+                <div class="promise-content">
+                    <div class="label">জ্ঞান ও ভাষার সাধনা</div>
+                    <p>আমার আরবি ভাষা চর্চা (লিসেনিং, কথোপকথন, লুগাতুল, অনুবাদ, শব্দভাণ্ডার ও সেলফ-ডায়ালগ) এবং পেশাগত স্কিল উন্নয়নে আন্তরিক ও অবিচল থাকব। প্রতিদিন ১% করে হলেও নিজেকে উন্নত করব।</p>
+                </div>
+            </div>
+            <!-- 4 -->
+            <div class="promise-item">
+                <div class="promise-number">৪</div>
+                <div class="promise-content">
+                    <div class="label">শরীর ও মনের শক্তি</div>
+                    <p>ফজরের পর নিয়মিত হাঁটা ও ব্যায়ামের মাধ্যমে আমার শরীরকে সুস্থ ও চটপটে রাখব। পুষ্টিকর খাবার গ্রহণ করে এবং জাঙ্ক ফুড বর্জন করে আমার দেহ ও মনকে কর্মক্ষম রাখব।</p>
+                </div>
+            </div>
+            <!-- 5 -->
+            <div class="promise-item">
+                <div class="promise-number">৫</div>
+                <div class="promise-content">
+                    <div class="label">চরিত্র, ঈমান ও মানসিক দৃঢ়তা</div>
+                    <p>সারাদিন বেশি বেশি ইস্তিগফার ও তাওয়াক্কুলের সাথে কাটাব। সব hardships-এর বিপরীতে হাসিমুখ, সবর ও ইতিবাচক মানসিকতা বজায় রাখব। কারও প্রতি জুলুম না করে, অহংকারহীন ব্যক্তিত্ব ও অন্যায়ের প্রতিবাদ করার মতো মানসিক শক্তি ধরে রাখব।</p>
+                </div>
+            </div>
+            <!-- 6 -->
+            <div class="promise-item">
+                <div class="promise-number">৬</div>
+                <div class="promise-content">
+                    <div class="label">পরিবার ও দায়িত্বশীলতা</div>
+                    <p>আমার পেশাগত দায়িত্ব সততার সাথে পালন করব এবং আমার বাবা-মা, পরিবার, সন্তান তানজিফ ও আত্মীয়দের প্রতি আমার দায়িত্ব আন্তরিকভাবে পালন করব। অপচয় রোধ করে হালাল উপার্জনে ও সদাকাহে সচেষ্ট হব।</p>
+                </div>
+            </div>
+            <!-- 7 -->
+            <div class="promise-item">
+                <div class="promise-number">৭</div>
+                <div class="promise-content">
+                    <div class="label">দিনের সুন্দর সমাপ্তি <i>রাত ৮টা / ১০টা</i></div>
+                    <p>রাত ৮টার মধ্যে রাতের খাবার শেষ করব এবং ঘুমানোর আগে আজকের দিনের হিসাব নিকাশ ও আগামীকালের পরিকল্পনা সম্পন্ন করে রাত ১০টার মধ্যে শান্তির ঘুমে যাব।</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- মূলমন্ত্র -->
+        <div class="motto-box">
+            <div class="motto-head"><span>⭐</span> আমার মূলমন্ত্র</div>
+            <blockquote>
+                “<em>কম কাজ নয়—সঠিক কাজ।</em> নিখুঁত হওয়া নয়, ধারাবাহিক থাকা। <br>
+                আমার প্রতিদিনের কাজ করতেই হবে— <strong>ইন শা আল্লাহ্</strong>। একদিনের জন্য নয়, সারাজীবনের জন্য— <strong>প্রতিদিন ১% উন্নতি</strong>।”
+            </blockquote>
+        </div>
+
+        <!-- দোয়া ও সমাপ্তি -->
+        <div class="dua-section">
+            <p>হে আল্লাহ! আপনি আমার এই ছোট প্রচেষ্টাগুলোকে কবুল করুন এবং আমার আজকের দিনটি বরকতময় করে দিন। <span class="amin">আমিন</span>।</p>
+        </div>
+
+        <div class="footer-note">
+            — প্রতিদিনের সকালের সংকল্প · স্মরণ ও অনুপ্রেরণা —
+        </div>
+    </div>
+</body>
+</html>
