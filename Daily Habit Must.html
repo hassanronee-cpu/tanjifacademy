@@ -76,7 +76,8 @@
             flex-wrap: wrap;
         }
 
-        .stats-inline .stat-box {
+        /* আলাদা রঙিন স্ট্যাটাস বক্স */
+        .stat-box {
             padding: 8px 16px;
             border-radius: 8px;
             font-weight: 600;
@@ -85,37 +86,24 @@
             align-items: center;
             gap: 6px;
             white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
-            border: 1px solid #bbf7d0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .stat-box.completed-box {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+        }
+        .stat-box.progress-box {
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+            color: white;
         }
 
-        /* সম্পন্ন বক্স - সবুজ */
-        .stats-inline .stat-box.completed-box {
-            background: linear-gradient(135deg, #065f46, #047857);
-            color: #f0fdf4;
-            border-color: #34d399;
-        }
-        .stats-inline .stat-box.completed-box strong {
+        .stat-box strong {
             background: rgba(255,255,255,0.2);
-            padding: 0 10px;
-            border-radius: 6px;
-            color: #ffffff;
+            padding: 0 8px;
+            border-radius: 4px;
+            font-size: 15px;
         }
-
-        /* প্রোগ্রেস বক্স - নীলাভ */
-        .stats-inline .stat-box.progress-box {
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-            color: #ffffff;
-            border-color: #93c5fd;
-        }
-        .stats-inline .stat-box.progress-box strong {
-            background: rgba(255,255,255,0.25);
-            padding: 0 10px;
-            border-radius: 6px;
-            color: #ffffff;
-        }
-
-        .stats-inline .stat-box .label {
+        .stat-box .label {
             opacity: 0.9;
         }
 
@@ -230,7 +218,7 @@
             display: block;
         }
 
-        /* টেবিল হেডার ফ্রিজ - সঠিকভাবে */
+        /* ===== ফ্রিজড টেবিল হেডার ===== */
         .table-scroll-wrapper {
             max-height: 550px;
             overflow-y: auto;
@@ -243,15 +231,19 @@
         .table-scroll-wrapper table {
             width: 100%;
             min-width: 700px;
-            border-collapse: collapse;
+            border-collapse: separate;
             border-spacing: 0;
             margin-bottom: 0;
+            /* গুরুত্বপূর্ণ: থের পজিশন ঠিক রাখতে */
+            border-collapse: collapse;
         }
 
         .table-scroll-wrapper thead {
             position: sticky;
             top: 0;
             z-index: 20;
+            /* ফ্রিজের জন্য ব্যাকগ্রাউন্ড */
+            background-color: #ecfdf5;
         }
 
         .table-scroll-wrapper thead th {
@@ -261,6 +253,7 @@
             z-index: 21;
             border-bottom: 2px solid #a7f3d0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            /* নিশ্চিত করা যে থ সবসময় ওপরে থাকে */
         }
 
         .table-scroll-wrapper th,
@@ -275,12 +268,6 @@
         .table-scroll-wrapper th {
             font-weight: 700;
             color: #065f46;
-            background-color: #ecfdf5;
-        }
-
-        /* থ ব্যাকগ্রাউন্ড নিশ্চিত করা */
-        .table-scroll-wrapper thead tr {
-            background-color: #ecfdf5;
         }
 
         .cell-display {
@@ -629,7 +616,7 @@
                 justify-content: center;
                 gap: 8px;
             }
-            .stats-inline .stat-box {
+            .stat-box {
                 font-size: 12px;
                 padding: 6px 12px;
             }
@@ -726,11 +713,11 @@
                 font-size: 10px;
                 padding: 5px 10px;
             }
-            .stats-inline .stat-box {
+            .stat-box {
                 font-size: 10px;
                 padding: 4px 10px;
             }
-            .stats-inline .stat-box strong {
+            .stat-box strong {
                 font-size: 12px;
             }
             .table-scroll-wrapper table {
@@ -795,12 +782,14 @@
                 <button onclick="saveData()" style="background-color:#059669;">সেভ করুন</button>
                 
                 <div class="stats-inline">
+                    <!-- সম্পন্ন বক্স (সবুজ) -->
                     <div class="stat-box completed-box">
                         <span class="label">✅ মোট সম্পন্ন:</span>
                         <strong id="completedCount">০</strong>
                         <span style="opacity:0.6;">/</span>
                         <span id="totalCount">০</span>
                     </div>
+                    <!-- প্রোগ্রেস বক্স (নীল) -->
                     <div class="stat-box progress-box">
                         <span class="label">📈 অগ্রগতি:</span>
                         <strong id="completionPercent">০%</strong>
@@ -839,7 +828,7 @@
 <div class="report-overlay" id="reportOverlay" onclick="if(event.target===this) closeReport()">
     <div class="report-box">
         <button class="report-close-btn" onclick="closeReport()">✕</button>
-        <h3>📊 সর্বশেষ ১০ দিনের অগ্রগতি</h3>
+        <h3>📊 সর্বশেষ ১০ দিনের প্রোগ্রেস</h3>
         <div id="reportContent">
             <div class="report-loading">ডেটা লোড হচ্ছে...</div>
         </div>
@@ -1206,7 +1195,7 @@
         document.getElementById('totalCount').innerText = total;
         document.getElementById('completedCount').innerText = completed;
         const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-        document.getElementById('completionPercent').innerText = `${percent}%`;
+        document.getElementById('completionPercent').innerText = percent + '%';
     }
 
     function fetchData() {
