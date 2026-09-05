@@ -69,7 +69,6 @@
             flex-wrap: wrap;
         }
 
-        /* রিপোর্ট অপশনের পাশে স্ট্যাটাস বক্স */
         .stats-inline {
             display: flex;
             gap: 10px;
@@ -213,31 +212,41 @@
             display: block;
         }
 
-        /* টেবিল হেডার ফ্রিজ */
-        .table-fixed-header {
-            overflow: auto;
+        /* টেবিল হেডার ফ্রিজ - সঠিকভাবে */
+        .table-scroll-wrapper {
             max-height: 550px;
+            overflow-y: auto;
+            overflow-x: auto;
             position: relative;
+            border-radius: 8px;
+            border: 1px solid #d1fae5;
         }
 
-        .table-fixed-header table {
+        .table-scroll-wrapper table {
             width: 100%;
             min-width: 700px;
             border-collapse: collapse;
             border-spacing: 0;
+            margin-bottom: 0;
         }
 
-        .table-fixed-header thead th {
+        .table-scroll-wrapper thead {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .table-scroll-wrapper thead th {
             position: sticky;
             top: 0;
             background-color: #ecfdf5;
-            z-index: 10;
+            z-index: 21;
             border-bottom: 2px solid #a7f3d0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .table-fixed-header th,
-        .table-fixed-header td {
+        .table-scroll-wrapper th,
+        .table-scroll-wrapper td {
             border: 1px solid #d1fae5;
             padding: 6px;
             text-align: center;
@@ -245,9 +254,15 @@
             font-size: 13px;
         }
 
-        .table-fixed-header th {
+        .table-scroll-wrapper th {
             font-weight: 700;
             color: #065f46;
+            background-color: #ecfdf5;
+        }
+
+        /* থ ব্যাকগ্রাউন্ড নিশ্চিত করা */
+        .table-scroll-wrapper thead tr {
+            background-color: #ecfdf5;
         }
 
         .cell-display {
@@ -620,12 +635,12 @@
             .tab-content {
                 padding: 12px 10px;
             }
-            .table-fixed-header table {
+            .table-scroll-wrapper table {
                 font-size: 11px;
                 min-width: 600px;
             }
-            .table-fixed-header th,
-            .table-fixed-header td {
+            .table-scroll-wrapper th,
+            .table-scroll-wrapper td {
                 font-size: 11px;
                 padding: 4px;
             }
@@ -700,12 +715,12 @@
             .stats-inline .stat-box strong {
                 font-size: 12px;
             }
-            .table-fixed-header table {
+            .table-scroll-wrapper table {
                 font-size: 10px;
                 min-width: 500px;
             }
-            .table-fixed-header th,
-            .table-fixed-header td {
+            .table-scroll-wrapper th,
+            .table-scroll-wrapper td {
                 font-size: 10px;
                 padding: 3px;
             }
@@ -761,7 +776,6 @@
                 <button onclick="fetchData()">গুগল সিঙ্ক</button>
                 <button onclick="saveData()" style="background-color:#059669;">সেভ করুন</button>
                 
-                <!-- স্ট্যাটাস বক্স রিপোর্টের পাশে -->
                 <div class="stats-inline">
                     <div class="stat-box">
                         <span class="label">✅ মোট সম্পন্ন:</span>
@@ -994,7 +1008,6 @@
         document.getElementById('reportOverlay').style.display = 'none';
     }
 
-    // লিংক ডাবল-ক্লিক এডিট
     function handleLinkDblClick(index, e) {
         e.stopPropagation();
         const input = document.getElementById(`link-input-${index}`);
@@ -1086,7 +1099,7 @@
             
             let html = `
                 <h3 style="margin-top:0; color:#065f46; font-size:17px; border-bottom: 2px solid #a7f3d0; padding-bottom: 8px;">${cat}</h3>
-                <div class="table-fixed-header">
+                <div class="table-scroll-wrapper">
                 <table>
                     <thead>
                         <tr>
