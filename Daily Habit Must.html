@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ডেইলি হ্যাবিট ট্রাকার - গ্রিন ল্যান্ডস্কেপ মুড</title>
+    <title>ডেইলি হ্যাবিট ট্রাকার - ফ্রিজড হেডার</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
@@ -29,14 +29,7 @@
             padding: 15px;
         }
 
-        .sticky-wrapper {
-            position: sticky;
-            top: 0;
-            background-color: var(--bg-color);
-            z-index: 1000;
-            padding-bottom: 10px;
-        }
-
+        /* পুরো পেজ স্ক্রল হবে, কোনো স্টিকি ওভারঅল নেই */
         .container {
             max-width: 1450px;
             margin: 0 auto;
@@ -53,6 +46,7 @@
             border: 1px solid var(--border-color);
             flex-wrap: wrap;
             gap: 15px;
+            margin-bottom: 12px;
         }
 
         h1 {
@@ -64,47 +58,70 @@
 
         .controls {
             display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .stats-inline {
-            display: flex;
             gap: 10px;
             align-items: center;
             flex-wrap: wrap;
         }
 
-        /* আলাদা রঙিন স্ট্যাটাস বক্স */
-        .stat-box {
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
+        .top-stats {
             display: flex;
+            gap: 8px;
             align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        .stat-box.completed-box {
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-            color: white;
-        }
-        .stat-box.progress-box {
-            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-            color: white;
+            flex-wrap: wrap;
         }
 
-        .stat-box strong {
-            background: rgba(255,255,255,0.2);
-            padding: 0 8px;
-            border-radius: 4px;
-            font-size: 15px;
+        /* সমস্ত টপ-স্ট্যাট বক্স একই সাইজ ও স্টাইল, আলাদা কালার */
+        .top-stat-box {
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid rgba(255,255,255,0.2);
+            white-space: nowrap;
+            min-height: 36px;       /* সমান সাইজ */
+            box-sizing: border-box;
+            text-decoration: none;
+            transition: 0.2s;
         }
-        .stat-box .label {
-            opacity: 0.9;
+        .top-stat-box.completed {
+            background: #064e3b;
+            color: #a7f3d0;
+            border-color: #34d399;
+        }
+        .top-stat-box.progress {
+            background: #1e3a8a;
+            color: #93c5fd;
+            border-color: #60a5fa;
+        }
+        .top-stat-box.link-pratigya {
+            background: #7c3aed;
+            color: #e0e7ff;
+            border-color: #a78bfa;
+            cursor: pointer;
+        }
+        .top-stat-box.link-pratigya:hover {
+            background: #6d28d9;
+            transform: scale(1.03);
+        }
+        .top-stat-box.link-sokol {
+            background: #dc2626;
+            color: #fecaca;
+            border-color: #f87171;
+            cursor: pointer;
+        }
+        .top-stat-box.link-sokol:hover {
+            background: #b91c1c;
+            transform: scale(1.03);
+        }
+        .top-stat-box .label {
+            opacity: 0.8;
+            font-weight: 400;
+        }
+        .top-stat-box .value {
+            font-weight: 700;
         }
 
         input[type="date"] {
@@ -120,13 +137,14 @@
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 9px 18px;
+            padding: 8px 16px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             font-family: inherit;
             transition: background 0.2s;
+            white-space: nowrap;
         }
 
         button:hover {
@@ -134,14 +152,15 @@
         }
 
         #syncMsg {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #047857;
             background: #d1fae5;
-            padding: 6px 12px;
+            padding: 5px 12px;
             border-radius: 6px;
             display: none;
             border: 1px solid #a7f3d0;
+            white-space: nowrap;
         }
 
         .motivation-box {
@@ -149,7 +168,8 @@
             color: #ecfdf5;
             padding: 14px 22px;
             border-radius: 10px;
-            margin-top: 12px;
+            margin-top: 0px;
+            margin-bottom: 12px;
             box-shadow: 0 4px 15px rgba(4, 120, 87, 0.15);
             display: flex;
             justify-content: space-between;
@@ -178,7 +198,8 @@
         .tabs {
             display: flex;
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 0px;
+            margin-bottom: 12px;
             overflow-x: auto;
             padding-bottom: 5px;
         }
@@ -210,7 +231,7 @@
             padding: 22px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.05);
-            margin-top: 12px;
+            margin-top: 0px;
             border: 1px solid var(--border-color);
         }
 
@@ -218,56 +239,73 @@
             display: block;
         }
 
-        /* ===== ফ্রিজড টেবিল হেডার ===== */
-        .table-scroll-wrapper {
+        /* টেবিল স্ক্রল হবে, এবং হেডার ফ্রিজ থাকবে */
+        .table-wrapper {
+            overflow: auto;
             max-height: 550px;
-            overflow-y: auto;
-            overflow-x: auto;
-            position: relative;
-            border-radius: 8px;
             border: 1px solid #d1fae5;
+            border-radius: 8px;
+            position: relative;
         }
 
-        .table-scroll-wrapper table {
+        .table-wrapper table {
             width: 100%;
             min-width: 700px;
             border-collapse: separate;
             border-spacing: 0;
-            margin-bottom: 0;
-            /* গুরুত্বপূর্ণ: থের পজিশন ঠিক রাখতে */
-            border-collapse: collapse;
         }
 
-        .table-scroll-wrapper thead {
+        /* ফ্রিজড হেডার - শুধু টেবিলের হেডার */
+        .table-wrapper thead {
             position: sticky;
             top: 0;
-            z-index: 20;
-            /* ফ্রিজের জন্য ব্যাকগ্রাউন্ড */
-            background-color: #ecfdf5;
+            z-index: 10;
         }
 
-        .table-scroll-wrapper thead th {
+        .table-wrapper thead th {
             position: sticky;
             top: 0;
-            background-color: #ecfdf5;
-            z-index: 21;
+            background: #ecfdf5;
             border-bottom: 2px solid #a7f3d0;
+            padding: 10px 6px;
+            font-weight: 700;
+            color: #065f46;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 13px;
+            z-index: 10;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            /* নিশ্চিত করা যে থ সবসময় ওপরে থাকে */
         }
 
-        .table-scroll-wrapper th,
-        .table-scroll-wrapper td {
+        .table-wrapper thead th:first-child {
+            left: 0;
+            z-index: 11;
+        }
+
+        .table-wrapper tbody td:first-child {
+            position: sticky;
+            left: 0;
+            background: #fafffe;
+            z-index: 5;
+            border-right: 2px solid #d1fae5;
+        }
+
+        .table-wrapper tbody tr:nth-child(odd) td:first-child {
+            background: #f0fdf4;
+        }
+        .table-wrapper tbody tr:nth-child(even) td:first-child {
+            background: #f5fdf8;
+        }
+        .table-wrapper tbody tr:hover td:first-child {
+            background: #e6f7ec !important;
+        }
+
+        th, td {
             border: 1px solid #d1fae5;
             padding: 6px;
             text-align: center;
             vertical-align: middle;
             font-size: 13px;
-        }
-
-        .table-scroll-wrapper th {
-            font-weight: 700;
-            color: #065f46;
         }
 
         .cell-display {
@@ -276,7 +314,7 @@
             border-radius: 4px;
             cursor: pointer;
             word-break: break-word;
-            background: #fafffe;
+            background: transparent;
             border: 1px solid transparent;
             transition: 0.15s;
             display: flex;
@@ -595,10 +633,16 @@
             }
             .controls {
                 justify-content: center;
-                gap: 8px;
+                gap: 6px;
             }
-            .controls label {
-                font-size: 13px;
+            .top-stats {
+                justify-content: center;
+                gap: 6px;
+            }
+            .top-stat-box {
+                font-size: 11px;
+                padding: 3px 10px;
+                min-height: 32px;
             }
             input[type="date"] {
                 font-size: 13px;
@@ -606,19 +650,11 @@
             }
             button {
                 font-size: 12px;
-                padding: 7px 14px;
+                padding: 6px 12px;
             }
             #syncMsg {
                 font-size: 11px;
                 padding: 4px 10px;
-            }
-            .stats-inline {
-                justify-content: center;
-                gap: 8px;
-            }
-            .stat-box {
-                font-size: 12px;
-                padding: 6px 12px;
             }
             .motivation-box {
                 flex-direction: column;
@@ -640,14 +676,20 @@
             .tab-content {
                 padding: 12px 10px;
             }
-            .table-scroll-wrapper table {
+            .table-wrapper {
+                max-height: 400px;
+            }
+            table {
                 font-size: 11px;
                 min-width: 600px;
             }
-            .table-scroll-wrapper th,
-            .table-scroll-wrapper td {
+            th, td {
                 font-size: 11px;
                 padding: 4px;
+            }
+            .table-wrapper thead th {
+                font-size: 11px;
+                padding: 6px 4px;
             }
             .cell-display {
                 font-size: 11px;
@@ -699,10 +741,15 @@
                 padding: 8px;
             }
             .controls {
-                gap: 5px;
+                gap: 4px;
             }
-            .controls label {
-                font-size: 11px;
+            .top-stats {
+                gap: 4px;
+            }
+            .top-stat-box {
+                font-size: 10px;
+                padding: 2px 8px;
+                min-height: 28px;
             }
             input[type="date"] {
                 font-size: 11px;
@@ -713,21 +760,20 @@
                 font-size: 10px;
                 padding: 5px 10px;
             }
-            .stat-box {
-                font-size: 10px;
-                padding: 4px 10px;
+            .table-wrapper {
+                max-height: 300px;
             }
-            .stat-box strong {
-                font-size: 12px;
-            }
-            .table-scroll-wrapper table {
+            table {
                 font-size: 10px;
                 min-width: 500px;
             }
-            .table-scroll-wrapper th,
-            .table-scroll-wrapper td {
+            th, td {
                 font-size: 10px;
                 padding: 3px;
+            }
+            .table-wrapper thead th {
+                font-size: 10px;
+                padding: 4px 3px;
             }
             .cell-display {
                 font-size: 10px;
@@ -770,45 +816,44 @@
 </head>
 <body>
 
-<div class="sticky-wrapper">
-    <div class="container">
-        <header>
-            <h1>ডেইলি হ্যাবিট ট্রাকার</h1>
-            <div class="controls">
-                <span id="syncMsg">ডেটা লোড হচ্ছে...</span>
-                <label for="selectDate" style="font-weight:600; color:#065f46;">তারিখ:</label>
-                <input type="date" id="selectDate">
-                <button onclick="fetchData()">গুগল সিঙ্ক</button>
-                <button onclick="saveData()" style="background-color:#059669;">সেভ করুন</button>
-                
-                <div class="stats-inline">
-                    <!-- সম্পন্ন বক্স (সবুজ) -->
-                    <div class="stat-box completed-box">
-                        <span class="label">✅ মোট সম্পন্ন:</span>
-                        <strong id="completedCount">০</strong>
-                        <span style="opacity:0.6;">/</span>
-                        <span id="totalCount">০</span>
-                    </div>
-                    <!-- প্রোগ্রেস বক্স (নীল) -->
-                    <div class="stat-box progress-box">
-                        <span class="label">📈 অগ্রগতি:</span>
-                        <strong id="completionPercent">০%</strong>
-                    </div>
-                    <button onclick="showReport()" style="background-color:#7c3aed;">রিপোর্ট</button>
-                </div>
-            </div>
-        </header>
-
-        <div class="motivation-box">
-            <span>আমার কথা:</span>
-            <p id="quoteText">"ছোট ছোট ধারাবাহিক প্রচেষ্টা এবং আত্মনিয়ন্ত্রণই জীবনের বড় পরিবর্তন এনে দেয়। ফোকাস বজায় রাখুন।"</p>
-        </div>
-
-        <div class="tabs" id="tabNav"></div>
-    </div>
-</div>
-
 <div class="container">
+    <header>
+        <h1>ডেইলি হ্যাবিট ট্রাকার</h1>
+        <div class="controls">
+            <span id="syncMsg">ডেটা লোড হচ্ছে...</span>
+            <label for="selectDate" style="font-weight:600; color:#065f46; font-size:13px;">তারিখ:</label>
+            <input type="date" id="selectDate">
+            <button onclick="fetchData()">গুগল সিঙ্ক</button>
+            <button onclick="saveData()" style="background-color:#059669;">সেভ করুন</button>
+            <button onclick="showReport()" style="background-color:#7c3aed;">রিপোর্ট</button>
+            
+            <div class="top-stats">
+                <div class="top-stat-box completed">
+                    <span class="label">✅</span>
+                    <span class="value" id="topCompleted">০</span>
+                    <span style="opacity:0.5;">/</span>
+                    <span class="value" id="topTotal">০</span>
+                </div>
+                <div class="top-stat-box progress">
+                    <span class="label">📊</span>
+                    <span class="value" id="topPercent">০%</span>
+                </div>
+                <a href="Determination.html" class="top-stat-box link-pratigya" target="_blank" onclick="event.stopPropagation();">
+                    প্রতিজ্ঞা
+                </a>
+                <a href="Ajker_Kaj.html" class="top-stat-box link-sokol" target="_blank" onclick="event.stopPropagation();">
+                    কাজসমূহ
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="motivation-box">
+        <span>আমার কথা:</span>
+        <p id="quoteText">"ছোট ছোট ধারাবাহিক প্রচেষ্টা এবং আত্মনিয়ন্ত্রণই জীবনের বড় পরিবর্তন এনে দেয়। ফোকাস বজায় রাখুন।"</p>
+    </div>
+
+    <div class="tabs" id="tabNav"></div>
     <div id="tabContainer"></div>
 </div>
 
@@ -1106,18 +1151,18 @@
             
             let html = `
                 <h3 style="margin-top:0; color:#065f46; font-size:17px; border-bottom: 2px solid #a7f3d0; padding-bottom: 8px;">${cat}</h3>
-                <div class="table-scroll-wrapper">
+                <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 10%;">কাজের পয়েন্ট</th>
-                            <th style="width: 18%;">নির্ধারিত কাজ</th>
-                            <th style="width: 10%;">কখন</th>
-                            <th style="width: 8%;">লিঙ্ক</th>
-                            <th style="width: 16%;">আজকের কাজ</th>
-                            <th style="width: 6%;">সম্পন্ন</th>
-                            <th style="width: 16%;">আজকের অর্জন</th>
-                            <th style="width: 16%;">আগামীকালের পরিকল্পনা</th>
+                            <th style="width: 10%; min-width: 80px;">কাজের পয়েন্ট</th>
+                            <th style="width: 18%; min-width: 120px;">নির্ধারিত কাজ</th>
+                            <th style="width: 10%; min-width: 80px;">কখন</th>
+                            <th style="width: 8%; min-width: 70px;">লিঙ্ক</th>
+                            <th style="width: 16%; min-width: 110px;">আজকের কাজ</th>
+                            <th style="width: 6%; min-width: 50px;">সম্পন্ন</th>
+                            <th style="width: 16%; min-width: 110px;">আজকের অর্জন</th>
+                            <th style="width: 16%; min-width: 110px;">আগামীকালের পরিকল্পনা</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1192,10 +1237,10 @@
             if (t.done) completed++;
         });
 
-        document.getElementById('totalCount').innerText = total;
-        document.getElementById('completedCount').innerText = completed;
+        document.getElementById('topCompleted').innerText = completed;
+        document.getElementById('topTotal').innerText = total;
         const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-        document.getElementById('completionPercent').innerText = percent + '%';
+        document.getElementById('topPercent').innerText = `${percent}%`;
     }
 
     function fetchData() {
@@ -1245,7 +1290,7 @@
 
     function saveData() {
         const date = document.getElementById('selectDate').value;
-        if(SCRIPT_URL.includes("YOUR_GOOGLE_APPS_SCRIPT_URL_HERE")) {
+        if(SCRIPT_URL.includes("https://script.google.com/macros/s/AKfycbwEKWjfPoYn7MImUyaQIg3WtpQw13UaU7sG0k0iBdtb1JfoUBGFWoogoE731sFhT2lPMw/exec")) {
             alert("অনুগ্রহ করে আগে Google Apps Script URL কোডে কনফিগার করুন!");
             return;
         }
