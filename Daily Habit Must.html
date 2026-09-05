@@ -77,8 +77,6 @@
         }
 
         .stats-inline .stat-box {
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-            color: white;
             padding: 8px 16px;
             border-radius: 8px;
             font-weight: 600;
@@ -88,13 +86,33 @@
             gap: 6px;
             white-space: nowrap;
             box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+            border: 1px solid #bbf7d0;
         }
 
-        .stats-inline .stat-box strong {
+        /* সম্পন্ন বক্স - সবুজ */
+        .stats-inline .stat-box.completed-box {
+            background: linear-gradient(135deg, #065f46, #047857);
+            color: #f0fdf4;
+            border-color: #34d399;
+        }
+        .stats-inline .stat-box.completed-box strong {
             background: rgba(255,255,255,0.2);
-            padding: 0 8px;
-            border-radius: 4px;
-            font-size: 15px;
+            padding: 0 10px;
+            border-radius: 6px;
+            color: #ffffff;
+        }
+
+        /* প্রোগ্রেস বক্স - নীলাভ */
+        .stats-inline .stat-box.progress-box {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: #ffffff;
+            border-color: #93c5fd;
+        }
+        .stats-inline .stat-box.progress-box strong {
+            background: rgba(255,255,255,0.25);
+            padding: 0 10px;
+            border-radius: 6px;
+            color: #ffffff;
         }
 
         .stats-inline .stat-box .label {
@@ -777,13 +795,13 @@
                 <button onclick="saveData()" style="background-color:#059669;">সেভ করুন</button>
                 
                 <div class="stats-inline">
-                    <div class="stat-box">
+                    <div class="stat-box completed-box">
                         <span class="label">✅ মোট সম্পন্ন:</span>
                         <strong id="completedCount">০</strong>
                         <span style="opacity:0.6;">/</span>
                         <span id="totalCount">০</span>
                     </div>
-                    <div class="stat-box">
+                    <div class="stat-box progress-box">
                         <span class="label">📈 প্রোগ্রেস:</span>
                         <strong id="completionPercent">০%</strong>
                     </div>
