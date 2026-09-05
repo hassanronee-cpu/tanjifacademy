@@ -978,8 +978,16 @@
                     return;
                 }
                 
-                // ভিডিও আপডেট করা
-                const newVideos = data.map((v, idx) => ({
+                // শুধুমাত্র Active স্ট্যাটাসের ভিডিও নেওয়া হবে
+                const activeVideos = data.filter(v => v.status === 'Active');
+                
+                if (activeVideos.length === 0) {
+                    alert('⚠️ গুগল শিটে কোনো Active ভিডিও নেই!');
+                    return;
+                }
+                
+                // ভিডিও আপডেট করা (শুধু Active গুলো)
+                const newVideos = activeVideos.map((v, idx) => ({
                     id: idx + 1,
                     title: v.title,
                     url: v.url
@@ -1000,7 +1008,7 @@
                     document.getElementById('playerThumbnail').classList.add('hidden');
                 }
                 
-                alert(`✅ ${pdfVideos.length} টি ভিডিও সফলভাবে সিঙ্ক হয়েছে!`);
+                alert(`✅ ${pdfVideos.length} টি Active ভিডিও সফলভাবে সিঙ্ক হয়েছে!`);
                 
             } catch (error) {
                 alert(`❌ সিঙ্ক করতে সমস্যা হয়েছে:\n${error.message}\n\nWeb App URL ঠিক আছে কিনা চেক করুন।`);
