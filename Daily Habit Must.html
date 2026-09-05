@@ -137,18 +137,40 @@
             line-height: 1.5;
         }
 
-        .stats-banner {
+        /* নতুন স্ট্যাটাস বক্স ডিজাইন - বামে দুটি বক্স পাশাপাশি */
+        .stats-wrapper {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .stats-box {
             background: linear-gradient(135deg, #059669 0%, #10b981 100%);
             color: white;
-            padding: 12px 20px;
+            padding: 12px 22px;
             border-radius: 10px;
-            margin-top: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 15px;
-            font-weight: 600;
             box-shadow: 0 4px 10px rgba(16, 185, 129, 0.1);
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1 1 auto;
+            min-width: 160px;
+            white-space: nowrap;
+        }
+
+        .stats-box strong {
+            font-size: 18px;
+            background: rgba(255,255,255,0.15);
+            padding: 0 10px;
+            border-radius: 6px;
+        }
+
+        .stats-box .label {
+            opacity: 0.9;
+            font-weight: 500;
         }
 
         .tabs {
@@ -194,18 +216,31 @@
             display: block;
         }
 
-        .table-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        /* টেবিলের হেডার ফ্রিজ করার জন্য স্টাইল */
+        .table-fixed-header {
+            overflow: auto;
+            max-height: 600px;
+            position: relative;
         }
 
-        table {
+        .table-fixed-header table {
             width: 100%;
             min-width: 700px;
             border-collapse: collapse;
+            border-spacing: 0;
         }
 
-        th, td {
+        .table-fixed-header th {
+            position: sticky;
+            top: 0;
+            background-color: #ecfdf5;
+            z-index: 10;
+            border-bottom: 2px solid #a7f3d0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .table-fixed-header th,
+        .table-fixed-header td {
             border: 1px solid #d1fae5;
             padding: 6px;
             text-align: center;
@@ -213,8 +248,7 @@
             font-size: 13px;
         }
 
-        th {
-            background-color: #ecfdf5;
+        .table-fixed-header th {
             font-weight: 700;
             color: #065f46;
         }
@@ -574,11 +608,16 @@
                 font-size: 13px;
                 padding-left: 0;
             }
-            .stats-banner {
+            .stats-wrapper {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .stats-box {
                 font-size: 13px;
-                padding: 10px 15px;
-                flex-wrap: wrap;
-                gap: 5px;
+                padding: 10px 16px;
+                min-width: unset;
+                white-space: normal;
+                justify-content: center;
             }
             .tab-btn {
                 font-size: 12px;
@@ -587,11 +626,12 @@
             .tab-content {
                 padding: 12px 10px;
             }
-            table {
+            .table-fixed-header table {
                 font-size: 11px;
                 min-width: 600px;
             }
-            th, td {
+            .table-fixed-header th,
+            .table-fixed-header td {
                 font-size: 11px;
                 padding: 4px;
             }
@@ -659,11 +699,12 @@
                 font-size: 10px;
                 padding: 5px 10px;
             }
-            table {
+            .table-fixed-header table {
                 font-size: 10px;
                 min-width: 500px;
             }
-            th, td {
+            .table-fixed-header th,
+            .table-fixed-header td {
                 font-size: 10px;
                 padding: 3px;
             }
@@ -727,9 +768,18 @@
             <p id="quoteText">"ছোট ছোট ধারাবাহিক প্রচেষ্টা এবং আত্মনিয়ন্ত্রণই জীবনের বড় পরিবর্তন এনে দেয়। ফোকাস বজায় রাখুন।"</p>
         </div>
 
-        <div class="stats-banner" id="statsBanner">
-            <span>মোট সম্পন্ন কাজ: <strong id="completedCount">০</strong> / <strong id="totalCount">০</strong></span>
-            <span id="completionPercent">প্রোগ্রেস: ০%</span>
+        <!-- নতুন স্ট্যাটাস বক্স: দুটি বক্স পাশাপাশি -->
+        <div class="stats-wrapper">
+            <div class="stats-box">
+                <span class="label">📋 মোট সম্পন্ন কাজ:</span>
+                <strong id="completedCount">০</strong>
+                <span style="opacity:0.7;">/</span>
+                <span id="totalCount">০</span>
+            </div>
+            <div class="stats-box">
+                <span class="label">📈 প্রোগ্রেস:</span>
+                <strong id="completionPercent">০%</strong>
+            </div>
         </div>
 
         <div class="tabs" id="tabNav"></div>
@@ -1035,7 +1085,7 @@
             
             let html = `
                 <h3 style="margin-top:0; color:#065f46; font-size:17px; border-bottom: 2px solid #a7f3d0; padding-bottom: 8px;">${cat}</h3>
-                <div class="table-wrapper">
+                <div class="table-fixed-header">
                 <table>
                     <thead>
                         <tr>
@@ -1124,7 +1174,7 @@
         document.getElementById('totalCount').innerText = total;
         document.getElementById('completedCount').innerText = completed;
         const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-        document.getElementById('completionPercent').innerText = `প্রোগ্রেস: ${percent}%`;
+        document.getElementById('completionPercent').innerText = `${percent}%`;
     }
 
     function fetchData() {
