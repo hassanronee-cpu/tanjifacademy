@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="bn" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার প্রতিজ্ঞা ও প্রার্থনা | My Oath & Prayer | العهد والدعاء</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1b4332;
+            --secondary-color: #2d6a4f;
+            --accent-color: #d4a373;
+            --bg-color: #f4f6f0;
+            --card-bg: #ffffff;
+            --text-main: #2b2b2b;
+            --text-muted: #555555;
+            --border-color: #d8e2dc;
+            --shadow: 0 10px 30px rgba(27, 67, 50, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.8;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #ffffff;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        header h1 {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Language Switcher Tabs */
+        .lang-tabs {
+            display: flex;
+            justify-content: center;
+            background: #e8f5e9;
+            padding: 15px 20px;
+            gap: 15px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 2px solid var(--secondary-color);
+            color: var(--secondary-color);
+            padding: 8px 22px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: var(--secondary-color);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(45, 106, 79, 0.2);
+        }
+
+        .content-section {
+            padding: 40px;
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .text-body {
+            font-size: 1.15rem;
+            text-align: justify;
+            white-space: pre-line;
+        }
+
+        .lang-bn {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 1.2rem;
+            line-height: 2.1;
+        }
+
+        .lang-en {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.12rem;
+            line-height: 1.9;
+        }
+
+        /* Arabic Interactive Controls */
+        .arabic-controls {
+            background: #f1f8f5;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid #c8e6c9;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arabic-controls label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .arabic-controls input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--secondary-color);
+            cursor: pointer;
+        }
+
+        /* Arabic Paragraph Container */
+        .arabic-paragraph-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .arabic-sentence-block {
+            background: #fafaf9;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .arabic-sentence-block:hover {
+            border-color: var(--secondary-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            font-size: 1.6rem;
+            line-height: 2.4;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        /* Pronunciation */
+        .pronunciation-box {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 1.05rem;
+            color: #2b6cb0;
+            background: #ebf8ff;
+            padding: 8px 14px;
+            border-radius: 8px;
+            margin-top: 10px;
+            direction: ltr;
+            text-align: left;
+            display: none;
+            border-left: 4px solid #3182ce;
+        }
+
+        .show-pronunciation .pronunciation-box {
+            display: block;
+        }
+
+        /* Bengali Translation inside Arabic */
+        .translation-box {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 1.1rem;
+            color: #2d3748;
+            background: #f7fafc;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-top: 10px;
+            direction: ltr;
+            text-align: left;
+            display: none;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .show-translation .translation-box {
+            display: block;
+        }
+
+        /* Word by Word Grid */
+        .word-by-word-container {
+            display: none;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+            direction: rtl;
+            padding-top: 12px;
+            border-top: 1px dashed #cbd5e0;
+        }
+
+        .show-wordbyword .word-by-word-container {
+            display: flex;
+        }
+
+        .word-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 6px 12px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .word-card .ar-word {
+            font-family: 'Amiri', serif;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .word-card .bn-meaning {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-top: 2px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { margin: 10px auto; border-radius: 12px; }
+            header { padding: 30px 15px; }
+            header h1 { font-size: 1.8rem; }
+            .content-section { padding: 20px; }
+            .arabic-text { font-size: 1.35rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>আমার প্রতিজ্ঞা ও প্রার্থনা</h1>
+            <p>My Oath & Prayer &bull; العهد والدعاء</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="lang-tabs">
+            <button class="tab-btn active" onclick="switchLang('bn', this)">বাংলা</button>
+            <button class="tab-btn" onclick="switchLang('en', this)">English</button>
+            <button class="tab-btn" onclick="switchLang('ar', this)">العربية</button>
+        </div>
+
+        <!-- Bengali Section -->
+        <div id="section-bn" class="content-section active">
+            <div class="text-body lang-bn">আমাকে আমার কোন কাজে ডিজ অনেস্ট হওয়া যাবেনা। যেমন আমার ইবাদত, পরিবার, প্রফেশন বা আমাকে অ্যাসাইন করা যেকোন সৎ, সঠিক ও ভালো কাজ। কাল্পনিক বা যেকোন ভয়, অলসতা কিংবা হতাশায় পরে গিয়ে কোন কাজে পিছপা হওয়া যাবেনা। আবার এই সততার শক্তিতে কখনও অহংকারী হওয়া যাবেনা। সকলের সাথেই থাকতে হবে বিনয়ী, সদালাপী ও মিষ্টভাষী এবং অত্যন্ত ধৈর্যশীল। ডিজ অনেষ্টি সেটাই যে আমি কোন কাজে গোপনে কিংবা সুযোগ পেয়ে এমন কিছু করলাম বা করছি যেটা আমি জানি যে কেউ জানলে, আমার সম্মুখে বা পিছনে বসে এটা নিয়ে আমার সততার প্রশ্ন তুলতে পারে এমন সুযোগ আছে এবং যা আমাকে লজ্জিত ও অপমানিত করবে।
+
+অবশ্যই এই সকল প্রতিশ্রুতি এবং সততার বিষয়গুলো প্রথমে আমার রবের নিকট, কারণ তিনিই আমার সকল গোপনীয় এবং প্রকাশ্য বিষয়াবলী জানেন। তাঁর নিকটেই আমাকে ফিরে যেতে হবে এবং যাবতীয় কল্যাণ ও আমার প্রয়োজন তিনিই আমাকে মিটিয়ে দিয়ে থাকেন। আমি সকল বিষয়ে তাঁরই মুখাপেক্ষী। তিনি এক এবং অদ্বিতীয়। তিনি সকল কিছুর অমুখাপেক্ষী। তিনি পরম করুণাময় ও দয়ালু।
+
+আমি যেন আমার দৃঢ়তা ধরে রেখে সরল সঠিক পথে চলতে পারি সেজন্য আমার রবের নিকট সাহায্য চাচ্ছি এবং আশ্রয় চাই ভালো কাজে অপরাগ হওয়া থেকে, দারিদ্রতা ও কৃপণতা থেকে, দুনিয়া ও আখিরাতে লজ্জিত, অপমানিত হওয়া থেকে ও যাবতীয় অকল্যাণ থেকে। আর আমার সাধ্যের বাইরে কোন কিছুর সম্মুখীন হওয়া থেকে। সর্বোপরি আমি আমার রবের নিকট সকল বিষয়ে নিরাপত্তা চাই এবং সেই সকল কিছুই চাই যা আমি হয়তো তাকে বলে বুঝাতে পারিনি বা চাইতে পারিনি কিন্তু যাতে রয়েছে আমার জন্য যাবতীয় কল্যাণ ও নিরাপত্তা এবং সেই সকল কিছু থেকে আশ্রয় চাই যা আমি ভুল করে চেয়ে থাকলেও বা আমার কোন ভুলের জন্য নির্ধারিত হলেও আমার জন্য কল্যাণের এবং নিরাপদ নয়। আমি দুর্বল ও জ্ঞানহীন। নিশ্চয়ই আল্লাহ সর্বজ্ঞানী ও সর্বোত্তম সমাধানকারী।</div>
+        </div>
+
+        <!-- English Section -->
+        <div id="section-en" class="content-section">
+            <div class="text-body lang-en">I must not be dishonest in any of my deeds—whether it is in my worship, family, profession, or any righteous, correct, and good work assigned to me. I must not step back from any work out of imaginary fears, laziness, or despair. At the same time, I must never become arrogant because of the strength of this honesty. I must remain humble, polite, sweet-spoken, and extremely patient with everyone. Dishonesty is when I do or am doing something in secret, or taking advantage of an opportunity, knowing that if anyone found out, they could question my integrity either to my face or behind my back, which would shame and humiliate me.
+
+Certainly, all these commitments and matters of integrity are presented first and foremost before my Lord, for He alone knows all my hidden and manifest affairs. To Him I must return, and He is the One who fulfills all my goodness and needs. I am entirely dependent on Him in all matters. He is the One and Only. He is free of all needs, while everything depends on Him. He is the Most Gracious, the Most Merciful.
+
+I seek my Lord's help so that I may remain steadfast and walk upon the straight path, and I seek refuge in Him from incapacity in doing good deeds, from poverty and miserliness, from humiliation and disgrace in this world and the Hereafter, from all evils, and from facing anything beyond my capacity. Above all, I ask my Lord for security in all matters, and I ask Him for everything—whether I was able to articulate it or not—that contains all goodness and safety for me. And I seek refuge in Him from anything that I may have mistakenly asked for, or that might have been decreed for me despite my errors, which is not good or safe for me. I am weak and devoid of knowledge, whereas Allah is the All-Knowing and the Best Disposer of Affairs.</div>
+        </div>
+
+        <!-- Arabic Section with Interactive Options -->
+        <div id="section-ar" class="content-section">
+            <div class="arabic-controls">
+                <label><input type="checkbox" id="chk-harakah" checked onchange="toggleOption('harakah')"> হারাকাহ (তশিল)</label>
+                <label><input type="checkbox" id="chk-pron" onchange="toggleOption('pron')"> বাংলা উচ্চারণ</label>
+                <label><input type="checkbox" id="chk-word" onchange="toggleOption('word')"> শব্দে শব্দে অর্থ</label>
+                <label><input type="checkbox" id="chk-trans" onchange="toggleOption('trans')"> বাংলা অনুবাদ</label>
+            </div>
+
+            <div id="arabic-container" class="arabic-paragraph-container">
+
+                <div class="arabic-sentence-block" id="block-0">
+                    <div class="arabic-text">يجب ألا أكون خائناً أو غير أمين في أي من أعمالي؛</div>
+                    <div class="pronunciation-box"><strong>উচ্চারণ:</strong> ইয়াজিবু আল্লা অকূনা খাইনান আও গাইরা আমিনিন ফী আইয়ি মিন আ'মালী;</div>
+                    <div class="translation-box"><strong>অনুবাদ:</strong> আমাকে আমার কোন কাজে ডিজ অনেস্ট হওয়া যাবেনা।</div>
+                    <div class="word-by-word-container">
+                        
+                    <div class="word-card">
+                        <div class="ar-word">يجب</div>
+                        <div class="bn-meaning">উচিত/হবে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ألا</div>
+                        <div class="bn-meaning">না</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أكون</div>
+                        <div class="bn-meaning">আমি হওয়া</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">خائناً</div>
+                        <div class="bn-meaning">খিয়ানতকারী/অসাধু</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">অথবা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">غير</div>
+                        <div class="bn-meaning">অন্য</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أمين</div>
+                        <div class="bn-meaning">বিশ্বস্ত/সৎ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">في</div>
+                        <div class="bn-meaning">মধ্যে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أي</div>
+                        <div class="bn-meaning">যেকোন</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">من</div>
+                        <div class="bn-meaning">থেকে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أعمالي</div>
+                        <div class="bn-meaning">আমার কাজসমূহ</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="arabic-sentence-block" id="block-1">
+                    <div class="arabic-text">سواء كان ذلك في عبادتي، أو عائلتي، أو مهنتي، أو أي عمل صالح وصحيح ومفيد موكل إليّ.</div>
+                    <div class="pronunciation-box"><strong>উচ্চারণ:</strong> সাওয়ায়ুন কানা জালিকা ফী ইবাদাতী, আও আইলাতী, আও মিহনাতী, আও আইয়ি আমালিন সালিহিন ওয়া সাহিহিন ওয়া মুফিদিন মুওয়াক্কালিন ইলাইয়্য.</div>
+                    <div class="translation-box"><strong>অনুবাদ:</strong> যেমন আমার ইবাদত, পরিবার, প্রফেশন বা আমাকে অ্যাসাইন করা যেকোন সৎ, সঠিক ও ভালো কাজ।</div>
+                    <div class="word-by-word-container">
+                        
+                    <div class="word-card">
+                        <div class="ar-word">سواء</div>
+                        <div class="bn-meaning">নির্বিশেষে/চাই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">كان</div>
+                        <div class="bn-meaning">ছিল/হউক</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ذلك</div>
+                        <div class="bn-meaning">তা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">في</div>
+                        <div class="bn-meaning">মধ্যে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">عبادتي</div>
+                        <div class="bn-meaning">আমার ইবাদত</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">বা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">عائلتي</div>
+                        <div class="bn-meaning">আমার পরিবার</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">বা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">مهنتي</div>
+                        <div class="bn-meaning">আমার পেশা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">বা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أي</div>
+                        <div class="bn-meaning">যেকোন</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">عمل</div>
+                        <div class="bn-meaning">কাজ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">صالح</div>
+                        <div class="bn-meaning">সৎ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وصحيح</div>
+                        <div class="bn-meaning">ও সঠিক</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ومفيد</div>
+                        <div class="bn-meaning">ও উপকারী</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">موكل</div>
+                        <div class="bn-meaning">ন্যস্ত/অ্যাসাইনড</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">إليّ</div>
+                        <div class="bn-meaning">আমার প্রতি</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="arabic-sentence-block" id="block-2">
+                    <div class="arabic-text">يجب ألا أتراجع عن أي عمل بسبب مخاوف وهمية، أو كسل، أو يأس.</div>
+                    <div class="pronunciation-box"><strong>উচ্চারণ:</strong> ইয়াজিবু আল্লা অতারাজাআ আন আইয়ি আমালিন বিসাবাবি মাকাওিফা ওয়াহমিয়াতিন, আও কাসালিন, আও ইয়াসিন.</div>
+                    <div class="translation-box"><strong>অনুবাদ:</strong> কাল্পনিক বা যেকোন ভয়, অলসতা কিংবা হতাশায় পরে গিয়ে কোন কাজে পিছপা হওয়া যাবেনা।</div>
+                    <div class="word-by-word-container">
+                        
+                    <div class="word-card">
+                        <div class="ar-word">يجب</div>
+                        <div class="bn-meaning">উচিত/হবে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ألا</div>
+                        <div class="bn-meaning">না</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أتراجع</div>
+                        <div class="bn-meaning">আমি পিছু হটা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">عن</div>
+                        <div class="bn-meaning">থেকে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أي</div>
+                        <div class="bn-meaning">যেকোন</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">عمل</div>
+                        <div class="bn-meaning">কাজ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">بسبب</div>
+                        <div class="bn-meaning">কারণে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">مخاوف</div>
+                        <div class="bn-meaning">ভয়সমূহ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وهمية</div>
+                        <div class="bn-meaning">কাল্পনিক</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">বা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">كسل</div>
+                        <div class="bn-meaning">অলসতা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">বা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">يأس</div>
+                        <div class="bn-meaning">হতাশা</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="arabic-sentence-block" id="block-3">
+                    <div class="arabic-text">وفي الوقت نفسه، يجب ألا يصيبني الكبر أو الغرور بسبب قوة هذه الأمانة والنزاهة.</div>
+                    <div class="pronunciation-box"><strong>উচ্চারণ:</strong> ওয়া ফিল ওয়াক্তিন নাসহি, ইয়াজিবু আল্লা ইউসিবানিয়াল কিবরু আওল গুহুরু বিসাবাবি কুওয়াতি হাজিহিল আমানাতি ওয়ান নাজাবাহ.</div>
+                    <div class="translation-box"><strong>অনুবাদ:</strong> আবার এই সততার শক্তিতে কখনও অহংকারী হওয়া যাবেনা।</div>
+                    <div class="word-by-word-container">
+                        
+                    <div class="word-card">
+                        <div class="ar-word">وفي</div>
+                        <div class="bn-meaning">এবং মধ্যে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الوقت</div>
+                        <div class="bn-meaning">সময়</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">نفسه</div>
+                        <div class="bn-meaning">নিজেই/একই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">يجب</div>
+                        <div class="bn-meaning">উচিত</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ألا</div>
+                        <div class="bn-meaning">না</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">يصيبني</div>
+                        <div class="bn-meaning">আমাকে আঘাত করা/ধরা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الكبر</div>
+                        <div class="bn-meaning">অহংকার</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">বা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الغرور</div>
+                        <div class="bn-meaning">অহমিকা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">بسبب</div>
+                        <div class="bn-meaning">কারণে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">قوة</div>
+                        <div class="bn-meaning">শক্তি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">هذه</div>
+                        <div class="bn-meaning">এই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الأمانة</div>
+                        <div class="bn-meaning">আমানত/সততা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">والنزاهة</div>
+                        <div class="bn-meaning">ও পবিত্রতা/সততা</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="arabic-sentence-block" id="block-4">
+                    <div class="arabic-text">يجب أن أكون متواضعاً، لين الكلام، طيب المعشر، وفي غاية الصبر مع الجميع.</div>
+                    <div class="pronunciation-box"><strong>উচ্চারণ:</strong> ইয়াজিবু আন অকূনা মুতওয়াদিউয়ান, লিয়িনাল কালামি, তাইয়িবাল মা'শারি, ফী গায়াতিস সাবরি মাআল জামি'ই.</div>
+                    <div class="translation-box"><strong>অনুবাদ:</strong> সকল সাথেই থাকতে হবে বিনয়ী, সদালাপী ও মিষ্টভাষী এবং অত্যন্ত ধৈর্যশীল।</div>
+                    <div class="word-by-word-container">
+                        
+                    <div class="word-card">
+                        <div class="ar-word">يجب</div>
+                        <div class="bn-meaning">উচিত</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أن</div>
+                        <div class="bn-meaning">যে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أكون</div>
+                        <div class="bn-meaning">আমি হওয়া</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">متواضعاً</div>
+                        <div class="bn-meaning">বিনয়ী</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">لين</div>
+                        <div class="bn-meaning">নরম/মিষ্টি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الكلام</div>
+                        <div class="bn-meaning">কথা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">طيب</div>
+                        <div class="bn-meaning">ভালো/সুন্দর</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">المعشر</div>
+                        <div class="bn-meaning">সঙ্গী/সদালাপী</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وفي</div>
+                        <div class="bn-meaning">এবং মধ্যে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">غاية</div>
+                        <div class="bn-meaning">চূড়ান্ত</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الصبر</div>
+                        <div class="bn-meaning">ধৈর্য</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">مع</div>
+                        <div class="bn-meaning">সাথে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الجميع</div>
+                        <div class="bn-meaning">সকলে</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="arabic-sentence-block" id="block-5">
+                    <div class="arabic-text">الخيانة أو عدم الأمانة هي أن أفعَل أو أكون بصدد فعل شيء في السر، أو استغلال فرصة ما، وأنا أعلم أنه لو اطلع عليها أحد، لكان هناك مجال للطعن في أمانتي أمام وجهي أو من وراء ظهري، مما يسبب لي الخزي والإهانة.</div>
+                    <div class="pronunciation-box"><strong>উচ্চারণ:</strong> আল খিয়ানাতু আও আদামুল আমানাতি হিয়া আন আফআলা আও অকূনা বিসাদাদি ফি'লি শাইয়িন ফিস সাররি, আও ইস্তিঘলাল ফারসাতিন মা, ওয়া আনা আলামু আন্নাহু লাউইত্তালাআ আলাইহা আহাদুন, লাকানা হুনাকা মাজাআল লিততা'নি ফী আমানাতী আমামা ওয়াজহী আও মিন ওয়ারাই জাহরী, মিম্মা ইউসাব্বিবু লিয়াল খিজইয়া ওয়াল ইহানাতাহ.</div>
+                    <div class="translation-box"><strong>অনুবাদ:</strong> ডিজ অনেষ্টি সেটাই যে আমি কোন কাজে গোপনে কিংবা সুযোগ পেয়ে এমন কিছু করলাম বা করছি যেটা আমি জানি যে কেউ জানলে, আমার সম্মুখে বা পিছনে বসে এটা নিয়ে আমার সততার প্রশ্ন তুলতে পারে এমন সুযোগ আছে এবং যা আমাকে লজ্জিত ও অপমানিত করবে।</div>
+                    <div class="word-by-word-container">
+                        
+                    <div class="word-card">
+                        <div class="ar-word">الخيانة</div>
+                        <div class="bn-meaning">খিয়ানত</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">বা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">عدم</div>
+                        <div class="bn-meaning">অনুপস্থিতি/না</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الأمانة</div>
+                        <div class="bn-meaning">আমানত</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">هي</div>
+                        <div class="bn-meaning">সেটি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أن</div>
+                        <div class="bn-meaning">যে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أفعَل</div>
+                        <div class="bn-meaning">আমি করি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">বা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أكون</div>
+                        <div class="bn-meaning">আমি হই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">بصدد</div>
+                        <div class="bn-meaning">বছিদ/উদ্দেশ্যে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">فعل</div>
+                        <div class="bn-meaning">করা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">شيء</div>
+                        <div class="bn-meaning">কিছু</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">في</div>
+                        <div class="bn-meaning">গোপনে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">السر</div>
+                        <div class="bn-meaning">গোপন</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">বা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">استغلال</div>
+                        <div class="bn-meaning">ব্যবহার/সুযোগ নেওয়া</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">فرصة</div>
+                        <div class="bn-meaning">সুযোগ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ما</div>
+                        <div class="bn-meaning">কোনো</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وأنا</div>
+                        <div class="bn-meaning">এবং আমি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أعلم</div>
+                        <div class="bn-meaning">জানি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أنه</div>
+                        <div class="bn-meaning">যে তা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">لو</div>
+                        <div class="bn-meaning">যদি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">اططلع</div>
+                        <div class="bn-meaning">অবগত হয়</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">عليها</div>
+                        <div class="bn-meaning">তাতে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أحد</div>
+                        <div class="bn-meaning">কেউ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">لكان</div>
+                        <div class="bn-meaning">তবে হতো</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">هناك</div>
+                        <div class="bn-meaning">সেখানে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">مجাল</div>
+                        <div class="bn-meaning">সুযোগ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">للطعن</div>
+                        <div class="bn-meaning">প্রশ্ন তোলার</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">في</div>
+                        <div class="bn-meaning">উপর</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أمانتي</div>
+                        <div class="bn-meaning">আমার সততা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أمام</div>
+                        <div class="bn-meaning">সামনে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وجهي</div>
+                        <div class="bn-meaning">আমার মুখ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">বা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">من</div>
+                        <div class="bn-meaning">থেকে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وراء</div>
+                        <div class="bn-meaning">পিছনে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ظهري</div>
+                        <div class="bn-meaning">আমার পিঠ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ميمما</div>
+                        <div class="bn-meaning">যা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">يسبب</div>
+                        <div class="bn-meaning">কারণ ঘটায়</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">لي</div>
+                        <div class="bn-meaning">আমার</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الخزي</div>
+                        <div class="bn-meaning">লজ্জা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">والإهانة</div>
+                        <div class="bn-meaning">ও অপমান</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="arabic-sentence-block" id="block-6">
+                    <div class="arabic-text">وبالطبع، فإن كل هذه العهود ومسائل الأمانة هي أولاً وقبل كل شيء أمام ربي، فهو وحده يعلم سرّي وعلانيتي، وإليه مرجعي، وهو الذي يقضي لي كل خير وجميع حوائجي.</div>
+                    <div class="pronunciation-box"><strong>উচ্চারণ:</strong> ওয়া বিততাব'ই, ফাইন্না কুল্লা হাজিহিল উহূদি ওয়া মাসাইলিল আমানাতি হিয়া আওলান ওয়া কাবলা কুল্লি শাইয়িন আমামা রাব্বী, ফাহুয়া ওয়াহদাহু ইয়া'লামু সির্রী ওয়া আলানিয়াতী, ওয়া ইলাইহি মারজিয়ী, ওয়া হুয়াল্লাযী ইয়াক্বি লী কুল্লা খাইরিন ওয়া জামিআ হাওয়ায়েজী.</div>
+                    <div class="translation-box"><strong>অনুবাদ:</strong> অবশ্যই এই সকল প্রতিশ্রুতি এবং সততার বিষয়গুলো প্রথমে আমার রবের নিকট, কারণ তিনিই আমার সকল গোপনীয় এবং প্রকাশ্য বিষয়াবলী জানেন। তাঁর নিকটেই আমাকে ফিরে যেতে হবে এবং যাবতীয় কল্যাণ ও আমার প্রয়োজন তিনিই আমাকে মিটিয়ে দিয়ে থাকেন।</div>
+                    <div class="word-by-word-container">
+                        
+                    <div class="word-card">
+                        <div class="ar-word">وبالطبع</div>
+                        <div class="bn-meaning">অবশ্যই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">فإن</div>
+                        <div class="bn-meaning">নিশ্চয়ই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">كل</div>
+                        <div class="bn-meaning">সকল</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">هذه</div>
+                        <div class="bn-meaning">এই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">العهود</div>
+                        <div class="bn-meaning">প্রতিশ্রুতিসমূহ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ومسائل</div>
+                        <div class="bn-meaning">ও বিষয়সমূহ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الأمانة</div>
+                        <div class="bn-meaning">সততার</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">هي</div>
+                        <div class="bn-meaning">হলো</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أولاً</div>
+                        <div class="bn-meaning">প্রথমত</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وقبل</div>
+                        <div class="bn-meaning">এবং পূর্বে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">كل</div>
+                        <div class="bn-meaning">সকল</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">شيء</div>
+                        <div class="bn-meaning">কিছু</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">امام</div>
+                        <div class="bn-meaning">সামনে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ربي</div>
+                        <div class="bn-meaning">আমার রব</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">فهو</div>
+                        <div class="bn-meaning">সুতরাং তিনি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وحده</div>
+                        <div class="bn-meaning">একা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">يعلم</div>
+                        <div class="bn-meaning">জানেন</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">سرّي</div>
+                        <div class="bn-meaning">আমার গোপনীয়</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وعلانيتي</div>
+                        <div class="bn-meaning">ও প্রকাশ্য</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وإليه</div>
+                        <div class="bn-meaning">এবং তাঁর দিকেই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">مرجعي</div>
+                        <div class="bn-meaning">আমার প্রত্যাবর্তন</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وهو</div>
+                        <div class="bn-meaning">এবং তিনি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الذي</div>
+                        <div class="bn-meaning">যিনি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">يقضي</div>
+                        <div class="bn-meaning">মীমাংসা করেন/দেন</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">لي</div>
+                        <div class="bn-meaning">আমার</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">كل</div>
+                        <div class="bn-meaning">সকল</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">خير</div>
+                        <div class="bn-meaning">কল্যাণ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وجميع</div>
+                        <div class="bn-meaning">ও যাবতীয়</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">حوائجي</div>
+                        <div class="bn-meaning">আমার প্রয়োজনসমূহ</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="arabic-sentence-block" id="block-7">
+                    <div class="arabic-text">أنا محتاج إليه في كل أموري؛ فهو الواحد الأحد، الصمد الذي لم يلد ولم يولد ولم يكن له كفواً أحد، وهو الرحمن الرحيم.</div>
+                    <div class="pronunciation-box"><strong>উচ্চারণ:</strong> আনা মুহতাজুন ইলাইহি ফী কুল্লি উমূরীক; ফাহুয়াল ওয়াহিদুল আহাদু, আস-সামাদুল্লাযী লাম ইয়ালিদ ওয়া লাম ইউলাদ ওয়া লাম ইয়াকুন লাহূ কুফুওয়ান আহাদ, ওয়া হুওয়্যার রাহমানুর রাহীম.</div>
+                    <div class="translation-box"><strong>অনুবাদ:</strong> আমি সকল বিষয়ে তাঁরই মুখাপেক্ষী। তিনি এক এবং অদ্বিতীয়। তিনি সকল কিছুর অমুখাপেক্ষী। তিনি পরম করুণাময় ও দয়ালু।</div>
+                    <div class="word-by-word-container">
+                        
+                    <div class="word-card">
+                        <div class="ar-word">أنا</div>
+                        <div class="bn-meaning">আমি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">محتاج</div>
+                        <div class="bn-meaning">মুখাপেক্ষী</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">إليه</div>
+                        <div class="bn-meaning">তাঁর</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">في</div>
+                        <div class="bn-meaning">বিষয়ে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">كل</div>
+                        <div class="bn-meaning">সকল</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أموري</div>
+                        <div class="bn-meaning">আমার কার্যাবলী</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">فهو</div>
+                        <div class="bn-meaning">তিনি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الواحد</div>
+                        <div class="bn-meaning">এক</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الأحد</div>
+                        <div class="bn-meaning">অদ্বিতীয়</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الصمد</div>
+                        <div class="bn-meaning">অমুখাপেক্ষী</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الذي</div>
+                        <div class="bn-meaning">যিনি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">لم</div>
+                        <div class="bn-meaning">না</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">يلد</div>
+                        <div class="bn-meaning">জন্ম দিয়েছেন</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ولم</div>
+                        <div class="bn-meaning">এবং না</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">يولد</div>
+                        <div class="bn-meaning">জন্ম নিয়েছেন</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ولم</div>
+                        <div class="bn-meaning">এবং না</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">يكুন</div>
+                        <div class="bn-meaning">হয়েছেন</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">له</div>
+                        <div class="bn-meaning">তাঁর</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">كفواً</div>
+                        <div class="bn-meaning">সমকক্ষ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أحد</div>
+                        <div class="bn-meaning">কেউ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وهو</div>
+                        <div class="bn-meaning">এবং তিনি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الرحمن</div>
+                        <div class="bn-meaning">পরম করুণাময়</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الرحيم</div>
+                        <div class="bn-meaning">দয়ালু</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="arabic-sentence-block" id="block-8">
+                    <div class="arabic-text">أسأل ربي أن يعينني على الثبات وأن يسلك بي الصراط المستقيم، وأعوذ به من العجز والكسل، ومن الجبر والبخل، ومن الخزي والإهانة في الدنيا والآخرة، ومن كل شر، ومن مواجهة ما لا طاقة لي به.</div>
+                    <div class="pronunciation-box"><strong>উচ্চারণ:</strong> আসআলু রাব্বী আন ইউইনানি আলাস সাবাতি ওয়া আন ইয়াসুলুকা বিচ-সিরাতাল মুস্তাকীমা, ওয়া আউজু বিহি মিনাল আজযি ওয়াল কাসালে, ওয়া মিনাল জুবরি ওয়াল বুখলে, ওয়া মিনাল খিজইয়া ওয়াল ইহানাতে ফী আদ-দুনইয়া ওয়াল আখিরাতে, ওয়া মিন কুল্লি শাররিন, ওয়া মিন মুওয়াজাহাতি মা লা ত্বাকাতা লি বিহি.</div>
+                    <div class="translation-box"><strong>অনুবাদ:</strong> আমি যেন আমার দৃঢ়তা ধরে রেখে সরল সঠিক পথে চলতে পারি সেজন্য আমার রবের নিকট সাহায্য চাচ্ছি এবং আশ্রয় চাই ভালো কাজে অপরাগ হওয়া থেকে, দারিদ্রতা ও কৃপণতা থেকে, দুনিয়া ও আখিরাতে লজ্জিত, অপমানিত হওয়া থেকে ও যাবতীয় অকল্যাণ থেকে। আর আমার সাধ্যের বাইরে কোন কিছুর সম্মুখীন হওয়া থেকে।</div>
+                    <div class="word-by-word-container">
+                        
+                    <div class="word-card">
+                        <div class="ar-word">أسأل</div>
+                        <div class="bn-meaning">আমি চাই/আশা করি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ربي</div>
+                        <div class="bn-meaning">আমার রব</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أن</div>
+                        <div class="bn-meaning">যে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">يعينني</div>
+                        <div class="bn-meaning">আমাকে সাহায্য করুন</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">على</div>
+                        <div class="bn-meaning">উপর</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الثبات</div>
+                        <div class="bn-meaning">দৃঢ়তা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وأن</div>
+                        <div class="bn-meaning">এবং যে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">يسلك</div>
+                        <div class="bn-meaning">চালান</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">بي</div>
+                        <div class="bn-meaning">আমাকে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الصراط</div>
+                        <div class="bn-meaning">পথ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">المستقيم</div>
+                        <div class="bn-meaning">সরল সঠিক</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وأعوذ</div>
+                        <div class="bn-meaning">এবং আশ্রয় চাই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">به</div>
+                        <div class="bn-meaning">তাঁাতে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">من</div>
+                        <div class="bn-meaning">থেকে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">العجز</div>
+                        <div class="bn-meaning">অপারগতা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">والكسل</div>
+                        <div class="bn-meaning">ও অলসতা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ومن</div>
+                        <div class="bn-meaning">এবং থেকে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الجبر</div>
+                        <div class="bn-meaning">জুলুম/দারিদ্রতা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">والبخل</div>
+                        <div class="bn-meaning">ও কৃপণতা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ومن</div>
+                        <div class="bn-meaning">এবং থেকে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الخزي</div>
+                        <div class="bn-meaning">লজ্জা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">والإهانة</div>
+                        <div class="bn-meaning">ও অপমান</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">في</div>
+                        <div class="bn-meaning">মধ্যে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الدنيا</div>
+                        <div class="bn-meaning">দুনিয়া</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">والآخرة</div>
+                        <div class="bn-meaning">ও আখিরাত</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ومن</div>
+                        <div class="bn-meaning">এবং থেকে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">كل</div>
+                        <div class="bn-meaning">সকল</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">شر</div>
+                        <div class="bn-meaning">অকল্যাণ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ومن</div>
+                        <div class="bn-meaning">এবং থেকে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">مواجهة</div>
+                        <div class="bn-meaning">মোকাবিলা/সম্মুখীন হওয়া</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ما</div>
+                        <div class="bn-meaning">যা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">لا</div>
+                        <div class="bn-meaning">না</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">طاقت</div>
+                        <div class="bn-meaning">শক্তি/সাধ্য</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">لي</div>
+                        <div class="bn-meaning">আমার</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">به</div>
+                        <div class="bn-meaning">তাতে</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="arabic-sentence-block" id="block-9">
+                    <div class="arabic-text">وفوق كل ذلك، أطلب من ربي الأمان والسلامة في كل الأمور، وأسأله كل خير لم أستطع التعبير عنه أو طلبه ولكن فيه الخير لي والسلّامة، وأعوذ به من كل شر سألته خطأً أو قُدّر لي بسبب خطأ مني وليس فيه خير لي ولا أمان.</div>
+                    <div class="pronunciation-box"><strong>উচ্চারণ:</strong> ওয়া ফাওকা কুল্লি জালিকা, অতলুবু মিন রাব্বিল আমানা ওয়াস-সালামাতা ফী কুল্লিল উমূহি, ওয়া আসআলুহূ কুল্লা খাইরিন লাম আস্ততি' আত-তাবীবা আনহু আও তালাম্বাহূ লাকিন্না ফীহিল খাইরা লি ওয়াস-সালামাতা, ওয়া আউজু বিহি মিন কুল্লি শাররিন সাআলতুহু খাতাআন আও কুদ্দারা লি বিসাবাবি খাতাআন মিন্নি ওয়া লাইসা ফীহি খাইরুন লি ওয়া লা আমান.</div>
+                    <div class="translation-box"><strong>অনুবাদ:</strong> সর্বোপরি আমি আমার রবের নিকট সকল বিষয়ে নিরাপত্তা চাই এবং সেই সকল কিছুই চাই যা আমি হয়তো তাকে বলে বুঝাতে পারিনি বা চাইতে পারিনি কিন্তু যাতে রয়েছে আমার জন্য যাবতীয় কল্যাণ ও নিরাপত্তা এবং সেই সকল কিছু থেকে আশ্রয় চাই যা আমি ভুল করে চেয়ে থাকলেও বা আমার কোন ভুলের জন্য নির্ধারিত হলেও আমার জন্য কল্যাণের এবং নিরাপদ নয়।</div>
+                    <div class="word-by-word-container">
+                        
+                    <div class="word-card">
+                        <div class="ar-word">وفوق</div>
+                        <div class="bn-meaning">এবং উপরে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">كل</div>
+                        <div class="bn-meaning">সকল</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ذلك</div>
+                        <div class="bn-meaning">তা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أطلب</div>
+                        <div class="bn-meaning">আমি চাই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">من</div>
+                        <div class="bn-meaning">কাছ থেকে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ربي</div>
+                        <div class="bn-meaning">আমার রব</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الأمان</div>
+                        <div class="bn-meaning">নিরাপত্তা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">والسلامة</div>
+                        <div class="bn-meaning">ও শান্তি/নিরাপত্তা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">في</div>
+                        <div class="bn-meaning">মধ্যে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">كل</div>
+                        <div class="bn-meaning">সকল</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الأمور</div>
+                        <div class="bn-meaning">বিষয়াবলী</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وأَسأله</div>
+                        <div class="bn-meaning">এবং আমি তাঁর নিকট চাই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">كل</div>
+                        <div class="bn-meaning">সকল</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">خير</div>
+                        <div class="bn-meaning">কল্যাণ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">لم</div>
+                        <div class="bn-meaning">না</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أستطع</div>
+                        <div class="bn-meaning">আমি পেরেছি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">التعبير</div>
+                        <div class="bn-meaning">প্রকাশ করতে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">عنه</div>
+                        <div class="bn-meaning">তা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">বা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">طلبه</div>
+                        <div class="bn-meaning">তা চাওয়া</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ولكن</div>
+                        <div class="bn-meaning">কিন্তু</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">فيه</div>
+                        <div class="bn-meaning">তাতে রয়েছে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الخير</div>
+                        <div class="bn-meaning">কল্যাণ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">لي</div>
+                        <div class="bn-meaning">আমার</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">والسلامة</div>
+                        <div class="bn-meaning">ও নিরাপত্তা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وأعوذ</div>
+                        <div class="bn-meaning">এবং আশ্রয় চাই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">به</div>
+                        <div class="bn-meaning">তাঁতে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">من</div>
+                        <div class="bn-meaning">থেকে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">كل</div>
+                        <div class="bn-meaning">সকল</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">شر</div>
+                        <div class="bn-meaning">অষ্ট/খারাপ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">سألته</div>
+                        <div class="bn-meaning">আমি চেয়েছি তা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">خطأً</div>
+                        <div class="bn-meaning">ভুল করে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أو</div>
+                        <div class="bn-meaning">বা</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">قُدّر</div>
+                        <div class="bn-meaning">নির্ধারিত হয়েছে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">لي</div>
+                        <div class="bn-meaning">আমার জন্য</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">بسبب</div>
+                        <div class="bn-meaning">কারণে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">خطأ</div>
+                        <div class="bn-meaning">ভুল</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">مني</div>
+                        <div class="bn-meaning">আমার</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وليس</div>
+                        <div class="bn-meaning">এবং নেই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">فيه</div>
+                        <div class="bn-meaning">তাতে</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">خير</div>
+                        <div class="bn-meaning">কল্যাণ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">لي</div>
+                        <div class="bn-meaning">আমার জন্য</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ولا</div>
+                        <div class="bn-meaning">এবং না</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">أمان</div>
+                        <div class="bn-meaning">নিরাপত্তা</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="arabic-sentence-block" id="block-10">
+                    <div class="arabic-text">إنني ضعيف جاهل، وإن الله هو العليم الحكيم وأحسن الحاكمين.</div>
+                    <div class="pronunciation-box"><strong>উচ্চারণ:</strong> ইন্নানী দঈফুন জাহিলুন, ওয়া ইন্নাল্লাহা হুয়াল আলীমুল হাকীম ওয়া আহসানুল হাকিমিন.</div>
+                    <div class="translation-box"><strong>অনুবাদ:</strong> আমি দুর্বল ও জ্ঞানহীন। নিশ্চয়ই আল্লাহ সর্বজ্ঞানী ও সর্বোত্তম সমাধানকারী।</div>
+                    <div class="word-by-word-container">
+                        
+                    <div class="word-card">
+                        <div class="ar-word">إنني</div>
+                        <div class="bn-meaning">নিশ্চয়ই আমি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">ضعيف</div>
+                        <div class="bn-meaning">দুর্বল</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">جاهل</div>
+                        <div class="bn-meaning">জ্ঞানহীন</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وإن</div>
+                        <div class="bn-meaning">এবং নিশ্চয়ই</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الله</div>
+                        <div class="bn-meaning">আল্লাহ</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">هو</div>
+                        <div class="bn-meaning">তিনি</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">العليم</div>
+                        <div class="bn-meaning">সর্বজ্ঞানী</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الحكيم</div>
+                        <div class="bn-meaning">প্রজ্ঞাময়</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">وأحسن</div>
+                        <div class="bn-meaning">এবং সর্বোত্তম</div>
+                    </div>
+                    <div class="word-card">
+                        <div class="ar-word">الحاكمين</div>
+                        <div class="bn-meaning">মীমাংসাকারী/শাসক</div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            Daybook &bull; 11 September, 2026, 08:58 AM
+        </footer>
+    </div>
+
+    <script>
+        function switchLang(lang, btn) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+
+            document.getElementById('section-' + lang).classList.add('active');
+            btn.classList.add('active');
+
+            if (lang === 'ar') {
+                document.documentElement.setAttribute('dir', 'ltr'); // container handles inner rtl
+            } else {
+                document.documentElement.setAttribute('dir', 'ltr');
+            }
+        }
+
+        function toggleOption(optionType) {
+            const container = document.getElementById('arabic-container');
+            if (optionType === 'pron') {
+                const isChecked = document.getElementById('chk-pron').checked;
+                if (isChecked) container.classList.add('show-pronunciation');
+                else container.classList.remove('show-pronunciation');
+            } else if (optionType === 'word') {
+                const isChecked = document.getElementById('chk-word').checked;
+                if (isChecked) container.classList.add('show-wordbyword');
+                else container.classList.remove('show-wordbyword');
+            } else if (optionType === 'trans') {
+                const isChecked = document.getElementById('chk-trans').checked;
+                if (isChecked) container.classList.add('show-translation');
+                else container.classList.remove('show-translation');
+            } else if (optionType === 'harakah') {
+                const isChecked = document.getElementById('chk-harakah').checked;
+                // We can toggle tashkeel if needed, or keep it.
+            }
+        }
+    </script>
+</body>
+</html>
