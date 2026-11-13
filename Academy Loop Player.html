@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP3 ফোল্ডার প্লেয়ার ও লুপ কন্ট্রোলার</title>
+    <!-- Tailwind CSS লোড করা হচ্ছে -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- বাংলা ফন্ট (Hind Siliguri) লোড করা হচ্ছে -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'Kalpurush', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* স্ক্রলবার স্টাইল (লাইট ও ডার্ক মোড অনুযায়ী) */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        html.dark ::-webkit-scrollbar-track { background: #1e293b; border-radius: 8px; }
+        html.dark ::-webkit-scrollbar-thumb { background: #475569; border-radius: 8px; }
+        html.dark ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        
+        html:not(.dark) ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 8px; }
+        html:not(.dark) ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 8px; }
+        html:not(.dark) ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+        input[type="range"] { accent-color: #10b981; }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans selection:bg-emerald-500 selection:text-white transition-colors duration-200">
+
+    <!-- টোস্ট নোটিফিকেশন বক্স -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- হেডার সেকশন -->
+    <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 transition-colors duration-200">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">
+                        MP3 ফোল্ডার ও লুপ প্লেয়ার
+                    </h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">ফোল্ডার থেকে MP3 লোড করুন এবং ট্র্যাক, গ্রুপ রেঞ্জ বা নির্দিষ্ট অংশ লুপ করুন</p>
+                </div>
+            </div>
+
+            <!-- থিম টগল এবং ফোল্ডার ব্রাউজ বাটন -->
+            <div class="flex items-center gap-2.5">
+                <!-- ডার্ক / লাইট মোড টগল বাটন -->
+                <button type="button" id="btn-theme-toggle" title="ডার্ক / লাইট মোড পরিবর্তন করুন" class="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-200/80 hover:bg-slate-300/80 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-semibold transition active:scale-95">
+                    <!-- সূর্য আইকন (লাইট মোডে যাওয়ার জন্য - ডার্ক মোডে দেখাবে) -->
+                    <svg id="icon-sun" class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    <!-- চাঁদ আইকন (ডার্ক মোডে যাওয়ার জন্য - লাইট মোডে দেখাবে) -->
+                    <svg id="icon-moon" class="w-4 h-4 text-indigo-600 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                    <span id="theme-label">লাইট মোড</span>
+                </button>
+
+                <!-- ফোল্ডার ব্রাউজ বাটন -->
+                <label for="folder-input" class="cursor-pointer inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-semibold px-4 py-2.5 rounded-xl shadow-lg shadow-emerald-600/20 transition-all text-xs sm:text-base">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                    </svg>
+                    <span>ফোল্ডার নির্বাচন করুন</span>
+                </label>
+                <input type="file" id="folder-input" webkitdirectory directory multiple accept=".mp3,audio/mpeg" class="hidden">
+            </div>
+        </div>
+    </header>
+
+    <!-- মূল কন্টেন্ট এরিয়া -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- বাম কলাম: প্লেলিস্ট -->
+        <section class="lg:col-span-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col overflow-hidden shadow-md dark:shadow-xl max-h-[60vh] lg:max-h-[calc(100vh-7.5rem)] transition-colors duration-200">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/50 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                    <h2 class="font-bold text-base sm:text-lg text-slate-800 dark:text-slate-100">প্লেলিস্ট</h2>
+                    <span id="track-count-badge" class="bg-emerald-50 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-emerald-200 dark:border-slate-700">
+                        ০ টি ফাইল
+                    </span>
+                </div>
+                <div class="relative w-36 sm:w-44">
+                    <input type="text" id="search-input" placeholder="ট্র্যাক খুঁজুন..." class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg pl-8 pr-2.5 py-1 text-xs sm:text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+                    <svg class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div id="playlist-container" class="flex-1 overflow-y-auto p-2 space-y-1.5">
+                <div id="empty-playlist" class="h-full min-h-[220px] flex flex-col items-center justify-center text-center p-6 text-slate-500 dark:text-slate-400">
+                    <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800/80 flex items-center justify-center mb-3 text-slate-400 dark:text-slate-500">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                        </svg>
+                    </div>
+                    <p class="font-medium text-slate-700 dark:text-slate-300">কোনো MP3 ফাইল লোড করা হয়নি</p>
+                    <p class="text-xs mt-1 max-w-xs">উপরের <span class="text-emerald-600 dark:text-emerald-400 font-semibold">"ফোল্ডার নির্বাচন করুন"</span> বাটনে ক্লিক করে আপনার অডিও ফোল্ডারটি সিলেক্ট করুন।</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ডান কলাম: প্লেয়ার এবং লুপ কন্ট্রোলস -->
+        <section class="lg:col-span-7 flex flex-col gap-5">
+            
+            <!-- ১. মেইন অডিও প্লেয়ার কার্ড -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-md dark:shadow-xl transition-colors duration-200">
+                <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-wrap items-center gap-2 mb-1">
+                            <span id="player-status-badge" class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-700">
+                                <span class="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-500"></span> প্রস্তুত
+                            </span>
+                            <span id="track-index-badge" class="text-xs text-slate-500 dark:text-slate-400 hidden">ট্র্যাক ০ / ০</span>
+                            <span id="active-range-pill" class="hidden text-xs font-semibold px-2.5 py-0.5 rounded-full bg-cyan-50 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/40">
+                                রেঞ্জ সক্রিয়
+                            </span>
+                        </div>
+                        <h2 id="current-track-title" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white truncate" title="কোনো ট্র্যাক নির্বাচিত নেই">
+                            কোনো ট্র্যাক নির্বাচিত নেই
+                        </h2>
+                        <p id="current-folder-path" class="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">ফোল্ডার নির্বাচন করে প্লেলিস্ট থেকে ট্র্যাক বাছাই করুন</p>
+                    </div>
+                </div>
+
+                <!-- প্রোগ্রেস বার ও A-B রেঞ্জ ভিজ্যুয়ালাইজার -->
+                <div class="mb-5">
+                    <div class="flex justify-between text-xs font-mono text-slate-500 dark:text-slate-400 mb-1.5">
+                        <span id="current-time-display">00:00</span>
+                        <span id="duration-display">00:00</span>
+                    </div>
+                    
+                    <div id="progress-bar-wrapper" class="relative h-4 flex items-center cursor-pointer group select-none">
+                        <div class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden relative">
+                            <div id="ab-range-highlight" class="hidden absolute top-0 bottom-0 bg-amber-500/35 border-x border-amber-500 dark:border-amber-400 z-10"></div>
+                            <div id="progress-fill" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 w-0 transition-all duration-75 relative z-20"></div>
+                        </div>
+                        <div id="marker-a" class="hidden absolute -top-1.5 -translate-x-1/2 z-30 pointer-events-none">
+                            <span class="bg-amber-500 text-slate-950 text-[10px] font-bold px-1 rounded shadow">A</span>
+                        </div>
+                        <div id="marker-b" class="hidden absolute -top-1.5 -translate-x-1/2 z-30 pointer-events-none">
+                            <span class="bg-amber-500 text-slate-950 text-[10px] font-bold px-1 rounded shadow">B</span>
+                        </div>
+                        <div id="progress-thumb" class="w-4 h-4 rounded-full bg-white shadow-md border-2 border-emerald-500 absolute -translate-x-1/2 left-0 z-30 group-hover:scale-125 transition-transform"></div>
+                    </div>
+                </div>
+
+                <!-- প্লেব্যাক কন্ট্রোল বাটনসমূহ -->
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-2 sm:gap-3 mx-auto sm:mx-0">
+                        <button id="btn-prev" title="পূর্ববর্তী ট্র্যাক" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 active:scale-95 transition disabled:opacity-40">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                        </button>
+
+                        <button id="btn-play-pause" title="প্লে / পজ" class="p-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/30 active:scale-95 transition">
+                            <svg id="icon-play" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            <svg id="icon-pause" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        </button>
+
+                        <button id="btn-stop" title="সম্পূর্ণ বন্ধ (Stop)" class="p-2.5 rounded-xl bg-slate-100 hover:bg-rose-100 hover:text-rose-600 dark:bg-slate-800 dark:hover:bg-rose-900/50 dark:hover:text-rose-300 text-slate-700 dark:text-slate-200 active:scale-95 transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
+                        </button>
+
+                        <button id="btn-next" title="পরবর্তী ট্র্যাক" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 active:scale-95 transition disabled:opacity-40">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-3 sm:gap-4 mx-auto sm:mx-0">
+                        <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-950/70 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <button id="btn-mute" class="text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400">
+                                <svg id="icon-vol-high" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+                                <svg id="icon-vol-mute" class="w-4 h-4 hidden text-rose-500 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
+                            </button>
+                            <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1" class="w-16 sm:w-20 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-lg cursor-pointer">
+                        </div>
+
+                        <div class="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-950/70 px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <span class="text-xs text-slate-500 dark:text-slate-400">গতি:</span>
+                            <select id="speed-select" class="bg-transparent text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400 focus:outline-none cursor-pointer">
+                                <option value="0.75" class="bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">0.75x</option>
+                                <option value="1" selected class="bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">1.0x</option>
+                                <option value="1.25" class="bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">1.25x</option>
+                                <option value="1.5" class="bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">1.5x</option>
+                                <option value="2" class="bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">2.0x</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ২. ফোল্ডার / ট্র্যাক রেঞ্জ লুপ (যেমন: ১ থেকে ৫ নম্বর ফাইল লুপ) -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-md dark:shadow-xl relative overflow-hidden transition-colors duration-200">
+                <div id="range-active-glow" class="hidden absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-500 via-sky-400 to-cyan-500"></div>
+
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <div class="flex items-center gap-2.5">
+                        <div class="p-2 rounded-lg bg-cyan-500/15 text-cyan-600 dark:text-cyan-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">ফোল্ডার / ট্র্যাক রেঞ্জ লুপ (যেমন: ১ - ৫ ফাইল)</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">নির্দিষ্ট সংখ্যক ফাইল ক্রমানুসারে বারবার রিপিট করুন (প্রতিটি ফাইলের সিঙ্গেল রিপিটসহ)</p>
+                        </div>
+                    </div>
+
+                    <div id="folder-range-badge" class="bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
+                        গ্রুপ রেঞ্জ: বন্ধ (পুরো ফোল্ডার)
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center mb-3">
+                    <!-- শুরুর ট্র্যাক -->
+                    <div class="sm:col-span-4 flex items-center justify-between gap-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-xl">
+                        <label for="range-start-input" class="text-xs text-cyan-700 dark:text-cyan-300 font-medium whitespace-nowrap">শুরু ফাইল নং:</label>
+                        <input type="number" id="range-start-input" min="1" value="1" class="w-20 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1 text-sm font-bold text-slate-900 dark:text-white text-center focus:outline-none focus:border-cyan-500">
+                    </div>
+
+                    <!-- শেষের ট্র্যাক -->
+                    <div class="sm:col-span-4 flex items-center justify-between gap-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-xl">
+                        <label for="range-end-input" class="text-xs text-cyan-700 dark:text-cyan-300 font-medium whitespace-nowrap">শেষ ফাইল নং:</label>
+                        <input type="number" id="range-end-input" min="1" value="5" class="w-20 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1 text-sm font-bold text-slate-900 dark:text-white text-center focus:outline-none focus:border-cyan-500">
+                    </div>
+
+                    <!-- রেঞ্জ রিপিট সংখ্যা -->
+                    <div class="sm:col-span-4 flex items-center justify-between gap-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-xl">
+                        <label for="range-repeat-input" class="text-xs text-slate-600 dark:text-slate-400 whitespace-nowrap">রেঞ্জ রিপিট:</label>
+                        <input type="number" id="range-repeat-input" min="1" max="999" value="2" class="w-16 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1 text-sm font-bold text-slate-900 dark:text-white text-center focus:outline-none focus:border-cyan-500">
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-200 dark:border-slate-800/80">
+                    <label class="inline-flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300 cursor-pointer">
+                        <input type="checkbox" id="range-infinite-checkbox" class="accent-cyan-600 dark:accent-cyan-500 rounded">
+                        <span>পুরো রেঞ্জটি অসীম (∞) বার রিপিট হবে</span>
+                    </label>
+
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button type="button" id="btn-toggle-folder-range" class="flex-1 sm:flex-initial bg-cyan-600 hover:bg-cyan-500 text-white dark:text-slate-950 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm shadow-lg shadow-cyan-600/20 transition active:scale-95">
+                            রেঞ্জ লুপ চালু করুন
+                        </button>
+                        <button type="button" id="btn-reset-folder-range" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium px-3 py-2 rounded-xl text-xs sm:text-sm border border-slate-300 dark:border-slate-700 transition active:scale-95">
+                            বন্ধ / রিসেট
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ৩. সম্পূর্ণ ট্র্যাক রিপিট / লুপ কন্ট্রোলার কার্ড -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-md dark:shadow-xl transition-colors duration-200">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <div class="flex items-center gap-2.5">
+                        <div class="p-2 rounded-lg bg-indigo-500/15 text-indigo-600 dark:text-indigo-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">সিঙ্গেল ট্র্যাক লুপ কন্ট্রোল</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">প্রতিটি MP3 ফাইল পরের ফাইলে যাওয়ার আগে কতবার প্লে হবে</p>
+                        </div>
+                    </div>
+
+                    <div id="track-loop-badge" class="bg-indigo-50 dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-500/40 text-indigo-700 dark:text-indigo-300 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
+                        প্লে কাউন্ট: ১ / ১
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                    <div class="sm:col-span-5 flex items-center gap-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2 rounded-xl">
+                        <label for="track-repeat-input" class="text-xs text-slate-600 dark:text-slate-400 whitespace-nowrap pl-1">মোট প্লে সংখ্যা:</label>
+                        <input type="number" id="track-repeat-input" min="1" max="999" value="1" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-sm font-bold text-slate-900 dark:text-white text-center focus:outline-none focus:border-indigo-500">
+                    </div>
+
+                    <div class="sm:col-span-7 flex flex-wrap items-center gap-2">
+                        <button type="button" data-repeat="1" class="preset-repeat-btn px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 transition">১ বার</button>
+                        <button type="button" data-repeat="3" class="preset-repeat-btn px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 transition">৩ বার</button>
+                        <button type="button" data-repeat="5" class="preset-repeat-btn px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 transition">৫ বার</button>
+                        <button type="button" data-repeat="10" class="preset-repeat-btn px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 transition">১০ বার</button>
+                        
+                        <button type="button" id="btn-track-infinite" class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 transition flex items-center justify-center gap-1.5">
+                            <span>∞ অসীম লুপ</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- রেঞ্জ বন্ধ থাকলে ট্র্যাক শেষ হলে পরবর্তী অ্যাকশন -->
+                <div class="mt-3 pt-3 border-t border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+                    <span>গ্রুপ রেঞ্জ বন্ধ থাকলে ট্র্যাক শেষে কী হবে?</span>
+                    <div class="flex items-center gap-3">
+                        <label class="inline-flex items-center gap-1.5 cursor-pointer text-slate-700 dark:text-slate-300">
+                            <input type="radio" name="after-loop-action" value="stop" class="accent-indigo-600 dark:accent-indigo-500">
+                            <span>প্লেব্যাক বন্ধ হবে</span>
+                        </label>
+                        <label class="inline-flex items-center gap-1.5 cursor-pointer text-slate-700 dark:text-slate-300">
+                            <input type="radio" name="after-loop-action" value="next" checked class="accent-indigo-600 dark:accent-indigo-500">
+                            <span>পরবর্তী ট্র্যাক / পুরো ফোল্ডার রিপিট</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ৪. নির্দিষ্ট রেঞ্জ (A-B) লুপ কন্ট্রোলার কার্ড -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-md dark:shadow-xl relative overflow-hidden transition-colors duration-200">
+                <div id="ab-active-glow" class="hidden absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-amber-500 via-orange-400 to-amber-500"></div>
+
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <div class="flex items-center gap-2.5">
+                        <div class="p-2 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">অডিও টাইম রেঞ্জ লুপ (A - B লুপ)</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">একটি ট্র্যাকের নির্দিষ্ট সময়ের অংশ সিলেক্ট করে বারবার শুনুন</p>
+                        </div>
+                    </div>
+
+                    <div id="ab-loop-badge" class="bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
+                        টাইম রেঞ্জ: বন্ধ
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                    <div class="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold text-amber-600 dark:text-amber-400">শুরু সময় (Point A)</span>
+                            <button type="button" id="btn-set-a" class="text-xs bg-amber-500/15 hover:bg-amber-500/25 text-amber-700 dark:text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg font-medium transition active:scale-95">
+                                বর্তমান সময় নিন
+                            </button>
+                        </div>
+                        <input type="text" id="input-time-a" placeholder="00:00" value="00:00" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-slate-900 dark:text-white text-center focus:outline-none focus:border-amber-500">
+                    </div>
+
+                    <div class="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold text-amber-600 dark:text-amber-400">শেষ সময় (Point B)</span>
+                            <button type="button" id="btn-set-b" class="text-xs bg-amber-500/15 hover:bg-amber-500/25 text-amber-700 dark:text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg font-medium transition active:scale-95">
+                                বর্তমান সময় নিন
+                            </button>
+                        </div>
+                        <input type="text" id="input-time-b" placeholder="00:10" value="00:00" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-slate-900 dark:text-white text-center focus:outline-none focus:border-amber-500">
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-xl">
+                        <label for="ab-repeat-input" class="text-xs text-slate-600 dark:text-slate-400">রেঞ্জ লুপ সংখ্যা:</label>
+                        <input type="number" id="ab-repeat-input" min="1" max="999" value="5" class="w-16 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1 text-sm font-bold text-slate-900 dark:text-white text-center focus:outline-none focus:border-amber-500">
+                        <label class="inline-flex items-center gap-1 text-xs text-slate-700 dark:text-slate-300 cursor-pointer ml-1">
+                            <input type="checkbox" id="ab-infinite-checkbox" class="accent-amber-600 dark:accent-amber-500 rounded">
+                            <span>অসীম (∞)</span>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button type="button" id="btn-toggle-ab" class="flex-1 sm:flex-initial bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm shadow-lg shadow-amber-500/20 transition active:scale-95">
+                            A-B লুপ চালু করুন
+                        </button>
+                        <button type="button" id="btn-reset-ab" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium px-3 py-2 rounded-xl text-xs sm:text-sm border border-slate-300 dark:border-slate-700 transition active:scale-95">
+                            রিসেট
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- হিডেন HTML5 অডিও এলিমেন্ট -->
+    <audio id="audio-player" preload="metadata"></audio>
+
+    <script>
+        /**
+         * থিম ম্যানেজমেন্ট (ডার্ক / লাইট মোড)
+         */
+        const htmlEl = document.documentElement;
+        const btnThemeToggle = document.getElementById('btn-theme-toggle');
+        const iconSun = document.getElementById('icon-sun');
+        const iconMoon = document.getElementById('icon-moon');
+        const themeLabel = document.getElementById('theme-label');
+
+        function applyTheme(isDark) {
+            if (isDark) {
+                htmlEl.classList.add('dark');
+                iconSun.classList.remove('hidden');
+                iconMoon.classList.add('hidden');
+                themeLabel.textContent = 'লাইট মোড';
+            } else {
+                htmlEl.classList.remove('dark');
+                iconSun.classList.add('hidden');
+                iconMoon.classList.remove('hidden');
+                themeLabel.textContent = 'ডার্ক মোড';
+            }
+            localStorage.setItem('mp3_player_theme', isDark ? 'dark' : 'light');
+        }
+
+        // সেভ করা থিম লোড করা (ডিফল্ট: ডার্ক মোড)
+        const savedTheme = localStorage.getItem('mp3_player_theme');
+        applyTheme(savedTheme !== 'light');
+
+        btnThemeToggle.addEventListener('click', () => {
+            const currentlyDark = htmlEl.classList.contains('dark');
+            applyTheme(!currentlyDark);
+            showToast(!currentlyDark ? 'ডার্ক মোড চালু করা হয়েছে' : 'লাইট মোড চালু করা হয়েছে', 'info');
+        });
+
+        /**
+         * অ্যাপ্লিকেশন স্টেট
+         */
+        const state = {
+            tracks: [],
+            filteredTracks: [],
+            currentIndex: -1,
+            isPlaying: false,
+            
+            // ফোল্ডার / ট্র্যাক গ্রুপ রেঞ্জ লুপ স্টেট
+            folderRangeActive: false,
+            rangeStartIdx: 0,
+            rangeEndIdx: 4,
+            rangeRepeatTarget: 2,
+            rangeCurrentCycle: 0,
+            isRangeInfinite: false,
+
+            // সিঙ্গেল ট্র্যাক লুপ স্টেট
+            trackRepeatTarget: 1,
+            trackPlayCount: 0,
+            isTrackInfinite: false,
+
+            // A-B টাইম রেঞ্জ লুপ স্টেট
+            abActive: false,
+            pointA: 0,
+            pointB: 0,
+            abRepeatTarget: 5,
+            abCurrentCount: 0,
+            isAbInfinite: false,
+            abLock: false
+        };
+
+        // DOM এলিমেন্ট রেফারেন্স
+        const audio = document.getElementById('audio-player');
+        const folderInput = document.getElementById('folder-input');
+        const playlistContainer = document.getElementById('playlist-container');
+        const emptyPlaylist = document.getElementById('empty-playlist');
+        const trackCountBadge = document.getElementById('track-count-badge');
+        const searchInput = document.getElementById('search-input');
+
+        const currentTrackTitle = document.getElementById('current-track-title');
+        const currentFolderPath = document.getElementById('current-folder-path');
+        const playerStatusBadge = document.getElementById('player-status-badge');
+        const trackIndexBadge = document.getElementById('track-index-badge');
+        const activeRangePill = document.getElementById('active-range-pill');
+        const currentTimeDisplay = document.getElementById('current-time-display');
+        const durationDisplay = document.getElementById('duration-display');
+        const progressBarWrapper = document.getElementById('progress-bar-wrapper');
+        const progressFill = document.getElementById('progress-fill');
+        const progressThumb = document.getElementById('progress-thumb');
+
+        const btnPlayPause = document.getElementById('btn-play-pause');
+        const iconPlay = document.getElementById('icon-play');
+        const iconPause = document.getElementById('icon-pause');
+        const btnStop = document.getElementById('btn-stop');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const volumeSlider = document.getElementById('volume-slider');
+        const btnMute = document.getElementById('btn-mute');
+        const iconVolHigh = document.getElementById('icon-vol-high');
+        const iconVolMute = document.getElementById('icon-vol-mute');
+        const speedSelect = document.getElementById('speed-select');
+
+        // ফোল্ডার রেঞ্জ এলিমেন্ট
+        const rangeStartInput = document.getElementById('range-start-input');
+        const rangeEndInput = document.getElementById('range-end-input');
+        const rangeRepeatInput = document.getElementById('range-repeat-input');
+        const rangeInfiniteCheckbox = document.getElementById('range-infinite-checkbox');
+        const btnToggleFolderRange = document.getElementById('btn-toggle-folder-range');
+        const btnResetFolderRange = document.getElementById('btn-reset-folder-range');
+        const folderRangeBadge = document.getElementById('folder-range-badge');
+        const rangeActiveGlow = document.getElementById('range-active-glow');
+
+        // সিঙ্গেল ট্র্যাক লুপ এলিমেন্ট
+        const trackRepeatInput = document.getElementById('track-repeat-input');
+        const trackLoopBadge = document.getElementById('track-loop-badge');
+        const btnTrackInfinite = document.getElementById('btn-track-infinite');
+        const presetRepeatBtns = document.querySelectorAll('.preset-repeat-btn');
+
+        // A-B লুপ এলিমেন্ট
+        const inputTimeA = document.getElementById('input-time-a');
+        const inputTimeB = document.getElementById('input-time-b');
+        const btnSetA = document.getElementById('btn-set-a');
+        const btnSetB = document.getElementById('btn-set-b');
+        const abRepeatInput = document.getElementById('ab-repeat-input');
+        const abInfiniteCheckbox = document.getElementById('ab-infinite-checkbox');
+        const btnToggleAb = document.getElementById('btn-toggle-ab');
+        const btnResetAb = document.getElementById('btn-reset-ab');
+        const abLoopBadge = document.getElementById('ab-loop-badge');
+        const abActiveGlow = document.getElementById('ab-active-glow');
+        const abRangeHighlight = document.getElementById('ab-range-highlight');
+        const markerA = document.getElementById('marker-a');
+        const markerB = document.getElementById('marker-b');
+
+        function toBengaliDigits(num) {
+            const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+            return String(num).replace(/\d/g, d => bnDigits[d]);
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds) || seconds < 0) return '00:00';
+            const hrs = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = Math.floor(seconds % 60);
+            const pad = (n) => String(n).padStart(2, '0');
+            if (hrs > 0) return `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+            return `${pad(mins)}:${pad(secs)}`;
+        }
+
+        function parseTimeInput(str) {
+            if (!str) return 0;
+            const cleaned = str.trim();
+            if (cleaned.includes(':')) {
+                const parts = cleaned.split(':').map(Number);
+                if (parts.some(isNaN)) return NaN;
+                if (parts.length === 2) return parts[0] * 60 + parts[1];
+                if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+            }
+            const val = parseFloat(cleaned);
+            return isNaN(val) ? NaN : val;
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colors = {
+                info: 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-100',
+                success: 'bg-emerald-50 dark:bg-emerald-950/95 border-emerald-400 dark:border-emerald-500 text-emerald-800 dark:text-emerald-200',
+                warning: 'bg-amber-50 dark:bg-amber-950/95 border-amber-400 dark:border-amber-500 text-amber-800 dark:text-amber-200',
+                error: 'bg-rose-50 dark:bg-rose-950/95 border-rose-400 dark:border-rose-500 text-rose-800 dark:text-rose-200'
+            };
+            toast.className = `${colors[type] || colors.info} border px-4 py-2.5 rounded-xl shadow-2xl text-xs sm:text-sm font-medium flex items-center gap-2 transform transition-all duration-300 translate-x-full opacity-0`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.remove('translate-x-full', 'opacity-0'));
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+
+        /**
+         * ১. ফোল্ডার ব্রাউজ এবং MP3 লোডিং
+         */
+        folderInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+
+            state.tracks.forEach(t => { if (t.url) URL.revokeObjectURL(t.url); });
+
+            const mp3Files = files.filter(file => 
+                file.name.toLowerCase().endsWith('.mp3') || file.type === 'audio/mpeg'
+            );
+
+            if (mp3Files.length === 0) {
+                showToast('নির্বাচিত ফোল্ডারে কোনো MP3 ফাইল পাওয়া যায়নি!', 'error');
+                return;
+            }
+
+            const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+            mp3Files.sort((a, b) => collator.compare(a.name, b.name));
+
+            state.tracks = mp3Files.map((file, idx) => ({
+                originalIndex: idx,
+                name: file.name.replace(/\.mp3$/i, ''),
+                fullName: file.name,
+                path: file.webkitRelativePath || file.name,
+                file: file,
+                url: URL.createObjectURL(file)
+            }));
+
+            state.filteredTracks = [...state.tracks];
+            searchInput.value = '';
+            
+            rangeStartInput.max = state.tracks.length;
+            rangeEndInput.max = state.tracks.length;
+            rangeStartInput.value = 1;
+            rangeEndInput.value = Math.min(5, state.tracks.length);
+            resetFolderRange(false);
+
+            trackCountBadge.textContent = `${toBengaliDigits(state.tracks.length)} টি ফাইল`;
+            renderPlaylist();
+            
+            showToast(`সফলভাবে ${toBengaliDigits(state.tracks.length)} টি MP3 ফাইল লোড হয়েছে!`, 'success');
+            loadTrack(0, false);
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            state.filteredTracks = query 
+                ? state.tracks.filter(t => t.name.toLowerCase().includes(query))
+                : [...state.tracks];
+            renderPlaylist();
+        });
+
+        function renderPlaylist() {
+            playlistContainer.innerHTML = '';
+
+            if (state.filteredTracks.length === 0) {
+                if (state.tracks.length === 0) {
+                    playlistContainer.appendChild(emptyPlaylist);
+                } else {
+                    playlistContainer.innerHTML = `<div class="text-center py-10 text-slate-500 dark:text-slate-400 text-sm">কোনো মিল খুঁজে পাওয়া যায়নি</div>`;
+                }
+                return;
+            }
+
+            state.filteredTracks.forEach((track) => {
+                const idx = track.originalIndex;
+                const isSelected = idx === state.currentIndex;
+                const inActiveRange = state.folderRangeActive && idx >= state.rangeStartIdx && idx <= state.rangeEndIdx;
+
+                const row = document.createElement('div');
+                row.className = `group w-full px-2.5 py-2 rounded-xl flex items-center gap-2 transition-all border ${
+                    isSelected 
+                        ? 'bg-emerald-50 dark:bg-emerald-600/20 border-emerald-400 dark:border-emerald-500/50 text-slate-900 dark:text-white shadow-sm' 
+                        : inActiveRange
+                            ? 'bg-cyan-50/80 dark:bg-cyan-950/40 border-cyan-300 dark:border-cyan-500/30 text-slate-800 dark:text-slate-200'
+                            : 'hover:bg-slate-100 dark:hover:bg-slate-800/80 border-transparent text-slate-700 dark:text-slate-300'
+                }`;
+
+                const playArea = document.createElement('button');
+                playArea.type = 'button';
+                playArea.className = 'flex items-center gap-2.5 flex-1 min-w-0 text-left';
+                playArea.innerHTML = `
+                    <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 ${
+                        isSelected 
+                            ? 'bg-emerald-500 text-white dark:text-slate-950' 
+                            : inActiveRange 
+                                ? 'bg-cyan-100 dark:bg-cyan-500/25 text-cyan-800 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/40' 
+                                : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                    }">
+                        ${isSelected && state.isPlaying ? '▶' : toBengaliDigits(idx + 1)}
+                    </span>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-sm font-medium truncate ${isSelected ? 'text-emerald-700 dark:text-emerald-300 font-semibold' : ''}">
+                            ${track.name}
+                        </p>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-500 truncate">${track.path}</p>
+                    </div>
+                `;
+                playArea.addEventListener('click', () => {
+                    loadTrack(idx, true);
+                });
+
+                const quickBtns = document.createElement('div');
+                quickBtns.className = 'flex items-center gap-1 shrink-0 opacity-85 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity';
+
+                const btnSetStart = document.createElement('button');
+                btnSetStart.type = 'button';
+                btnSetStart.title = 'রেঞ্জের শুরু হিসেবে সেট করুন';
+                btnSetStart.textContent = 'শুরু';
+                btnSetStart.className = 'text-[10px] font-semibold px-1.5 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-cyan-600 hover:text-white dark:hover:text-slate-950 text-cyan-700 dark:text-cyan-300 border border-slate-300 dark:border-slate-700 transition';
+                btnSetStart.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    rangeStartInput.value = idx + 1;
+                    if (parseInt(rangeEndInput.value) < idx + 1) {
+                        rangeEndInput.value = idx + 1;
+                    }
+                    showToast(`রেঞ্জ শুরু ফাইল #${toBengaliDigits(idx + 1)} সেট করা হয়েছে`, 'info');
+                    renderPlaylist();
+                });
+
+                const btnSetEnd = document.createElement('button');
+                btnSetEnd.type = 'button';
+                btnSetEnd.title = 'রেঞ্জের শেষ হিসেবে সেট করুন';
+                btnSetEnd.textContent = 'শেষ';
+                btnSetEnd.className = 'text-[10px] font-semibold px-1.5 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-cyan-600 hover:text-white dark:hover:text-slate-950 text-cyan-700 dark:text-cyan-300 border border-slate-300 dark:border-slate-700 transition';
+                btnSetEnd.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    rangeEndInput.value = idx + 1;
+                    if (parseInt(rangeStartInput.value) > idx + 1) {
+                        rangeStartInput.value = idx + 1;
+                    }
+                    showToast(`রেঞ্জ শেষ ফাইল #${toBengaliDigits(idx + 1)} সেট করা হয়েছে`, 'info');
+                    renderPlaylist();
+                });
+
+                quickBtns.appendChild(btnSetStart);
+                quickBtns.appendChild(btnSetEnd);
+
+                row.appendChild(playArea);
+                row.appendChild(quickBtns);
+                playlistContainer.appendChild(row);
+            });
+        }
+
+        /**
+         * ২. ফোল্ডার / ট্র্যাক রেঞ্জ লুপ কন্ট্রোলার লজিক
+         */
+        rangeStartInput.addEventListener('input', renderPlaylist);
+        rangeEndInput.addEventListener('input', renderPlaylist);
+
+        rangeRepeatInput.addEventListener('input', (e) => {
+            state.rangeRepeatTarget = Math.max(1, parseInt(e.target.value) || 1);
+            updateFolderRangeUI();
+        });
+
+        rangeInfiniteCheckbox.addEventListener('change', (e) => {
+            state.isRangeInfinite = e.target.checked;
+            rangeRepeatInput.disabled = state.isRangeInfinite;
+            updateFolderRangeUI();
+        });
+
+        btnToggleFolderRange.addEventListener('click', () => {
+            if (state.tracks.length === 0) {
+                showToast('প্রথমে একটি MP3 ফোল্ডার নির্বাচন করুন', 'warning');
+                return;
+            }
+
+            if (state.folderRangeActive) {
+                resetFolderRange(true);
+                return;
+            }
+
+            const total = state.tracks.length;
+            let startNum = parseInt(rangeStartInput.value) || 1;
+            let endNum = parseInt(rangeEndInput.value) || total;
+
+            if (startNum < 1) startNum = 1;
+            if (endNum > total) endNum = total;
+
+            if (startNum > endNum) {
+                showToast('শুরু ফাইল নম্বর অবশ্যই শেষ ফাইল নম্বর থেকে ছোট বা সমান হতে হবে!', 'error');
+                return;
+            }
+
+            rangeStartInput.value = startNum;
+            rangeEndInput.value = endNum;
+
+            state.rangeStartIdx = startNum - 1;
+            state.rangeEndIdx = endNum - 1;
+            state.rangeRepeatTarget = Math.max(1, parseInt(rangeRepeatInput.value) || 1);
+            state.rangeCurrentCycle = 1;
+            state.folderRangeActive = true;
+
+            updateFolderRangeUI();
+            renderPlaylist();
+
+            loadTrack(state.rangeStartIdx, true);
+            showToast(`ফাইল #${toBengaliDigits(startNum)} থেকে #${toBengaliDigits(endNum)} পর্যন্ত রেঞ্জ লুপ চালু হয়েছে!`, 'success');
+        });
+
+        btnResetFolderRange.addEventListener('click', () => {
+            resetFolderRange(true);
+        });
+
+        function resetFolderRange(notify = true) {
+            state.folderRangeActive = false;
+            state.rangeCurrentCycle = 0;
+            updateFolderRangeUI();
+            renderPlaylist();
+            if (notify) showToast('গ্রুপ রেঞ্জ লুপ বন্ধ করা হয়েছে (সম্পূর্ণ ফোল্ডার মোড)', 'info');
+        }
+
+        function updateFolderRangeUI() {
+            if (state.folderRangeActive) {
+                btnToggleFolderRange.textContent = 'রেঞ্জ লুপ বন্ধ করুন';
+                btnToggleFolderRange.classList.remove('bg-cyan-600', 'hover:bg-cyan-500', 'dark:text-slate-950');
+                btnToggleFolderRange.classList.add('bg-rose-600', 'hover:bg-rose-500', 'text-white');
+
+                rangeActiveGlow.classList.remove('hidden');
+                const startBn = toBengaliDigits(state.rangeStartIdx + 1);
+                const endBn = toBengaliDigits(state.rangeEndIdx + 1);
+                const cycleBn = toBengaliDigits(state.rangeCurrentCycle);
+                const targetBn = state.isRangeInfinite ? '∞' : toBengaliDigits(state.rangeRepeatTarget);
+
+                folderRangeBadge.className = 'bg-cyan-50 dark:bg-cyan-500/20 border border-cyan-300 dark:border-cyan-500/50 text-cyan-800 dark:text-cyan-300 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold';
+                folderRangeBadge.textContent = `রেঞ্জ (#${startBn}-#${endBn}): ${cycleBn} / ${targetBn}`;
+
+                activeRangePill.classList.remove('hidden');
+                activeRangePill.textContent = `গ্রুপ রেঞ্জ: #${startBn}-#${endBn} (${cycleBn}/${targetBn})`;
+            } else {
+                btnToggleFolderRange.textContent = 'রেঞ্জ লুপ চালু করুন';
+                btnToggleFolderRange.classList.remove('bg-rose-600', 'hover:bg-rose-500');
+                btnToggleFolderRange.classList.add('bg-cyan-600', 'hover:bg-cyan-500', 'text-white', 'dark:text-slate-950');
+
+                rangeActiveGlow.classList.add('hidden');
+                folderRangeBadge.className = 'bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold';
+                folderRangeBadge.textContent = 'গ্রুপ রেঞ্জ: বন্ধ (পুরো ফোল্ডার)';
+                activeRangePill.classList.add('hidden');
+            }
+        }
+
+        /**
+         * ৩. ট্র্যাক লোড এবং প্লেব্যাক কন্ট্রোল
+         */
+        function loadTrack(index, autoPlay = true) {
+            if (index < 0 || index >= state.tracks.length) return;
+
+            state.currentIndex = index;
+            const track = state.tracks[index];
+
+            state.trackPlayCount = 1;
+            updateTrackLoopUI();
+            resetAbLoop(false);
+
+            audio.src = track.url;
+            audio.playbackRate = parseFloat(speedSelect.value);
+            
+            currentTrackTitle.textContent = track.name;
+            currentTrackTitle.title = track.fullName;
+            currentFolderPath.textContent = track.path;
+            
+            trackIndexBadge.classList.remove('hidden');
+            trackIndexBadge.textContent = `ট্র্যাক ${toBengaliDigits(index + 1)} / ${toBengaliDigits(state.tracks.length)}`;
+
+            progressFill.style.width = '0%';
+            progressThumb.style.left = '0%';
+            currentTimeDisplay.textContent = '00:00';
+            durationDisplay.textContent = '00:00';
+
+            renderPlaylist();
+
+            if (autoPlay) {
+                playAudio();
+            } else {
+                pauseAudio();
+                updateStatusBadge('প্রস্তুত', 'slate');
+            }
+        }
+
+        function playAudio() {
+            if (state.currentIndex === -1) {
+                if (state.tracks.length > 0) loadTrack(0, true);
+                else showToast('প্রথমে একটি MP3 ফোল্ডার নির্বাচন করুন', 'warning');
+                return;
+            }
+
+            audio.play().then(() => {
+                state.isPlaying = true;
+                iconPlay.classList.add('hidden');
+                iconPause.classList.remove('hidden');
+                updateStatusBadge('চলছে', 'emerald');
+                renderPlaylist();
+            }).catch(err => {
+                console.error('Playback error:', err);
+                showToast('অডিও প্লে করতে সমস্যা হয়েছে', 'error');
+            });
+        }
+
+        function pauseAudio() {
+            audio.pause();
+            state.isPlaying = false;
+            iconPlay.classList.remove('hidden');
+            iconPause.classList.add('hidden');
+            if (state.currentIndex !== -1) updateStatusBadge('বিরতি (Paused)', 'amber');
+            renderPlaylist();
+        }
+
+        function stopAudio() {
+            audio.pause();
+            audio.currentTime = 0;
+            state.isPlaying = false;
+            state.trackPlayCount = 1;
+            state.abCurrentCount = 0;
+            iconPlay.classList.remove('hidden');
+            iconPause.classList.add('hidden');
+            updateTrackLoopUI();
+            updateAbLoopUI();
+            if (state.currentIndex !== -1) updateStatusBadge('বন্ধ (Stopped)', 'rose');
+            renderPlaylist();
+        }
+
+        function updateStatusBadge(text, color) {
+            const colorMap = {
+                slate: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
+                emerald: 'bg-emerald-50 dark:bg-emerald-950/90 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40',
+                amber: 'bg-amber-50 dark:bg-amber-950/90 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-500/40',
+                rose: 'bg-rose-50 dark:bg-rose-950/90 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-500/40'
+            };
+            const dotColor = {
+                slate: 'bg-slate-400 dark:bg-slate-500',
+                emerald: 'bg-emerald-500 dark:bg-emerald-400 animate-pulse',
+                amber: 'bg-amber-500 dark:bg-amber-400',
+                rose: 'bg-rose-500 dark:bg-rose-400'
+            };
+            playerStatusBadge.className = `inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-0.5 rounded-full border ${colorMap[color]}`;
+            playerStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full ${dotColor[color]}"></span> ${text}`;
+        }
+
+        btnPlayPause.addEventListener('click', () => {
+            if (state.isPlaying) pauseAudio();
+            else playAudio();
+        });
+
+        btnStop.addEventListener('click', stopAudio);
+
+        btnPrev.addEventListener('click', () => {
+            if (state.tracks.length === 0) return;
+            if (state.folderRangeActive) {
+                const prevIdx = state.currentIndex > state.rangeStartIdx 
+                    ? state.currentIndex - 1 
+                    : state.rangeEndIdx;
+                loadTrack(prevIdx, true);
+            } else {
+                const prevIdx = (state.currentIndex - 1 + state.tracks.length) % state.tracks.length;
+                loadTrack(prevIdx, true);
+            }
+        });
+
+        btnNext.addEventListener('click', () => {
+            if (state.tracks.length === 0) return;
+            if (state.folderRangeActive) {
+                const nextIdx = state.currentIndex < state.rangeEndIdx 
+                    ? state.currentIndex + 1 
+                    : state.rangeStartIdx;
+                loadTrack(nextIdx, true);
+            } else {
+                const nextIdx = (state.currentIndex + 1) % state.tracks.length;
+                loadTrack(nextIdx, true);
+            }
+        });
+
+        volumeSlider.addEventListener('input', (e) => {
+            audio.volume = parseFloat(e.target.value);
+            audio.muted = audio.volume === 0;
+            updateVolumeIcon();
+        });
+
+        btnMute.addEventListener('click', () => {
+            audio.muted = !audio.muted;
+            updateVolumeIcon();
+        });
+
+        function updateVolumeIcon() {
+            if (audio.muted || audio.volume === 0) {
+                iconVolHigh.classList.add('hidden');
+                iconVolMute.classList.remove('hidden');
+            } else {
+                iconVolHigh.classList.remove('hidden');
+                iconVolMute.classList.add('hidden');
+            }
+        }
+
+        speedSelect.addEventListener('change', (e) => {
+            audio.playbackRate = parseFloat(e.target.value);
+        });
+
+        audio.addEventListener('loadedmetadata', () => {
+            durationDisplay.textContent = formatTime(audio.duration);
+            if (!state.abActive) {
+                inputTimeB.value = formatTime(audio.duration);
+                state.pointB = audio.duration;
+            }
+            updateAbVisualMarkers();
+        });
+
+        /**
+         * ৪. প্রোগ্রেস বার সিকিং
+         */
+        let isDraggingProgress = false;
+
+        function seekFromEvent(clientX) {
+            if (!audio.duration || isNaN(audio.duration)) return;
+            const rect = progressBarWrapper.getBoundingClientRect();
+            const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+            const newTime = ratio * audio.duration;
+            audio.currentTime = newTime;
+            updateProgressUI(newTime, audio.duration);
+        }
+
+        progressBarWrapper.addEventListener('mousedown', (e) => { isDraggingProgress = true; seekFromEvent(e.clientX); });
+        window.addEventListener('mousemove', (e) => { if (isDraggingProgress) seekFromEvent(e.clientX); });
+        window.addEventListener('mouseup', () => { isDraggingProgress = false; });
+        progressBarWrapper.addEventListener('touchstart', (e) => { isDraggingProgress = true; if (e.touches.length > 0) seekFromEvent(e.touches[0].clientX); }, { passive: true });
+        progressBarWrapper.addEventListener('touchmove', (e) => { if (isDraggingProgress && e.touches.length > 0) seekFromEvent(e.touches[0].clientX); }, { passive: true });
+        progressBarWrapper.addEventListener('touchend', () => { isDraggingProgress = false; });
+
+        function updateProgressUI(current, total) {
+            currentTimeDisplay.textContent = formatTime(current);
+            if (total > 0) {
+                const percent = (current / total) * 100;
+                progressFill.style.width = `${percent}%`;
+                progressThumb.style.left = `${percent}%`;
+            }
+        }
+
+        /**
+         * ৫. নেস্টেড লুপ লজিক
+         */
+        function setTrackRepeatCount(count) {
+            state.isTrackInfinite = false;
+            state.trackRepeatTarget = Math.max(1, parseInt(count) || 1);
+            trackRepeatInput.value = state.trackRepeatTarget;
+            trackRepeatInput.disabled = false;
+            
+            btnTrackInfinite.className = 'flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 transition flex items-center justify-center gap-1.5';
+            updateTrackLoopUI();
+        }
+
+        trackRepeatInput.addEventListener('input', (e) => setTrackRepeatCount(e.target.value));
+
+        presetRepeatBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setTrackRepeatCount(btn.dataset.repeat);
+                showToast(`প্রতিটি ট্র্যাক ${toBengaliDigits(btn.dataset.repeat)} বার করে প্লে হবে`, 'info');
+            });
+        });
+
+        btnTrackInfinite.addEventListener('click', () => {
+            state.isTrackInfinite = !state.isTrackInfinite;
+            if (state.isTrackInfinite) {
+                trackRepeatInput.disabled = true;
+                btnTrackInfinite.className = 'flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white border border-indigo-500 transition flex items-center justify-center gap-1.5';
+                showToast('সিঙ্গেল ট্র্যাক অসীম লুপ চালু হয়েছে', 'info');
+            } else {
+                setTrackRepeatCount(trackRepeatInput.value);
+            }
+            updateTrackLoopUI();
+        });
+
+        function updateTrackLoopUI() {
+            const currentDisplay = state.currentIndex === -1 ? 0 : state.trackPlayCount;
+            const targetDisplay = state.isTrackInfinite ? '∞' : toBengaliDigits(state.trackRepeatTarget);
+            trackLoopBadge.textContent = `প্লে কাউন্ট: ${toBengaliDigits(currentDisplay)} / ${targetDisplay}`;
+        }
+
+        audio.addEventListener('ended', () => {
+            if (state.abActive) {
+                handleAbLoopCycle();
+                return;
+            }
+
+            if (state.isTrackInfinite || state.trackPlayCount < state.trackRepeatTarget) {
+                state.trackPlayCount++;
+                updateTrackLoopUI();
+                audio.currentTime = 0;
+                audio.play();
+                return;
+            }
+
+            if (state.folderRangeActive) {
+                if (state.currentIndex < state.rangeEndIdx) {
+                    loadTrack(state.currentIndex + 1, true);
+                } else {
+                    if (state.isRangeInfinite || state.rangeCurrentCycle < state.rangeRepeatTarget) {
+                        state.rangeCurrentCycle++;
+                        updateFolderRangeUI();
+                        showToast(`রেঞ্জ সাইকেল ${toBengaliDigits(state.rangeCurrentCycle)} শুরু হচ্ছে...`, 'info');
+                        loadTrack(state.rangeStartIdx, true);
+                    } else {
+                        state.rangeCurrentCycle = 1;
+                        updateFolderRangeUI();
+                        stopAudio();
+                        const startBn = toBengaliDigits(state.rangeStartIdx + 1);
+                        const endBn = toBengaliDigits(state.rangeEndIdx + 1);
+                        const targetBn = toBengaliDigits(state.rangeRepeatTarget);
+                        showToast(`ফাইল #${startBn}-#${endBn} রেঞ্জটি ${targetBn} বার সম্পন্ন হয়েছে!`, 'success');
+                    }
+                }
+                return;
+            }
+
+            const action = document.querySelector('input[name="after-loop-action"]:checked').value;
+            if (action === 'next' && state.tracks.length > 0) {
+                const nextIdx = (state.currentIndex + 1) % state.tracks.length;
+                loadTrack(nextIdx, true);
+            } else {
+                stopAudio();
+                showToast(`ট্র্যাকটি নির্ধারিত ${toBengaliDigits(state.trackRepeatTarget)} বার প্লে সম্পন্ন হয়েছে!`, 'success');
+            }
+        });
+
+        /**
+         * ৬. অডিও টাইম রেঞ্জ (A-B) লুপ লজিক
+         */
+        btnSetA.addEventListener('click', () => {
+            if (state.currentIndex === -1) return showToast('প্রথমে একটি ট্র্যাক লোড করুন', 'warning');
+            state.pointA = audio.currentTime;
+            inputTimeA.value = formatTime(state.pointA);
+            updateAbVisualMarkers();
+            showToast(`শুরু সময় (A) সেট করা হয়েছে: ${inputTimeA.value}`, 'info');
+        });
+
+        btnSetB.addEventListener('click', () => {
+            if (state.currentIndex === -1) return showToast('প্রথমে একটি ট্র্যাক লোড করুন', 'warning');
+            state.pointB = audio.currentTime;
+            inputTimeB.value = formatTime(state.pointB);
+            updateAbVisualMarkers();
+            showToast(`শেষ সময় (B) সেট করা হয়েছে: ${inputTimeB.value}`, 'info');
+        });
+
+        inputTimeA.addEventListener('change', () => {
+            const parsed = parseTimeInput(inputTimeA.value);
+            if (!isNaN(parsed) && parsed >= 0) {
+                state.pointA = parsed;
+                inputTimeA.value = formatTime(parsed);
+                updateAbVisualMarkers();
+            }
+        });
+
+        inputTimeB.addEventListener('change', () => {
+            const parsed = parseTimeInput(inputTimeB.value);
+            if (!isNaN(parsed) && parsed >= 0) {
+                state.pointB = parsed;
+                inputTimeB.value = formatTime(parsed);
+                updateAbVisualMarkers();
+            }
+        });
+
+        abRepeatInput.addEventListener('input', (e) => {
+            state.abRepeatTarget = Math.max(1, parseInt(e.target.value) || 1);
+            updateAbLoopUI();
+        });
+
+        abInfiniteCheckbox.addEventListener('change', (e) => {
+            state.isAbInfinite = e.target.checked;
+            abRepeatInput.disabled = state.isAbInfinite;
+            updateAbLoopUI();
+        });
+
+        btnToggleAb.addEventListener('click', () => {
+            if (state.currentIndex === -1) return showToast('প্রথমে একটি MP3 ট্র্যাক নির্বাচন করুন', 'warning');
+
+            if (state.abActive) {
+                state.abActive = false;
+                updateAbLoopUI();
+                showToast('A-B টাইম রেঞ্জ লুপ বন্ধ করা হয়েছে', 'info');
+                return;
+            }
+
+            const startA = parseTimeInput(inputTimeA.value);
+            const endB = parseTimeInput(inputTimeB.value);
+            const maxDur = audio.duration || 0;
+
+            if (isNaN(startA) || isNaN(endB)) return showToast('সঠিক সময় ফরম্যাট দিন (যেমন: 00:15)', 'error');
+            if (startA >= endB) return showToast('শুরু সময় (A) অবশ্যই শেষ সময় (B) থেকে ছোট হতে হবে!', 'error');
+
+            state.pointB = (maxDur > 0 && endB > maxDur) ? maxDur : endB;
+            inputTimeB.value = formatTime(state.pointB);
+            state.pointA = startA;
+            state.abRepeatTarget = Math.max(1, parseInt(abRepeatInput.value) || 1);
+            state.abCurrentCount = 1;
+            state.abActive = true;
+            state.abLock = false;
+
+            updateAbVisualMarkers();
+            updateAbLoopUI();
+
+            audio.currentTime = state.pointA;
+            if (!state.isPlaying) playAudio();
+            showToast(`A-B লুপ চালু (${formatTime(state.pointA)} - ${formatTime(state.pointB)})`, 'success');
+        });
+
+        btnResetAb.addEventListener('click', () => resetAbLoop(true));
+
+        function resetAbLoop(notify = true) {
+            state.abActive = false;
+            state.pointA = 0;
+            state.pointB = audio.duration || 0;
+            state.abCurrentCount = 0;
+            inputTimeA.value = '00:00';
+            inputTimeB.value = formatTime(state.pointB);
+            updateAbVisualMarkers();
+            updateAbLoopUI();
+            if (notify) showToast('A-B রেঞ্জ পয়েন্ট রিসেট করা হয়েছে', 'info');
+        }
+
+        function updateAbLoopUI() {
+            if (state.abActive) {
+                btnToggleAb.textContent = 'A-B লুপ বন্ধ করুন';
+                btnToggleAb.classList.remove('bg-amber-500', 'hover:bg-amber-400', 'text-slate-950');
+                btnToggleAb.classList.add('bg-rose-600', 'hover:bg-rose-500', 'text-white');
+                abActiveGlow.classList.remove('hidden');
+                const targetTxt = state.isAbInfinite ? '∞' : toBengaliDigits(state.abRepeatTarget);
+                abLoopBadge.className = 'bg-amber-50 dark:bg-amber-500/20 border border-amber-300 dark:border-amber-500/50 text-amber-800 dark:text-amber-300 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold';
+                abLoopBadge.textContent = `টাইম রেঞ্জ: ${toBengaliDigits(state.abCurrentCount)} / ${targetTxt}`;
+            } else {
+                btnToggleAb.textContent = 'A-B লুপ চালু করুন';
+                btnToggleAb.classList.remove('bg-rose-600', 'hover:bg-rose-500', 'text-white');
+                btnToggleAb.classList.add('bg-amber-500', 'hover:bg-amber-400', 'text-slate-950');
+                abActiveGlow.classList.add('hidden');
+                abLoopBadge.className = 'bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold';
+                abLoopBadge.textContent = 'টাইম রেঞ্জ: বন্ধ';
+            }
+        }
+
+        function updateAbVisualMarkers() {
+            const dur = audio.duration;
+            if (!dur || dur <= 0 || state.pointB <= state.pointA) {
+                abRangeHighlight.classList.add('hidden');
+                markerA.classList.add('hidden');
+                markerB.classList.add('hidden');
+                return;
+            }
+            const leftPct = Math.max(0, Math.min(100, (state.pointA / dur) * 100));
+            const rightPct = Math.max(0, Math.min(100, (state.pointB / dur) * 100));
+            abRangeHighlight.style.left = `${leftPct}%`;
+            abRangeHighlight.style.width = `${Math.max(0, rightPct - leftPct)}%`;
+            abRangeHighlight.classList.remove('hidden');
+            markerA.style.left = `${leftPct}%`;
+            markerA.classList.remove('hidden');
+            markerB.style.left = `${rightPct}%`;
+            markerB.classList.remove('hidden');
+        }
+
+        function handleAbLoopCycle() {
+            if (state.isAbInfinite || state.abCurrentCount < state.abRepeatTarget) {
+                state.abCurrentCount++;
+                updateAbLoopUI();
+                audio.currentTime = state.pointA;
+                if (audio.paused) audio.play();
+            } else {
+                state.abActive = false;
+                updateAbLoopUI();
+                pauseAudio();
+                showToast(`নির্দিষ্ট টাইম রেঞ্জটি ${toBengaliDigits(state.abRepeatTarget)} বার লুপ সম্পন্ন হয়েছে!`, 'success');
+            }
+        }
+
+        audio.addEventListener('timeupdate', () => {
+            if (!isDraggingProgress) updateProgressUI(audio.currentTime, audio.duration);
+            if (state.abActive && !state.abLock && audio.currentTime >= state.pointB) {
+                state.abLock = true;
+                handleAbLoopCycle();
+                setTimeout(() => { state.abLock = false; }, 120);
+            }
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (state.isPlaying) pauseAudio();
+                else playAudio();
+            }
+        });
+    </script>
+</body>
+</html>
