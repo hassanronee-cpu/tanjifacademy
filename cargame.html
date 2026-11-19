@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>রঙিন রেস – মজার গাড়ির খেলা</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1b2a49;color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1526}}
+:root[data-theme="dark"]{--bg:#0d1526}
+html,body{height:100%;margin:0}
+body{background:var(--bg);font-family:"Hind Siliguri","Noto Sans Bengali",sans-serif;user-select:none;-webkit-user-select:none;touch-action:manipulation;overflow:hidden}
+#wrap{position:relative;width:100%;height:100%}
+canvas#c{width:100%;height:100%;display:block}
+#ui{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,calc(100dvh*4/7));container-type:inline-size;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.4cqw;padding:4cqw;box-sizing:border-box;text-align:center;color:#fff;overflow:auto;background:rgba(10,20,50,.62);backdrop-filter:blur(4px)}
+#ui h1{font-size:12cqw;margin:0;text-shadow:0 .8cqw 0 #e65100;color:#ffd54f}
+#ui h2{font-size:7.5cqw;margin:0;color:#ffd54f}
+#ui p{font-size:4.6cqw;margin:0}
+.b{font:700 6cqw "Hind Siliguri",sans-serif;padding:2.2cqw 7cqw;border:0;border-radius:6cqw;color:#fff;background:linear-gradient(#ff7043,#e53935);box-shadow:0 1.2cqw 0 rgba(0,0,0,.35);cursor:pointer;min-width:60cqw}
+.b2{background:linear-gradient(#42a5f5,#1e88e5)}.b3{background:linear-gradient(#66bb6a,#2e7d32)}.b4{background:linear-gradient(#8d6e63,#4e342e)}
+.sm{font-size:4cqw;min-width:0;padding:1.6cqw 3cqw}.off{filter:grayscale(1);opacity:.7}
+.row{display:flex;gap:2cqw}
+.b:active{transform:translateY(.8cqw)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2cqw;width:100%}
+.lv{font-family:inherit;border:0;border-radius:3cqw;background:linear-gradient(#ffd54f,#ff9800);padding:1.5cqw 0;color:#4e342e;cursor:pointer;box-shadow:0 .8cqw 0 rgba(0,0,0,.3)}
+.lv b{display:block;font-size:8cqw}.lv small{font-size:3.4cqw;min-height:4.4cqw;display:block}
+.lv:disabled{background:#607d8b;opacity:.6}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:2cqw;width:100%}
+.card{background:rgba(255,255,255,.15);border:.8cqw solid transparent;border-radius:3cqw;padding:1cqw;cursor:pointer}
+.card.sel{border-color:#ffd54f;background:rgba(255,213,79,.25)}
+.card canvas{width:20cqw;height:28cqw}.card.lk canvas{filter:brightness(.25)}
+.card b{display:block;font-size:4.2cqw}.card small{font-size:3.4cqw}
+.zone{position:absolute;top:0;bottom:0;width:50%;display:none;align-items:flex-end;padding:0 24px 24px;box-sizing:border-box;font-size:64px;color:rgba(255,255,255,.3)}
+#zl{left:0}#zr{right:0;justify-content:flex-end}
+#bar{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:min(100%,calc(100dvh*4/7));display:flex;justify-content:flex-end;gap:8px;padding:0 8px;box-sizing:border-box;z-index:5;pointer-events:none}
+#bar button{pointer-events:auto;font-size:22px;border:0;border-radius:50%;width:42px;height:42px;background:rgba(0,0,0,.5);color:#fff;cursor:pointer}
+#sb,#pb{display:none}
+</style></head><body>
+<div id="wrap"><canvas id="c"></canvas>
+<div class="zone" id="zl">◀</div><div class="zone" id="zr">▶</div>
+<div id="ui"></div>
+<div id="bar"><button id="sb" onclick="repQ()">🔊</button><button id="pb" onclick="pause()">⏸</button><button onclick="fs()">⛶</button></div></div>
+<script>
+const bn=n=>String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
+const $=x=>document.getElementById(x),ui=$('ui'),cv=$('c'),g=cv.getContext('2d');
+function rs(){const a=Math.max(.57,Math.min(1.9,innerWidth/innerHeight));cv.width=Math.round(700*a);cv.height=700}
+rs();addEventListener('resize',rs);
+let save={stars:0,lv:1,best:{},car:0},scr=0;
+try{Object.assign(save,JSON.parse(localStorage.getItem('rr')||'{}'))}catch(e){}
+const sv=()=>{try{localStorage.setItem('rr',JSON.stringify(save))}catch(e){}};
+let AC,mute=false,musicOn=true,voiceOn=true,mus=0;
+function beep(f,d=.12,t='sine',v=.15,dl=0){if(mute)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),n=AC.createGain(),s=AC.currentTime+dl;o.type=t;o.frequency.value=f;n.gain.setValueAtTime(v,s);n.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(n);n.connect(AC.destination);o.start(s);o.stop(s+d)}catch(e){}}
+const sfx={good(){[523,659,784,1047].forEach((f,i)=>beep(f,.18,'triangle',.2,i*.08))},bad(){beep(200,.25,'sawtooth',.1)},coin(){beep(988,.08,'square',.06);beep(1319,.1,'square',.06,.07)},turbo(){[300,450,600,900].forEach((f,i)=>beep(f,.12,'sawtooth',.08,i*.05))},roar(){beep(110,.5,'sawtooth',.18);beep(80,.6,'square',.12,.05)},win(){[523,659,784,659,784,1047,1319].forEach((f,i)=>beep(f,.2,'triangle',.2,i*.1))}};
+function music(on){clearInterval(mus);mus=0;if(!on||!musicOn||mute)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)()}catch(e){return}
+const sp=.16,M=[0,4,7,12,9,7,4,7,2,5,9,14,12,9,5,9],Bs=[0,0,5,5,7,7,0,0],tr=[0,2,-2,5,3,7,-3][G?G.ti:0]||0,f=n=>261.63*2**(n/12);let st=0,nt=AC.currentTime+.1;
+mus=setInterval(()=>{while(nt<AC.currentTime+.35){const d=nt-AC.currentTime,i=st%16;beep(f(M[i]+tr),sp*1.6,'triangle',.06,d);if(st%2==0)beep(f(Bs[(st>>1)%8]+tr-24),sp*2,'sine',.14,d);if(st%4==0)beep(90,.12,'sine',.22,d);else if(st%2)beep(7000,.03,'square',.012,d);st++;nt+=sp}},100)}
+let voices=[];try{voices=speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{voices=speechSynthesis.getVoices();if(scr)menu()}}catch(e){}
+function say(segs,soft){if(!voiceOn||!window.speechSynthesis)return;try{if(soft){if(speechSynthesis.speaking)return}else speechSynthesis.cancel();segs.forEach(([t,l])=>{const u=new SpeechSynthesisUtterance(t);u.lang=l;const v=voices.find(x=>x.lang.replace('_','-')==l)||voices.find(x=>x.lang.slice(0,2)==l.slice(0,2));if(v)u.voice=v;u.rate=.85;u.pitch=1.15;speechSynthesis.speak(u)})}catch(e){}}
+const B=t=>[t,'bn-BD'],E=t=>[t,'en-US'],I=x=>x;
+function fs(){const d=document,e=d.documentElement;try{if(d.fullscreenElement)d.exitFullscreen();else(e.requestFullscreen||e.webkitRequestFullscreen).call(e)}catch(x){}}
+function tg(k){if(k=='s')mute=!mute;if(k=='m')musicOn=!musicOn;if(k=='v')voiceOn=!voiceOn;menu()}
+const CARS=[['লাল রেসার','#e53935','#ffcdd2',0],['নীল জেট','#1e88e5','#e3f2fd',0],['হলুদ ট্যাক্সি','#fdd835','#222',1],['সবুজ জিপ','#43a047','#a5d6a7',2],['পুলিশ কার','#fafafa','#1565c0',3],['অ্যাম্বুলেন্স','#fafafa','#e53935',4],['গোলাপি পরী','#ec407a','#f8bbd0',5],['সোনালি রকেট','#ffb300','#e65100',6]];
+const NEED=[0,0,8,16,26,38,52,70];
+function rr(c,x,y,w,h,r){c.beginPath();c.roundRect?c.roundRect(x,y,w,h,r):c.rect(x,y,w,h)}
+function drawCar(c,x,y,s,i,fl){const[,a,b,t]=CARS[i];c.save();c.translate(x,y);c.scale(s,s);
+c.fillStyle='#222';[[-24,-22],[24,-22],[-24,24],[24,24]].forEach(([wx,wy])=>c.fillRect(wx-5,wy-11,10,22));
+if(fl){c.fillStyle='#ff9800';c.beginPath();c.moveTo(-12,40);c.lineTo(0,78+Math.random()*16);c.lineTo(12,40);c.fill();c.fillStyle='#ffeb3b';c.beginPath();c.moveTo(-6,40);c.lineTo(0,60+Math.random()*8);c.lineTo(6,40);c.fill()}
+if(t==6){c.fillStyle=b;c.beginPath();c.moveTo(-22,0);c.lineTo(-40,34);c.lineTo(-22,28);c.fill();c.beginPath();c.moveTo(22,0);c.lineTo(40,34);c.lineTo(22,28);c.fill()}
+c.fillStyle=a;rr(c,-22,-40,44,80,14);c.fill();c.fillStyle=b;
+if(t==0)c.fillRect(-4,-40,8,80);
+if(t==1){c.fillRect(-22,4,44,6);c.fillStyle='#fff';for(let k=0;k<4;k++)c.fillRect(-22+k*11,4,5,6);rr(c,-9,-2,18,6,2);c.fill()}
+if(t==2){c.fillStyle='#5d4037';rr(c,-12,34,24,8,3);c.fill();c.fillStyle=b;c.fillRect(-22,-8,5,30);c.fillRect(17,-8,5,30)}
+if(t==3){c.fillRect(-22,-4,44,8);c.fillStyle=Math.floor(Date.now()/250)%2?'#f44336':'#2196f3';c.beginPath();c.arc(0,2,7,0,7);c.fill()}
+if(t==4){c.fillRect(-4,-2,8,22);c.fillRect(-11,5,22,8)}
+if(t==5){c.font='bold 22px sans-serif';c.textAlign='center';c.fillText('♥',0,22)}
+c.fillStyle='#90caf9';rr(c,-15,-26,30,14,5);c.fill();rr(c,-15,18,30,9,4);c.fill();
+c.fillStyle='#fff59d';c.beginPath();c.arc(-14,-39,4,0,7);c.arc(14,-39,4,0,7);c.fill();c.restore()}
+const TH=[{n:'শহর',e:'🌳',g:'#7cb342',r:'#555',d:['🌳','🏠','🌷']},{n:'মরুভূমি',e:'🌵',g:'#f4c26b',r:'#6d5b4b',d:['🌵','🐪','🪨']},{n:'বরফের দেশ',e:'⛄',g:'#dbeafe',r:'#607d8b',d:['⛄','🌲','❄️']},{n:'রাতের শহর',e:'🌙',g:'#1a237e',r:'#263238',d:['🌙','🏙️','⭐']},{n:'সমুদ্রের ধার',e:'🌴',g:'#4dd0e1',r:'#546e7a',d:['🌴','🐚','⛵']},{n:'মহাকাশ',e:'🪐',g:'#1a0838',r:'#37274f',d:['🪐','🚀','✨']},{n:'জঙ্গল',e:'🌴',g:'#1b5e20',r:'#5d4037',d:['🌴','🌿','🦜']}];
+const LX=[98,200,302],PY=560,LV=12;
+const sh=a=>a.sort(()=>Math.random()-.5),pick=(a,n)=>sh(a.slice()).slice(0,n),R=n=>Math.floor(Math.random()*n),rg=(a,b)=>{const r=[];for(let i=a;i<=b;i++)r.push(i);return r};
+const NWS='শূন্য এক দুই তিন চার পাঁচ ছয় সাত আট নয় দশ এগারো বারো তেরো চৌদ্দ পনেরো ষোলো সতেরো আঠারো ঊনিশ বিশ'.split(' '),NW=n=>NWS[n];
+const BL=[['অ','অজগর'],['আ','আম'],['ই','ইঁদুর'],['ঈ','ঈগল'],['উ','উট'],['এ','একতারা'],['ও','ওল'],['ক','কলা'],['খ','খরগোশ'],['গ','গরু'],['ঘ','ঘর'],['চ','চাঁদ'],['ছ','ছাতা'],['জ','জাহাজ'],['ট','টিয়া'],['ড','ডিম'],['ম','মাছ'],['ন','নৌকা'],['প','পাখি'],['ব','বই'],['র','রথ'],['স','সূর্য'],['হ','হাতি']];
+const EL='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),EW='Apple Ball Cat Dog Egg Fish Goat Hat Ice-cream Jug Kite Lion Mango Nest Orange Parrot Queen Rabbit Sun Tiger Umbrella Van Watch Xylophone Yak Zebra'.split(' ');
+const COL=[['🔴','লাল','Red'],['🔵','নীল','Blue'],['🟢','সবুজ','Green'],['🟡','হলুদ','Yellow'],['🟠','কমলা','Orange'],['🟣','বেগুনি','Purple'],['🟤','বাদামি','Brown']];
+const SH=[['🔺','ত্রিভুজ','Triangle'],['🟦','বর্গ','Square'],['⭐','তারা','Star'],['❤️','হৃদয়','Heart'],['⚫','বৃত্ত','Circle'],['💎','হীরা','Diamond']];
+const FR=[['🍎','আপেল','Apple'],['🍌','কলা','Banana'],['🥭','আম','Mango'],['🍇','আঙুর','Grapes'],['🍉','তরমুজ','Watermelon'],['🍊','কমলালেবু','Orange']];
+const ANI=[['🐱','Cat','বিড়াল'],['🐶','Dog','কুকুর'],['🐟','Fish','মাছ'],['🐘','Elephant','হাতি'],['🐄','Cow','গরু'],['🐦','Bird','পাখি'],['🐒','Monkey','বানর'],['🦁','Lion','সিংহ'],['🐇','Rabbit','খরগোশ'],['🐸','Frog','ব্যাঙ']];
+const JA=[['🐅','বাঘ','Tiger'],['🦁','সিংহ','Lion'],['🐊','কুমির','Crocodile'],['🐍','সাপ','Snake'],['🦏','গন্ডার','Rhino'],['🐘','হাতি','Elephant'],['🦍','গরিলা','Gorilla'],['🐻','ভাল্লুক','Bear']];
+function mk(q,a,pool,d,f,sp,as,tx){const o=pick(pool.filter(x=>x!=a),2);o.push(a);return{q,ans:a,opts:sh(o),d,f,sp,as,tx}}
+const em=(A,w)=>{const c=A[R(A.length)],k=x=>A.find(y=>y[0]==x);return mk(c[1]+' '+w+' কোনটি?',c[0],A.map(x=>x[0]),I,x=>[B(k(x)[1]),E(k(x)[2])],[B(c[1]+' '+w+' কোনটি?')],[B(c[1]),E(c[2])],c[1]+' = '+c[2]+' '+c[0])};
+function gen(lv){let t=[0,3,1,2,4,5,8,9,6,7,10,10][(lv-1)%12];if(t==10)t=R(10);
+if(t==0){const n=1+R(Math.min(3+lv,9));return mk('🍎'.repeat(n)+' কয়টি?',n,rg(1,10),bn,m=>[B(NW(m))],[B('কয়টি আপেল? গুনে দেখো')],[B(NW(n)+'টি আপেল')],bn(n)+'টি আপেল 🍎')}
+if(t==1){const[L,w]=BL[R(BL.length)];return mk('“'+L+'” কোনটি?',L,BL.map(x=>x[0]),I,x=>[B(x)],[B(L+' কোনটি? খুঁজে বের করো')],[B(L+' তে '+w)],L+' তে '+w)}
+if(t==2){const i=R(26),L=EL[i];return mk('“'+L+'” কোনটি?',L,EL,I,x=>[E(x)],[E('Find the letter '+L)],[E(L+' for '+EW[i])],L+' for '+EW[i])}
+if(t==3)return em(COL,'রং');if(t==8)return em(SH,'');if(t==9)return em(FR,'');
+if(t==4){const a=1+R(Math.min(3+lv,9)),b=1+R(Math.min(2+(lv>>1),8)),s=a+b;return mk(bn(a)+' + '+bn(b)+' = ?',s,[s-2,s-1,s+1,s+2,s+3].filter(x=>x>0&&x<=20),bn,m=>[B(NW(m))],[B(NW(a)+' যোগ '+NW(b)+' কত?')],[B(NW(a)+' যোগ '+NW(b)+' সমান '+NW(s))],bn(a)+' + '+bn(b)+' = '+bn(s))}
+if(t==5){const a=ANI[R(10)];return mk(a[0]+' ইংরেজিতে কী?',a[1],ANI.map(x=>x[1]),I,x=>[E(x)],[B('এই প্রাণীর ইংরেজি নাম কী?')],[E(a[1]),B('মানে '+a[2])],a[1]+' = '+a[2]+' '+a[0])}
+if(t==6){const a=4+R(4+(lv>>1)),b=1+R(a-1),s=a-b;return mk(bn(a)+' − '+bn(b)+' = ?',s,[s-2,s-1,s+1,s+2,s+3].filter(x=>x>=0),bn,m=>[B(NW(m))],[B(NW(a)+' বিয়োগ '+NW(b)+' কত?')],[B(NW(a)+' বিয়োগ '+NW(b)+' সমান '+NW(s))],bn(a)+' − '+bn(b)+' = '+bn(s))}
+const n=1+R(9);return mk(n+' = বাংলায় কী?',n,rg(1,9),bn,m=>[B(NW(m))],[E(String(n)),B('বাংলায় কী?')],[E(String(n)),B('মানে '+NW(n))],n+' = '+bn(n)+' = '+NW(n))}
+const PRAISE=[['সাবাশ! 🎉','সাবাশ'],['দারুণ! 🌟','দারুণ'],['অসাধারণ! 👏','অসাধারণ'],['চমৎকার! 🚀','চমৎকার'],['তুমি সেরা! 🏆','তুমি সেরা'],['দুর্দান্ত! 💫','দুর্দান্ত']];
+let G=null,idle=0,last=performance.now();
+function show(h){scr=0;ui.innerHTML=h;ui.style.display=h?'flex':'none'}
+function ctl(on){$('pb').style.display=$('sb').style.display=on?'block':'none';$('zl').style.display=$('zr').style.display=on?'flex':'none'}
+function repQ(){if(G&&G.qq)say(G.qq.sp)}
+function menu(){G=null;ctl(0);music(0);const nb=voices.length&&!voices.some(v=>/^bn/i.test(v.lang));
+show(`<div style="font-size:15cqw">🏎️</div><h1>রঙিন রেস</h1><p>খেলো · শেখো · জেতো!</p><button class="b" onclick="say([B('চলো খেলি! লেভেল বেছে নাও')]);lvls()">▶ খেলো</button><button class="b b4" onclick="start('J')">🐯 জঙ্গল রেস</button><button class="b b2" onclick="cars()">🚗 গাড়ি বেছে নাও</button><div class="row"><button class="b b3 sm ${mute?'off':''}" onclick="tg('s')">🔊 শব্দ</button><button class="b b3 sm ${musicOn?'':'off'}" onclick="tg('m')">🎵 গান</button><button class="b b3 sm ${voiceOn?'':'off'}" onclick="tg('v')">🗣 কথা</button><button class="b b3 sm" onclick="fs()">⛶ পূর্ণ স্ক্রিন</button></div><p>⭐ মোট তারা: ${bn(save.stars)}</p>${nb?'<p style="font-size:3.4cqw;color:#ffcc80">⚠️ এই ব্রাউজারে বাংলা কণ্ঠ পাওয়া যায়নি। Chrome বা Edge ব্যবহার করলে বাংলায় শোনা যাবে।</p>':''}`);scr=1}
+function lvls(){let h='<h2>লেভেল বেছে নাও</h2><div class="grid">';for(let i=1;i<=LV;i++){const o=i>save.lv;h+=`<button class="lv" ${o?'disabled':''} onclick="start(${i})"><b>${o?'🔒':bn(i)}</b><small>${o?'':'⭐'.repeat(save.best[i]||0)||TH[(i-1)%6].e}</small></button>`}show(h+'</div><button class="b b3" onclick="menu()">⬅ ফিরে যাও</button>')}
+function cars(){let h='<h2>তোমার গাড়ি</h2><div class="grid2">';CARS.forEach((c,i)=>{const ok=save.stars>=NEED[i];h+=`<div class="card ${i==save.car?'sel':''} ${ok?'':'lk'}" onclick="pc(${i})"><canvas width="80" height="110"></canvas><b>${c[0]}</b><small>${ok?(i==save.car?'✔ বাছাই করা':'বেছে নাও'):'🔒 ⭐'+bn(NEED[i])+' লাগবে'}</small></div>`});show(h+'</div><button class="b b3" onclick="menu()">⬅ ফিরে যাও</button>');ui.querySelectorAll('canvas').forEach((cn,i)=>drawCar(cn.getContext('2d'),40,55,.95,i,0))}
+function pc(i){if(save.stars>=NEED[i]){save.car=i;sv();sfx.coin();say([B(CARS[i][0])]);cars()}else{sfx.bad();say([B('আরও তারা জমাও')])}}
+function start(id){const J=id=='J',L=J?8:id;G={id,J,lv:L,ti:J?6:(L-1)%6,th:J?TH[6]:TH[(L-1)%6],hearts:J?4:3,coins:0,done:0,goal:J?10:4+Math.min(L,6),sc:0,lane:1,px:200,objs:[],t:0,spd:J?175:150+Math.min(L,12)*14,turbo:0,inv:0,mist:0,qq:null,nx:3,sp:0,pop:[],parts:[],state:'play',shake:0,fin:0,hl:-1,lw:-9};
+G.pop.push({t:G.th.e+' '+G.th.n+(J?' রেস':' – লেভেল '+bn(L)),x:200,y:300,l:2.5});
+say([B(J?'জঙ্গল রেস! সাবধান, হিংস্র প্রাণী!':'লেভেল '+NW(L)+'। '+G.th.n)]);ctl(1);show('');music(1)}
+function pause(){if(!G||G.state!='play')return;G.paused=true;ctl(0);music(0);show('<h2>⏸ বিরতি</h2><button class="b" onclick="resume()">▶ চালিয়ে যাও</button><button class="b b2" onclick="start(G.id)">🔄 আবার শুরু</button><button class="b b3" onclick="menu()">🏠 হোম</button>')}
+function resume(){G.paused=false;ctl(1);show('');music(1)}
+function mv(d){if(G&&G.state=='play'&&!G.paused){G.lane=Math.max(0,Math.min(2,G.lane+d));beep(400+G.lane*100,.05,'sine',.06)}}
+$('zl').onpointerdown=e=>{e.preventDefault();mv(-1)};$('zr').onpointerdown=e=>{e.preventDefault();mv(1)};
+addEventListener('keydown',e=>{const k=e.key;if(k=='ArrowLeft'||k=='a')mv(-1);if(k=='ArrowRight'||k=='d')mv(1);if(k=='Escape'||k=='p')pause();if(k==' '||k=='r'){e.preventDefault();repQ()}if(k=='f')fs()});
+function burst(x,y,n,cols,gr=500){for(let i=0;i<n;i++)G.parts.push({x,y,vx:(Math.random()-.5)*360,vy:-50-Math.random()*300,c:cols[R(cols.length)],s:5+R(6),l:.8+Math.random()*.6,g:gr})}
+function confetti(){const cl=['#ff5252','#ffd740','#69f0ae','#40c4ff','#e040fb','#fff'];for(let i=0;i<130;i++)G.parts.push({x:-150+Math.random()*700,y:-10-Math.random()*300,vx:(Math.random()-.5)*80,vy:60+Math.random()*160,c:cl[R(6)],s:6+R(6),l:4.5,g:40})}
+function spawnRow(){const L=G.lv,r=Math.random(),l=R(3),cp=G.J?.4:L==1?.1:Math.min(.45,.18+L*.02);
+if(r<cp){const an=G.J?JA[R(8)]:0;G.objs.push({k:'cone',y:-70,l,an,sw:G.J&&Math.random()<.35});
+if(an){say([B('সামনে '+an[1]+'! সতর্ক হও!')]);G.warn={t:'⚠️ সামনে '+an[1]+'! সতর্ক হও!',l:2.6}}
+if((G.J||L>3)&&Math.random()<.3)G.objs.push({k:'cone',y:-70,l:(l+1+R(2))%3,an:G.J?JA[R(8)]:0})}
+else if(r<cp+.06&&G.hearts<5)G.objs.push({k:'heart',y:-50,l});
+else if(r<cp+.12)G.objs.push({k:'turbo',y:-50,l});
+else for(let i=0;i<3;i++)G.objs.push({k:'star',y:-50-i*60,l})}
+function fx(dt){for(const p of G.parts){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=p.g*dt;p.l-=dt}G.parts=G.parts.filter(p=>p.l>0&&p.y<760);for(const p of G.pop){p.y-=30*dt;p.l-=dt}G.pop=G.pop.filter(p=>p.l>0);if(G.warn)G.warn.l-=dt}
+function upd(dt){G.t+=dt;if(G.fin>0){G.fin-=dt;if(G.fin<=0){win();return}}
+const v=G.spd*(G.turbo>0?1.5:1);G.sc+=v*dt;G.px+=(LX[G.lane]-G.px)*Math.min(1,dt*12);
+G.turbo=Math.max(0,G.turbo-dt);G.inv=Math.max(0,G.inv-dt);G.shake=Math.max(0,G.shake-dt);
+const gateOn=G.J||G.objs.some(o=>o.k=='gate');
+if(G.J){G.done=Math.min(G.goal,Math.floor(G.sc/1500));if(G.done>=G.goal&&!G.fin){G.fin=2.4;G.pop.push({t:'🏁 জঙ্গল পার!',x:200,y:360,l:2})}G.sp-=dt;if(G.sp<=0&&!G.fin){spawnRow();G.sp=(260+Math.random()*120)/v}}
+if(!gateOn&&G.done<G.goal&&!G.fin){G.nx-=dt;if(G.nx<3.2&&!G.qq){G.qq=gen(G.lv);say(G.qq.sp)}
+if(G.nx<=0){G.objs.push({k:'gate',y:-60,done:0,q:G.qq});G.hl=-1}
+G.sp-=dt;if(G.sp<=0&&G.nx>3.6){spawnRow();G.sp=(190+Math.random()*90)/v}}
+for(const o of G.objs){o.y+=v*dt*(o.an?1.35:1);
+if(o.k=='gate'){const q=o.q;
+if(!o.done&&o.y>260&&G.hl!==G.lane){G.hl=G.lane;say(q.f(q.opts[G.lane]))}
+if(!o.done&&o.y>PY-8){o.done=1;if(q.opts[G.lane]==q.ans){G.done++;G.coins+=2;sfx.good();const pr=PRAISE[R(6)];G.pop.push({t:pr[0],x:200,y:480,l:1.8},{t:q.tx,x:200,y:420,l:2.8});say([B(pr[1]),...q.as]);burst(G.px,PY-30,30,['#ffd740','#69f0ae','#40c4ff','#ff5252']);if(G.done>=G.goal){G.fin=2.6;G.pop.push({t:'🏁 শেষ লাইন!',x:200,y:360,l:2})}}
+else{G.mist++;sfx.bad();G.pop.push({t:'আবার চেষ্টা করো!',x:200,y:480,l:2.2},{t:q.tx,x:200,y:420,l:3});say([B('আরেকবার চেষ্টা করো।'),...q.as])}}
+if(o.y>PY+110&&!o.gone){o.gone=1;G.qq=null;G.nx=(G.J?4.6:5)+Math.random()*1.5}}
+else{if(o.x==null)o.x=LX[o.l];
+if(o.an&&o.sw&&!o.sh&&o.y>180){o.sh=1;o.l=Math.max(0,Math.min(2,o.l+Math.sign(G.lane-o.l)))}
+o.x+=(LX[o.l]-o.x)*Math.min(1,dt*5);if(o.an&&Math.random()<dt*14)G.parts.push({x:o.x+R(70)-35,y:o.y+50,vx:0,vy:30,c:'rgba(160,130,90,.55)',s:10,l:.5,g:0});
+if(!o.hit&&Math.abs(o.y-PY)<46&&Math.abs(G.px-o.x)<56){o.hit=1;
+if(o.k=='star'){G.coins++;sfx.coin();burst(o.x,o.y,8,['#ffd740','#fff'],200);if(G.coins<=20)say([B(NW(G.coins))],1)}
+else if(o.k=='heart'){G.hearts++;sfx.good();G.pop.push({t:'❤️ +১',x:o.x,y:o.y,l:1})}
+else if(o.k=='turbo'){G.turbo=3.5;sfx.turbo();G.pop.push({t:'⚡ টার্বো!',x:200,y:480,l:1.4})}
+else if(G.turbo>0)burst(o.x,o.y,16,['#ff9800','#fff'],500);
+else if(G.inv<=0){G.hearts--;G.inv=1.6;G.shake=.4;G.mist++;o.an?sfx.roar():sfx.bad();G.pop.push({t:o.an?'ওহো! '+o.an[1]+' 😱':'ওহো! 😮',x:o.x,y:o.y-40,l:1.2});if(o.an)say([B(o.an[1]+' গাড়িতে ধাক্কা দিল!')],1);if(G.hearts<=0)lose()}}}}
+G.objs=G.objs.filter(o=>o.y<760&&!o.hit&&!o.gone)}
+function lose(){G.state='lose';ctl(0);music(0);say([B('কোনো ব্যাপার না, আবার চেষ্টা করো')]);show('<div style="font-size:18cqw">😮</div><h2>আরেকবার চেষ্টা করো!</h2><p>তুমি পারবে! 💪</p><button class="b" onclick="start(G.id)">🔄 আবার খেলো</button><button class="b b3" onclick="menu()">🏠 হোম</button>')}
+function win(){G.state='win';ctl(0);music(0);const m=G.mist,s=m<=1?3:m<=3?2:1,pv=save.stars,nx=typeof G.id=='number'&&G.id<LV;save.stars+=G.coins+s*3;save.best[G.id]=Math.max(save.best[G.id]||0,s);if(nx)save.lv=Math.max(save.lv,G.id+1);sv();sfx.win();confetti();say([B('সাবাশ! তুমি জিতে গেছ! তুমি '+NW(s)+'টি তারা পেয়েছ')]);
+let nw='';CARS.forEach((c,i)=>{if(NEED[i]>pv&&NEED[i]<=save.stars)nw+=`<p>🎁 নতুন গাড়ি আনলক: <b>${c[0]}</b>!</p>`});
+show(`<div style="font-size:16cqw">🏆</div><h2>${G.id==LV?'তুমি চ্যাম্পিয়ন!':G.J?'জঙ্গল জয়!':'লেভেল '+bn(G.id)+' পার!'}</h2><div style="font-size:14cqw">${'⭐'.repeat(s)}${'☆'.repeat(3-s)}</div><p>সংগ্রহ: ⭐ ${bn(G.coins+s*3)}</p>${nw}${nx?`<button class="b" onclick="start(${G.id+1})">➡ পরের লেভেল</button>`:''}<button class="b b2" onclick="start(${typeof G.id=='number'?G.id:"'J'"})">🔄 আবার খেলো</button><button class="b b3" onclick="menu()">🏠 হোম</button>`)}
+function road(th,sc){const ex=(cv.width-400)/2,W=cv.width;g.fillStyle=th.g;g.fillRect(-ex-5,0,W+10,700);g.fillStyle='rgba(0,0,0,.07)';for(let y=-100+(sc%100);y<700;y+=100)g.fillRect(-ex-5,y,W+10,50);
+g.font='56px serif';g.textAlign='center';const n=Math.ceil(ex/90)+1;
+for(let k=0;k<n;k++)for(let i=0;i<6;i++){const y=(i*140+k*53+sc*(1-k*.07))%840-70;g.fillText(th.d[(i+k)%3],18-k*90,y);g.fillText(th.d[(i+k+1)%3],382+k*90,y+60)}
+g.fillStyle=th.r;g.fillRect(47,0,306,700);g.fillStyle='rgba(255,255,255,.05)';g.fillRect(47,0,306,700);
+for(let j=-1;j<18;j++){const y=j*40+(sc%80);g.fillStyle=j&1?'#e53935':'#fff';g.fillRect(39,y,9,40);g.fillRect(352,y,9,40)}
+g.fillStyle='#fff';for(let y=-80+(sc%80);y<700;y+=80){g.fillRect(148,y,5,40);g.fillRect(248,y,5,40)}}
+function sign(x,y,t,c,ok){g.fillStyle=ok?'#00c853':c;rr(g,x-48,y-42,96,84,16);g.fill();g.lineWidth=4;g.strokeStyle='#fff';g.stroke();g.fillStyle='#fff';g.textAlign='center';g.font=`bold ${t.length<=2?62:t.length>5?22:34}px "Hind Siliguri",sans-serif`;g.textBaseline='middle';g.fillText(t,x,y+4);g.textBaseline='alphabetic'}
+const ACOL={'বাঘ':['#f57c00','#ffa726','#fff3e0'],'সিংহ':['#b8742a','#e8b04a','#fff3c4'],'কুমির':['#2e7d32','#66bb6a','#c8e6c9'],'সাপ':['#7cb342','#c0ca33','#f0f4c3'],'গন্ডার':['#78909c','#b0bec5','#eceff1'],'হাতি':['#607d8b','#90a4ae','#cfd8dc'],'গরিলা':['#37474f','#546e7a','#8d6e63'],'ভাল্লুক':['#6d4c41','#8d6e63','#d7ccc8']};
+function drawAnimal(c,x,y,n,t,s){c.save();c.translate(x,y+Math.sin(t*14)*4);c.scale(s,s);c.lineCap='round';
+const[b,h,m]=ACOL[n],ph=Math.sin(t*14),op=(Math.sin(t*9)+1)/2,bl=t%2.5<.12,el=(a,d,rx,ry)=>{c.beginPath();c.ellipse(a,d,rx,Math.max(.5,ry),0,0,7);c.fill()},ci=(a,d,r)=>{c.beginPath();c.arc(a,d,r,0,7);c.fill()},ln=(a,d,e,f)=>{c.beginPath();c.moveTo(a,d);c.lineTo(e,f);c.stroke()};
+if(n=='সাপ'){c.lineWidth=26;c.strokeStyle=b;const w=Math.sin(t*10)*10,p=()=>{c.beginPath();c.moveTo(-34,52);c.bezierCurveTo(-34+w,20,40+w,34,10,2);c.bezierCurveTo(-18,-20,0,-8,0,-26)};p();c.stroke();c.strokeStyle=h;c.lineWidth=8;c.setLineDash([6,14]);p();c.stroke();c.setLineDash([]);c.fillStyle=b;el(0,-34,20,16);c.strokeStyle='#e53935';c.lineWidth=3;const tg=6+op*10;ln(0,-20,0,-20+tg);ln(0,-20+tg,-5,-15+tg);ln(0,-20+tg,5,-15+tg);[-8,8].forEach(e=>{c.fillStyle='#ffeb3b';el(e,-38,5,bl?1:5);c.fillStyle='#000';c.fillRect(e-1,-42,2,8)});c.restore();return}
+c.fillStyle=b;[[-36,1],[36,-1]].forEach(([q,d])=>el(q,44+d*ph*9,14,18));
+if(n=='কুমির'){c.fillStyle=b;rr(c,-40,-26,80,40,16);c.fill();c.fillStyle=h;ci(-24,-30,9);ci(24,-30,9);[-24,24].forEach(e=>{c.fillStyle='#ffeb3b';ci(e,-30,6);c.fillStyle='#000';c.fillRect(e-1,-35,2,10)});c.fillStyle='#5d0f0f';el(0,20,38,8+op*16);c.fillStyle=b;rr(c,-40,26+op*14,80,26,12);c.fill();c.fillStyle='#fff';for(let i=-3;i<=3;i++){c.beginPath();c.moveTo(i*10-4,14);c.lineTo(i*10+4,14);c.lineTo(i*10,23);c.fill()}c.restore();return}
+if(n=='গরিলা')[[-52,1],[52,-1]].forEach(([q,d])=>el(q,14-d*ph*10,15,32));
+c.fillStyle=b;el(0,26,42,40);
+if(n=='সিংহ'){c.fillStyle='#7b4a17';for(let i=0;i<12;i++){const a=i/12*6.283;ci(Math.cos(a)*38,-8+Math.sin(a)*38,16+Math.sin(t*10+i)*2)}}
+if(n=='হাতি'){c.fillStyle=h;el(-50,-6,24,32);el(50,-6,24,32)}else{c.fillStyle=b;ci(-28,-34,12);ci(28,-34,12)}
+c.fillStyle=h;ci(0,-8,36);
+if(n=='বাঘ'){c.strokeStyle='#3e2723';c.lineWidth=4;[[-8,-40,-6,-28],[0,-42,0,-26],[8,-40,6,-28],[-36,-8,-26,-6],[-35,2,-25,0],[36,-8,26,-6],[35,2,25,0]].forEach(a=>ln(...a))}
+if(n!='হাতি'){c.fillStyle=m;el(0,8,19,14)}else{c.strokeStyle=h;c.lineWidth=18;c.beginPath();c.moveTo(0,0);c.quadraticCurveTo(Math.sin(t*6)*14,30,Math.sin(t*6)*24,50);c.stroke();c.strokeStyle='#fff';c.lineWidth=6;ln(-14,12,-22,34);ln(14,12,22,34)}
+if(n=='গন্ডার'){c.fillStyle='#eceff1';c.beginPath();c.moveTo(-8,2);c.lineTo(8,2);c.lineTo(0,-28);c.fill()}
+if(n!='হাতি'){c.fillStyle='#3e2723';c.beginPath();c.moveTo(-6,2);c.lineTo(6,2);c.lineTo(0,9);c.fill();c.fillStyle='#4a0d0d';el(0,17,11,3+op*10);if(op>.3){c.fillStyle='#fff';[-7,7].forEach(f=>{c.beginPath();c.moveTo(f-3,14);c.lineTo(f+3,14);c.lineTo(f,20+op*7);c.fill()})}}
+[-1,1].forEach(d=>{c.fillStyle='#fff';el(d*13,-14,8,bl?1:6);if(!bl){c.fillStyle='#d50000';ci(d*13,-13,3.6)}c.strokeStyle='#222';c.lineWidth=5;ln(d*23,-28,d*6,-19)});
+c.restore()}
+function objs(){for(const o of G.objs){if(o.k=='gate'){const q=o.q;g.fillStyle='#ffd600';g.fillRect(47,o.y-54,306,8);g.fillStyle='#222';for(let x=47;x<353;x+=24)g.fillRect(x,o.y-54,12,8);q.opts.forEach((r,l)=>sign(LX[l],o.y,q.d(r),['#ff7043','#42a5f5','#ab47bc'][l],o.done&&r==q.ans))}
+else{const x=o.x==null?LX[o.l]:o.x,b=Math.sin(G.t*6)*3;g.textAlign='center';
+if(o.an){if(o.y<150){g.font='44px serif';g.globalAlpha=.5+.5*Math.sin(G.t*14);g.fillText('⚠️',x,80);g.globalAlpha=1}drawAnimal(g,x,o.y,o.an[1],G.t,.75+Math.max(0,o.y)/700*.45)}
+else{g.font='60px serif';g.fillText({star:'⭐',heart:'❤️',turbo:'⚡',cone:'🚧'}[o.k],x,o.y+20+(o.k=='cone'?0:b))}}}}
+function hud(){g.textAlign='left';g.font='26px serif';g.fillStyle='#fff';g.fillText('❤️'.repeat(G.hearts),10,36);g.font='bold 22px "Hind Siliguri",sans-serif';g.strokeStyle='#000';g.lineWidth=4;g.strokeText('⭐ '+bn(G.coins),175,36);g.fillText('⭐ '+bn(G.coins),175,36);
+const p=G.done/G.goal;g.fillStyle='rgba(0,0,0,.45)';rr(g,36,62,314,12,6);g.fill();g.fillStyle='#ffd54f';rr(g,36,62,Math.max(2,314*p),12,6);g.fill();g.font='24px serif';g.textAlign='center';g.fillText('🏁',366,76);g.fillText('🚗',36+314*p,78);
+if(G.warn&&G.warn.l>0){g.fillStyle=Math.floor(G.t*6)%2?'#d50000':'#ff1744';rr(g,20,92,360,62,18);g.fill();g.lineWidth=4;g.strokeStyle='#fff';g.stroke();g.font='bold 26px "Hind Siliguri",sans-serif';g.fillStyle='#fff';g.textBaseline='middle';g.fillText(G.warn.t,200,124);g.textBaseline='alphabetic'}
+if(G.qq){const q=G.qq.q;g.fillStyle='rgba(255,255,255,.95)';rr(g,20,92,360,62,18);g.fill();g.lineWidth=4;g.strokeStyle='#ff9800';g.stroke();let fs=34;g.font=`bold ${fs}px "Hind Siliguri",sans-serif`;while(g.measureText(q).width>330&&fs>14){fs-=2;g.font=`bold ${fs}px "Hind Siliguri",sans-serif`}g.fillStyle='#222';g.textBaseline='middle';g.fillText(q,200,124);g.textBaseline='alphabetic';
+g.font='bold 16px "Hind Siliguri",sans-serif';g.fillStyle='#fff';g.strokeStyle='#000';g.strokeText('🔊 আবার শুনতে চাপো: Space',200,180);g.fillText('🔊 আবার শুনতে চাপো: Space',200,180)}
+if(G.turbo>0){g.font='bold 22px "Hind Siliguri",sans-serif';g.fillStyle='#ffeb3b';g.fillText('⚡ টার্বো!',200,210)}}
+function draw(){const ex=(cv.width-400)/2;g.save();g.textBaseline='alphabetic';g.translate(ex,0);
+if(G){g.save();if(G.shake>0)g.translate((Math.random()-.5)*8,(Math.random()-.5)*8);road(G.th,G.sc);objs();
+g.fillStyle='rgba(0,0,0,.28)';g.beginPath();g.ellipse(G.px+8,PY+12,40,70,0,0,7);g.fill();
+if(!(G.inv>0&&Math.floor(G.t*12)%2))drawCar(g,G.px,PY,1.55,save.car,G.turbo>0);
+if(G.turbo>0){g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=2;for(let i=0;i<16;i++){const x=50+Math.random()*300,y=Math.random()*650;g.beginPath();g.moveTo(x,y);g.lineTo(x,y+60);g.stroke()}}
+g.restore();for(const p of G.parts){g.fillStyle=p.c;g.fillRect(p.x,p.y,p.s,p.s*.6)}
+if(G.state=='play')hud();
+g.textAlign='center';g.lineWidth=5;g.strokeStyle='#000';g.fillStyle='#ffeb3b';for(const p of G.pop){g.globalAlpha=Math.min(1,p.l);g.font=`bold ${p.t.length>16?22:30}px "Hind Siliguri",sans-serif`;g.strokeText(p.t,p.x,p.y);g.fillText(p.t,p.x,p.y)}g.globalAlpha=1}
+else{road(TH[0],idle);drawCar(g,200,470+Math.sin(idle/40)*4,2.6,save.car,1)}
+if(G&&G.J&&G.objs.some(o=>o.an&&o.y>-60&&o.y<400)){g.strokeStyle='rgba(255,0,0,'+(.25+.25*Math.sin(G.t*14))+')';g.lineWidth=14;g.strokeRect(-ex+7,7,cv.width-14,686)}
+const gr=g.createRadialGradient(200,350,250,200,350,Math.max(cv.width,700)*.75);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,G&&G.J?'rgba(0,30,0,.6)':'rgba(0,0,0,.45)');g.fillStyle=gr;g.fillRect(-ex,0,cv.width,700);g.restore()}
+function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(G){if(G.state=='play'&&!G.paused)upd(dt);if(!G.paused){fx(dt);if(G.state!='play')G.sc+=60*dt}}else idle+=dt*140;draw();requestAnimationFrame(loop)}
+menu();requestAnimationFrame(loop);
+</script></body></html>
